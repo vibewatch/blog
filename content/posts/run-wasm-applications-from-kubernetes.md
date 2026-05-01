@@ -1,0 +1,276 @@
+---
+title: "Run WASM applications from Kubernetes"
+slug: "run-wasm-applications-from-kubernetes"
+date: "2023-01-08 11:52:53"
+updated: "2023-09-30 02:59:44"
+type: "post"
+status: "published"
+visibility: "public"
+featured: false
+excerpt: ""
+feature_image: "/assets/posts/run-wasm-applications-from-kubernetes/hero.png"
+authors: ["Yingting Huang"]
+tags: []
+---
+*   Interested in running WASM workload from Kubernetes?
+*   Interested in turning your Kubernetes cluster to support multiple container shims?
+*   Even more, wasm with dapr support?
+
+The steps documented here help run WASM workload from Kubernetes cluster based on great work from
+
+*   [Containerd Wasm Shims](https://github.com/deislabs/containerd-wasm-shims)
+*   [WasmEdge Runtime - Kubernetes + Containerd](https://wasmedge.org/book/en/use_cases/kubernetes/kubernetes/kubernetes-containerd.html)
+*   [Spin](https://www.fermyon.com/blog/introducing-spin)
+
+Sample applications and deploy manifests are located at this [repo](https://github.com/huangyingting/wasm)
+
+Below are pre-requisite
+
+*   A Kubernetes cluster, node can be accessed directly to install shims and configure containerd. For managed Kubernetes cluster, a potential workaround is using daemonset to install shim and configure containerd. Some Kubernetes distribution, for example AKS already provided [preview feature](https://learn.microsoft.com/en-us/azure/aks/use-wasi-node-pools) to enable WASM support
+
+## WasmEdge Containerd Crun Shims
+
+WasmEdge containerd shim is based on crun project, to bake WasmEdge runtime into crun, we need to add WasmEdge to Kubernetes cluster and build crun with WasmEdge support manully.
+
+### Install WasmEdge
+
+Install WasmEdge to Kubernetes node
+
+```bash
+curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | sudo bash -s -- -p /usr/local
+```
+
+### Build crun with WasmEdge support
+
+Install building tools and libraries
+
+```bash
+sudo apt update
+sudo apt install -y make git gcc build-essential pkgconf libtool \
+    libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev \
+    go-md2man libtool autoconf python3 automake
+```
+
+Next, configure, build, and install a crun binary with WasmEdge support.
+
+```bash
+git clone https://github.com/containers/crun
+cd crun
+./autogen.sh
+./configure --with-wasmedge
+make
+sudo make install
+```
+
+Maps the runtime type to the shim binary
+
+```bash
+vi /etc/containerd/config.toml
+```
+
+```toml
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun]
+          runtime_type = "io.containerd.runc.v2"
+          privileged_without_host_devices = false
+          pod_annotations = ["*.wasm.*", "wasm.*", "module.wasm.image/*", "*.module.wasm.image", "module.wasm.image/variant.*"]
+          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun.options]
+            BinaryName = "crun"
+```
+
+```bash
+systemctl restart containerd
+systemctl status containerd
+```
+
+Add a `RuntimeClass` to support WasmEdge crun containerd shim from Kubernetes cluster
+
+```yaml
+# wasmedge-crun-v2.yaml
+apiVersion: node.k8s.io/v1
+handler: crun
+kind: RuntimeClass
+metadata:
+  name: wasmedge-crun
+scheduling:
+  nodeSelector:
+    kubernetes.azure.com/wasmedge-crun: "true"
+```
+
+Add label to Kubernetes nodes, mark them to support WasmEdge workload
+
+```bash
+kubectl apply -f wasmedge-crun.yaml
+kubectl label nodes <NODE> kubernetes.azure.com/wasmedge-crun=true
+```
+
+Deploy sample WASM application
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/huangyingting/wasm/main/deploy/rust-wasmedge.yaml
+```
+
+Test WASM application, open two terminal windows, from first terminal window, run
+
+```bash
+kubectl port-forward svc/rust-wasmedge 8080:80
+```
+
+From second terminal window, run below command and notice the request is echoed back
+
+```bash
+curl http://localhost:8080
+
+# HTTP response by WASM echo application
+:method: GET
+Host: localhost:8080
+User-Agent: curl/7.81.0
+Accept: */*
+
+```
+
+## Deis Labs Containerd Wasm Shims
+
+Deis Labs provided two great containerd shims
+
+*   Spin shim - support [spin framework](https://github.com/fermyon/spin)
+*   Slight (SpiderLightning) shim - support [Deislabs SpiderLightning](https://github.com/deislabs/spiderlightning)
+
+### Install Deis Labs Containerd Wasm Shims
+
+[Using a shim in Kubernetes](https://github.com/deislabs/containerd-wasm-shims#using-a-shim-in-kubernetes) has brief steps to install deis lab containerd wasm shims
+
+Here are more detailed steps
+
+Install containerd shims to Kubernetes node
+
+```bash
+RELEASE=v0.9.1
+wget -qO- https://github.com/deislabs/containerd-wasm-shims/releases/download/$RELEASE/containerd-wasm-shims-v1-slight-linux-x86_64.tar.gz | sudo tar -xvz -C /usr/local/bin
+wget -qO- https://github.com/deislabs/containerd-wasm-shims/releases/download/$RELEASE/containerd-wasm-shims-v1-spin-linux-x86_64.tar.gz | sudo tar -xvz -C /usr/local/bin
+```
+
+Add the following to the containerd /etc/containerd/config.toml (The default configuration can be generated by running `containerd config default`) that maps the runtime type to the shim binary,
+
+```bash
+vi /etc/containerd/config.toml
+```
+
+```toml
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.spin]
+          runtime_type = "io.containerd.spin.v1"
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.slight]
+          runtime_type = "io.containerd.slight.v1"
+```
+
+```bash
+systemctl restart containerd
+systemctl status containerd
+```
+
+Add `RuntimeClass` to support spin & slight from Kubernetes cluster
+
+```yaml
+# runtimeclass.yaml
+apiVersion: node.k8s.io/v1
+handler: slight
+kind: RuntimeClass
+metadata:
+  name: wasmtime-slight
+scheduling:
+  nodeSelector:
+    kubernetes.azure.com/wasmtime-slight: "true"
+---
+apiVersion: node.k8s.io/v1
+handler: spin
+kind: RuntimeClass
+metadata:
+  name: wasmtime-spin
+scheduling:
+  nodeSelector:
+    kubernetes.azure.com/wasmtime-spin: "true"
+```
+
+Label Kubernetes nodes to support spin & slight workload
+
+```bash
+kubectl apply -f runtimeclass.yaml
+kubectl label nodes <NODE> kubernetes.azure.com/wasmtime-slight=true
+kubectl label nodes <NODE> kubernetes.azure.com/wasmtime-spin=true
+```
+
+Deploy sample WASM application
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/huangyingting/wasm/main/deploy/go-spin.yaml
+```
+
+Test WASM application, open two terminal windows, from first terminal window, run
+
+```bash
+kubectl port-forward svc/go-spin 8080:80
+```
+
+From second terminal window, run below command and notice the request is echoed back
+
+```bash
+curl http://localhost:8080
+
+# HTTP response by WASM echo application
+GET / HTTP/1.1
+Host: localhost:8080
+Accept: */*
+Spin-Base-Path: /
+Spin-Component-Route: 
+Spin-Full-Url: http://localhost:8080/
+Spin-Matched-Route: /...
+Spin-Path-Info: /
+Spin-Raw-Component-Route: /...
+User-Agent: curl/7.81.0
+
+arch: wasm
+os: linux
+version: v0.1.0
+```
+
+## Sample applications
+
+This [repo](https://github.com/huangyingting/wasm) also provides a few of sample applications to run WASM applications from Kubernetes cluster
+
+*   dotnet-spin, a simple WASM http echo server written on c# language
+*   go-spin, a simple WASM http echo server written on golang language
+*   rust-wasmedge, a simple WASM http echo server written on rust language
+
+### Build and deploy
+
+This [repo](https://github.com/huangyingting/wasm) has github action workflows to build and push images to ghcr.io. Check .github/workflows/build-spin-images.yaml and .github/workflows/build-wasmedge-images.yaml for how those WASM container images are built.
+
+`deploy` directory has all the Kubernetes manifests to deploy sample applications.
+
+To run applications locally, it requires
+
+*   [Rust](https://www.rust-lang.org/tools/install)
+*   [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+*   [Go](https://go.dev/doc/install)
+*   [TinyGo](https://tinygo.org/)
+*   [spin](https://github.com/fermyon/spin)
+*   [WasmEdge](https://wasmedge.org/book/en/quick_start/install.html)  
+    To run spin application, change directory to `go-spin` or `dotnet-spin`, run `spin build` and `spin up`  
+    To run WasmEdge application, change directory to `rust-wasmedge`, run
+
+```bash
+rustup target add wasm32-wasi
+cargo build --release --target wasm32-wasi
+wasmedge target/wasm32-wasi/release/rust-wasmedge.wasm
+```
+
+rust-wasmedge also supports dapr, to add dapr sidecar, add below annotations to deploy/rust-wasmedge.yaml
+
+```yaml
+...
+      annotations:
+        module.wasm.image/variant: compat-smart
+        # Dapr support
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "rust-wasmedge"
+        dapr.io/app-port: "80"
+```

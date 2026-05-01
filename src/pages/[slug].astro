@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllItems } from '../lib/content';
+import { formatDate, sitePath } from '../lib/site';
+
+export function getStaticPaths() {
+  return getAllItems().map((item) => ({
+    params: { slug: item.slug },
+    props: { item }
+  }));
+}
+
+const { item } = Astro.props;
+const Content = item.Content;
+const canonical = `/${item.slug}/`;
+const description = item.excerpt || item.title;
+---
+
+<BaseLayout title={item.title} description={description} canonical={canonical}>
+  <div class="container post-shell">
+    <article>
+      <header class="post-header">
+        <p class="kicker">{item.type === 'page' ? 'Page' : 'Article'}</p>
+        <h1 class="post-title">{item.title}</h1>
+        <div class="meta">
+          <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
+          {item.authors.length ? <span>· {item.authors.join(', ')}</span> : null}
+        </div>
+      </header>
+      {item.featureImage ? <img class="feature-image" src={sitePath(item.featureImage)} alt="" loading="lazy" decoding="async" /> : null}
+      <div class="article">
+        <Content />
+      </div>
+    </article>
+  </div>
+</BaseLayout>

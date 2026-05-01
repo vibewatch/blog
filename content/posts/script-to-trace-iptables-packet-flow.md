@@ -1,0 +1,54 @@
+---
+title: "Script to Trace Iptables Packet Flow"
+slug: "script-to-trace-iptables-packet-flow"
+date: "2019-11-04 00:47:56"
+updated: "2019-11-05 08:13:02"
+type: "post"
+status: "published"
+visibility: "public"
+featured: false
+excerpt: "Script to trace iptables packet flow"
+feature_image: "/assets/posts/script-to-trace-iptables-packet-flow/hero.jpg"
+authors: ["Yingting Huang"]
+tags: ["Linux", "Iptables"]
+---
+I wrote a simple script to trace packet flow for inbound traffics against a TCP/UDP port, the script can be found from [iptables-trace](https://github.com/huangyingting/devops/blob/master/ts-scripts/iptables-trace.sh)
+
+Below is a copy of the script
+
+```sh
+#!/bin/sh
+if [ $# != "2" ] || ! [ "${2}" -eq "${2}" ] 2> /dev/null
+then
+    if [ ${1} != "enable" ] && [ ${1} != "disable" ]
+    then
+        echo "Usage: ${0} [enable|disable] port"
+        exit 1
+    fi
+fi
+
+if [ ${1} = "enable" ]
+then
+    modprobe nf_log_ipv4
+    sysctl -w net.netfilter.nf_log.2=nf_log_ipv4
+    iptables -t raw -A PREROUTING -p tcp --dport ${2} -j TRACE
+    iptables -t raw -A OUTPUT -p tcp --dport ${2} -j TRACE
+    iptables -t raw -A PREROUTING -p udp --dport ${2} -j TRACE
+    iptables -t raw -A OUTPUT -p udp --dport ${2} -j TRACE
+    echo "iptables trace is enabled for port ${2}"
+    echo "run \"tail -f /var/log/kern.log\" to view trace"
+else
+    iptables -t raw -D OUTPUT -p tcp --dport ${2} -j TRACE
+    iptables -t raw -D PREROUTING -p tcp --dport ${2} -j TRACE
+    iptables -t raw -D OUTPUT -p udp --dport ${2} -j TRACE
+    iptables -t raw -D PREROUTING -p udp --dport ${2} -j TRACE
+    sysctl -w net.netfilter.nf_log.2=NONE
+    echo "iptables trace is disabled for port ${2}"
+fi
+```
+
+The usage is quite simple, for example, to see a packet flow against port 22
+
+1.  Run `sudo iptables-trace.sh enable 22`
+2.  Then run `tail -f /var/log/kern.log` to see iptables flow log
+3.  Once trace is finished, stop it by running `sudo iptables-trace.sh disable 22`

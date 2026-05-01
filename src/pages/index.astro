@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts } from '../lib/content';
+import { config, sitePath } from '../lib/site';
+import { formatDate } from '../lib/site';
+
+const posts = getPosts();
+---
+
+<BaseLayout title={config.title} description={config.description} canonical="/">
+  <section class="masthead">
+    <div class="container">
+      <h1>{config.title}</h1>
+      <p class="deck">{config.description}</p>
+    </div>
+  </section>
+
+  <section class="container" aria-label="Latest posts">
+    <div class="post-list">
+      {posts.map((post) => (
+        <article class="post-item">
+          <p class="meta"><time datetime={post.date.toISOString()}>{formatDate(post.date)}</time></p>
+          <h2><a href={sitePath(`/${post.slug}/`)}>{post.title}</a></h2>
+          {post.excerpt ? <p>{post.excerpt}</p> : null}
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import { config, sitePath, absoluteUrl } from '../lib/site';
+
+type Props = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+};
+
+const { title = config.title, description = config.description, canonical = '/' } = Astro.props;
+const fullTitle = title === config.title ? title : `${title} | ${config.title}`;
+---
+
+<!doctype html>
+<html lang={config.language ?? 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={absoluteUrl(canonical)} />
+    <link rel="alternate" type="application/rss+xml" title={config.title} href={absoluteUrl('/feed.xml')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=JetBrains+Mono:wght@400;600&display=swap" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={absoluteUrl(canonical)} />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href={sitePath('/')} aria-label={config.title}>
+          <span class="brand__mark">U</span>
+          <span>{config.title}</span>
+        </a>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href={sitePath('/')}>Latest</a>
+          <a href={sitePath('/about/')}>About</a>
+          <a href={sitePath('/feed.xml')}>RSS</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer__inner">
+        <div>© {new Date().getUTCFullYear()} {config.author ?? config.title}</div>
+        <a href={sitePath('/feed.xml')}>RSS</a>
+      </div>
+    </footer>
+  </body>
+</html>

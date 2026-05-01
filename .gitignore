@@ -1,0 +1,13 @@
+node_modules/
+public/
+.cache/
+.astro/
+.DS_Store
+dist
+.vercel
+.env
+.output
+.env.local
+.pnpm-debug.log
+TODO
+.env*.local
