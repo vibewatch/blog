@@ -10,18 +10,33 @@ const posts = getPosts();
 <BaseLayout title={config.title} description={config.description} canonical="/">
   <section class="masthead">
     <div class="container">
+      <p class="eyebrow">Cloud native notes</p>
       <h1>{config.title}</h1>
       <p class="deck">{config.description}</p>
+      <div class="masthead__actions" aria-label="Site actions">
+        <a class="button-pill" href={sitePath('/feed.xml')}>RSS feed</a>
+        <a class="button-text" href={sitePath('/about/')}>About</a>
+      </div>
     </div>
   </section>
 
   <section class="container" aria-label="Latest posts">
     <div class="post-list">
       {posts.map((post) => (
-        <article class="post-item">
-          <p class="meta"><time datetime={post.date.toISOString()}>{formatDate(post.date)}</time></p>
-          <h2><a href={sitePath(`/${post.slug}/`)}>{post.title}</a></h2>
-          {post.excerpt ? <p>{post.excerpt}</p> : null}
+        <article class="post-card">
+          <a class="post-card__link" href={sitePath(`/${post.slug}/`)} aria-label={post.title}>
+            {post.featureImage ? (
+              <img class="post-card__image" src={sitePath(post.featureImage)} alt="" loading="lazy" decoding="async" />
+            ) : (
+              <span class="post-card__placeholder" aria-hidden="true">{post.title.slice(0, 1)}</span>
+            )}
+            <span class="post-card__badge">Article</span>
+          </a>
+          <div class="post-card__body">
+            <p class="meta"><time datetime={post.date.toISOString()}>{formatDate(post.date)}</time></p>
+            <h2><a href={sitePath(`/${post.slug}/`)}>{post.title}</a></h2>
+            {post.excerpt ? <p>{post.excerpt}</p> : null}
+          </div>
         </article>
       ))}
     </div>
