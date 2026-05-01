@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 const siteConfig = JSON.parse(readFileSync(new URL('./site.config.json', import.meta.url), 'utf8'));
 
 const configuredUrl = new URL(siteConfig.baseUrl);
-const base = configuredUrl.pathname.replace(/\/$/, '');
+const basePath = configuredUrl.pathname.replace(/\/$/, '');
 
 function prefixRootLinks() {
   return (tree) => {
@@ -14,8 +14,8 @@ function prefixRootLinks() {
       if (properties) {
         for (const name of ['href', 'src']) {
           const value = properties[name];
-          if (typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')) {
-            properties[name] = `${base}${value}`.replace(/\/+/g, '/');
+          if (basePath && typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')) {
+            properties[name] = `${basePath}${value}`.replace(/\/+/g, '/');
           }
         }
       }
@@ -29,7 +29,7 @@ function prefixRootLinks() {
 
 export default defineConfig({
   site: siteConfig.baseUrl,
-  base,
+  base: basePath || '/',
   outDir: './public',
   publicDir: './static',
   build: {

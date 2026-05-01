@@ -41,5 +41,6 @@ under `static/assets/posts/`. Unreferenced legacy Ghost files were removed.
 ## GitHub Pages
 
 The workflow in `.github/workflows/pages.yml` builds the Astro site and deploys `public/` to GitHub Pages.
+The production site is served from `https://blog.genisisiq.com/` with no `/blog` base path.
 
 Set Pages source to **GitHub Actions** in the repository settings.
