@@ -356,6 +356,22 @@ main {
   padding: 4px 0 4px 16px;
 }
 
+.article .mermaid {
+  margin: 24px 0;
+  padding: 18px;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.article .mermaid svg {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
 .article table {
   display: block;
   width: 100%;
