@@ -1,0 +1,30 @@
+---
+import type { BlogItem } from '../lib/content';
+import { formatDate, sitePath } from '../lib/site';
+
+type Props = { post: BlogItem };
+const { post } = Astro.props;
+const href = sitePath(`/${post.slug}/`);
+const author = post.authors[0];
+---
+
+<article class="lede">
+  <div class="lede__body">
+    <p class="lede__category">From the desk</p>
+    <h1 class="lede__headline"><a href={href}>{post.title}</a></h1>
+    {post.excerpt ? <p class="lede__deck">{post.excerpt}</p> : null}
+    <p class="lede__byline">
+      {author ? <>By <strong>{author}</strong> · </> : null}
+      <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+    </p>
+  </div>
+
+  {post.featureImage ? (
+    <figure class="lede__media-wrap" style="margin: 0;">
+      <a class="lede__media" href={href} aria-hidden="true" tabindex="-1">
+        <img src={sitePath(post.featureImage)} alt="" loading="eager" decoding="async" />
+      </a>
+      <figcaption class="lede__caption">{post.title}</figcaption>
+    </figure>
+  ) : null}
+</article>

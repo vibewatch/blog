@@ -1,44 +1,50 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Lede from '../components/Lede.astro';
+import Story from '../components/Story.astro';
 import { getPosts } from '../lib/content';
 import { config, sitePath } from '../lib/site';
-import { formatDate } from '../lib/site';
 
 const posts = getPosts();
+const [lead, ...rest] = posts;
+
+const pageOne = rest.slice(0, 6);
+const archive = rest.slice(6);
 ---
 
 <BaseLayout title={config.title} description={config.description} canonical="/">
-  <section class="masthead">
-    <div class="container">
-      <p class="eyebrow">Cloud native notes</p>
-      <h1>{config.title}</h1>
-      <p class="deck">{config.description}</p>
-      <div class="masthead__actions" aria-label="Site actions">
-        <a class="button-pill" href={sitePath('/feed.xml')}>RSS feed</a>
-        <a class="button-text" href={sitePath('/about/')}>About</a>
-      </div>
+  <section class="container">
+    {lead && <Lede post={lead} />}
+  </section>
+
+  <section class="container section--tight">
+    <header class="section-head">
+      <h2 class="section-head__title">Above the Fold</h2>
+      <span class="section-head__meta">Recent dispatches</span>
+    </header>
+    <div class="stories">
+      {pageOne.map((post) => <Story post={post} />)}
     </div>
   </section>
 
-  <section class="container" aria-label="Latest posts">
-    <div class="post-list">
-      {posts.map((post) => (
-        <article class="post-card">
-          <a class="post-card__link" href={sitePath(`/${post.slug}/`)} aria-label={post.title}>
-            {post.featureImage ? (
-              <img class="post-card__image" src={sitePath(post.featureImage)} alt="" loading="lazy" decoding="async" />
-            ) : (
-              <span class="post-card__placeholder" aria-hidden="true">{post.title.slice(0, 1)}</span>
-            )}
-            <span class="post-card__badge">Article</span>
-          </a>
-          <div class="post-card__body">
-            <p class="meta"><time datetime={post.date.toISOString()}>{formatDate(post.date)}</time></p>
-            <h2><a href={sitePath(`/${post.slug}/`)}>{post.title}</a></h2>
-            {post.excerpt ? <p>{post.excerpt}</p> : null}
-          </div>
-        </article>
-      ))}
+  {archive.length > 0 && (
+    <section class="container section--tight">
+      <header class="section-head">
+        <h2 class="section-head__title">Archive</h2>
+        <span class="section-head__meta">{archive.length} earlier pieces</span>
+      </header>
+      <div class="stories">
+        {archive.map((post) => <Story post={post} />)}
+      </div>
+    </section>
+  )}
+
+  <section class="strip">
+    <div class="container">
+      <p class="strip__label">Subscribe</p>
+      <h2 class="strip__title">Read at your own pace.</h2>
+      <p class="strip__deck">No newsletter, no inbox clutter — only an old-fashioned RSS feed for new dispatches.</p>
+      <a class="strip__action" href={sitePath('/feed.xml')}>Open the RSS feed →</a>
     </div>
   </section>
 </BaseLayout>

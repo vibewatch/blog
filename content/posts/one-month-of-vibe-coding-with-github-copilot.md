@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: false
 excerpt: ""
-feature_image: "https://images.unsplash.com/photo-1565687981296-535f09db714e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fHZpYmUlMjBjb2Rpbmd8ZW58MHx8fHwxNzYxODY1MTY3fDA&ixlib=rb-4.1.0&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---

@@ -131,9 +131,7 @@ Google Maps
 
 Find local businesses, view maps and get driving directions in Google Maps.
 
-![](https://www.google.com/images/branding/product/ico/maps15_bnuw3a_32dp.ico)Google Maps
-
-![](https://maps.google.com/maps/api/staticmap?center=40.71222313%2C-73.96452201&zoom=24&size=256x256&language=en&sensor=false&client=google-maps-frontend&signature=fvlsedH-hect1DF0SPztYTA-4gM)
+Google Maps
 
 ](https://www.google.com/maps/@40.71222313,-73.96452201,4a,75y,32.0h,79.0t/data=!3m7!1e1!3m5!1s-1P!2e0!5s20191101T000000!7i16384!8i8192)
 

@@ -1,0 +1,19 @@
+---
+import { config, sitePath } from '../lib/site';
+
+const year = new Date().getUTCFullYear();
+---
+
+<footer class="colophon">
+  <div class="container">
+    <hr class="rule rule--thin-thick" style="max-width: 240px; margin: 0 auto var(--space-lg);" />
+    <a class="colophon__nameplate" href={sitePath('/')}>{config.title}</a>
+    <p class="colophon__line">Edited &amp; written by <strong style="color: var(--color-ink); font-weight: 500;">{config.author}</strong></p>
+    <p class="colophon__line">© {year} · All rights reserved · Published quietly, on the open web</p>
+    <nav class="colophon__links" aria-label="Colophon">
+      <a href={sitePath('/')}>Front Page</a>
+      <a href={sitePath('/about/')}>About</a>
+      <a href={sitePath('/feed.xml')}>RSS</a>
+    </nav>
+  </div>
+</footer>

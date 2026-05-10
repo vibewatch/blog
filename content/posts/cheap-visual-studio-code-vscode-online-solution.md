@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: true
 excerpt: "Cheap Visual Studio Code(VSCode) Online Solution"
-feature_image: "https://images.unsplash.com/photo-1570215170761-f056128eda48?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["VSCode", "Debugging", "Kubernetes"]
 ---

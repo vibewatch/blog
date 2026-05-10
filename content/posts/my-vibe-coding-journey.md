@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: true
 excerpt: ""
-feature_image: "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDZ8fGNvZGluZ3xlbnwwfHx8fDE3NDI5MDYzMTV8MA&ixlib=rb-4.0.3&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Vibe Coding", "GenAI", "Azure", "Github Copilot"]
 ---

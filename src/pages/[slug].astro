@@ -14,23 +14,40 @@ const { item } = Astro.props;
 const Content = item.Content;
 const canonical = `/${item.slug}/`;
 const description = item.excerpt || item.title;
+const author = item.authors[0];
+const category = item.type === 'page' ? 'Page' : 'Dispatch';
 ---
 
-<BaseLayout title={item.title} description={description} canonical={canonical}>
-  <div class="container post-shell">
-    <article>
-      <header class="post-header">
-        <p class="kicker">{item.type === 'page' ? 'Page' : 'Article'}</p>
-        <h1 class="post-title">{item.title}</h1>
-        <div class="meta">
-          <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
-          {item.authors.length ? <span>· {item.authors.join(', ')}</span> : null}
-        </div>
-      </header>
-      {item.featureImage ? <img class="feature-image" src={sitePath(item.featureImage)} alt="" loading="lazy" decoding="async" /> : null}
-      <div class="article">
-        <Content />
-      </div>
-    </article>
-  </div>
+<BaseLayout
+  title={item.title}
+  description={description}
+  canonical={canonical}
+  ogImage={item.featureImage || undefined}
+>
+  <article class="post-shell">
+    <header class="post-header reading">
+      <p class="post-header__category">{category}</p>
+      <h1 class="post-title">{item.title}</h1>
+      {item.excerpt ? <p class="post-deck">{item.excerpt}</p> : null}
+      <p class="post-meta">
+        {author ? <>By <strong>{author}</strong></> : null}
+        <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
+      </p>
+    </header>
+
+    {item.featureImage ? (
+      <figure class="reading-wide" style="margin: 0 auto var(--space-xxl);">
+        <img class="feature-image" src={sitePath(item.featureImage)} alt="" loading="lazy" decoding="async" />
+        <figcaption class="feature-image-caption">{item.title}</figcaption>
+      </figure>
+    ) : null}
+
+    <div class="article">
+      <Content />
+    </div>
+
+    <nav class="post-back reading" aria-label="Back to front page">
+      <a href={sitePath('/')}>← Return to Front Page</a>
+    </nav>
+  </article>
 </BaseLayout>

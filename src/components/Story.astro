@@ -1,0 +1,19 @@
+---
+import type { BlogItem } from '../lib/content';
+import { formatDate, sitePath } from '../lib/site';
+
+type Props = { post: BlogItem; category?: string };
+const { post, category = 'Article' } = Astro.props;
+const href = sitePath(`/${post.slug}/`);
+const author = post.authors[0];
+---
+
+<article class="story">
+  <p class="story__category">{category}</p>
+  <h3 class="story__headline"><a href={href}>{post.title}</a></h3>
+  {post.excerpt ? <p class="story__excerpt">{post.excerpt}</p> : null}
+  <p class="story__byline">
+    {author ? <>By <strong>{author}</strong> · </> : null}
+    <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+  </p>
+</article>

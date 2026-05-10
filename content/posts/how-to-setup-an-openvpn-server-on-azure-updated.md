@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: false
 excerpt: ""
-feature_image: "https://images.unsplash.com/photo-1603985529862-9e12198c9a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDJ8fHZwbnxlbnwwfHx8fDE2NzM3NzMwMDA&ixlib=rb-4.0.3&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Linux", "OpenVPN", "Azure"]
 ---

@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: true
 excerpt: ""
-feature_image: "https://images.unsplash.com/photo-1667372525822-d226d23018dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDZ8fHNlcnZlcmxlc3N8ZW58MHx8fHwxNjc0OTU5Mjk2&ixlib=rb-4.0.3&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["WASM", "WebAssembly", "KEDA", "Kubernetes", "Serverless"]
 ---

@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: false
 excerpt: "The complete system prompt for GitHub Copilot CLI - a terminal assistant built by GitHub to help with software engineering tasks"
-feature_image: "https://images.unsplash.com/photo-1516321318423-f06f70504c11?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDV8fGNvZGluZ3xlbnwwfHx8fDE3MTU0OTI4MDB8MA&ixlib=rb-4.0.0&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["github-copilot", "ai", "cli", "system-prompt"]
 ---

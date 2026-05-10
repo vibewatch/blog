@@ -8,7 +8,7 @@ status: "published"
 visibility: "public"
 featured: false
 excerpt: ""
-feature_image: "https://images.unsplash.com/photo-1661719498625-af4dcba4e216?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMTc3M3wwfDF8c2VhcmNofDI0fHxuZXR3b3JrYmFja2JvbmV8ZW58MHx8fHwxNzYzODk2NzkyfDA&ixlib=rb-4.1.0&q=80&w=2000"
+feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Networking", "Azure", "Backbone", "Latency", "Packet Loss"]
 ---

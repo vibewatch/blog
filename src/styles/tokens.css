@@ -1,0 +1,66 @@
+/*
+ * Design tokens — Quiet Broadsheet
+ *
+ * A newspaper editorial system: warm newsprint cream canvas, warm near-black
+ * ink, serif-led typography, a single restrained "op-ed wine" accent used
+ * only on category eyebrows and active links.
+ */
+:root {
+  color-scheme: light;
+
+  /* Paper & ink */
+  --color-canvas: #f3eee2;          /* warm newsprint */
+  --color-canvas-deep: #ece6d5;     /* slightly deeper paper for inset blocks */
+  --color-canvas-soft: #f7f3e9;     /* lifted paper (cards / quotes) */
+  --color-ink: #1a1714;             /* primary text */
+  --color-body: #2c2822;            /* running body */
+  --color-muted: #6f6a5e;           /* meta / folio */
+  --color-muted-soft: #8b8678;
+  --color-hairline: #c8c1b1;        /* standard rule */
+  --color-hairline-soft: #ddd6c5;
+  --color-hairline-ink: #1a1714;    /* heavy rule (masthead) */
+
+  /* Single editorial accent — used scarcely */
+  --color-accent: #7a1f1f;          /* op-ed wine */
+  --color-accent-soft: #b15151;
+
+  /* Type families
+   * Display: Instrument Serif — high-contrast editorial display
+   * Body:    Crimson Pro — modern Garamond revival, open on screen,
+   *          longer descenders, classic book proportions
+   * UI:      Geist — Vercel's geometric sans for labels, nav, small caps
+   * Code:    IBM Plex Mono — plain workhorse monospace, no ligatures
+   */
+  --font-display: "Instrument Serif", "Crimson Pro", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-body: "Crimson Pro", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
+  --font-ui: "Geist", "Inter", "Helvetica Neue", system-ui, Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* Spacing — editorial rhythm */
+  --space-xxs: 4px;
+  --space-xs: 6px;
+  --space-sm: 10px;
+  --space-base: 14px;
+  --space-md: 18px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  --space-section: 64px;
+
+  /* Layout */
+  --container: 1320px;
+  --reading: 820px;      /* article body — generous measure */
+  --reading-wide: 1120px; /* media / code / diagrams bleed */
+  --gutter: 32px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 20px;
+    --space-section: 44px;
+    --space-xxl: 36px;
+  }
+}
