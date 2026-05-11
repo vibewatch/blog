@@ -1,17 +1,11 @@
 ---
 import '../styles/global.css';
-// Self-hosted variable fonts (no FOUT / no network round-trip).
-// Variable weight files cover all weights we use; italic loaded for body italics.
-import '@fontsource-variable/mona-sans/wght.css';
-import '@fontsource-variable/mona-sans/wght-italic.css';
 // Monaspace Neon ships per-weight (no variable build); only 400 and 500 are used
 // (Shiki's min-light theme emits no bold/italic tokens, body italics stay sans).
 import '@fontsource/monaspace-neon/400.css';
 import '@fontsource/monaspace-neon/500.css';
-// Preload the Latin subsets so the browser fetches them on HTML parse,
-// in parallel with the stylesheet — eliminates the visible Arial→Mona Sans swap.
-import monaSansLatin from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
-import monaSansLatinItalic from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-italic.woff2?url';
+// Preload the Latin subsets so the browser fetches them on HTML parse.
+import monaSans from '../assets/fonts/mona-sans.woff2?url';
 import Masthead from '../components/Masthead.astro';
 import Colophon from '../components/Colophon.astro';
 import { config, absoluteUrl, sitePath } from '../lib/site';
@@ -49,8 +43,7 @@ const enableGa = Boolean(gaId) && import.meta.env.PROD;
     <link rel="icon" type="image/svg+xml" href={sitePath('/favicon.svg')} />
     <link rel="alternate" type="application/rss+xml" title={config.title} href={absoluteUrl('/feed.xml')} />
 
-    <link rel="preload" href={monaSansLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={monaSansLatinItalic} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monaSans} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />

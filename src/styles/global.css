@@ -16,10 +16,11 @@ html {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.55;
+  letter-spacing: var(--tracking-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
+  font-feature-settings: "cv11", "ss01", "ss03";
 }
 
 body {
@@ -138,12 +139,13 @@ a:focus-visible {
   margin: var(--space-md) 0 var(--space-base);
   text-align: center;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(40px, 6vw, 68px);
-  line-height: 0.98;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: var(--tracking-display-tight);
   color: var(--color-ink);
   text-decoration: none;
+  text-wrap: balance;
 }
 
 .masthead__nameplate:hover,
@@ -1467,8 +1469,8 @@ a:focus-visible {
 }
 
 .featured__lead .lede__headline {
-  font-size: clamp(36px, 5vw, 64px);
-  line-height: 1.04;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.06;
 }
 
 .featured__lead .lede__deck {

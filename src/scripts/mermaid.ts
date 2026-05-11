@@ -10,7 +10,7 @@ const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
 if (mermaidBlocks.length > 0) {
   const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
 
-  const fontStack = '"Mona Sans Variable", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif';
+  const fontStack = '"Mona Sans", "Noto Sans SC", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 
   mermaid.initialize({
     startOnLoad: false,
