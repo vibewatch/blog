@@ -6,11 +6,16 @@ type Props = { post: BlogItem };
 const { post } = Astro.props;
 const href = sitePath(`/${post.slug}/`);
 const author = post.authors[0];
+const deskName = post.desk?.desk.name ?? 'From the desk';
+const sectionId = post.desk?.sectionId ?? '';
 ---
 
 <article class="lede">
   <div class="lede__body">
-    <p class="lede__category">From the desk</p>
+    <p class="lede__category">
+      <span class="lede__desk">{deskName}</span>
+      {sectionId ? <span class="lede__section">{sectionId}</span> : null}
+    </p>
     <h1 class="lede__headline"><a href={href}>{post.title}</a></h1>
     {post.excerpt ? <p class="lede__deck">{post.excerpt}</p> : null}
     <p class="lede__byline">

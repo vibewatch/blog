@@ -15,7 +15,9 @@ const Content = item.Content;
 const canonical = `/${item.slug}/`;
 const description = item.excerpt || item.title;
 const author = item.authors[0];
-const category = item.type === 'page' ? 'Page' : 'Dispatch';
+const isPage = item.type === 'page';
+const deskName = isPage ? 'Page' : item.desk?.desk.name ?? 'Dispatch';
+const sectionId = isPage ? '' : item.desk?.sectionId ?? '';
 ---
 
 <BaseLayout
@@ -26,7 +28,10 @@ const category = item.type === 'page' ? 'Page' : 'Dispatch';
 >
   <article class="post-shell">
     <header class="post-header reading">
-      <p class="post-header__category">{category}</p>
+      <p class="post-header__category">
+        <span class="post-header__desk">{deskName}</span>
+        {sectionId ? <span class="post-header__section">{sectionId}</span> : null}
+      </p>
       <h1 class="post-title">{item.title}</h1>
       {item.excerpt ? <p class="post-deck">{item.excerpt}</p> : null}
       <p class="post-meta">

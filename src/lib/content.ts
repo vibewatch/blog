@@ -1,3 +1,5 @@
+import { buildAssignments, desks, type DeskAssignment, type DeskKey } from './desks';
+
 type MarkdownModule = {
   frontmatter: Record<string, any>;
   default: any;
@@ -11,7 +13,9 @@ export type BlogItem = {
   excerpt: string;
   featureImage: string;
   authors: string[];
+  tags: string[];
   Content: any;
+  desk?: DeskAssignment;
 };
 
 const postModules = import.meta.glob<MarkdownModule>('../../content/posts/*.md', { eager: true });
@@ -31,14 +35,25 @@ function normalize(file: string, module: MarkdownModule, fallbackType: 'post' | 
     excerpt: String(data.excerpt ?? ''),
     featureImage: String(data.feature_image ?? ''),
     authors: Array.isArray(data.authors) ? data.authors.map(String) : [],
+    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     Content: module.default
   };
 }
 
-export function getPosts() {
+function rawPosts() {
   return Object.entries(postModules)
     .map(([file, module]) => normalize(file, module, 'post'))
     .sort((a, b) => b.date.getTime() - a.date.getTime());
+}
+
+const assignments = buildAssignments(rawPosts());
+
+function withDesk(item: BlogItem): BlogItem {
+  return { ...item, desk: assignments.get(item.slug) };
+}
+
+export function getPosts() {
+  return rawPosts().map(withDesk);
 }
 
 export function getPages() {
@@ -49,4 +64,17 @@ export function getPages() {
 
 export function getAllItems() {
   return [...getPosts(), ...getPages()];
+}
+
+export function postsByDesk(): Array<{ deskKey: DeskKey; desk: typeof desks[DeskKey]; posts: BlogItem[] }> {
+  const all = getPosts();
+  return (Object.keys(desks) as DeskKey[])
+    .map((key) => ({
+      deskKey: key,
+      desk: desks[key],
+      posts: all
+        .filter((p) => p.desk?.deskKey === key)
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
+    }))
+    .filter((g) => g.posts.length > 0);
 }

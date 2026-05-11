@@ -2,19 +2,57 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Lede from '../components/Lede.astro';
 import Story from '../components/Story.astro';
-import { getPosts } from '../lib/content';
+import { getPosts, postsByDesk } from '../lib/content';
 import { config, sitePath } from '../lib/site';
 
 const posts = getPosts();
 const [lead, ...rest] = posts;
 
-const pageOne = rest.slice(0, 6);
-const archive = rest.slice(6);
+const aboveTheFold = rest.slice(0, 6);
+
+const briefGroups = postsByDesk()
+  .map((g) => ({
+    ...g,
+    posts: g.posts.filter((p) => p.slug !== lead?.slug).slice(0, 3)
+  }))
+  .filter((g) => g.posts.length > 0);
 ---
 
 <BaseLayout title={config.title} description={config.description} canonical="/">
-  <section class="container">
-    {lead && <Lede post={lead} />}
+  <section class="container front">
+    <div class="front__lede">
+      {lead && <Lede post={lead} />}
+    </div>
+
+    <aside class="front__brief brief" aria-label="In Brief">
+      <header class="brief__head">
+        <p class="brief__eyebrow">In Brief</p>
+        <p class="brief__deck">Recent dispatches, by desk.</p>
+      </header>
+      <div class="brief__groups">
+        {briefGroups.map((g) => (
+          <section class="brief__group">
+            <p class="brief__desk">
+              <span class="brief__letter">{g.desk.letter}</span>
+              <span class="brief__name">{g.desk.name}</span>
+            </p>
+            <ul class="brief__list">
+              {g.posts.map((p) => (
+                <li class="brief__item">
+                  <a href={sitePath(`/${p.slug}/`)}>
+                    <span class="brief__sectionid">{p.desk?.sectionId}</span>
+                    <span class="brief__title">{p.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <p class="brief__more">
+        <a href={sitePath('/archive/')}>See the full index →</a>
+      </p>
+    </aside>
   </section>
 
   <section class="container section--tight">
@@ -23,21 +61,12 @@ const archive = rest.slice(6);
       <span class="section-head__meta">Recent dispatches</span>
     </header>
     <div class="stories">
-      {pageOne.map((post) => <Story post={post} />)}
+      {aboveTheFold.map((post) => <Story post={post} />)}
     </div>
+    <p class="section-foot">
+      <a href={sitePath('/archive/')}>Read the full index of {posts.length} dispatches →</a>
+    </p>
   </section>
-
-  {archive.length > 0 && (
-    <section class="container section--tight">
-      <header class="section-head">
-        <h2 class="section-head__title">Archive</h2>
-        <span class="section-head__meta">{archive.length} earlier pieces</span>
-      </header>
-      <div class="stories">
-        {archive.map((post) => <Story post={post} />)}
-      </div>
-    </section>
-  )}
 
   <section class="strip">
     <div class="container">

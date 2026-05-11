@@ -216,8 +216,8 @@ a:focus-visible {
   text-align: center;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(48px, 9vw, 104px);
-  line-height: 0.95;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 0.98;
   letter-spacing: -0.01em;
   color: var(--color-ink);
   text-decoration: none;
@@ -291,10 +291,11 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(40px, 6.5vw, 76px);
-  line-height: 1.02;
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.08;
   letter-spacing: -0.012em;
   color: var(--color-ink);
+  text-wrap: balance;
 }
 
 .lede__headline a {
@@ -315,10 +316,11 @@ a:focus-visible {
   margin: var(--space-base) 0 0;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: clamp(16px, 1.4vw, 19px);
   line-height: 1.5;
   color: var(--color-body);
   font-weight: 400;
+  max-width: 60ch;
 }
 
 .lede__byline {
@@ -467,10 +469,11 @@ a:focus-visible {
   margin: 4px 0 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 26px;
-  line-height: 1.15;
+  font-size: 21px;
+  line-height: 1.2;
   letter-spacing: -0.005em;
   color: var(--color-ink);
+  text-wrap: balance;
 }
 
 .story__headline a {
@@ -544,12 +547,13 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(36px, 6vw, 68px);
-  line-height: 1.04;
-  letter-spacing: -0.014em;
+  font-size: clamp(28px, 3.4vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
   color: var(--color-ink);
-  max-width: 22ch;
+  max-width: 32ch;
   margin-inline: auto;
+  text-wrap: balance;
 }
 
 .post-deck {
@@ -557,7 +561,7 @@ a:focus-visible {
   max-width: 50ch;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(17px, 2vw, 21px);
+  font-size: clamp(15px, 1.4vw, 18px);
   line-height: 1.5;
   color: var(--color-body);
   font-weight: 400;
@@ -612,8 +616,8 @@ a:focus-visible {
 .article {
   color: var(--color-body);
   font-family: var(--font-body);
-  font-size: 21px;
-  line-height: 1.55;
+  font-size: 19px;
+  line-height: 1.6;
   hyphens: auto;
   font-feature-settings: "kern", "liga", "onum";
   /*
@@ -664,8 +668,8 @@ a:focus-visible {
   float: left;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 5.4em;
-  line-height: 0.85;
+  font-size: 4.2em;
+  line-height: 0.88;
   margin: 0.05em 0.08em 0 0;
   color: var(--color-ink);
 }
@@ -681,7 +685,7 @@ a:focus-visible {
 
 .article h2 {
   margin: var(--space-xl) 0 var(--space-xs);
-  font-size: 34px;
+  font-size: 28px;
   letter-spacing: -0.012em;
   border-bottom: 1px solid var(--color-hairline);
   padding-bottom: var(--space-xs);
@@ -689,13 +693,13 @@ a:focus-visible {
 
 .article h3 {
   margin: var(--space-lg) 0 var(--space-xs);
-  font-size: 26px;
+  font-size: 22px;
   letter-spacing: -0.008em;
 }
 
 .article h4 {
   margin: var(--space-lg) 0 var(--space-xxs);
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 600;
   font-variant: small-caps;
   letter-spacing: 0.06em;
@@ -706,6 +710,14 @@ a:focus-visible {
 .article ul,
 .article ol {
   margin: 0 0 var(--space-sm);
+}
+
+.article p {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
 }
 
 .article p + p {
@@ -961,8 +973,8 @@ a:focus-visible {
   max-width: 24ch;
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.15;
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.18;
   letter-spacing: -0.012em;
   color: var(--color-ink);
 }
@@ -972,7 +984,7 @@ a:focus-visible {
   max-width: 52ch;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--color-body);
 }
 
@@ -1054,4 +1066,394 @@ a:focus-visible {
   text-decoration-color: var(--color-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Desk system — section identifier chips                                    */
+/* -------------------------------------------------------------------------- */
+
+.lede__category,
+.story__category,
+.post-header__category {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.lede__section,
+.story__section,
+.post-header__section {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  padding: 2px 6px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-canvas-soft);
+  font-feature-settings: "tnum", "lnum";
+  text-transform: none;
+}
+
+.lede__desk,
+.story__desk,
+.post-header__desk {
+  /* the desk-name span itself inherits the surrounding eyebrow style */
+  display: inline-block;
+}
+
+/* On mobile, narrow measure: justify becomes ugly. Fall back to flush left. */
+@media (max-width: 700px) {
+  .article p {
+    text-align: left;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Front page layout — lede + In Brief sidebar                               */
+/* -------------------------------------------------------------------------- */
+
+.front {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: var(--space-xl);
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-block: var(--space-lg) var(--space-xxl);
+  border-bottom: 1px solid var(--color-hairline);
+  align-items: start;
+}
+
+.front__lede {
+  align-self: center;
+}
+
+/* Inside the front layout, the lede's internal 2-col (text|image) is too
+   cramped — collapse it so text sits above image. */
+.front .lede {
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  padding-block: 0;
+}
+
+.front .lede__body {
+  max-width: 56ch;
+}
+
+.front__brief {
+  position: sticky;
+  top: var(--space-base);
+  border-left: 1px solid var(--color-hairline);
+  padding-left: var(--space-lg);
+  font-family: var(--font-body);
+}
+
+.brief__head {
+  margin-bottom: var(--space-base);
+  padding-bottom: var(--space-sm);
+  border-bottom: 3px solid var(--color-hairline-ink);
+}
+
+.brief__eyebrow {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.brief__deck {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+.brief__groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-base);
+}
+
+.brief__group + .brief__group {
+  padding-top: var(--space-base);
+  border-top: 1px solid var(--color-hairline);
+}
+
+.brief__desk {
+  margin: 0 0 var(--space-xs);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.brief__letter {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.brief__name {
+  color: var(--color-ink);
+}
+
+.brief__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.brief__item + .brief__item {
+  margin-top: 6px;
+}
+
+.brief__item a {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  text-decoration: none;
+  color: var(--color-ink);
+  padding: 4px 0;
+  border-bottom: 1px dotted transparent;
+}
+
+.brief__item a:hover,
+.brief__item a:focus-visible {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-hairline);
+}
+
+.brief__sectionid {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  font-feature-settings: "tnum", "lnum";
+}
+
+.brief__title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.25;
+  color: inherit;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.brief__more {
+  margin: var(--space-base) 0 0;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-hairline);
+  text-align: right;
+}
+
+.brief__more a {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.brief__more a:hover,
+.brief__more a:focus-visible {
+  color: var(--color-accent);
+}
+
+.section-foot {
+  margin: var(--space-xl) 0 0;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-foot a {
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-hairline);
+  padding-bottom: 2px;
+}
+
+.section-foot a:hover,
+.section-foot a:focus-visible {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+@media (max-width: 1100px) {
+  .front {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .front__brief {
+    position: static;
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--color-hairline);
+    padding-top: var(--space-lg);
+  }
+  .front__lede {
+    align-self: stretch;
+  }
+  .front .lede__body {
+    max-width: none;
+  }
+  /* When Brief becomes horizontal, split desks into 2 columns to keep it compact */
+  .brief__groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+  .brief__group + .brief__group {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .brief__groups {
+    grid-template-columns: 1fr;
+  }
+  .brief__group + .brief__group {
+    padding-top: var(--space-base);
+    border-top: 1px solid var(--color-hairline);
+  }
+}
+
+@media (max-width: 880px) {
+  .front .lede {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Ranked index (archive table)                                              */
+/* -------------------------------------------------------------------------- */
+
+.index {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 3px solid var(--color-hairline-ink);
+  border-bottom: 1px solid var(--color-hairline-ink);
+}
+
+.index__row {
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.index__row:last-child {
+  border-bottom: 0;
+}
+
+.index__link {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) 140px 110px;
+  column-gap: var(--space-base);
+  align-items: baseline;
+  padding: 14px var(--space-sm);
+  text-decoration: none;
+  color: var(--color-ink);
+  transition: background 120ms var(--ease-out);
+}
+
+.index__link:hover,
+.index__link:focus-visible {
+  background: var(--color-canvas-soft);
+  color: var(--color-ink);
+}
+
+.index__id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  font-feature-settings: "tnum", "lnum";
+}
+
+.index__link:hover .index__id,
+.index__link:focus-visible .index__id {
+  color: var(--color-accent);
+}
+
+.index__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.25;
+  color: var(--color-ink);
+  letter-spacing: -0.005em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 120ms var(--ease-out);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.index__link:hover .index__title,
+.index__link:focus-visible .index__title {
+  text-decoration-color: var(--color-accent);
+}
+
+.index__desk {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.index__date {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+  text-align: right;
+  white-space: nowrap;
+  font-feature-settings: "tnum", "lnum";
+}
+
+@media (max-width: 760px) {
+  .index__link {
+    grid-template-columns: 56px minmax(0, 1fr);
+    row-gap: 4px;
+  }
+  .index__desk,
+  .index__date {
+    grid-column: 2;
+    text-align: left;
+  }
 }
