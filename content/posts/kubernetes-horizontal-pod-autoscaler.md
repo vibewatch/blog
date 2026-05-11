@@ -12,7 +12,7 @@ feature_image: "/assets/posts/kubernetes-horizontal-pod-autoscaler/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes"]
 ---
-This post just serves as a quickstart for kubernetes horizontal pod autosacler testing purpose, here are the steps
+This post serves as a quickstart for Kubernetes Horizontal Pod Autoscaler testing. Here are the steps:
 
 ```bash
 git clone https://github.com/Azure-Samples/azure-voting-app-redis.git
@@ -21,19 +21,19 @@ kubectl apply -f azure-vote-all-in-one-redis.yaml
 kubectl autoscale deployment azure-vote-front --cpu-percent=10 --min=1 --max=10
 ```
 
-After finish above commands, you should have hpa configured, now we need to generate some workload, here are the steps
+After finishing the commands above, you should have HPA configured. Now we need to generate some workload. Here are the steps:
 
 ```bash
 kubectl run -i --tty busybox --image=busybox /bin/sh
 ```
 
-From the busybox, type below command to generate workload
+From busybox, type the following command to generate workload:
 
 ```bash
 while true; do wget -q -O- http://azure-vote-front; done
 ```
 
-Wait for a while, you will see hpa works now and autoscales pod instances.
+Wait for a while, and you will see HPA working and autoscaling pod instances.
 
 ```bash
 kubectl get hpa

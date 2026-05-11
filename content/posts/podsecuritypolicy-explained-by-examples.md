@@ -1,5 +1,5 @@
 ---
-title: "Pod Security Policy Explained By Examples"
+title: "Pod Security Policy Explained by Examples"
 slug: "podsecuritypolicy-explained-by-examples"
 date: "2019-01-15 07:08:00"
 updated: "2019-01-15 09:02:46"
@@ -7,35 +7,35 @@ type: "post"
 status: "published"
 visibility: "public"
 featured: true
-excerpt: "Pod security policy enables fine-grained authorization of pod creation and updates but it also has some mysterious things behind, this article gives more insight about how it works."
+excerpt: "Pod security policy enables fine-grained authorization of pod creation and updates, but it also has some mysterious behavior. This article gives more insight into how it works."
 feature_image: "/assets/posts/podsecuritypolicy-explained-by-examples/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S", "PodSecurityPolicy"]
 ---
-# 1 What is pod security policy?
+# 1 What Is Pod Security Policy?
 
 > A Pod Security Policy is a cluster-level resource that controls security sensitive aspects of the pod specification. The PodSecurityPolicy objects define a set of conditions that a pod must run with in order to be accepted into the system, as well as defaults for the related fields.
 
-# 2 How to enable pod security policy admission controller
+# 2 How to Enable the Pod Security Policy Admission Controller
 
 > PodSecurityPolicies are enforced by enabling the admission controller
 
-It can be enabled by adding `--enable-admission-plugins=PodSecurityPolicy,...` to kube-apiserver configuration file, for example /etc/kubernetes/manifest/kube-apiserver.yaml
+It can be enabled by adding `--enable-admission-plugins=PodSecurityPolicy,...` to the kube-apiserver configuration file, for example /etc/kubernetes/manifest/kube-apiserver.yaml.
 
-# 3 What happens after enabling pod security policy admission controller
+# 3 What Happens After Enabling the Pod Security Policy Admission Controller
 
 > but doing so without authorizing any policies will prevent any pods from being created in the cluster.
 
-That means, if PodSecurityPolicy is enabled but without any policies defined, creating any pods in kubernetes cluster will be blocked.
+That means if PodSecurityPolicy is enabled but no policies are defined, creating any Pods in the Kubernetes cluster will be blocked.
 
-For example, in a kubernetes cluster without any PodSecurityPolicy defined
+For example, in a Kubernetes cluster without any PodSecurityPolicy defined:
 
 ```bash
 kubectl get psp
 No resources found.
 ```
 
-Try to deploy a Pod with definition in below
+Try to deploy a Pod with the definition below.
 
 ```yaml
 # pd.yaml
@@ -51,17 +51,17 @@ spec:
         privileged: true
 ```
 
-With command `kubectl apply -f pd.yaml`, it will report below error
+With command `kubectl apply -f pd.yaml`, it will report the error below.
 
 ```bash
 Error from server (Forbidden): error when creating "pd.yaml": pods "pd" is forbidden: no providers available to validate pod request
 ```
 
-# 4 How to add pod security policies
+# 4 How to Add Pod Security Policies
 
-We will create two pod security policies here and use them for further explanations, 100-psp.yaml is a restricted policy and 200-psp.yaml is a privileged policy.
+We will create two pod security policies here and use them for further explanations. 100-psp.yaml is a restricted policy, and 200-psp.yaml is a privileged policy.
 
-For more information about how to define pod security policy, refe to [Create a policy and a pod](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#create-a-policy-and-a-pod)
+For more information about how to define a pod security policy, refer to [Create a policy and a pod](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#create-a-policy-and-a-pod).
 
 100-psp.yaml
 
@@ -150,19 +150,19 @@ spec:
   - '*'
 ```
 
-## 2.Apply the policies
+## 4.1 Apply the Policies
 
-Run `kubectl apply -f 100-psp.yaml` and `kubectl apply -f 200-psp.yaml`, above two pod security policies will be added to system.
+Run `kubectl apply -f 100-psp.yaml` and `kubectl apply -f 200-psp.yaml`. The two pod security policies above will be added to the system.
 
-# 5 Will the newly created policies enforce now
+# 5 Will the Newly Created Policies Be Enforced Now?
 
 The answer can be either 'Yes' or 'No', refer to [Authorizing Policies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#authorizing-policies)
 
 > When a PodSecurityPolicy resource is created, it does nothing. In order to use it, the requesting user or target pod’s service account must be authorized to use the policy, by allowing the use verb on the policy.
 
-Basically, it means in order to enforce a policy, we need to create a (Cluster)Role which grants access to pod security policy, then bind this (Cluster)Role to certain users or service accounts. When those users or service accounts try to create a pod, they will be validated by that pod security policy.
+Basically, it means that in order to enforce a policy, we need to create a (Cluster)Role that grants access to the pod security policy, then bind this (Cluster)Role to certain users or service accounts. When those users or service accounts try to create a Pod, they will be validated by that pod security policy.
 
-For example, we can define a simple yaml to bind 100-psp policy to system:authenticated group, so all authenticated users/service accounts will be enforced/validated by 100-psp policy.
+For example, we can define a simple YAML file to bind the 100-psp policy to the system:authenticated group, so all authenticated users/service accounts will be enforced/validated by the 100-psp policy.
 
 ```yaml
 # Cluster role which grants access to the default pod security policy
@@ -197,9 +197,9 @@ subjects:
   name: system:authenticated
 ```
 
-So if a policy get created without any (Cluster)Role bindings, the policy will not be enforced to anybody, **but why I say it could be 'Yes'**.
+So if a policy is created without any (Cluster)Role bindings, the policy will not be enforced on anybody, **but why do I say it could be 'Yes'?**
 
-Remember, in above yaml sample, to associate a policy to a role, we need to use `use` 'verbs' and set 'resources' to `podsecuritypolicy` in 'apiGroups'
+Remember, in the YAML sample above, to associate a policy with a role, we need to use `use` in 'verbs' and set 'resources' to `podsecuritypolicy` in 'apiGroups'.
 
 ```yaml
 - apiGroups:
@@ -212,7 +212,7 @@ Remember, in above yaml sample, to associate a policy to a role, we need to use 
   - use
 ```
 
-Obviously, if there is a role whose resources includes `podsecuritypolicies` and verbs includes `use`, the policy will be enforced on that role, however, remember in yaml '\*' include everything, for example if there is a role defines like that
+Obviously, if there is a role whose resources include `podsecuritypolicies` and verbs include `use`, the policy will be enforced on that role. However, remember that in YAML, '\*' includes everything. For example, if there is a role defined like this:
 
 ```yaml
 - apiGroups:
@@ -223,9 +223,9 @@ Obviously, if there is a role whose resources includes `podsecuritypolicies` and
   - '*'
 ```
 
-since 'resources' `*` include `podsecuritypolicies` and 'verbs' `*` include `use`, the policy will also enforce on that role as well.
+Since 'resources' `*` includes `podsecuritypolicies` and 'verbs' `*` includes `use`, the policy will also be enforced on that role.
 
-Let's try to find out if we have that kind of role from existing cluster, to do that, we can run below command from bash
+Let's try to find out if we have that kind of role in the existing cluster. To do that, we can run the following commands from bash.
 
 ```bash
 kubectl get role --all-namespaces -o json | jq '.items[]| {name: .metadata.name, rules: (.rules | map(select(.resources != null)))} | select((.rules[].verbs[] | contains("*") or contains("use"))) | select((.rules[].resources[] | contains("*") or contains("podsecuritypolicies")))'
@@ -233,7 +233,7 @@ kubectl get role --all-namespaces -o json | jq '.items[]| {name: .metadata.name,
 kubectl get clusterrole -o json | jq '.items[]| {name: .metadata.name, rules: (.rules | map(select(.resources != null)))} | select((.rules[].verbs[] | contains("*") or contains("use"))) | select((.rules[].resources[] | contains("*") or contains("podsecuritypolicies")))'
 ```
 
-First command will return nothing, second command will give results in below
+The first command will return nothing, and the second command will give the results below.
 
 ```json
 {
@@ -270,22 +270,22 @@ First command will return nothing, second command will give results in below
 }
 ```
 
-It means, when a policy get defined, implicitly it will enforce on ClusterRole cluster-admin and system:controller:clusterrole-aggregation-controller.
+It means that when a policy gets defined, it will implicitly be enforced on ClusterRole cluster-admin and system:controller:clusterrole-aggregation-controller.
 
-It also means implicitly that policy will enforce on any user/service account who happens to be cluster-admin role, Let take a close look to see who will be affected(ClusterRoleBinding to cluster-admin)
+It also means that the policy will implicitly be enforced on any user/service account that happens to have the cluster-admin role. Let's take a closer look to see who will be affected (ClusterRoleBinding to cluster-admin).
 
 ```bash
 kubectl get clusterrolebinding -o wide | grep cluster-admiin
 ```
 
-In below result, policy will enforce on service account kube-system/tiller and group system:masters
+In the result below, the policy will be enforced on service account kube-system/tiller and group system:masters.
 
 ```bash
 cluster-admin                                          3d4h    ClusterRole/cluster-admin                                                                           system:masters                                 
 tiller                                                 3d4h    ClusterRole/cluster-admin                                                                                                                          kube-system/tiller
 ```
 
-In a RBAC kubernetes + TLS certificates cluster, if a client's certificate contains `Subject: O=system:masters, CN=client`, this client will be in group system:masters, in my case, kubectl client is system:masters, so any Pod created by kubectl will be enforced by newly created pod security policies.
+In an RBAC Kubernetes + TLS certificates cluster, if a client's certificate contains `Subject: O=system:masters, CN=client`, this client will be in group system:masters. In my case, the kubectl client is system:masters, so any Pod created by kubectl will be enforced by newly created pod security policies.
 
 For example, if we re-run `kubectl apply -f pd.yaml`, this time, the error message will be
 
@@ -293,7 +293,7 @@ For example, if we re-run `kubectl apply -f pd.yaml`, this time, the error messa
 Error from server (Forbidden): error when creating "pd.yaml": pods "pd" is forbidden: unable to validate against any pod security policy: [spec.containers[0].securityContext.privileged: Invalid value: true: Privileged containers are not allowed spec.containers[0].securityContext.privileged: Invalid value: true: Privileged containers are not allowed]
 ```
 
-# 6 How policy get selected if there are multiple matches
+# 6 How Is a Policy Selected If There Are Multiple Matches?
 
 Refer to [Policy Order](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#policy-order)
 
@@ -303,9 +303,9 @@ Refer to [Policy Order](https://kubernetes.io/docs/concepts/policy/pod-security-
 > 2.  If it is a pod creation request, then the first valid policy in alphabetical order is used.
 > 3.  Otherwise, if it is a pod update request, an error is returned, because pod mutations are disallowed during update operations.
 
-**Pay special attention here**, the rephrased words should be, If it is a pod creation request, **the first valid without mutating anything policy in alphabetical order is used**, otherwise the first valid policy in alphabetical order is used.
+**Pay special attention here**. Rephrased, this means: if it is a Pod creation request, **the first valid policy without mutating anything in alphabetical order is used**; otherwise, the first valid policy in alphabetical order is used.
 
-It's kind of difficult to understand, so let's use our two policies in 4.1 to demonstrate, we will modify our pd.yaml's setting `privileged` from `true` to `false` so it will match both 100-psp and 200-psp policies.
+It's kind of difficult to understand, so let's use our two policies in 4.1 to demonstrate. We will modify our pd.yaml's setting `privileged` from `true` to `false`, so it will match both 100-psp and 200-psp policies.
 
 ```yaml
 # pd.yaml
@@ -321,7 +321,7 @@ spec:
         privileged: true
 ```
 
-Now, let's create a Pod by issuing `kubectl apply -f pd.yaml`. Then check `annotations` field from `kubectl get pod pd -o yaml`, we will see `kubernetes.io/psp: 100-psp` is added, that means although we have two policies 100-psp and 200-psps match the condition, but we choose the alphabetical order 100-psp.
+Now, let's create a Pod by issuing `kubectl apply -f pd.yaml`. Then check the `annotations` field from `kubectl get pod pd -o yaml`. We will see `kubernetes.io/psp: 100-psp` is added. That means although we have two policies, 100-psp and 200-psp, matching the condition, the alphabetical order chooses 100-psp.
 
 ```yaml
 apiVersion: v1
@@ -336,7 +336,7 @@ metadata:
   namespace: default
 ```
 
-Now run `kubectl delete pod pd` to delete Pod pd, we will do another test, this time, we remove all annotations from 200-psp.yaml(refer to below) and apply it again by running `kubectl apply -f 200-psp.yaml`
+Now run `kubectl delete pod pd` to delete Pod pd. We will do another test. This time, we remove all annotations from 200-psp.yaml (refer to below) and apply it again by running `kubectl apply -f 200-psp.yaml`.
 
 ```yaml
 # 200-psp.yaml
@@ -368,26 +368,27 @@ spec:
   - '*'
 ```
 
-If we create a Pod again by running `kubectl apply -f pd.yaml` and check `annotations` field from `kubectl get pod pd -o yaml`, we will see `kubernetes.io/psp: 200-psp` is selected this time.
+If we create a Pod again by running `kubectl apply -f pd.yaml` and check the `annotations` field from `kubectl get pod pd -o yaml`, we will see `kubernetes.io/psp: 200-psp` is selected this time.
 
-What happens here, why alphabetical order is not honored here, the reason is
+What happened here? Why is alphabetical order not honored here? The reason is:
 
-1.  Previously, although two policies 100-psp and 200-psp are valid, but they both will mutate the security context of pod/container, hence, the first policy 100-psp in alphabetical order is choose.
-2.  Once we removed "annotations" below from 200-psp, 200-psp will not mutate pod/container's security context, it honors **the first valid without mutating anything policy in alphabetical order is used**, so it will be picked up instead of 100-psp.
+1.  Previously, although two policies, 100-psp and 200-psp, are valid, they both will mutate the security context of the Pod/container. Hence, the first policy, 100-psp, is chosen in alphabetical order.
+2.  Once we remove the "annotations" below from 200-psp, 200-psp will not mutate the Pod/container's security context. It honors **the first valid policy without mutating anything in alphabetical order is used**, so it will be picked instead of 100-psp.
     
-    ```apparmor.security.beta.kubernetes.io/allowedProfileNames:
-     apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
-     seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
-     seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'```
+    ```yaml
+    apparmor.security.beta.kubernetes.io/allowedProfileNames:
+      apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+      seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default'
+      seccomp.security.alpha.kubernetes.io/defaultProfileName:  'docker/default'
     ```
     
-3.  The algorithm desribed here is in computeSecurityContext of plugin\\pkg\\admission\\security\\podsecuritypolicy\\admission.go.
+3.  The algorithm described here is in computeSecurityContext of plugin\\pkg\\admission\\security\\podsecuritypolicy\\admission.go.
 
-**Pay attentions** to above behavior, it could potentially bring up a few of issues since the alphabetical order might not be honored "literally", if two policies are both valid but they applied different setting, for example, 200-psp set `runAsUser` to `MustRunAsNonRoot` and 100-psp set `runAsUser` to `RunAsAny`, the Pod might not be run as expected if the image uses user root.
+**Pay attention** to the behavior above. It could potentially bring up a few issues since alphabetical order might not be honored "literally". If two policies are both valid but apply different settings, for example, 200-psp sets `runAsUser` to `MustRunAsNonRoot` and 100-psp sets `runAsUser` to `RunAsAny`, the Pod might not run as expected if the image uses the root user.
 
-# 7 Why create a deployment failed while create a pod works
+# 7 Why Creating a Deployment Failed While Creating a Pod Works
 
-Let's say we have a simple dm.yaml file in below, with pod security policies created above
+Let's say we have a simple dm.yaml file below, with the pod security policies created above.
 
 ```yaml
 apiVersion: apps/v1
@@ -411,14 +412,14 @@ spec:
           privileged: false
 ```
 
-When run `kubectl apply -f dm.yaml` and `kubectl get deployment dm`, it shows READY is 0/1
+When running `kubectl apply -f dm.yaml` and `kubectl get deployment dm`, it shows READY is 0/1.
 
 ```bash
 NAME   READY   UP-TO-DATE   AVAILABLE   AGE
 dm     0/1     0            0           10s
 ```
 
-Check `kubectl get event` will shows `Error creating: pods "dm-XXXXXXXXXX-"`
+Checking `kubectl get event` will show `Error creating: pods "dm-XXXXXXXXXX-"`.
 
 ```bash
 kubectl get events
@@ -427,12 +428,12 @@ LAST SEEN   TYPE      REASON              KIND         MESSAGE
 ...
 ```
 
-Why creating a pod works while creating a deployment doesn't work? What happens here is
+Why does creating a Pod work while creating a Deployment doesn't? What happens here is:
 
-1.  When we create a pod from kubectl, it uses current user's credential, as it is cluster-admin and explained in section 5, system:masters has pod security policies enforced, so we will find a policy to suit the needs.
-2.  When we create a deployment from kubectl, it uses current user's credential to create a deployment, kubernetes controller manager sees this deployment and will ask replicaset controller to create corresponding pod, in this case, it uses replicaset controller's service account, as this service account is not authorized, it ends with error message "unable to validate against any pod security policy: \[\]".
+1.  When we create a Pod from kubectl, it uses the current user's credential. As it is cluster-admin and, as explained in section 5, system:masters has pod security policies enforced, we will find a policy to suit the needs.
+2.  When we create a Deployment from kubectl, it uses the current user's credential to create a Deployment. The Kubernetes controller manager sees this Deployment and asks the ReplicaSet controller to create the corresponding Pod. In this case, it uses the ReplicaSet controller's service account. As this service account is not authorized, it ends with the error message "unable to validate against any pod security policy: \[\]".
 
-To solve the issue here, we can define below ClusterRoleBinding, apply it by running `kubectl apply -f 200-psp-binding.yaml`, it authorizes replicaset-controller service account to 200-psp pod security policy
+To solve the issue here, we can define the ClusterRoleBinding below. Apply it by running `kubectl apply -f 200-psp-binding.yaml`. It authorizes the replicaset-controller service account to use the 200-psp pod security policy.
 
 ```yaml
 # 200-psp-binding.yaml
@@ -468,8 +469,8 @@ subjects:
   namespace: kube-system
 ```
 
-This time, `kubectl apply -f dm.yaml` will have pod created as expected.
+This time, `kubectl apply -f dm.yaml` will create the Pod as expected.
 
 # 8 Summary
 
-Wrap it up, pod security policy enables fine-grained authorization of pod creation and updates but it also has some mysterious things behind, hope this article gives more insight about how it works and avoids any confusion here.
+To wrap it up, pod security policy enables fine-grained authorization of Pod creation and updates, but it also has some mysterious behavior behind it. I hope this article gives more insight into how it works and helps avoid confusion.

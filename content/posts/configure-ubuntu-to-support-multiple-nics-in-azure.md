@@ -12,9 +12,9 @@ feature_image: "/assets/posts/configure-ubuntu-to-support-multiple-nics-in-azure
 authors: ["Yingting Huang"]
 tags: ["Azure", "Linux", "Network", "Ubuntu"]
 ---
-By default, in Linux, if multiple NICs are in same subnet, all traffics will route through the default NIC that usually will be eth0, if multiple NICs are added, to route traffics back to the NIC that receives it, we need to create route table for that NIC, refer to [How to create a Linux virtual machine in Azure with multiple network interface cards](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/multiple-nics)
+By default, in Linux, if multiple NICs are in the same subnet, all traffic will route through the default NIC, which is usually eth0. If multiple NICs are added, and you need to route traffic back through the NIC that received it, you need to create a routing table for that NIC. Refer to [How to create a Linux virtual machine in Azure with multiple network interface cards](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/multiple-nics).
 
-However, for Ubuntu newest OS, it doesn't use /etc/sysconfig/network-scripts any more, here are the steps for Ubuntu
+However, newer Ubuntu releases do not use `/etc/sysconfig/network-scripts` anymore. Here are the steps for Ubuntu:
 
 ```bash
 sudo -i

@@ -14,18 +14,18 @@ tags: ["WASM", "WebAssembly", "KEDA", "Kubernetes", "Serverless"]
 ---
 ## Introduction
 
-In this article, we will explore how to use KEDA, KEDA HTTP add-on, with Slight Containerd Shim to build a WASM serverless solution. The solution provides scale to/from zero support, reduced time for cold start, and cloud integration capabilities such as Azure blob, App Configuration, ServiceBus etc. The diagram below shows how it works.
+In this article, we will explore how to use KEDA, the KEDA HTTP add-on, and Slight Containerd Shim to build a WASM serverless solution. The solution provides scale-to/from-zero support, reduced cold-start time, and cloud integration capabilities such as Azure Blob, App Configuration, Service Bus, and more. The diagram below shows how it works.
 
 ![WASM serverless architecture](/assets/posts/building-a-wasm-serverless-solution-with-keda-and-slight/wasm-serverless-architecture.png)
 
-*   Incoming HTTP request is routed through Nginx Ingress Controller to KEDA-HTTP interceptor, the interceptor keeps track of the number of pending HTTP requests - HTTP requests that it has forwarded but the app hasn't returned.
-*   KEDA HTTP add-on operator runs insider of Kubernetes cluster, watches for HTTPScaledObject, it creates a ScaledObject for the Deployment specified in the HTTPScaledObject resource.
-*   ScaledObject points to interceptor as KEDA external scaler, uses GRPC to get the size of the pending queue. Based on this queue size, it reports scaling metrics as appropriate to KEDA. As the queue size increases, the scaler instructs KEDA to scale up as appropriate.
+*   Incoming HTTP requests are routed through Nginx Ingress Controller to the KEDA HTTP interceptor. The interceptor keeps track of the number of pending HTTP requests: requests that it has forwarded but the app has not returned yet.
+*   The KEDA HTTP add-on operator runs inside the Kubernetes cluster, watches for HTTPScaledObject resources, and creates a ScaledObject for the Deployment specified in the HTTPScaledObject resource.
+*   ScaledObject points to the interceptor as the KEDA external scaler and uses gRPC to get the size of the pending queue. Based on this queue size, it reports scaling metrics to KEDA. As the queue size increases, the scaler instructs KEDA to scale up as appropriate.
 *   KEDA manages 0<->1 scaling and leverages HPA for 1 <-> n scaling.
-*   Kubernetes watches for WASM Pod being created, notices its runtime is wasmtime-slight-v1, leverages slight containerd shim to start SpiderLightning host runtime for WASM application.
-*   WASM application receives HTTP request and replies back.
+*   Kubernetes watches for WASM Pods being created, notices that their runtime is wasmtime-slight-v1, and leverages the Slight containerd shim to start the SpiderLightning host runtime for the WASM application.
+*   The WASM application receives the HTTP request and replies back.
 
-Before jump into the implementation, let's take a close look of those components used in the solution
+Before jumping into the implementation, let's take a closer look at the components used in the solution.
 
 ### WASM
 
@@ -33,7 +33,7 @@ WebAssembly (WASM) is an open standard that defines a portable binary-code forma
 
 WASM allows serverless applications to be faster and more efficient. WASM enables the deployment of scripts and programs that can run on the serverless environment with fewer resources than traditional scripting languages. This makes serverless applications more cost-effective, as well as faster and more reliable. Additionally, using WASM to develop serverless applications allows for easier portability and integration with different platforms.
 
-The Open Container Initiative (OCI) provides support to package WASM application into container image. Generally speaking, a minimal WASM container image is typically a few hundred kilobytes in size. For example, a sample WASM container image used in this solution is only 64.7KB.
+The Open Container Initiative (OCI) provides support for packaging a WASM application into a container image. Generally speaking, a minimal WASM container image is typically a few hundred kilobytes in size. For example, a sample WASM container image used in this solution is only 64.7KB.
 
 IMAGE                                                               TAG                     IMAGE ID            SIZE  
 ...  
@@ -44,19 +44,19 @@ ghcr.io/huangyingting/rust-slight                               �
 
 [KEDA](https://keda.sh/) is a Kubernetes-based Event Driven Autoscaler. With KEDA, you can drive the scaling of any container in Kubernetes based on the number of events needing to be processed.
 
-KEDA provides a reliable and well tested solution to scaling your workloads based on external events. However KEDA doesn't provide an HTTP-based scaler. The KEDA HTTP Add-on allows Kubernetes users to automatically scale their HTTP servers up and down (including to/from zero) based on incoming HTTP traffic. Below diagram is copied from KEDA HTTP Add-on [design page](https://github.com/kedacore/http-add-on/blob/main/docs/design.md) and shows how it works here
+KEDA provides a reliable and well-tested solution for scaling your workloads based on external events. However, KEDA doesn't provide an HTTP-based scaler. The KEDA HTTP Add-on allows Kubernetes users to automatically scale their HTTP servers up and down (including to/from zero) based on incoming HTTP traffic. The diagram below is copied from the KEDA HTTP Add-on [design page](https://github.com/kedacore/http-add-on/blob/main/docs/design.md) and shows how it works.
 
 ![KEDA HTTP add-on architecture](/assets/posts/building-a-wasm-serverless-solution-with-keda-and-slight/keda-http-addon-architecture.png)
 
 ### SpiderLightning and Slight Containerd Shim
 
-[SpiderLightning](https://github.com/deislabs/spiderlightning)(Slight) is an open source WASM host(based on WasmTime), for building and running fast, secure, and composable cloud microservices with WebAssembly. It defines a set of WebAssembly Interface Types (i.e., WIT) files that abstract distributed application capabilities, such as state management, pub/sub, event driven programming, and more.
+[SpiderLightning](https://github.com/deislabs/spiderlightning) (Slight) is an open source WASM host (based on WasmTime) for building and running fast, secure, and composable cloud microservices with WebAssembly. It defines a set of WebAssembly Interface Types (i.e., WIT) files that abstract distributed application capabilities, such as state management, pub/sub, event-driven programming, and more.
 
-[Slight Containerd Shim](https://github.com/deislabs/containerd-wasm-shims#slight-spiderlightning-shim) is a containerd shim powered by the SpiderLightning engine allows you to run WASM applications developed with SpiderLightning SDKs(C and Rust are supported currently)
+[Slight Containerd Shim](https://github.com/deislabs/containerd-wasm-shims#slight-spiderlightning-shim) is a containerd shim powered by the SpiderLightning engine. It allows you to run WASM applications developed with SpiderLightning SDKs (C and Rust are currently supported).
 
 ## Implementation
 
-The solution implementation requires a few of components being deployed, includes
+The solution implementation requires deploying several components, including:
 
 *   Slight Containerd Shim
 *   Nginx Ingress Controller
@@ -64,7 +64,7 @@ The solution implementation requires a few of components being deployed, include
 *   Redis - used by demo application to illustrate SpiderLightning capabilities
 *   Sample application and manifests
 
-Detailed steps are
+The detailed steps are below.
 
 ### Install Slight Containerd Shim
 
@@ -105,11 +105,11 @@ helm install http-add-on kedacore/keda-add-ons-http --namespace keda
 
 ### Sample Application and Manifests
 
-A sample WASM application is created to read/write/delete redis cache, the source code is located at this [repo](https://github.com/huangyingting/wasm/tree/main/rust-slight)
+A sample WASM application is created to read/write/delete Redis cache. The source code is located in this [repo](https://github.com/huangyingting/wasm/tree/main/rust-slight).
 
-To deploy this application, follow below steps
+To deploy this application, follow these steps:
 
-*   Generate a yaml file with below content, replace `REPLACE_IT_WITH_REDIS_ADDRESS` with redis address, if you followed above redis deployment step, the redis address generally will be redis://redis-master.redis:6379. Replace `REPLACE_IT_WIHT_FQDN` with a FQDN name for external access, for example, rust-slight.yourdomain.com
+*   Generate a YAML file with the content below. Replace `REPLACE_IT_WITH_REDIS_ADDRESS` with the Redis address. If you followed the Redis deployment step above, the Redis address will generally be redis://redis-master.redis:6379. Replace `REPLACE_IT_WITH_FQDN` with an FQDN name for external access, for example, rust-slight.yourdomain.com.
 
 ```yaml
 apiVersion: v1
@@ -166,7 +166,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: REPLACE_IT_WIHT_FQDN
+  - host: REPLACE_IT_WITH_FQDN
     http:
       paths:
       - path: /
@@ -183,7 +183,7 @@ metadata:
     name: rust-slight
     namespace: rust-slight
 spec:
-    host: REPLACE_IT_WIHT_FQDN
+    host: REPLACE_IT_WITH_FQDN
     targetPendingRequests: 200
     scaleTargetRef:
         deployment: rust-slight
@@ -203,7 +203,7 @@ NAME          READY   UP-TO-DATE   AVAILABLE   AGE
 rust-slight   0/0     0            0           34s
 ```
 
-*   Send a HTTP request to see what happens
+*   Send an HTTP request to see what happens
 
 ```bash
 curl http://rust-slight.yourdomain.com/read

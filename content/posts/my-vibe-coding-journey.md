@@ -10,9 +10,9 @@ featured: true
 excerpt: ""
 feature_image: ""
 authors: ["Yingting Huang"]
-tags: ["Vibe Coding", "GenAI", "Azure", "Github Copilot"]
+tags: ["Vibe Coding", "GenAI", "Azure", "GitHub Copilot"]
 ---
-I want to share my story about vibe coding, I started this idea to assist my son's english learning, I also wanted to test to see if I can rely on generative ai to complete a full project including client and server. My goal was twofold: to support his learning and challenge myself to build a robust, interactive webapp.
+I want to share my story about vibe coding. I started this project to support my son's English learning, and I also wanted to see whether I could rely on generative AI to complete a full project, including both client and server. My goal was twofold: to support his learning and challenge myself to build a robust, interactive web app.
 
 ### **Project Objectives**
 
@@ -22,7 +22,7 @@ The application focuses on:
 *   Developing reading comprehension skills
 *   Improving listening comprehension abilities
 
-Despite limited web programming experience, I successfully created a comprehensive learning tool. Leveraging [a next.js project](https://github.com/quentin-mckay/AI-Quiz-Generator/) from a GitHub repository as a foundation, I expanded its functionality using GitHub Copilot and cutting-edge AI technologies.
+Despite having limited web programming experience, I successfully created a comprehensive learning tool. Using [a Next.js project](https://github.com/quentin-mckay/AI-Quiz-Generator/) from GitHub as the foundation, I expanded its functionality with GitHub Copilot and cutting-edge AI technologies.
 
 ---
 
@@ -42,23 +42,23 @@ The application includes:
 ### **Lessons Learned**
 
 **Prompt Optimization**  
-Crafting effective prompts is crucial. I spent considerable time refining them to ensure they generate accurate content at the appropriate levels (beginner, intermediate, and advanced exam tests). For listening comprehension, I relied on prompts to produce correct SSML (Speech Synthesis Markup Language) text. This was necessary to mimic different roles with distinct voices. To achieve this, it’s essential to define clear rules for SSML syntax in the prompt; otherwise, the generated SSML may be incorrect.
+Crafting effective prompts is crucial. I spent considerable time refining them to ensure they generated accurate content at the appropriate levels (beginner, intermediate, and advanced tests). For listening comprehension, I relied on prompts to produce correct SSML (Speech Synthesis Markup Language). This was necessary to mimic different roles with distinct voices. To achieve this, it is essential to define clear SSML syntax rules in the prompt; otherwise, the generated SSML may be incorrect.
 
 **GitHub Copilot as a Development Partner**  
 GitHub Copilot is incredibly powerful—it often understands my intentions and provides accurate suggestions. However, as the developer, you must review and validate its suggestions. Additionally, it's important to use the right AI models for specific tasks. For instance, the GPT-4o model (GPT-4O) can interpret images, allowing you to capture a screenshot and request code to replicate a particular UI style.
 
 **Leveraging Generative AI for Content Creation**  
-Generative AI is invaluable for creating content. I used GitHub Copilot to generate all my English language tips and I used Azure TTS to generate audio feedback (e.g., playing encouraging phrases like "Good work!" upon selecting the correct answer). I also utilized consumer Copilot services to create images, which I incorporated into my web application.
+Generative AI is invaluable for creating content. I used GitHub Copilot to generate all my English language tips, and I used Azure TTS to generate audio feedback (e.g., playing encouraging phrases like "Good work!" upon selecting the correct answer). I also used consumer Copilot services to create images, which I incorporated into my web application.
 
 ---
 
 ### **Outcome**
 
-The application is now live at [https://toefl.aiazure.net/](https://toefl.aiazure.net/), here are some screen captures
+The application is now live at [https://toefl.aiazure.net/](https://toefl.aiazure.net/), and here are a few screenshots:
 
 ![Test generation form](/assets/posts/my-vibe-coding-journey/test-generation-form.png)
 
-Test generation
+Test generation workflow
 
 ![Offline PDF and online dictionary](/assets/posts/my-vibe-coding-journey/offline-pdf-online-dictionary.png)
 

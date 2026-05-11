@@ -12,19 +12,19 @@ feature_image: "/assets/posts/persistent-ssh-tunneling/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Tunneling", "Ubuntu", "Linux", "AutoSSH"]
 ---
-Imaging the sitaution that we need to access services behind NAT/firewall, how to achieve it?  
+Imagine the situation where we need to access services behind NAT/firewall. How can we achieve it?
 ![SSH-Tunnel](/assets/posts/persistent-ssh-tunneling/ssh-tunnel.svg)  
 The answer is reverse SSH tunneling.
 
-Reverse SSH is a technique through which you can access systems that are behind a firewall from the outside world. In that case, the server behind NAT/firewall does an SSH and through the port forwarding makes sure that you can SSH back to the server machine.
+Reverse SSH is a technique through which you can access systems that are behind a firewall from the outside world. In that case, the server behind NAT/firewall establishes an SSH connection and uses port forwarding to make sure that you can SSH back to the server machine.
 
-In above diagram, internal server will establish a SSH connection to jumpbox then opens a listenning port on jumpbox, all traffics to this listenning port will be forwarded to a specified port at internal server side.
+In the diagram above, the internal server establishes an SSH connection to the jumpbox and then opens a listening port on the jumpbox. All traffic to this listening port will be forwarded to a specified port on the internal server side.
 
-By using reverse SSH tunneling, we can publish an internal listenning port to internet, here are the steps to achieve it.
+By using reverse SSH tunneling, we can publish an internal listening port to the internet. Here are the steps to achieve it.
 
 ## 0 Prerequisite
 
-All we need is a VM which has a public IP address to serve as the jumpbox, SSH service need to be installed. In Azure, we can simply deploy a Ubuntu 16.04 VM.
+All we need is a VM with a public IP address to serve as the jumpbox, and the SSH service needs to be installed. In Azure, we can simply deploy an Ubuntu 16.04 VM.
 
 ## 1 Configure AutoSSH at Internal Server Side
 
@@ -32,7 +32,7 @@ From the internal server we want to publish service, install AutoSSH, refer to [
 
 > autossh is a program to start a copy of ssh and monitor it, restarting it as necessary should it die or stop passing traffic.
 
-Presume it's Ubuntu 16.04 server, the commands used to install AutoSSH will be
+Assuming it is an Ubuntu 16.04 server, the commands used to install AutoSSH are:
 
 ```bash
 sudo -i
@@ -46,7 +46,7 @@ Once AutoSSH is installed, create a service configuration to configure AutoSSH a
 vi /lib/systemd/system/autossh.service
 ```
 
-Copy/Paste below content into autossh.service then save.
+Copy/paste the content below into autossh.service, then save.
 
 ```bash
 [Unit]
@@ -73,7 +73,7 @@ Now, we also need to create a configuration at /etc/default/autossh.
 vi /etc/default/autossh
 ```
 
-Copy/Paste below content into the file then save
+Copy/paste the content below into the file, then save.
 
 ```bash
 AUTOSSH_POLL=60
@@ -87,10 +87,10 @@ SSH_OPTIONS="-N -R JUMPBOX_LISTEN_PORT:localhost:INTERNAL_SERVER_PORT JUMPBOX_FQ
 **INTERNAL\_SERVER\_PORT**: Internal server service's port  
 **JUMPBOX\_FQDN**: Jumpbox's FQDN or IP address
 
-Before enable & start AutoSSH service, make sure **YOUR\_USER\_NAME** has
+Before enabling and starting the AutoSSH service, make sure **YOUR\_USER\_NAME** has:
 
-*   private key to connect to jumpbox, private key should be stored at ~/.ssh/id\_rsa.
-*   Have jumpbox server key fingerprint stored and able to SSH into the jumpbox, simply run "ssh JUMPBOX\_FQDN" and type Yes to store the key fingerprint at ~/.ssh/known\_hosts
+*   A private key to connect to the jumpbox. The private key should be stored at ~/.ssh/id\_rsa.
+*   The jumpbox server key fingerprint stored and the ability to SSH into the jumpbox. Simply run "ssh JUMPBOX\_FQDN" and type Yes to store the key fingerprint at ~/.ssh/known\_hosts.
 
 Enable and start AutoSSH
 
@@ -102,7 +102,7 @@ systemctl start autossh
 
 ## 2 Configure JumpBox
 
-By default, reverse SSH tunneling only creates a listening port at loopback interface, that means the listening port is on 127.0.0.1. If you run `netstat -lptn`, you would see
+By default, reverse SSH tunneling only creates a listening port on the loopback interface, which means the listening port is on 127.0.0.1. If you run `netstat -lptn`, you will see:
 
 ```bash
 Active Internet connections (only servers)
@@ -110,7 +110,7 @@ Proto Recv-Q Send-Q Local Address           Foreign Address         State       
 tcp        0      0 127.0.0.1:<PORT>       0.0.0.0:*               LISTEN      106872/sshd: <YOUR_USER_NAME>
 ```
 
-We can use iptable to forward physical interface's network to loopback interface, to do that
+We can use iptables to forward the physical interface's network to the loopback interface. To do that:
 
 *   Allow the port proxy to route using loopback addresses
 
@@ -129,13 +129,13 @@ apt install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
 ```
 
-## 3 Configure Azure NSG to Allow Inbound Traffics to JUMPBOX\_LISTEN\_PORT
+## 3 Configure Azure NSG to Allow Inbound Traffic to JUMPBOX\_LISTEN\_PORT
 
-From Azure portal, choose JumpBox VM, Networking->Add inbound port, add inbound security rule to allow traffics to JUMPBOX\_LISTEN\_PORT.
+From the Azure portal, choose the JumpBox VM, then Networking -> Add inbound port. Add an inbound security rule to allow traffic to JUMPBOX\_LISTEN\_PORT.
 
 ## 4 Connect to Internal Server
 
-Now you are able to access internal server service port through JumpBox server, for example, if the published port is SSH, you can acccess it with command below
+Now you are able to access the internal server service port through the JumpBox server. For example, if the published port is SSH, you can access it with the command below:
 
 ```bash
 ssh YOUR_USER_NAME@JUMPBOX_FQDN:JUMPBOX_LISTEN_PORT

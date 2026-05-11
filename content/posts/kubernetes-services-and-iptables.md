@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes Services and Iptables"
+title: "Kubernetes Services and iptables"
 slug: "kubernetes-services-and-iptables"
 date: "2019-02-05 08:32:00"
 updated: "2019-02-11 05:29:41"
@@ -14,31 +14,31 @@ tags: ["Kubernetes", "K8S", "Iptables"]
 ---
 # 0 Prerequisites and Prework
 
-This post only focuses on how kubernetes leverages iptables to implement its service mode. Per official doc [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
+This post focuses on how Kubernetes leverages iptables to implement its service mode. Per the official [Services](https://kubernetes.io/docs/concepts/services-networking/service/) documentation:
 
 > A Kubernetes Service is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service.
 
-Put it in simple words, a service represents a TCP or UDP load-balanced service. As it is a load-balanced service, it must use destination NAT(DNAT) to redirect inbound traffics to back-end pods, which relies on iptables from Linux OS to do the job. When a service gets created, kube-proxy(daemonset) will inject a few of iptables chains & rules to agent node. Accessing kubernetes service relies on DNAT, also if source IP is from external network (Not in Pod IP CIDR), source IP will also be SNAT-ed.
+Put simply, a Service represents a TCP or UDP load-balanced service. As it is load-balanced, it must use destination NAT (DNAT) to redirect inbound traffic to backend pods, relying on iptables from the Linux OS to do the job. When a Service is created, kube-proxy (DaemonSet) will inject a few iptables chains and rules into the agent node. Accessing a Kubernetes Service relies on DNAT. Also, if the source IP is from an external network (not in the Pod IP CIDR), the source IP will also be SNAT-ed.
 
-This post presumes end user is familiar with iptables, if not, there is a good article explains iptables in details [Iptables Tutorial 1.2.2](https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html), it is worth of reading.
+This post assumes the end user is familiar with iptables. If not, there is a good article that explains iptables in detail: [Iptables Tutorial 1.2.2](https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html). It is worth reading.
 
-This post will not cover pod-to-pod communication as it is not in scope, pod to pod communication relies on IP routing, [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/) might provide some information
+This post will not cover pod-to-pod communication, as it is out of scope. Pod-to-pod communication relies on IP routing; [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/) provides more information.
 
 > all containers can communicate with all other containers without NAT  
 > all nodes can communicate with all containers (and vice-versa) without NAT  
 > the IP that a container sees itself as is the same IP that others see it as
 
-Kubernetes has 3 kind of service types, [Publishing services - service types](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types)
+Kubernetes has three kinds of Service types, as described in [Publishing services - service types](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 *   ClusterIP
 *   NodePort
 *   LoadBalancer
 
-In following sections, we will discussed each service one by one
+In the following sections, we will discuss each Service one by one.
 
 # 1 Environment
 
-The sample kubernetes cluster's network setup is below
+The sample Kubernetes cluster's network setup is below.
 
 *   Pod IP CIDR: 10.244.0.0/16
 *   Node IP CIDR: 10.244.1.0/24
@@ -79,7 +79,7 @@ veth23307616 Link encap:Ethernet  HWaddr 5a:e1:28:c8:20:d7
 
 ```
 
-cbr0 is a Linux bridge device and eth0 is an ethernet device. Every time a pod is created, a virtual Ethernet device(vethxxxxxxxx) will be created. That veth device will get connected to bridge device cbr0. As all pods' network interfaces are plugged into same bridge device, all pods in same agent node can communicate with each other.
+cbr0 is a Linux bridge device, and eth0 is an Ethernet device. Every time a Pod is created, a virtual Ethernet device (vethxxxxxxxx) will be created. That veth device will get connected to bridge device cbr0. As all Pods' network interfaces are plugged into the same bridge device, all Pods on the same agent node can communicate with each other.
 
 ```bash
 #brctl show
@@ -101,13 +101,13 @@ cbr0		8000.82267d43262c	no		veth0abdd6ef
 							vethf248ae55
 ```
 
-# 2 How kubernetes uses iptables for services
+# 2 How Kubernetes Uses iptables for Services
 
-Before explain each type of service's implementation in iptables, we need to understand how kubernetes plug itself into iptables.
+Before explaining each type of Service's implementation in iptables, we need to understand how Kubernetes plugs itself into iptables.
 
 ## 2.1 Custom chain
 
-To hook into packet filtering and NAT, kubernetes will create a custom chain KUBE-SERVICE from iptables, it will redirect all PREROUTING AND OUTPUT traffics to custom chain KUBE-SERVICE, refer to below
+To hook into packet filtering and NAT, Kubernetes will create a custom chain, KUBE-SERVICES, in iptables. It will redirect all PREROUTING and OUTPUT traffic to the custom chain KUBE-SERVICES, as shown below.
 
 ```bash
 -A PREROUTING -m comment --comment "kubernetes service portals" -j KUBE-SERVICES
@@ -116,26 +116,26 @@ To hook into packet filtering and NAT, kubernetes will create a custom chain KUB
 ...
 ```
 
-PREROUTING chain is used to handle inbound traffics from external network as well as inbound traffics from pod network.
+The PREROUTING chain is used to handle inbound traffic from external networks as well as inbound traffic from the Pod network.
 
-OUTPUT chain is used to handle outbound traffics to external network as well as outbound traffics to pod network.
+The OUTPUT chain is used to handle outbound traffic to external networks as well as outbound traffic to the Pod network.
 
-After using KUBE-SERVICE chain hook into packet filtering and NAT, kubernetes can inspect traffics to its services and apply SNAT/DNAT accordingly.
+After using the KUBE-SERVICES chain to hook into packet filtering and NAT, Kubernetes can inspect traffic to its Services and apply SNAT/DNAT accordingly.
 
-KUBE-SERVICE chain is used for service type ClusterIP and LoadBalancer, at the end of KUBE-SERVICE chain, it will install another custom chain KUBE-NODEPORTS to handle traffics for a specific service type NodePort, refer to below
+The KUBE-SERVICES chain is used for Service types ClusterIP and LoadBalancer. At the end of the KUBE-SERVICES chain, it will install another custom chain, KUBE-NODEPORTS, to handle traffic for the specific Service type NodePort, as shown below.
 
 ```bash
 -A KUBE-SERVICES -m comment --comment "kubernetes service nodeports; NOTE: this must be the last rule in this chain" -m addrtype --dst-type LOCAL -j KUBE-NODEPORTS
 ```
 
-Start from KUBE-SERVICE custom chain, kubernetes will create a few of custom chains and eventually represent a service, for example,
+Starting from the KUBE-SERVICES custom chain, Kubernetes will create a few custom chains that eventually represent a Service. For example:
 
-*   KUBE-SERVER->KUBE-SVC-XXXXXXXXXXXXXXXX->KUBE-SEP-XXXXXXXXXXXXXXXX represents a ClusterIP service
-*   KUBE-NODEPORTS->KUBE-SVC-XXXXXXXXXXXXXXXX->KUBE-SEP-XXXXXXXXXXXXXXXX represents a NodePort service
+*   KUBE-SERVICES->KUBE-SVC-XXXXXXXXXXXXXXXX->KUBE-SEP-XXXXXXXXXXXXXXXX represents a ClusterIP Service
+*   KUBE-NODEPORTS->KUBE-SVC-XXXXXXXXXXXXXXXX->KUBE-SEP-XXXXXXXXXXXXXXXX represents a NodePort Service
 
 ## 2.2 SNAT
 
-If we dump iptables from agent node, we will find below chains & rules are created for a specific service, those chains & rules are used for external network to service communications, if source IP address is not from Pod IP CIDR, source IP will be SNAT-ed. For details, refer to [Using Source IP](https://kubernetes.io/docs/tutorials/services/source-ip/).
+If we dump iptables from the agent node, we will find the chains and rules below created for a specific Service. Those chains and rules are used for external-network-to-Service communication. If the source IP address is not from the Pod IP CIDR, the source IP will be SNAT-ed. For details, refer to [Using Source IP](https://kubernetes.io/docs/tutorials/services/source-ip/).
 
 ```bash
 *nat
@@ -147,7 +147,7 @@ If we dump iptables from agent node, we will find below chains & rules are creat
 -A KUBE-POSTROUTING -m comment --comment "kubernetes service traffic requiring SNAT" -m mark --mark 0x4000/0x4000 -j MASQUERADE
 ```
 
-For example, if we do a name lookup from agent node against kubernetes DNS service, as the source IP is agent node IP(in our case it's 10.240.0.5), it's not in Pod IP's CIDR, so it will be treated as an external IP
+For example, if we do a name lookup from the agent node against the Kubernetes DNS service, the source IP is the agent node IP (in our case, 10.240.0.5). It is not in the Pod IP CIDR, so it will be treated as an external IP.
 
 ```bash
 #dig -b 10.240.0.5 @10.0.0.10 www.microsoft.com 
@@ -176,7 +176,7 @@ e13678.dspb.akamaiedge.net. 6	IN	A	23.67.3.108
 ;; MSG SIZE  rcvd: 351
 ```
 
-IP address 10.240.0.5 will be SNAT-ed to cbr0 IP address 10.244.1.1, refer to TCPDUMP output in below
+IP address 10.240.0.5 will be SNAT-ed to the cbr0 IP address, 10.244.1.1. Refer to the TCPDUMP output below.
 
 ```bash
 #tcpdump -i any port 53 -n -e -S
@@ -204,7 +204,7 @@ udp      17 22 src=10.240.0.5 dst=10.0.0.10 sport=52173 dport=53 src=10.244.1.58
 
 ## 3.1 ClusterIP introduction
 
-Before discuss ClusterIP service in a detailed way, we will deploy two redis replicas by `kubectl apply -f redis.yaml` and use the setup to explain 5 types of ClusterIP services by creating each type of service in following sub-sections.
+Before discussing the ClusterIP Service in detail, we will deploy two Redis replicas by running `kubectl apply -f redis.yaml` and use the setup to explain five types of ClusterIP Services by creating each type of Service in the following subsections.
 
 *   ClusterIP service
 *   ClusterIP service with session affinity
@@ -238,7 +238,7 @@ spec:
 
 ## 3.2 ClusterIP(redis)
 
-Define a ClusterIP service is pretty simple, below is a template to create a redis ClusterIP service, simply run `kubectl apply -f redis-clusterip.yaml` to deploy it
+Defining a ClusterIP Service is pretty simple. Below is a template to create a Redis ClusterIP Service. Simply run `kubectl apply -f redis-clusterip.yaml` to deploy it.
 
 ```yaml
 #redis-clusterip.yaml
@@ -253,7 +253,7 @@ spec:
     app: redis
 ```
 
-Kubernetes should create a service called "redis", and in my cluster setup, its cluster ip address is 10.0.19.85 and it has two endpoints pointing to two redis pods, their IP addresses are 10.244.1.69 and 10.244.1.70.
+Kubernetes should create a Service called "redis". In my cluster setup, its cluster IP address is 10.0.19.85, and it has two endpoints pointing to two Redis pods. Their IP addresses are 10.244.1.69 and 10.244.1.70.
 
 ```bash
 #kubectl get service redis
@@ -265,7 +265,7 @@ NAME    ENDPOINTS                           AGE
 redis   10.244.1.69:6379,10.244.1.70:6379   3d4h
 ```
 
-ClusterIP service's IP doesn't exist in anywhere, although the IP address is in cluster IP CIDR, but it doesn't link to any process, it's a virutal IP address and kubernetes will register a DNS A record to associate service's DNS name to it.
+The ClusterIP Service's IP does not exist anywhere. Although the IP address is in the cluster IP CIDR, it is not linked to any process. It is a virtual IP address, and Kubernetes will register a DNS A record to associate the Service's DNS name with it.
 
 ```bash
 #nslookup redis.default.svc.cluster.local 10.0.0.10
@@ -276,7 +276,7 @@ Name:	redis.default.svc.cluster.local
 Address: 10.0.19.85
 ```
 
-ClusterIP service's IP is accessible from external network as well as from pod network. The magic behind it is kube-proxy will create chains & rules from iptables. For example, below is all iptables chains & rules for service "redis"(adjusted for reading)
+The ClusterIP Service's IP is accessible from external networks as well as from the Pod network. The magic behind it is that kube-proxy will create chains and rules in iptables. For example, below are all iptables chains and rules for Service "redis" (adjusted for readability).
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.19.85/32 -p tcp -m comment --comment "default/redis: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -292,9 +292,9 @@ ClusterIP service's IP is accessible from external network as well as from pod n
 -A KUBE-SEP-5MXPM55VLN7O52FQ -p tcp -m tcp -j DNAT --to-destination 10.244.1.70:6379
 ```
 
-Starts from chain KUBE-SERVICES, inbound traffics to that service will be randomly distributed to endpoint 10.244.1.69:6379 or endpoint 10.244.1.70:6379, this is done by iptables DNAT rules `-A KUBE-SEP-UH5EYFQKYB24RWKN -p tcp -m tcp -j DNAT --to-destination 10.244.1.69:6379` and `-A KUBE-SEP-5MXPM55VLN7O52FQ -p tcp -m tcp -j DNAT --to-destination 10.244.1.70:6379`
+Starting from chain KUBE-SERVICES, inbound traffic to that Service will be randomly distributed to endpoint 10.244.1.69:6379 or endpoint 10.244.1.70:6379. This is done by iptables DNAT rules `-A KUBE-SEP-UH5EYFQKYB24RWKN -p tcp -m tcp -j DNAT --to-destination 10.244.1.69:6379` and `-A KUBE-SEP-5MXPM55VLN7O52FQ -p tcp -m tcp -j DNAT --to-destination 10.244.1.70:6379`.
 
-The load balancing algorithm is provided by iptables module "**statistic**", in the two redis replicas deployment, "**statistic**" module will randomly chooses one of two back-end endpoints based on iptables rules below
+The load-balancing algorithm is provided by the iptables module "**statistic**". In the two-Redis-replica deployment, the "**statistic**" module will randomly choose one of the two backend endpoints based on the iptables rules below.
 
 ```bash
 -A KUBE-SVC-SCFPZ36VFLUNBB47 -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-UH5EYFQKYB24RWKN
@@ -378,13 +378,13 @@ tcp      6 86396 ESTABLISHED src=10.244.1.69 dst=10.0.19.85 sport=53480 dport=63
 
 ## 3.3 ClusterIP with session affinity(redis-sa)
 
-Kubernetes supports ClientIP based session affinity, session affinity makes requests from the same client alway get routed back to the same backend server(in kubernetes it is same pod)
+Kubernetes supports ClientIP-based session affinity. Session affinity makes requests from the same client always get routed back to the same backend server (in Kubernetes, the same Pod).
 
 Refer to [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
 
 > Client-IP based session affinity can be selected by setting `service.spec.sessionAffinity` to "ClientIP" (the default is "None"), and you can set the max session sticky time by setting the field `service.spec.sessionAffinityConfig.clientIP.timeoutSeconds` if you have already set `service.spec.sessionAffinity` to "ClientIP" (the default is "10800").
 
-Below is a sample yaml file to create a session affinity redis service, deploy it with `kubectl apply -f redis-clusterip-sa.yaml`
+Below is a sample YAML file to create a session affinity Redis Service. Deploy it with `kubectl apply -f redis-clusterip-sa.yaml`.
 
 ```yaml
 #redis-clusterip-sa.yaml
@@ -409,7 +409,7 @@ NAME       ENDPOINTS                           AGE
 redis-sa   10.244.1.69:6379,10.244.1.70:6379   3d5h
 ```
 
-From backend, session affinity is implemented by iptables module "**recent**", "**recent**" module allows you to dynamically create a list of IP addresses and then match against that list in a few different ways.
+From the backend, session affinity is implemented by the iptables module "**recent**". The "**recent**" module allows you to dynamically create a list of IP addresses and then match against that list in a few different ways.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.219.234/32 -p tcp -m comment --comment "default/redis-sa: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -433,7 +433,7 @@ From backend, session affinity is implemented by iptables module "**recent**", "
 
 > If there are external IPs that route to one or more cluster nodes, Kubernetes services can be exposed on those `externalIPs`. Traffic that ingresses into the cluster with the external IP (as destination IP), on the service port, will be routed to one of the service endpoints.
 
-Below is the sample deployment yaml file for creating "externalIPs", deploy it by using `kubectl apply -f redis-externalip.yaml`
+Below is the sample deployment YAML file for creating "externalIPs". Deploy it by using `kubectl apply -f redis-externalip.yaml`.
 
 ```yaml
 #redis-externalip.yaml
@@ -450,7 +450,7 @@ spec:
   - 10.240.0.5
 ```
 
-The completed iptables chains & rules are below
+The complete iptables chains and rules are below.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.100.145/32 -p tcp -m comment --comment "default/redis-externalip: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -470,7 +470,7 @@ The completed iptables chains & rules are below
 -A KUBE-SEP-3ZL3WNQOXRYCSRYM -p tcp -m tcp -j DNAT --to-destination 10.244.1.77:6379
 ```
 
-On top of regular service's iptables chains & rules, kube-proxy will create a set of unique rules in KUBE-SERVICES chain, which are below
+On top of regular Service iptables chains and rules, kube-proxy will create a set of unique rules in the KUBE-SERVICES chain, shown below.
 
 ```bash
 -A KUBE-SERVICES -d 10.240.0.5/32 -p tcp -m comment --comment "default/redis-externalip: external IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -478,7 +478,7 @@ On top of regular service's iptables chains & rules, kube-proxy will create a se
 -A KUBE-SERVICES -d 10.240.0.5/32 -p tcp -m comment --comment "default/redis-externalip: external IP" -m tcp --dport 6379 -m addrtype --dst-type LOCAL -j KUBE-SVC-PBGWSN7UU5334HUX
 ```
 
-It leverages [**physdev**](http://ipset.netfilter.org/iptables-extensions.man.html#lbBQ) to identify traffics from physical ethernet device and perform NAT.
+It leverages [**physdev**](http://ipset.netfilter.org/iptables-extensions.man.html#lbBQ) to identify traffic from the physical Ethernet device and perform NAT.
 
 **physdev**
 
@@ -488,14 +488,14 @@ It leverages [**physdev**](http://ipset.netfilter.org/iptables-extensions.man.ht
 > 
 > Matches if the packet has entered through a bridge interface.
 
-If we try to connect to the external IP from redis client, we should connect it successfully
+If we try to connect to the external IP from a Redis client, we should connect successfully.
 
 ```bash
 #redis-cli -h 10.240.0.5 -p 6379
 10.240.0.5:6379> exit
 ```
 
-Capturing network trace should show how the traffics get relayed
+Capturing a network trace should show how the traffic gets relayed.
 
 ```bash
 #tcpdump -i any port 6379 -n -e -S
@@ -520,7 +520,7 @@ Mapping entry created from netfilter connection tracking table also shows SNAT &
 tcp      6 86387 ESTABLISHED src=10.188.0.4 dst=10.240.0.5 sport=43534 dport=6379 src=10.244.1.77 dst=10.244.1.1 sport=6379 dport=43534 [ASSURED] mark=0 use=1
 ```
 
-Also, kube-proxy will reserver a listening port on host node although it is iptables to do the translation.
+Also, kube-proxy will reserve a listening port on the host node, although iptables does the translation.
 
 ```bash
 #lsof -i :6379
@@ -530,7 +530,7 @@ hyperkube 4397 root    6u  IPv4 21849875      0t0  TCP 10.240.0.5:6379 (LISTEN)
 
 ## 3.5 ClusterIP without any endpoints(redis-none)
 
-A ClusterIP service is always associated with backend pods, it uses "**selector**" to select backend pods, if backend pods are found based on **selector**, kubernetes will create a endpoint object to map to pod's IP:Port, otherwise, that service will not have any endpoints.
+A ClusterIP Service is always associated with backend pods. It uses a "**selector**" to select backend pods. If backend pods are found based on the **selector**, Kubernetes will create an endpoint object to map to Pod IP:Port. Otherwise, that Service will not have any endpoints.
 
 For example, if we deploy a ClusterIP service by `kubectl apply -f redis-clusterip-none.yaml` with **selector** "app: redis-none"
 
@@ -547,7 +547,7 @@ spec:
     app: redis-none  
 ```
 
-Since no pod has a label called "app: redis-none", so its ENDPOINTS is <none>
+Since no Pod has a label called "app: redis-none", its ENDPOINTS is <none>.
 
 ```bash
 #kubectl get service redis-none
@@ -559,7 +559,7 @@ NAME         ENDPOINTS   AGE
 redis-none   <none>      3d5h
 ```
 
-Correspondingly, kubernetes will create a rule in iptables' chain KUBE-SERVICE to reject inbound traffics targeted to taht service with ICMP port unreachable message
+Correspondingly, Kubernetes will create a rule in iptables' chain KUBE-SERVICES to reject inbound traffic targeted to that Service with an ICMP port unreachable message.
 
 ```bash
 -A KUBE-SERVICES -d 10.0.8.126/32 -p tcp -m comment --comment "default/redis-none: has no endpoints" -m tcp --dport 6379 -j REJECT --reject-with icmp-port-unreachable
@@ -575,7 +575,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 07:31:09.878729  In 00:00:00:00:00:00 ethertype IPv4 (0x0800), length 104: 10.240.0.5 > 10.240.0.5: ICMP 10.0.8.126 tcp port 6379 unreachable, length 68
 ```
 
-**Note**: Note the MAC address in above tcpdump output is 00:00:00:00:00:00 which basically means the packet is never sent to any network device.
+**Note**: The MAC address in the tcpdump output above is 00:00:00:00:00:00, which basically means the packet is never sent to any network device.
 
 ## 3.6 Headless(redis-headless)
 
@@ -601,7 +601,7 @@ spec:
     app: redis
 ```
 
-We could still find service and endpoints are created for headless service in kubernetes
+We can still find Service and Endpoints created for the headless Service in Kubernetes.
 
 ```bash
 #kubectl get service redis-headless
@@ -613,7 +613,7 @@ NAME             ENDPOINTS                           AGE
 redis-headless   10.244.1.70:6379,10.244.1.72:6379   3d5h
 ```
 
-However, from iptables, no any iptables chains/rules is created for headless service, checking DNS records for headless service shows it uses pod's IP addresses directly.
+However, from iptables, no iptables chains/rules are created for the headless Service. Checking DNS records for the headless Service shows it uses Pod IP addresses directly.
 
 ```bash
 #nslookup redis-headless.default.svc.cluster.local 10.0.0.10
@@ -626,15 +626,15 @@ Name:	redis-headless.default.svc.cluster.local
 Address: 10.244.1.70
 ```
 
-Hence, it concludes inbound traffics to headless service will directly go to pod's IP and no DNAT is applied.
+Hence, inbound traffic to the headless Service will go directly to the Pod IP, and no DNAT is applied.
 
 # 4 NodePort
 
 ## 4.1 NodePort introduction
 
-This section will discuss NodePort service, to demo some concepts in NodePort service, we will deploy one redis replica by `kubectl apply -f redis.yaml` to two kubernetes agent nodes aks-nodepool1-41808012-1 and aks-nodepool1-41808012-2
+This section will discuss the NodePort Service. To demo some concepts in NodePort, we will deploy one Redis replica by running `kubectl apply -f redis.yaml` to two Kubernetes agent nodes, aks-nodepool1-41808012-1 and aks-nodepool1-41808012-2.
 
-The two kubernetes nodes settings are below
+The two Kubernetes node settings are below.
 
 ```bash
 #kubectl get node -o wide
@@ -643,7 +643,7 @@ aks-nodepool1-41808012-1   Ready    agent   9d    v1.12.4   10.240.0.5    <none>
 aks-nodepool1-41808012-2   Ready    agent   17m   v1.12.4   10.240.0.4    <none>        Ubuntu 16.04.5 LTS   4.15.0-1035-azure   docker://3.0.1
 ```
 
-We will discuss 5 types of NodePort service by creating each type of service in following sub-sections.
+We will discuss five types of NodePort Service by creating each type of Service in the following subsections.
 
 *   NodePort service
 *   NodePort service with externalTrafficPolicy: Local
@@ -651,7 +651,7 @@ We will discuss 5 types of NodePort service by creating each type of service in 
 *   NodePort service with session affinity
 *   NodePort service with externalTrafficPolicy: Local and session affinity
 
-The corresponding redis deployment file is below, deploy it with `kubectl apply -f redis.yaml`
+The corresponding Redis deployment file is below. Deploy it with `kubectl apply -f redis.yaml`.
 
 ```yaml
 #redis.yaml
@@ -676,11 +676,11 @@ spec:
 
 ## 4.2 NodePort(redis-nodeport)
 
-[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) is a specific service type in kubernetes, it allocates a port(specified in nodePort from service yaml file) in each agent node.
+[NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) is a specific Service type in Kubernetes. It allocates a port (specified in nodePort from the Service YAML file) on each agent node.
 
 > the Kubernetes master will allocate a port from a range specified by `--service-node-port-range` flag (default: 30000-32767), each Node will proxy that port (the same port number on every Node) into your `Service`
 
-Below is a sample template to deploy NodePort service, deploy it with `kubectl apply -f redis-nodeport.yaml` will create a NodePort service on each agent node.
+Below is a sample template to deploy a NodePort Service. Deploying it with `kubectl apply -f redis-nodeport.yaml` will create a NodePort Service on each agent node.
 
 ```yaml
 #redis-nodeport.yaml
@@ -700,7 +700,7 @@ spec:
 
 > NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created. You’ll be able to contact the NodePort service, from outside the cluster, by requesting :.
 
-When create a NodePort service, implicitly a ClusterIP service is created as well. For example, `kubectl get service redis-nodeport` shows a CLUSTER-IP for NodePort service.
+When creating a NodePort Service, a ClusterIP Service is implicitly created as well. For example, `kubectl get service redis-nodeport` shows a CLUSTER-IP for the NodePort Service.
 
 ```bash
 #kubectl get service redis-nodeport
@@ -712,7 +712,7 @@ NAME             ENDPOINTS          AGE
 redis-nodeport   10.244.0.4:6379   110s
 ```
 
-From iptables, we can also find kube-proxy adds two sets of iptables chains & rules, KUBE-SERVICES is for ClusterIP and KUBE-NODEPORTS is for NodePort.
+From iptables, we can also see kube-proxy adds two sets of iptables chains and rules: KUBE-SERVICES is for ClusterIP, and KUBE-NODEPORTS is for NodePort.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.118.143/32 -p tcp -m comment --comment "default/redis-nodeport: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -727,7 +727,7 @@ From iptables, we can also find kube-proxy adds two sets of iptables chains & ru
 -A KUBE-SEP-D5FBLP7RKYOSCD7A -p tcp -m tcp -j DNAT --to-destination 10.244.0.4:6379
 ```
 
-Although iptables is leveraged to redirect inbound traffics for NodePort service, kube-proxy process still needs to allocate a listening port in each agent node, this is to make sure no other applications is listening on same port
+Although iptables is leveraged to redirect inbound traffic for the NodePort Service, the kube-proxy process still needs to allocate a listening port on each agent node. This is to make sure no other application is listening on the same port.
 
 ```bash
 #lsof -i :30001
@@ -739,11 +739,11 @@ COMMAND
 /hyperkube proxy --kubeconfig=/var/lib/kubelet/kubeconfig --cluster-cidr=10.244.0.0/16 --feature-gates=ExperimentalCriticalPodAnnotation=true
 ```
 
-Refer to source code [claimNodePort](https://github.com/kubernetes/kubernetes/blob/a3ccea9d8743f2ff82e41b6c2af6dc2c41dc7b10/pkg/proxy/userspace/proxier.go), the purpose of doing that
+Refer to the source code [claimNodePort](https://github.com/kubernetes/kubernetes/blob/a3ccea9d8743f2ff82e41b6c2af6dc2c41dc7b10/pkg/proxy/userspace/proxier.go). The purpose of doing that is:
 
 > Hold the actual port open, even though we use iptables to redirect it. This ensures that a) it's safe to take and b) that stays true.
 
-NodePort service can be accessed from cluster IP as well as NodeIP:NodePort to each agent node.
+NodePort Service can be accessed from the cluster IP as well as NodeIP:NodePort on each agent node.
 
 ```bash
 #redis-cli -h 10.0.118.143 -p 6379
@@ -754,7 +754,7 @@ NodePort service can be accessed from cluster IP as well as NodeIP:NodePort to e
 10.240.0.5:30001> exit
 ```
 
-Even we only have one replica running from aks-nodepool1-41808012-2 agent node.
+Even though we only have one replica running from the aks-nodepool1-41808012-2 agent node.
 
 ```bash
 #kubectl get pod -o wide
@@ -763,13 +763,13 @@ NAME                    READY   STATUS    RESTARTS   AGE     IP            NODE 
 redis-56f8fbc4d-2rkr2   1/1     Running   0          8m55s   10.244.0.4    aks-nodepool1-41808012-2   <none>
 ```
 
-What happens when connect to "aks-nodepool1-41808012-1"(without any local endpoints) with`redis-cli -h 10.240.0.5 -p 30001` is
+What happens when connecting to "aks-nodepool1-41808012-1" (without any local endpoints) with `redis-cli -h 10.240.0.5 -p 30001` is:
 
 *   Client(10.188.0.4) sends a TCP SYN packet from port 58306 to aks-nodepool1-41808012-1 NodePort 10.240.0.5:30001
 *   iptables rule `-A KUBE-NODEPORTS -p tcp -m comment --comment "default/redis-nodeport:" -m tcp --dport 30001 -j KUBE-MARK-MASQ` SNAT source IP:Port from 10.188.0.4:58306 to 10.240.0.5:58306
 *   iptables rule `-A KUBE-SEP-D5FBLP7RKYOSCD7A -p tcp -m tcp -j DNAT --to-destination 10.244.0.4:6379` DNAT destination IP:Port from 10.240.0.5:30001 to 10.244.0.4:6379
-*   As destination IP address is 10.244.0.4 now and it's the IP address of pod redis-56f8fbc4d-2rkr2 in aks-nodepool1-41808012-2, so aks-nodepool1-41808012-1 forwards this packet to aks-nodepool1-41808012-2, aks-nodepool1-41808012-2 further forwards this packet to pod redis-56f8fbc4d-2rkr2
-*   After redis-56f8fbc4d-2rkr2 ACKs this TCP SYN request, the ACK packet uses same path in reverse order and sends it back to Client(10.188.0.4)
+*   As the destination IP address is now 10.244.0.4, and it is the IP address of pod redis-56f8fbc4d-2rkr2 in aks-nodepool1-41808012-2, aks-nodepool1-41808012-1 forwards this packet to aks-nodepool1-41808012-2. aks-nodepool1-41808012-2 further forwards this packet to pod redis-56f8fbc4d-2rkr2.
+*   After redis-56f8fbc4d-2rkr2 ACKs this TCP SYN request, the ACK packet uses the same path in reverse order and sends it back to Client (10.188.0.4).
 
 ```bash
 #tcpdump -i any port 30001 or 6379 -n -e -S
@@ -784,7 +784,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 
 ```
 
-NodePort from aks-nodepool1-41808012-1 acts as a gateway relays packets to/from redis pod. Mapping entry from conntrack table also shows SNAT/DNAT are applied.
+NodePort from aks-nodepool1-41808012-1 acts as a gateway that relays packets to/from the Redis pod. The mapping entry from the conntrack table also shows SNAT/DNAT are applied.
 
 ```bash
 #conntrack -L | grep 30001
@@ -798,7 +798,7 @@ Refer to [Using Source IP](https://kubernetes.io/docs/tutorials/services/source-
 
 > Kubernetes has a feature to preserve the client source IP [(check here for feature availability)](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip). Setting `service.spec.externalTrafficPolicy` to the value `Local` will only proxy requests to local endpoints, never forwarding traffic to other nodes and thereby preserving the original source IP address. If there are no local endpoints, packets sent to the node are dropped, so you can rely on the correct source-ip in any packet processing rules you might apply a packet that make it through to the endpoint.
 
-Using "externalTrafficPolicy: Local" will preserve source IP and drop packets from agent node has no local endpoint.
+Using "externalTrafficPolicy: Local" will preserve the source IP and drop packets from an agent node that has no local endpoint.
 
 For example, if we deploy a NodePort service by `kubectl apply -f redis-nodeport-local.yaml`
 
@@ -818,7 +818,7 @@ spec:
     app: redis
 ```
 
-The endpoint redis-nodeport-local points to pod IP:Port 10.244.0.0.4:6379 which exists in aks-nodepool1-41808012-2
+The endpoint redis-nodeport-local points to Pod IP:Port 10.244.0.4:6379, which exists in aks-nodepool1-41808012-2.
 
 ```bash
 #kubectl get service redis-nodeport-local
@@ -830,7 +830,7 @@ NAME                   ENDPOINTS         AGE
 redis-nodeport-local   10.244.0.4:6379   11h
 ```
 
-If we check iptables chains & rules for service "redis-nodeport-local" from agent node aks-nodepool1-41808012-1, as there is no local endpoint, rule`-A KUBE-XLB-5ETJGCYWCRYR2EKE -m comment --comment "default/redis-nodeport-local: has no local endpoints" -j KUBE-MARK-DROP` drops any packets to NodePort service of agent node aks-nodepool1-41808012-1.
+If we check iptables chains and rules for Service "redis-nodeport-local" from agent node aks-nodepool1-41808012-1, there is no local endpoint. Therefore, rule `-A KUBE-XLB-5ETJGCYWCRYR2EKE -m comment --comment "default/redis-nodeport-local: has no local endpoints" -j KUBE-MARK-DROP` drops any packets to the NodePort Service of agent node aks-nodepool1-41808012-1.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.178.235/32 -p tcp -m comment --comment "default/redis-nodeport-local: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -848,7 +848,7 @@ If we check iptables chains & rules for service "redis-nodeport-local" from agen
 -A KUBE-SEP-OV7T5FIR3LL6QKS4 -p tcp -m tcp -j DNAT --to-destination 10.244.0.4:6379
 ```
 
-On the contrary, as redis pod is running at agent node aks-nodepool1-41808012-2,it has local endpoint, and hence iptables rule`-A KUBE-XLB-5ETJGCYWCRYR2EKE -m comment --comment "Balancing rule 0 for default/redis-nodeport-local:" -j KUBE-SEP-OV7T5FIR3LL6QKS4` will DNAT inbound traffics to local endpoint.
+On the contrary, because the Redis pod is running on agent node aks-nodepool1-41808012-2, it has a local endpoint. Therefore, iptables rule `-A KUBE-XLB-5ETJGCYWCRYR2EKE -m comment --comment "Balancing rule 0 for default/redis-nodeport-local:" -j KUBE-SEP-OV7T5FIR3LL6QKS4` will DNAT inbound traffic to the local endpoint.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.178.235/32 -p tcp -m comment --comment "default/redis-nodeport-local: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -868,7 +868,7 @@ On the contrary, as redis pod is running at agent node aks-nodepool1-41808012-2,
 
 ## 4.4 NodePort without any endpoints(redis-nodeport-none)
 
-NodePort without any endpoints is similar like ClusterIP without any endpoints, for example, if we deploy a NodePort service by `kubectl apply -f redis-nodeport-none.yaml`
+NodePort without any endpoints is similar to ClusterIP without any endpoints. For example, if we deploy a NodePort Service by running `kubectl apply -f redis-nodeport-none.yaml`:
 
 ```yaml
 #redis-nodeport-none.yaml
@@ -885,7 +885,7 @@ spec:
     app: redis-none
 ```
 
-It still creates ClusterIP and NodePort services but without any ENDPOINTS
+It still creates ClusterIP and NodePort Services, but without any ENDPOINTS.
 
 ```bash
 #kubectl get service redis-nodeport-none
@@ -899,8 +899,8 @@ redis-nodeport-none   <none>      16h
 
 Two iptables rules will be created,
 
-*   `-A KUBE-EXTERNAL-SERVICES -p tcp -m comment --comment "default/redis-nodeport-none: has no endpoints" -m addrtype --dst-type LOCAL -m tcp --dport 30003 -j REJECT --reject-with icmp-port-unreachable` is for NodePort service and will response with "icmp port unreachable" to NodeIP:Port
-*   `-A KUBE-SERVICES -d 10.0.109.24/32 -p tcp -m comment --comment "default/redis-nodeport-none: has no endpoints" -m tcp --dport 6379 -j REJECT --reject-with icmp-port-unreachable` is for ClusterIP service and will response with "icmp port unreachable" to ClusterIP:Port
+*   `-A KUBE-EXTERNAL-SERVICES -p tcp -m comment --comment "default/redis-nodeport-none: has no endpoints" -m addrtype --dst-type LOCAL -m tcp --dport 30003 -j REJECT --reject-with icmp-port-unreachable` is for NodePort Service and will respond with "icmp port unreachable" to NodeIP:Port.
+*   `-A KUBE-SERVICES -d 10.0.109.24/32 -p tcp -m comment --comment "default/redis-nodeport-none: has no endpoints" -m tcp --dport 6379 -j REJECT --reject-with icmp-port-unreachable` is for ClusterIP Service and will respond with "icmp port unreachable" to ClusterIP:Port.
 
 ```bash
 -A KUBE-EXTERNAL-SERVICES -p tcp -m comment --comment "default/redis-nodeport-none: has no endpoints" -m addrtype --dst-type LOCAL -m tcp --dport 30003 -j REJECT --reject-with icmp-port-unreachable
@@ -930,7 +930,7 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 
 ## 4.5 Nodeport with session affinity(redis-nodeport-sa)
 
-NodePort session affinity is similar like ClusterIP session affinity, for example if we deploy a session affinity service with `kubectl apply -f redis-nodeport-sa.yaml`
+NodePort session affinity is similar to ClusterIP session affinity. For example, if we deploy a session affinity Service with `kubectl apply -f redis-nodeport-sa.yaml`:
 
 ```yaml
 #redis-nodeport-sa.yaml
@@ -966,7 +966,7 @@ Two NodePort rules will be added into KUBE-NODEPORTS chain.
 
 ## 4.6 NodePort with "externalTrafficPolicy: Local" and session affinity(redis-nodeport-local-sa)
 
-NodePort service with `externalTrafficPolicy: Local` and session affinity is a combination of Nodeport service with session affinity and NodePort service with \`externalTrafficPolicy: Local
+NodePort Service with `externalTrafficPolicy: Local` and session affinity is a combination of NodePort Service with session affinity and NodePort Service with `externalTrafficPolicy: Local`.
 
 ```yaml
 apiVersion: v1
@@ -984,7 +984,7 @@ spec:
     app: redis
 ```
 
-From the agent node has no local endpoints, it simply drops the requests to NodeIP:NodePort, for example, in VM aks-nodepool1-41808012-1, the iptables rules will be
+From the agent node that has no local endpoints, it simply drops the requests to NodeIP:NodePort. For example, in VM aks-nodepool1-41808012-1, the iptables rules will be:
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.199.210/32 -p tcp -m comment --comment "default/redis-nodeport-local-sa: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -1003,7 +1003,7 @@ From the agent node has no local endpoints, it simply drops the requests to Node
 -A KUBE-SEP-4T6FPJ2ZBIJ6D6TT -p tcp -m recent --set --name KUBE-SEP-4T6FPJ2ZBIJ6D6TT --mask 255.255.255.255 --rsource -m tcp -j DNAT --to-destination 10.244.0.4:6379
 ```
 
-While from agent node aks-nodepool1-41808012-2 which has local endpoint, it will accept inbound traffics to NodeIP:NodePort
+While from agent node aks-nodepool1-41808012-2, which has a local endpoint, it will accept inbound traffic to NodeIP:NodePort.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.199.210/32 -p tcp -m comment --comment "default/redis-nodeport-local-sa: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -1027,13 +1027,13 @@ While from agent node aks-nodepool1-41808012-2 which has local endpoint, it will
 
 ## 5.1 LoadBalancer introduction
 
-Refer to [Services](https://kubernetes.io/docs/concepts/services-networking/), LoadBalancer service
+Refer to [Services](https://kubernetes.io/docs/concepts/services-networking/) for LoadBalancer Service:
 
 > Exposes the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
 
-A LoadBalancer service implicitly includes ClusterIP and NodePort.
+A LoadBalancer Service implicitly includes ClusterIP and NodePort.
 
-Assuming we deploy a web frontend with `kubectl apply -f vote.yaml` and it has below 5 types of LoadBalancer service, we will explain each type of LoadBalancer service in following sub-sections
+Assuming we deploy a web frontend with `kubectl apply -f vote.yaml`, and it has the following five types of LoadBalancer Service, we will explain each type of LoadBalancer Service in the following subsections.
 
 *   LoadBalancer service
 *   LoadBalancer service with externalTrafficPolicy: Local
@@ -1138,7 +1138,7 @@ spec:
 
 ## 5.2 Deployed services and endpoints
 
-The deployed services and endpoints are
+The deployed Services and Endpoints are:
 
 ```bash
 #kubectl get service
@@ -1166,7 +1166,7 @@ vote-lb-sa         10.244.0.6:80       23m
 
 ## 5.3 LoadBalancer(vote-lb)
 
-As explained previously, LoadBalancer implicitly includes ClusterIP and NodePort services, below is in a completed list of iptables chains & rules for LoadBalancer service
+As explained previously, LoadBalancer implicitly includes ClusterIP and NodePort Services. Below is a complete list of iptables chains and rules for the LoadBalancer Service.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.96.126/32 -p tcp -m comment --comment "default/vote-lb: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1187,7 +1187,7 @@ As explained previously, LoadBalancer implicitly includes ClusterIP and NodePort
 -A KUBE-SEP-UBWWGAV5O3W3X7ZZ -p tcp -m tcp -j DNAT --to-destination 10.244.0.6:80
 ```
 
-Besides ClusterIP and NodePort iptables chains & rules, below iptables chains & rules are targeted for LoadBalancer service specificly
+Besides ClusterIP and NodePort iptables chains and rules, the iptables chains and rules below are targeted specifically for the LoadBalancer Service.
 
 ```
 -A KUBE-SERVICES -d 104.215.199.117/32 -p tcp -m comment --comment "default/vote-lb: loadbalancer IP" -m tcp --dport 80 -j KUBE-FW-VXWUQCQV72VDOWKK
@@ -1197,13 +1197,13 @@ Besides ClusterIP and NodePort iptables chains & rules, below iptables chains & 
 -A KUBE-FW-VXWUQCQV72VDOWKK -m comment --comment "default/vote-lb: loadbalancer IP" -j KUBE-MARK-DROP
 ```
 
-Rule '-A KUBE-SERVICES -d **104.215.199.117/32** -p tcp -m comment --comment "default/vote-lb: loadbalancer IP" -m tcp --dport 80 -j KUBE-FW-VXWUQCQV72VDOWKK' requires destination IP **104.215.199.117** to be preserved from the inbound traffics otherwise it won't be able to do the DNAT, as for cloud providers, generally they will use floating IP to keep the public VIP, hence the inbound traffics can have destination IP address remained as it is.
+Rule '-A KUBE-SERVICES -d **104.215.199.117/32** -p tcp -m comment --comment "default/vote-lb: loadbalancer IP" -m tcp --dport 80 -j KUBE-FW-VXWUQCQV72VDOWKK' requires destination IP **104.215.199.117** to be preserved from the inbound traffic; otherwise it won't be able to do the DNAT. For cloud providers, they generally use floating IP to keep the public VIP, so inbound traffic can keep its destination IP address as-is.
 
 ## 5.4 LoadBalancer with "externalTrafficPolicy: Local"(vote-lb-local)
 
-It is pretty much like NodePort with "externalTrafficPolicy: Local"
+It is pretty much like NodePort with "externalTrafficPolicy: Local".
 
-iptables chains and rules from agent node aks-nodepool1-41808012-1 without any local endpoints, will drop inbound traffics to LoadBalancer IP with rule `-A KUBE-FW-HL75EI7U6Y3GOE4U -m comment --comment "default/vote-lb-local: loadbalancer IP" -j KUBE-MARK-DROP`
+iptables chains and rules from agent node aks-nodepool1-41808012-1, without any local endpoints, will drop inbound traffic to the LoadBalancer IP with rule `-A KUBE-FW-HL75EI7U6Y3GOE4U -m comment --comment "default/vote-lb-local: loadbalancer IP" -j KUBE-MARK-DROP`.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.244.84/32 -p tcp -m comment --comment "default/vote-lb-local: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1226,9 +1226,9 @@ iptables chains and rules from agent node aks-nodepool1-41808012-1 without any l
 -A KUBE-SEP-H2DWUQDTMSNHW2DQ -p tcp -m tcp -j DNAT --to-destination 10.244.0.6:80
 ```
 
-**Note**: Compare with vote-lb's iptables chains & rules, above iptables chains & rules don't have this rule `-A KUBE-FW-HL75EI7U6Y3GOE4U -m comment --comment "default/vote-lb-local: loadbalancer IP" -j KUBE-MARK-MASQ` rule, that means no SNAT will be applied to source IP, and source IP address will be preserved with option "externalTrafficPolicy: Local".
+**Note**: Compared with vote-lb's iptables chains and rules, the iptables chains and rules above do not have this rule: `-A KUBE-FW-HL75EI7U6Y3GOE4U -m comment --comment "default/vote-lb-local: loadbalancer IP" -j KUBE-MARK-MASQ`. That means no SNAT will be applied to the source IP, and the source IP address will be preserved with the option "externalTrafficPolicy: Local".
 
-iptables chains and rules from agent node aks-nodepool1-41808012-2 has local endpoints, will replace drop rule with `-A KUBE-XLB-HL75EI7U6Y3GOE4U -m comment --comment "Balancing rule 0 for default/vote-lb-local:" -j KUBE-SEP-H2DWUQDTMSNHW2DQ`
+iptables chains and rules from agent node aks-nodepool1-41808012-2, which has local endpoints, will replace the drop rule with `-A KUBE-XLB-HL75EI7U6Y3GOE4U -m comment --comment "Balancing rule 0 for default/vote-lb-local:" -j KUBE-SEP-H2DWUQDTMSNHW2DQ`.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.244.84/32 -p tcp -m comment --comment "default/vote-lb-local: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1253,7 +1253,7 @@ iptables chains and rules from agent node aks-nodepool1-41808012-2 has local end
 
 ## 5.5 LoadBalancer with session affinity(vote-lb-sa)
 
-It uses same iptables chains & rules of NodePort to implement session affinity, only adds LoadBalancer's entrance rule (KUBE-FW-EZQBRNY2ES44QYCG). The session affinity implementation is same as NodePort & ClusterIP services.
+It uses the same iptables chains and rules as NodePort to implement session affinity, only adding the LoadBalancer entrance rule (KUBE-FW-EZQBRNY2ES44QYCG). The session affinity implementation is the same as NodePort and ClusterIP Services.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.66.132/32 -p tcp -m comment --comment "default/vote-lb-sa: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1277,9 +1277,9 @@ It uses same iptables chains & rules of NodePort to implement session affinity, 
 
 ## 5.6 LoadBalancer with "externalTrafficPolicy: Local" and session affinity(vote-lb-local-sa)
 
-It's a combination of LoadBalancer with externalTrafficPolicy: Local and LoadBalancer with session affinity.
+It is a combination of LoadBalancer with externalTrafficPolicy: Local and LoadBalancer with session affinity.
 
-iptables chains & rules from agent node aks-nodepool1-41808012-1 without any local endpoints is below
+iptables chains and rules from agent node aks-nodepool1-41808012-1, without any local endpoints, are below.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.191.143/32 -p tcp -m comment --comment "default/vote-lb-local-sa: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1303,7 +1303,7 @@ iptables chains & rules from agent node aks-nodepool1-41808012-1 without any loc
 -A KUBE-SEP-ZRORXIYLQOYHSTET -p tcp -m recent --set --name KUBE-SEP-ZRORXIYLQOYHSTET --mask 255.255.255.255 --rsource -m tcp -j DNAT --to-destination 10.244.0.6:80
 ```
 
-iptables chains and rules from agent node aks-nodepool1-41808012-2 has local endpoints is below
+iptables chains and rules from agent node aks-nodepool1-41808012-2, which has local endpoints, are below.
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.191.143/32 -p tcp -m comment --comment "default/vote-lb-local-sa: cluster IP" -m tcp --dport 80 -j KUBE-MARK-MASQ
@@ -1330,7 +1330,7 @@ iptables chains and rules from agent node aks-nodepool1-41808012-2 has local end
 
 ## 5.7 LoadBalancer without any endpoints(vote-lb-none)
 
-It is similar like NodePort without any endpoints, iptables chains & rules are below
+It is similar to NodePort without any endpoints. The iptables chains and rules are below.
 
 ```bash
 -A KUBE-EXTERNAL-SERVICES -p tcp -m comment --comment "default/vote-lb-none: has no endpoints" -m addrtype --dst-type LOCAL -m tcp --dport 32095 -j REJECT --reject-with icmp-port-unreachable
@@ -1342,11 +1342,11 @@ It is similar like NodePort without any endpoints, iptables chains & rules are b
 
 Wrap it up,
 
-*   There are 3 types of service in kubernetes, ClusterIP, NodePort and LoadBalancer.
-*   LoadBalancer service implicitly includes NodePort and ClusterIP service.
-*   NodePort service implicitly includes ClusterIP service.
-*   Kubernetes injects custom chains into iptables NAT table to implement its service mode, pod network to service will use DNAT, external network to service will use SNAT and DNAT, pod connect to a service IP it serves will use hairpin NAT.
-*   NodePort and externalIPs will reserve a listening port on agent node to avoid conflicting with other applications.
-*   Session affinity makes requests from the same client alway get routed back to the same back-end pod.
-*   "externalTrafficPolicy: Local" preserves source IP without SNAT and proxy inbound traffics to local endpoints.
-*   If no backend pod matched with selector, reject rules will be inserted into the iptables.
+*   There are three types of Service in Kubernetes: ClusterIP, NodePort, and LoadBalancer.
+*   LoadBalancer Service implicitly includes NodePort and ClusterIP Service.
+*   NodePort Service implicitly includes ClusterIP Service.
+*   Kubernetes injects custom chains into the iptables NAT table to implement its Service mode. Pod network to Service will use DNAT, external network to Service will use SNAT and DNAT, and a Pod connecting to a Service IP it serves will use hairpin NAT.
+*   NodePort and externalIPs will reserve a listening port on the agent node to avoid conflicting with other applications.
+*   Session affinity makes requests from the same client always get routed back to the same backend Pod.
+*   "externalTrafficPolicy: Local" preserves the source IP without SNAT and proxies inbound traffic to local endpoints.
+*   If no backend Pod matches the selector, reject rules will be inserted into iptables.

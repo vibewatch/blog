@@ -1,5 +1,5 @@
 ---
-title: "How to Setup an OpenVPN Server on Azure (Updated)"
+title: "How to Set Up an OpenVPN Server on Azure (Updated)"
 slug: "how-to-setup-an-openvpn-server-on-azure-updated"
 date: "2023-01-15 08:57:03"
 updated: "2023-07-16 04:00:29"
@@ -12,14 +12,14 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Linux", "OpenVPN", "Azure"]
 ---
-This is an updated version for my previous article [How to Setup an OpenVPN Server on Azure](/how-to-setup-an-openvpn-server-on-azure/) to support configure OpenVPN on Ubuntu 22.04 since a lot of changes happened on Easy-RSA.
+This is an updated version of my previous article [How to Set Up an OpenVPN Server on Azure](/how-to-setup-an-openvpn-server-on-azure/) to support configuring OpenVPN on Ubuntu 22.04, since many changes have happened in Easy-RSA.
 
 ## **Prerequisites**
 
-*   Ubuntu 22.04 VM deployed in Azure at least with one NIC which has public IP address enabled.
-*   User with sudo privilege on Ubuntu 22.04 VM.
-*   VM private IP address doesn't overlap with subnet 172.16.0.0/24
-*   NSG rule is added to VM to allow UDP destination port 32768
+*   An Ubuntu 22.04 VM deployed in Azure with at least one NIC that has a public IP address enabled.
+*   A user with sudo privileges on the Ubuntu 22.04 VM.
+*   The VM private IP address does not overlap with subnet 172.16.0.0/24.
+*   An NSG rule is added to the VM to allow UDP destination port 32768.
 
 ## **Install OpenVPN & Easy-RSA**
 
@@ -32,7 +32,7 @@ sudo apt install openvpn easy-rsa net-tools
 make-cadir ~/openvpn-ca
 ```
 
-Configure `vars` file to include configurations
+Configure the `vars` file to include the required settings.
 
 ```bash
 cd ~/openvpn-ca
@@ -51,9 +51,9 @@ set\_var EASYRSA\_CERT\_EXPIRE 3650
 set\_var EASYRSA\_REQ\_CN  "OpenVPN-CA"  
 set\_var EASYRSA\_BATCH  "1"
 
-## **Setup CA & Configure OpenVPN**
+## **Set Up CA & Configure OpenVPN**
 
-Setup CA
+Set up the CA.
 
 ```bash
 export EASYRSA_BATCH=1
@@ -61,7 +61,7 @@ export EASYRSA_BATCH=1
 ./easyrsa build-ca nopass
 ```
 
-When bash asks "Common Name", enter "OpenVPN-CA", then execute below commands to generate server certificate
+When bash asks for "Common Name", enter "OpenVPN-CA", then execute the following commands to generate the server certificate:
 
 ```bash
 ./easyrsa gen-req ovpn nopass
@@ -70,7 +70,7 @@ When bash asks "Common Name", enter "OpenVPN-CA", then execute below commands to
 openvpn --genkey secret pki/ta.key
 ```
 
-Move certificates and keys to OpenVPN etc directory and create a user represents openvpn
+Move certificates and keys to the OpenVPN `/etc` directory and create a user that represents OpenVPN.
 
 ```bash
 sudo cp pki/ca.crt pki/ta.key pki/dh.pem pki/issued/ovpn.crt pki/private/ovpn.key /etc/openvpn/server
@@ -98,7 +98,7 @@ dh dh.pem
 # OpenVPN network
 server 172.16.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
-# Redirect all traffics to OpenVPN
+# Redirect all traffic to OpenVPN
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.8.4"
@@ -119,7 +119,7 @@ log-append server.log
 verb 4
 ```
 
-Adding iptables rules to NAT OpenVPN traffic
+Add iptables rules to NAT OpenVPN traffic.
 
 ```bash
 # iptables configuration for openvpn
@@ -137,13 +137,13 @@ sudo bash -c "echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf"
 sudo sysctl -p
 ```
 
-Use iptables-persistent to save iptables rules
+Use iptables-persistent to save iptables rules.
 
 ```bash
 sudo apt install iptables-persistent
 ```
 
-Start & Enable OpenVPN server service
+Start and enable the OpenVPN server service.
 
 ```bash
 sudo systemctl start openvpn-server@server
@@ -153,14 +153,14 @@ sudo systemctl enable openvpn-server@server
 
 ## **Generate Client Profile and Connect to OpenVPN Service**
 
-Create a shell script to generate client profile
+Create a shell script to generate the client profile.
 
 ```bash
 cd ~
 vi genprofile.sh
 ```
 
-Add following lines into genprofile.sh
+Add the following lines to genprofile.sh.
 
 ```bash
 #!/bin/bash
@@ -257,19 +257,19 @@ From OpenVPN server, run
 ./genprofile.sh <profile name>
 ```
 
-Above command will generate a client profile and save it into ~/client-configs/files, copy/download this profile to client side, from OpenVPN, import this profile and connect.
+The command above will generate a client profile and save it into ~/client-configs/files. Copy/download this profile to the client side, then import this profile from OpenVPN and connect.
 
-The client should have OpenVPN connection established and it should redirect all traffics to OpenVPN now.
+The client should have an OpenVPN connection established, and it should redirect all traffic to OpenVPN now.
 
 ## Use Cloud Provider's Network to Accelerate OpenVPN Connection
 
 If you happen to use a cloud provider and your OpenVPN client is close to one of cloud provider's regions, you could use your cloud provider's network to bridge VPN connection between OpenVPN client and OpenVPN server, the benefits are
 
 *   Reliable VPN connectivity, cloud provider usually provides dedicated internet link cross border
-*   Leverage cloud provider's global network to accelerate VPN connectvity, some cloud providers provides [hot potato routing](https://en.wikipedia.org/wiki/Hot-potato_and_cold-potato_routing) by default, for example Azure or GCP, that means VPN traffic usually goes into optimal paths
+*   Leverage the cloud provider's global network to accelerate VPN connectivity. Some cloud providers provide [hot potato routing](https://en.wikipedia.org/wiki/Hot-potato_and_cold-potato_routing) by default, such as Azure or GCP. That means VPN traffic usually takes optimal paths.
 *   Even you are using sovereign cloud, internet quality between your sovereign cloud provider and VPN server, is still better than your home network
 
-Here is a simple solution that use iptables to bounce traffic from your local cloud data center to remote VPN server
+Here is a simple solution that uses iptables to bounce traffic from your local cloud data center to the remote VPN server.
 
 *   In order to bounce traffic, you should have a Linux VM instance running from your cloud provider's local data center, for example a Ubuntu server distribution with 1 CPU and 1GB memory should be enough
 *   Mapping a UDP port from your Linux VM instance to remote OpenVPN server's port, open NSG to allow that UDP port from your Linux instance. For example, OpenVPN server's UDP port is 1194, you can map a random UDP port say 11940 from your Linux VM instance to 1194 and open NSG to allow 11940 UDP traffic to pass to your Linux VM instance

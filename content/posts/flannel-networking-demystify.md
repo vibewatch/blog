@@ -1,5 +1,5 @@
 ---
-title: "Flannel Networking Demystify"
+title: "Flannel Networking Demystified"
 slug: "flannel-networking-demystify"
 date: "2018-06-01 06:36:30"
 updated: "2018-12-23 03:04:22"
@@ -10,9 +10,9 @@ featured: true
 excerpt: ""
 feature_image: "/assets/posts/flannel-networking-demystify/hero.jpeg"
 authors: ["Yingting Huang"]
-tags: ["Flannel", "VXLAN", "Linux", "K8S", "Kubernetes", "Acceleratd Networking"]
+tags: ["Flannel", "VXLAN", "Linux", "K8S", "Kubernetes", "Accelerated Networking"]
 ---
-In my previous article [Deploy a Ubuntu Based Flannel K8S Cluster in Azure with ARM Template and Kubeadm](/deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure-with-arm-template-and-kubeadm/), I provided an Azure ARM template to deploy a flannel networking K8S cluster on Azure. But how flannel networking works, in this article we will discuss a little bit about the internals, specially for its `VXLAN`, `udp` and `host-gw` mode.
+In my previous article [Deploy a Ubuntu-Based Flannel K8S Cluster in Azure with an ARM Template and Kubeadm](/deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure-with-arm-template-and-kubeadm/), I provided an Azure ARM template to deploy a Flannel networking K8S cluster on Azure. But how does Flannel networking work? In this article, we will discuss its internals, especially its `VXLAN`, `udp`, and `host-gw` modes.
 
 ## 0 What is Flannel
 
@@ -20,7 +20,7 @@ Refer to [Flannel](https://github.com/coreos/flannel)
 
 > Flannel is a simple and easy way to configure a layer 3 network fabric designed for Kubernetes.
 
-Flannel create a flat network runs above host's network, it is an overlay networking solution for K8S cluster.
+Flannel creates a flat network that runs above the host network. It is an overlay networking solution for K8S clusters.
 
 ## 1 How it Works
 
@@ -28,7 +28,7 @@ Refer to [Flannel](https://github.com/coreos/flannel)
 
 > Flannel runs a small, single binary agent called `flanneld` on each host, and is responsible for allocating a subnet lease to each host out of a larger, preconfigured address space. Flannel uses either the Kubernetes API or etcd directly to store the network configuration, the allocated subnets, and any auxiliary data (such as the host's public IP). Packets are forwarded using one of several backend mechanisms including VXLAN and various cloud integrations.
 
-`flanneld` runs under `kube-flannel-ds-*` containter, this container is created/configure when flannel networking is applied to kubernetes cluster.
+`flanneld` runs under the `kube-flannel-ds-*` container. This container is created and configured when Flannel networking is applied to the Kubernetes cluster.
 
 ```bash
 kubectl get pods --namespace=kube-system -o wide
@@ -51,7 +51,7 @@ Refer to [Flannel](https://github.com/coreos/flannel)
 
 > Flannel is responsible for providing a layer 3 IPv4 network between multiple nodes in a cluster. Flannel does not control how containers are networked to the host, only how the traffic is transported between hosts. However, flannel does provide a CNI plugin for Kubernetes and a guidance on integrating with Docker.
 
-To illustrate how flannel networking works, we deployed a 2 nodes flannel K8s cluster to Azure, below is the networking diagram  
+To illustrate how Flannel networking works, we deployed a two-node Flannel K8S cluster to Azure. The networking diagram is below.
 ![Flannel](/assets/posts/flannel-networking-demystify/flannel.jpg)
 
 ### 2.1 Flannel Networking Space
@@ -60,7 +60,7 @@ By default, flannel will have a 10.244.X.0/24 subnet allocated to each node, K8S
 
 ### 2.2 Veth Pair
 
-For each K8S Pod, flannel will create a pair of veth devices. Refer to [veth](http://man7.org/linux/man-pages/man4/veth.4.html) Taking node1 for example, eth0(containern) is created in flannel network namespace, vethxxxxxxxx is created in host network namespace.
+For each K8S Pod, Flannel will create a pair of veth devices. Refer to [veth](http://man7.org/linux/man-pages/man4/veth.4.html). Taking node1 as an example, eth0 (container) is created in the Flannel network namespace, while vethxxxxxxxx is created in the host network namespace.
 
 > The veth devices are virtual Ethernet devices. They can act as tunnels between network namespaces to create a bridge to a physical  
 > network device in another namespace.
@@ -108,7 +108,7 @@ We can verify veth device is connected with cni0 by issuing command `ip -d link 
     bridge_slave state forwarding priority 32 cost 2 hairpin on guard off root_block off fastleave off learning on flood on addrgenmode eui64
 ```
 
-It shows veth43b57597 is a bridge\_slave and it's master is cni0.
+It shows veth43b57597 is a bridge\_slave, and its master is cni0.
 
 ```bash
 bridge vlan show
@@ -124,7 +124,7 @@ veth822966d6	 1 PVID Egress Untagged
 
 ### 2.4 VXLAN Device
 
-When VXLAN backend is being used by flannel, a VXLAN device whose name is flannel.<vni> will be created, <vni> stands for VXLAN Network Identifier, by default in flannel VNI is set to 1, that means the default device name is flannel.1. `ip -d link show flannel.1` will show details about this VXALN device
+When the VXLAN backend is being used by Flannel, a VXLAN device whose name is flannel.<vni> will be created. <vni> stands for VXLAN Network Identifier. By default, Flannel sets VNI to 1, which means the default device name is flannel.1. `ip -d link show flannel.1` will show details about this VXLAN device.
 
 ```bash
 4: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default 
@@ -134,7 +134,7 @@ When VXLAN backend is being used by flannel, a VXLAN device whose name is flanne
 
 As displayed from above output, vxlan id is 1, eth0 device is used in tunneling, VXLAN UDP port is 8472 and the nolearning tag that disables source-address learning meaning Multicast is not used but Unicast with static L3 entries for the peers.
 
-VXLAN device flannel.1 is linked with physical network device eth0 to send out VXLAN traffics through physical network. Agent `flanneld` will populate node ARP table as well as the bridge forwarding database, so flannel.1 knows how to forward traffics within physical network. When a new kubernetes node is found (either during startup or when it’s created), `flanneld` adds
+VXLAN device flannel.1 is linked with physical network device eth0 to send VXLAN traffic through the physical network. Agent `flanneld` will populate the node ARP table as well as the bridge forwarding database, so flannel.1 knows how to forward traffic within the physical network. When a new Kubernetes node is found (either during startup or when it’s created), `flanneld` adds:
 
 *   ARP entry for remote node's VXLAN device. (VXLAN device IP->VXLAN device MAC)
 *   VXLAN fdb entry to remote host. (VXLAN device MAC->Remote Node IP)
@@ -142,7 +142,7 @@ VXLAN device flannel.1 is linked with physical network device eth0 to send out V
 Sample ARP entry and FDB entry from node1
 
 ```bash
-# Permanet ARP entry programmed by flanneld
+# Permanent ARP entry programmed by flanneld
 ip neigh show dev flannel.1
 10.244.0.0 lladdr 76:34:2f:c5:51:ec PERMANENT
 
@@ -176,7 +176,7 @@ bridge fdb show flannel.1
 
 ### 2.5 VXLAN Routing
 
-Traffics between cni0 and flannel.1 are forwarded by iptables, the configuration is in below.
+Traffic between cni0 and flannel.1 is forwarded by iptables. The configuration is below.
 
 ```bash
 # Check ip_forward is enabled or not
@@ -191,7 +191,7 @@ iptables-save
 ...
 ```
 
-If you look into details if host node's routing table. We can find containers in same host node communicate to each other over the cni0 linux bridge (each container gets its own network namespace which gets connected to cni0 bridge via pair of veth interfaces) and traffics go to the containers in other host nodes will via flannel.1 interface as per routing table rule for the 10.244.0.0/24 subnet.
+If you look into the details of the host node's routing table, you can see that containers on the same host node communicate with each other over the cni0 Linux bridge (each container gets its own network namespace, which gets connected to the cni0 bridge via a pair of veth interfaces). Traffic going to containers on other host nodes will go via the flannel.1 interface, as specified by the routing table rule for the 10.244.0.0/24 subnet.
 
 ```bash
 route
@@ -205,10 +205,10 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 ### 2.6 Connecting the Dots(VXLAN)
 
-Connecting the dots, the network flow will looks like in below  
+Connecting the dots, the network flow will look like this.
 ![flannel-network-flow](/assets/posts/flannel-networking-demystify/flannel-network-flow.jpg)
 
-Imageing Pod-A from node1 is going to send data to Pod-B in node0, Pod-A's IP address is 10.244.1.5 and Pod-B's IP address is 10.244.0.5
+Imagine Pod-A from node1 is going to send data to Pod-B in node0. Pod-A's IP address is 10.244.1.5, and Pod-B's IP address is 10.244.0.5.
 
 *   Pod-A's outbound packet will go to cni0 bridge
 *   Then it gets forwarded to device flannel.1 based on routing table entry `10.244.0.0 10.244.0.0 255.255.255.0 UG 0 0 0 flannel.1`
@@ -869,7 +869,7 @@ Internet Control Message Protocol
 
 ## 5 Flannel 'host-gw' Mode
 
-In this mode, flannel simply configures each host node as a gateway and replies on routing table to route the traffics between Pod network and host. There will be no 'flannel.1' or `flannel0` interface created, all traffics are routed from `eth0` interface.
+In this mode, Flannel simply configures each host node as a gateway and relies on the routing table to route traffic between the Pod network and the host. There will be no 'flannel.1' or `flannel0` interface created; all traffic is routed from the `eth0` interface.
 
 ```bash
 cni0      Link encap:Ethernet  HWaddr 0a:58:0a:f4:01:01  
@@ -927,10 +927,10 @@ veth1bcc16bd Link encap:Ethernet  HWaddr ca:46:7d:58:6d:8b
 If the cluster is created under cloud environment, cloud provider also needs to make sure each node is acting as a gateway. For example, if we want to make it work from Azure environment, we also need to enable IP forwarding from each NIC attached to host node  
 ![azure-flannel-ipforwarding](/assets/posts/flannel-networking-demystify/azure-flannel-ipforwarding.jpg)
 
-UDR also need to be configured(UDR will be automatically created with Azure kubernetes cloud provider) like below  
+UDR also needs to be configured (UDR will be automatically created with the Azure Kubernetes cloud provider), as shown below.
 ![azure-flannel-udr](/assets/posts/flannel-networking-demystify/azure-flannel-udr.jpg)
 
-From each node, the routing table will be set to below, we can see for each 10.244.0.0/24 subnet, there will be a specific routing table entry to route the traffics to each host `10.244.0.0 172.16.0.4 255.255.255.0 UG 0 0 0 eth0` through eth0 interface.
+From each node, the routing table will be set as below. For each 10.244.0.0/24 subnet, there will be a specific routing table entry to route traffic to each host, such as `10.244.0.0 172.16.0.4 255.255.255.0 UG 0 0 0 eth0`, through the eth0 interface.
 
 ```bash
 Kernel IP routing table
@@ -960,7 +960,7 @@ PING 10.244.0.7 (10.244.0.7): 56 data bytes
 ...
 ```
 
-If we capture a network trace from `eth0` interface by issuing `tcpdump -i eth0 -n -e "icmp or arp"`, we can see the traffics are below
+If we capture a network trace from the `eth0` interface by issuing `tcpdump -i eth0 -n -e "icmp or arp"`, we can see the traffic below.
 
 ```bash
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode

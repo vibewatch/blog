@@ -1,5 +1,5 @@
 ---
-title: "Building an English Dictionary with LLM"
+title: "Building an English Dictionary with an LLM"
 slug: "building-an-english-dictionary-with-llm"
 date: "2025-03-29 03:10:17"
 updated: "2025-03-29 11:11:07"
@@ -12,7 +12,7 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
-In my [previous blog](/my-vibe-coding-journey/), I mentioned about online dictionary feature from my English learning app. Today, I'll share the implementation details and how I overcame several challenges using Large Language Models (LLMs).
+In my [previous blog post](/my-vibe-coding-journey/), I mentioned the online dictionary feature in my English learning app. Today, I'll share the implementation details and how I overcame several challenges using large language models (LLMs).
 
 ## The Challenge
 
@@ -26,7 +26,7 @@ I also explored open-source dictionaries like [OPTED](https://www.mso.anu.edu.au
 
 ## The LLM Approach
 
-I decided to leverage LLMs to generate my English to English dictionary for several reasons in below:
+I decided to leverage LLMs to generate my English-to-English dictionary for the following reasons:
 
 1.  LLMs are trained on massive text corpora containing word meanings
 2.  I could extract these definitions efficiently in a one-time process
@@ -34,7 +34,7 @@ I decided to leverage LLMs to generate my English to English dictionary for seve
 
 ## Implementation Details
 
-The ovall process begins with a list of common English words. For each word, an LLM is used to generate its meanings.
+The overall process begins with a list of common English words. For each word, an LLM is used to generate its meanings.
 
 ### Step 1: Finding a Common English Word List
 
@@ -48,7 +48,7 @@ With GitHub Copilot's assistance, I developed code to:
 *   Generate definitions categorized by parts of speech (noun, verb, adjective, etc.)
 *   Format the output as JSON, with each word as a key and definitions grouped by part of speech
 
-The prompt that I used is very simple
+The prompt I used was very simple:
 
 ```
 For each word in the provided list, generate definitions categorized by their respective parts of speech abbreviations (n., v., a., etc.). 
@@ -61,16 +61,16 @@ WORDS: {words_str}
 
 To minimize costs while processing thousands of words, I implemented several optimizations:
 
-*   **Self-hosted LLM:** The cost of using the OpenAI API to generate a dictionary varies depending on the model, ranging from $5 to $50 for creating a 20MB dictionary. However, this approach carries the risk of request rate limiting. Therefore, I opted for a self-hosted LLM, which offers greater flexibility in selecting models. For instance, **Phi-4** for creating English-to-English dictionaries. **Qwen-2.5** for English-to-Chinese dictionaries.
+*   **Self-hosted LLM:** The cost of using the OpenAI API to generate a dictionary varies depending on the model, ranging from $5 to $50 for creating a 20MB dictionary. However, this approach carries the risk of request rate limiting. Therefore, I opted for a self-hosted LLM, which offers greater flexibility in model selection. For instance, I used **Phi-4** for English-to-English dictionaries and **Qwen-2.5** for English-to-Chinese dictionaries.
 *   **Spot VMs**: Leveraged discounted cloud instances for the generation task
-*   **vLLM**: Used the vLLM to accelerate batch processing
-*   **Concurrency**: Set up concurrent LLM requests to efficiently utilize the batch processing capabilities. From an A100 (80GB) VM(NC24ads), I was able to achieve ~500 tokens/s result with a batch size of 16.
+*   **vLLM**: Used vLLM to accelerate batch processing
+*   **Concurrency**: Set up concurrent LLM requests to efficiently utilize batch processing capabilities. From an A100 (80GB) VM (NC24ads), I was able to achieve ~500 tokens/s with a batch size of 16.
 
 ![vLLM batch throughput](/assets/posts/building-an-english-dictionary-with-llm/vllm-throughput.png)
 
 ## The Result
 
-Here is the final result for my online dictionary
+Here is the final result for my online dictionary:
 
 ![Online dictionary result](/assets/posts/building-an-english-dictionary-with-llm/online-dictionary-result.png)
 
@@ -81,9 +81,9 @@ This approach provided several advantages:
 3.  **No rate limits**: The dictionary is stored locally in my app
 4.  **Control**: I could format the definitions exactly as needed for my UI
 
-## Postprocess
+## Post-processing
 
-To maintain the highest quality standards for my English dictionary, I implement a post-processing workflow for the dictionary file:
+To maintain high quality standards for my English dictionary, I implemented a post-processing workflow for the dictionary file:
 
 1.  Normalizing all Unicode characters throughout the file
 2.  Converting all English words to lowercase for consistency

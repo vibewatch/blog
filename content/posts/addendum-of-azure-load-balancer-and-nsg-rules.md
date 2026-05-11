@@ -14,15 +14,15 @@ tags: ["Load Balancer", "Azure"]
 ---
 ## 1 AllowAzureLoadBalancerInBound NSG Rule
 
-When an IaaS VM get deployed in Azure, there will be a default NSG rule AllowAzureLoadBalancerInBound created  
+When an IaaS VM gets deployed in Azure, a default NSG rule named AllowAzureLoadBalancerInBound is created.
 ![Allow Azure Load Balancer inbound NSG rule](/assets/posts/addendum-of-azure-load-balancer-and-nsg-rules/allow-azure-load-balancer-inbound.jpg)
 
-You might wonder what's the meaning of this NSG rule? Well, basically this rule means allow "Azure Load Balancer Health Probe". When an Azure Load Balancer get created, it will probe backend to detect if the backend service is healthy or not, the probe packet is sent from source address "AzureLoadBalancer", the IP address of "AzureLoadBalancer" is always **168.63.129.16**.
+You might wonder what this NSG rule means. Basically, this rule allows the "Azure Load Balancer Health Probe". When an Azure Load Balancer is created, it probes the backend to detect whether the backend service is healthy. The probe packet is sent from the source address "AzureLoadBalancer", and the IP address of "AzureLoadBalancer" is always **168.63.129.16**.
 
 Refer to [Network security](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview#azure-platform-considerations)
 
 > Virtual IP of the host node: Basic infrastructure services such as DHCP, DNS, and health monitoring are provided through the virtualized host IP addresses 168.63.129.16 and 169.254.169.254. These public IP addresses belong to Microsoft and are the only virtualized IP addresses used in all regions for this purpose. The addresses map to the physical IP address of the server machine (host node) hosting the virtual machine. The host node acts as the DHCP relay, the DNS recursive resolver, **and the probe source for the load balancer health probe and the machine health probe**.
 
-## 2 How to setup a NSG rule to allow Load Balanced Traffics
+## 2 How to set up an NSG rule to allow load-balanced traffic
 
-If we are going to allow load balanced inbound traffics, the NSG rule should always use the the **"backend port"** as the destination port. For example, if we create a load balancing rule to open port 80 from load balancer public IP address, while use 8080 as the backend port, then the corresponding NSG rule should allow 8080 port as the destination port not the 80 port.
+If we are going to allow load-balanced inbound traffic, the NSG rule should always use the **"backend port"** as the destination port. For example, if we create a load-balancing rule to open port 80 from the load balancer public IP address while using 8080 as the backend port, then the corresponding NSG rule should allow port 8080 as the destination port, not port 80.

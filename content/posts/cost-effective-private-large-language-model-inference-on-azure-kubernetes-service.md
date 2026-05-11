@@ -16,15 +16,15 @@ tags: []
 
 This article provides a method for private and cost-optimized deployment of large language models on the Azure cloud. It assumes the reader has foundational knowledge of large language models and Kubernetes.
 
-It utilizes AKS spot instances, quantization techniques, and batching inference to reduce compute costs compared to traditional deployment approaches.
+It utilizes AKS spot instances, quantization techniques, and batch inference to reduce compute costs compared to traditional deployment approaches.
 
-A [proof-of-concept deployment](https://github.com/huangyingting/llm-inference) demonstrates using cluster autoscaler, GPU node pools, pod affinity and tolerations on Azure Kubernetes Service to enable fast and resilient large language model inference leveraging low-cost spot instance GPU nodes.
+A [proof-of-concept deployment](https://github.com/huangyingting/llm-inference) demonstrates using cluster autoscaler, GPU node pools, pod affinity, and tolerations on Azure Kubernetes Service to enable fast and resilient large language model inference with low-cost spot instance GPU nodes.
 
 ### Reasons for running large language models privately
 
 There are several motivations for organizations to run large language models privately:
 
-*   Customization - Private models can be customized for specific domains by providing proprietary training data. This improves accuracy for niche tasks like internal search or customer support..
+*   Customization - Private models can be customized for specific domains by providing proprietary training data. This improves accuracy for niche tasks like internal search or customer support.
 *   Confidentiality - Keeping data internal allows tighter control over sensitive information like personal data, intellectual property, or competitive intelligence.
 *   Control - Full control over the training data, hyperparameters, model architecture, etc. This allows you to ensure the model behaves as intended.
 *   Low latency - A privately hosted model can provide very low latency responses since you don't have to make API calls over the internet to external servers.
@@ -43,9 +43,9 @@ Beyond raw compute costs, the development, infrastructure, and maintenance requi
 This proof-of-concept leverages Azure Kubernetes Service (AKS), quantization, and batch inference to enable a cost-optimized private deployment of large language models while maintaining scalability and fault tolerance.  
 Key techniques:
 
-*   AKS enables the use of spot instances and GPUs through configurable node pools. Spot instances significantly reduce compute costs compared to on-demand instance pricing. To handle potential node evictions, AKS cluster autoscaler component monitors pod resource requirements and calculates the capacity needed for scheduled GPU workloads. It then automatically adjusts node counts to match workload demands. Considering of a 5% eviction rate, a 2 replicas GPU workalod (each replica is in a seperated node) would have at least 99.75% chance alive to serve the request. This allows the cluster to leverage cost-savings from spot instances while maintaining available capacity.
+*   AKS enables the use of spot instances and GPUs through configurable node pools. Spot instances significantly reduce compute costs compared to on-demand instance pricing. To handle potential node evictions, the AKS cluster autoscaler component monitors pod resource requirements and calculates the capacity needed for scheduled GPU workloads. It then automatically adjusts node counts to match workload demands. Assuming a 5% eviction rate, two GPU workload replicas (each replica on a separate node) would have at least a 99.75% chance of staying available to serve requests. This allows the cluster to leverage cost savings from spot instances while maintaining available capacity.
 *   Quantization is a technique to decrease model size and compute requirements for large language models (LLMs). It works by converting the high-precision floating point values used to represent weights and activations into lower-precision fixed-point representations that require less memory. This weight sharing through lower numeric precision allows for substantial reductions in model size and faster inference times. Some well-known quantization methods for LLMs include [GGML](https://github.com/ggerganov/ggml) and [GPT-Q](https://arxiv.org/abs/2210.17323).
-*   Batching groups multiple inference requests into a single batch call instead of handling them individually. This improves utilization for sporadic workloads. Batching is particularly beneficial for compute-intensive LLMs that can take several seconds per request. [vllm](https://github.com/vllm-project/vllm) and [text-generation-inference](https://github.com/huggingface/text-generation-inference) are two common batch inference frameworks for LLMs. In the next section, we will leverage vllm to demonstrate the advantages of batching in our proof-of-concept deployment.
+*   Batching groups multiple inference requests into a single batch call instead of handling them individually. This improves utilization for sporadic workloads. Batching is particularly beneficial for compute-intensive LLMs that can take several seconds per request. [vLLM](https://github.com/vllm-project/vllm) and [text-generation-inference](https://github.com/huggingface/text-generation-inference) are two common batch inference frameworks for LLMs. In the next section, we will leverage vLLM to demonstrate the advantages of batching in our proof-of-concept deployment.
 
 ![Architecture Design](https://raw.githubusercontent.com/huangyingting/llm-inference/main/docs/images/LLM-AKS.svg)
 
@@ -56,8 +56,8 @@ By integrating these optimization methods, significant speedup can be achieved w
 Before starting, ensure you have the following prerequisites:
 
 *   An existing AKS cluster. If you need to create one, you can use the [Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli), [Azure PowerShell](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-powershell), or the [Azure portal](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal).
-*   The `aks-preview` extension installed and `GPUDedicatedVHDPreview` feature registered, follow these [instructions](https://docs.microsoft.com/en-us/azure/aks/gpu-cluster#enable-the-gpu-dedicated-vhd-preview-feature) to set up.
-*   A container image for LLM inference. For this PoC, we will use [vllm](https://github.com/vllm-project/vllm) and [this image](ghcr.io/huangyingting/llm-inference-vllm:main) built from [this Dockerfile](https://github.com/huangyingting/llm-inference/vllm/Dockerfile)
+*   The `aks-preview` extension installed and the `GPUDedicatedVHDPreview` feature registered. Follow these [instructions](https://docs.microsoft.com/en-us/azure/aks/gpu-cluster#enable-the-gpu-dedicated-vhd-preview-feature) to set them up.
+*   A container image for LLM inference. For this PoC, we will use [vLLM](https://github.com/vllm-project/vllm) and [this image](ghcr.io/huangyingting/llm-inference-vllm:main) built from [this Dockerfile](https://github.com/huangyingting/llm-inference/vllm/Dockerfile)
 
 **NOTE**: For production use, it is recommended to build your own custom image. This provides full control over dependencies and compatibility between the GPU accelerated application and GPU driver on the nodes. Refer to the [CUDA Compatibility and Upgrades](https://docs.nvidia.com/deploy/cuda-compatibility/index.html).
 
@@ -76,7 +76,7 @@ export VM_SIZE=Standard_NC4as_T4_v3
 
 ### Add a GPU spot node pool
 
-Now we can add a spot node pool for GPU nodes into existing AKS cluster. The command in below will create a new node pool named `gpunp` with 1 node of `Standard_NC4as_T4_v3` size. The node pool will be configured with GPU taints and cluster autoscaler. The GPU taints will ensure that only GPU workloads are scheduled on the node pool. The cluster autoscaler will automatically adjust the number of nodes in the node pool based on the workload demands. The node pool will also be configured with spot instances to reduce compute costs. The spot-max-price is set to -1 to ensure that the node pool will not be evicted due to price changes. The min-count and max-count are set to 1 to ensure that the node pool will always have at least 1 node available for scheduling.
+Now we can add a spot node pool for GPU nodes to an existing AKS cluster. The following command creates a new node pool named `gpunp` with one node of size `Standard_NC4as_T4_v3`. The node pool will be configured with GPU taints and cluster autoscaler. The GPU taints ensure that only GPU workloads are scheduled on the node pool. The cluster autoscaler automatically adjusts the number of nodes in the node pool based on workload demands. The node pool will also be configured with spot instances to reduce compute costs. The spot-max-price is set to -1 to ensure that the node pool will not be evicted due to price changes. The min-count and max-count are set to 1 to ensure that the node pool always has at least one node available for scheduling.
 
 ```shell
 az aks nodepool add \
@@ -97,7 +97,7 @@ az aks nodepool add \
 
 ### Deploy LLM inference service
 
-With the AKS GPU node pool provisioned, we can now deploy the LLM inference service. Use vllm for example, the deployment manifests are located [here](https://github.com/huangyingting/llm-inference/vllm/manifests/). There are two manifest options, each using a different storage backend for storing the model files:
+With the AKS GPU node pool provisioned, we can now deploy the LLM inference service. Using vLLM as an example, the deployment manifests are located [here](https://github.com/huangyingting/llm-inference/vllm/manifests/). There are two manifest options, each using a different storage backend for storing the model files:
 
 The `vllm-azure-disk.yaml` manifest deploys a `StatefulSet` with 2 replicas and a Service for the LLM inference service. The StatefulSet is configured with pod anti-affinity to ensure the replicas are scheduled on different nodes. It also has tolerations to schedule the replicas on the GPU spot node pool. The Service exposes the LLM inference service on the AKS cluster using a ClusterIP. Each StatefulSet replica mounts a 16GB Azure Disk PersistentVolumeClaim for storing the model files.
 
@@ -121,13 +121,13 @@ With the default tolerations set on the `llm` namespace, any pods created within
 To begin the deployment by using `StatefulSet`, execute this command:
 
 ```shell
-kubeclt apply -f vllm/manifests/vllm-azure-disk.yaml
+kubectl apply -f vllm/manifests/vllm-azure-disk.yaml
 ```
 
 To begin the deployment by using `Deployment`, execute this command:
 
 ```shell
-kubeclt apply -f vllm/manifests/vllm-azure-files.yaml
+kubectl apply -f vllm/manifests/vllm-azure-files.yaml
 ```
 
 **NOTE**: The manifests are configured to use the image `ghcr.io/huangyingting/llm-inference-vllm:main`, you can change it to your own image.
@@ -169,7 +169,7 @@ az vmss simulate-eviction --resource-group MC_$RESOURCE_GROUP_NAME_$CLUSTER_NAME
 
 ### Test LLM inference
 
-The deployment comes with a default model `lmsys/vicuna-7b-v1.5` and an OpenAI API compatiable endpoint. We can test the inference service by running the following command:
+The deployment comes with a default model, `lmsys/vicuna-7b-v1.5`, and an OpenAI API-compatible endpoint. We can test the inference service by running the following command:
 
 ```shell
 # port forwarding to the service

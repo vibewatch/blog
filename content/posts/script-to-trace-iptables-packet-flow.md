@@ -12,9 +12,9 @@ feature_image: "/assets/posts/script-to-trace-iptables-packet-flow/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Linux", "Iptables"]
 ---
-I wrote a simple script to trace packet flow for inbound traffics against a TCP/UDP port, the script can be found from [iptables-trace](https://github.com/huangyingting/devops/blob/master/ts-scripts/iptables-trace.sh)
+I wrote a simple script to trace packet flow for inbound traffic against a TCP/UDP port. The script can be found at [iptables-trace](https://github.com/huangyingting/devops/blob/master/ts-scripts/iptables-trace.sh).
 
-Below is a copy of the script
+Below is a copy of the script.
 
 ```sh
 #!/bin/sh
@@ -47,7 +47,7 @@ else
 fi
 ```
 
-The usage is quite simple, for example, to see a packet flow against port 22
+The usage is quite simple. For example, to see packet flow against port 22:
 
 1.  Run `sudo iptables-trace.sh enable 22`
 2.  Then run `tail -f /var/log/kern.log` to see iptables flow log

@@ -21,11 +21,11 @@ In this article, I'll walk you through two different ways to implement ReAct age
 
 I've deliberately avoided using frameworks like LangChain or AutoGen – not because they aren't valuable, but because building from scratch offers insights you simply can't get otherwise.
 
-The sample code provided here are minimal working examples, but they should give you a solid foundation to build upon. You could find the full code on my GitHub repository [here](https://github.com/huangyingting/agent-learn/tree/main/from-scratch)
+The sample code provided here is made up of minimal working examples, but it should give you a solid foundation to build upon. You can find the full code in my GitHub repository [here](https://github.com/huangyingting/agent-learn/tree/main/from-scratch).
 
-## What is AI Agent?
+## What is an AI Agent?
 
-An AI agent is a system that autonomously performs tasks by interacting with its environment. In AI applications, this often involves leveraging a Large Language Model (LLM) to analyze problems and take actions based on its reasoning.
+An AI agent is a system that autonomously performs tasks by interacting with its environment. In AI applications, this often involves leveraging a large language model (LLM) to analyze problems and take action based on its reasoning.
 
 The agent can utilize various tools to gather information, perform calculations, and interact with APIs. Its key capability lies in adapting its approach based on the outcomes of its actions.
 
@@ -33,7 +33,7 @@ The agent operates through an iterative cycle of generating thoughts, executing 
 
 ## The ReAct Framework Explained
 
-Most of the agent frameworks use ReAct because it mimics how we naturally solve problems – we think, we do something, we see what happens, and then we think again.
+Most agent frameworks use ReAct because it mimics how we naturally solve problems: we think, we do something, we see what happens, and then we think again.
 
 At its core, the ReAct framework is deceptively simple yet incredibly powerful. It creates a loop of:
 
@@ -54,18 +54,18 @@ Plus, there's something deeply satisfying about creating something from the grou
 
 ## Approach #1: Native Function Calling
 
-Modern LLMs like GPT-40, Claude, and Gemini have a neat built-in capability: they can generate structured function calls. This makes creating agents surprisingly straightforward.
+Modern LLMs like GPT-4o, Claude, and Gemini have a neat built-in capability: they can generate structured function calls. This makes creating agents surprisingly straightforward.
 
 ### How It Works
 
 When using native function calling, the process feels almost magical:
 
 1.  Tools are defined as Python functions with clear docstrings
-2.  These are converted into a standardized schema that is understood by the LLM
-3.  When and how to use these tools is decided by the model, with parameters being correctly formatted
-4.  The functions are executed by the code and results are fed back to the model
+2.  These tools are converted into a standardized schema that the LLM can understand
+3.  The model decides when and how to use these tools, while formatting the parameters correctly
+4.  The code executes the functions and feeds the results back to the model
 
-The beauty of this approach is that most of the heavy lifting is handled by the LLM. Which function to call is determined by the model and the arguments are appropriately formatted – no parsing is required by the developer!
+The beauty of this approach is that most of the heavy lifting is handled by the LLM. The model determines which function to call and formats the arguments appropriately, so no manual parsing is required from the developer!
 
 ### A Practical Example
 
@@ -95,7 +95,7 @@ While native function calling is convenient, sometimes you need more control or 
 
 ### How It Works
 
-The TAO parsing is more hands-on but offers incredible flexibility:
+TAO parsing is more hands-on but offers incredible flexibility:
 
 1.  A detailed prompt is crafted to instruct the LLM to format its thoughts and actions in a specific way
 2.  Structured information is extracted from the model's text output using regex patterns
@@ -114,7 +114,7 @@ Action: web_search
 Action Input: Bill Gates birthplace and date of birth
 ```
 
-These components are then extracted by the regex parsing and handled appropriately. More work is required up front, but the control that is provided is well worth it.
+These components are then extracted with regex parsing and handled appropriately. More work is required up front, but the control it provides is well worth it.
 
 ## Choosing the Right Approach
 

@@ -50,7 +50,7 @@ kubectl create configmap modsecurity --from-file=modsecurity.conf=modsecurity.co
 
 helm upgrade <name> ingress-nginx/ingress-nginx -n ingress-nginx -f nginx\_values.yaml
 
-## Create nginx ingress object and annotate it in below
+## Create nginx ingress object and annotate it as below
 
 ```yaml
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
@@ -63,7 +63,7 @@ helm upgrade <name> ingress-nginx/ingress-nginx -n ingress-nginx -f nginx\_value
 
 ## Test
 
-Here are some commands to test modsecurity WAF protection
+Here are some commands to test ModSecurity WAF protection.
 
 ```
 curl -X POST YOUR_URL -F "user='<script><alert>Hello></alert></script>'"

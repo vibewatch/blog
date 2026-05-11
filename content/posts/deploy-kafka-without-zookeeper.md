@@ -12,9 +12,9 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
-Most of the work is based on [https://github.com/bitnami/charts/issues/13624](https://github.com/bitnami/charts/issues/13624), this article here is only for documentation purposes only, we use community kafka helm chart from bitnami/kafka
+Most of the work is based on [https://github.com/bitnami/charts/issues/13624](https://github.com/bitnami/charts/issues/13624). This article is for documentation purposes only, and it uses the community Kafka Helm chart from Bitnami.
 
-First, we need to have a values.yaml files with content in below, to test purpose, we set \`replicaCount\` to 1, it can be adjusted to 3, 5 etc.
+First, we need a `values.yaml` file with the content below. For testing purposes, set `replicaCount` to 1; it can be adjusted to 3, 5, and so on.
 
 ```yaml
 extraDeploy:
@@ -118,7 +118,7 @@ metrics:
       release: prometheus
 ```
 
-Then run below commands to deploy Kafka
+Then run the following commands to deploy Kafka:
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -127,16 +127,16 @@ kubectl create ns kafka
 helm install kafka --values values.yaml -n kafka bitnami/kafka
 ```
 
-To test if Kafka functions normally, we can open two terminal windows
+To test whether Kafka is working normally, open two terminal windows.
 
-On terminal window 1 run below commands then send some messages from console
+In terminal window 1, run the following commands, and then send some messages from the console:
 
 ```bash
 kubectl exec --tty -i kafka-0 --namespace kafka -- bash
 kafka-console-producer.sh --broker-list kafka.kafka.svc.cluster.local:9092 --topic console
 ```
 
-On terminal window 2 run below commands to get messages from producer
+In terminal window 2, run the following commands to consume messages from the producer:
 
 ```bash
 kubectl exec --tty -i kafka-0 --namespace kafka -- bash
