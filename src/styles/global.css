@@ -27,10 +27,15 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-canvas);
-  /* Faint paper grain — tiny SVG noise, mostly invisible but lifts the canvas */
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  background-size: 160px 160px;
+  background-color: var(--color-canvas);
+  /* Two-layer paper texture: fine fiber grain + slow uneven cloud.
+     Each layer's alpha is keyed to the turbulence value (0.18·r and 0.10·r)
+     so the noise is actually visible — not a flat tint. */
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.23  0 0 0 0 0.20  0 0 0 0 0.17  0.10 0 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='1' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.23  0 0 0 0 0.20  0 0 0 0 0.17  0.05 0 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>");
+  background-size: 240px 240px, 600px 600px;
+  background-repeat: repeat, repeat;
   color: var(--color-ink);
 }
 
@@ -174,13 +179,13 @@ a:focus-visible {
   color: var(--color-ink);
   text-decoration: none;
   padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
 }
 
 .masthead__nav a:hover,
 .masthead__nav a:focus-visible {
   color: var(--color-accent);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 /* -------------------------------------------------------------------------- */
