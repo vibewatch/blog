@@ -14,7 +14,7 @@ import monaSansLatin from '@fontsource-variable/mona-sans/files/mona-sans-latin-
 import monaSansLatinItalic from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-italic.woff2?url';
 import Masthead from '../components/Masthead.astro';
 import Colophon from '../components/Colophon.astro';
-import { config, absoluteUrl } from '../lib/site';
+import { config, absoluteUrl, sitePath } from '../lib/site';
 
 type Props = {
   title?: string;
@@ -43,6 +43,7 @@ const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={absoluteUrl(canonical)} />
+    <link rel="icon" type="image/svg+xml" href={sitePath('/favicon.svg')} />
     <link rel="alternate" type="application/rss+xml" title={config.title} href={absoluteUrl('/feed.xml')} />
 
     <link rel="preload" href={monaSansLatin} as="font" type="font/woff2" crossorigin />
