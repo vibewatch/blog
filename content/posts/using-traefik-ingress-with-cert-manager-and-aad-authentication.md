@@ -12,6 +12,8 @@ feature_image: "/assets/posts/using-traefik-ingress-with-cert-manager-and-aad-au
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "Traefik", "Traefik2", "AAD", "AzureAD"]
 ---
+> **Note (May 2026):** This article was written for Traefik 2.2 and cert-manager v0.14-era APIs (`cert-manager.io/v1alpha2`). Current Traefik, cert-manager, Kubernetes Ingress, and Microsoft Entra ID (formerly Azure AD) configuration patterns have changed. Use the design as a reference, but update manifests and Helm commands to current versions before applying them.
+
 # 0 Define the problem
 
 The requirement is simple. I'd like to:

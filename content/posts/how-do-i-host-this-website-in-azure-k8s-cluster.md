@@ -12,6 +12,8 @@ feature_image: "/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/he
 authors: ["Yingting Huang"]
 tags: ["K8S", "Kubernetes"]
 ---
+> **Note (May 2026):** This article reflects the AKS-Engine, Helm v2/Tiller, older cert-manager, and `extensions/v1beta1` Ingress APIs used around Kubernetes 1.10-1.13. Modern Kubernetes clusters generally use Helm v3, newer cert-manager APIs, `networking.k8s.io/v1` Ingress, and managed AKS or Cluster API-style provisioning. Use this post as historical context and update the manifests before applying them today.
+
 # 0 Background
 
 This website is hosted in a Kubernetes cluster with three Azure B2S VMs. In the following sections, I am going to explain how I built the whole cluster and how to leverage Kubernetes to provide the infrastructure support. aks-engine, Helm, cert-manager, and the nginx-ingress controller will be discussed here.

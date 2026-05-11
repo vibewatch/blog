@@ -12,6 +12,8 @@ feature_image: "/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "Prometheus", "TICK", "Monitoring"]
 ---
+> **Note (May 2026):** This article uses Helm v2-style commands and older Helm stable charts, including the historical `stable/prometheus-operator` chart. Modern clusters typically use Helm v3, `kube-prometheus-stack`, updated Fluent Bit/Prometheus/Grafana charts, and newer CRD/API versions. Treat the architecture ideas as reference and update the installation commands before applying them today.
+
 # 0 Introduction
 
 This post does not intend to introduce Prometheus or InfluxDB. It serves as a reference for building a monitoring/logging system in Kubernetes with open-source software.
