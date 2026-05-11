@@ -14,12 +14,12 @@ html {
   background: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern", "liga", "onum";
+  font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
 }
 
 body {
@@ -27,10 +27,15 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-canvas);
-  /* Faint paper grain — tiny SVG noise, mostly invisible but lifts the canvas */
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.045 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  background-size: 160px 160px;
+  background-color: var(--color-canvas);
+  /* Two-layer paper texture: fine fiber grain + slow uneven cloud.
+     Each layer's alpha is keyed to the turbulence value (0.18·r and 0.10·r)
+     so the noise is actually visible — not a flat tint. */
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.23  0 0 0 0 0.20  0 0 0 0 0.17  0.10 0 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='1' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.23  0 0 0 0 0.20  0 0 0 0 0.17  0.05 0 0 0 0'/></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>");
+  background-size: 240px 240px, 600px 600px;
+  background-repeat: repeat, repeat;
   color: var(--color-ink);
 }
 
@@ -128,33 +133,12 @@ a:focus-visible {
   padding: var(--space-xl) 0 0;
 }
 
-.masthead__folio {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-base);
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  padding-bottom: var(--space-xs);
-}
-
-.masthead__folio span + span::before {
-  content: "·";
-  margin: 0 8px;
-  color: var(--color-muted-soft);
-}
-
 .masthead__nameplate {
   display: block;
   margin: var(--space-md) 0 var(--space-base);
   text-align: center;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(40px, 6vw, 68px);
   line-height: 0.98;
   letter-spacing: -0.01em;
@@ -186,7 +170,7 @@ a:focus-visible {
   padding: var(--space-sm) 0;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -195,13 +179,13 @@ a:focus-visible {
   color: var(--color-ink);
   text-decoration: none;
   padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
 }
 
 .masthead__nav a:hover,
 .masthead__nav a:focus-visible {
   color: var(--color-accent);
-  text-decoration: none;
-  border-bottom: 1px solid var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -221,7 +205,7 @@ a:focus-visible {
   color: var(--color-accent);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -229,7 +213,7 @@ a:focus-visible {
 .lede__headline {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(28px, 3.2vw, 44px);
   line-height: 1.08;
   letter-spacing: -0.012em;
@@ -275,7 +259,7 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .lede__media {
@@ -330,7 +314,7 @@ a:focus-visible {
 .section-head__title {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 800;
   font-size: 18px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -340,7 +324,7 @@ a:focus-visible {
 .section-head__meta {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -398,7 +382,7 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-ui);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -407,7 +391,7 @@ a:focus-visible {
 .story__headline {
   margin: 4px 0 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 21px;
   line-height: 1.2;
   letter-spacing: -0.005em;
@@ -454,7 +438,7 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -476,7 +460,7 @@ a:focus-visible {
   margin: 0 0 var(--space-base);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -485,7 +469,7 @@ a:focus-visible {
 .post-title {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(28px, 3.4vw, 42px);
   line-height: 1.08;
   letter-spacing: -0.012em;
@@ -519,18 +503,35 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .post-meta time {
   font-family: var(--font-ui);
   font-style: normal;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
   margin-left: var(--space-sm);
+}
+
+.post-meta__readtime {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-left: var(--space-sm);
+}
+
+.post-meta__readtime::before {
+  content: "·";
+  margin-right: var(--space-sm);
+  color: var(--color-muted-soft);
 }
 
 .feature-image {
@@ -555,10 +556,10 @@ a:focus-visible {
 .article {
   color: var(--color-body);
   font-family: var(--font-body);
-  font-size: 19px;
-  line-height: 1.6;
-  hyphens: auto;
-  font-feature-settings: "kern", "liga", "onum";
+  font-size: clamp(1.02rem, 0.18vw + 0.96rem, 1.12rem);
+  line-height: 1.55;
+  font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
+  counter-reset: figure;
   /*
    * Three-column grid: a centered reading column (var(--reading)) with two
    * gutters on either side. Children default into the middle column; figures,
@@ -600,7 +601,8 @@ a:focus-visible {
   max-width: 100%;
 }
 
-.article > p:has(> img:only-child) {
+.article > p:has(> img:only-child),
+.article > figure {
   /* A paragraph that contains only an image — treat it as a figure breakout */
   grid-column: 1 / -1;
   max-width: var(--reading-wide);
@@ -625,7 +627,7 @@ a:focus-visible {
   font-family: var(--font-display);
   color: var(--color-ink);
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .article h2 {
@@ -645,7 +647,7 @@ a:focus-visible {
 .article h4 {
   margin: var(--space-lg) 0 var(--space-xxs);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   font-variant: small-caps;
   letter-spacing: 0.06em;
   color: var(--color-ink);
@@ -655,19 +657,6 @@ a:focus-visible {
 .article ul,
 .article ol {
   margin: 0 0 var(--space-sm);
-}
-
-.article p {
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphenate-limit-chars: 7 3 3;
-}
-
-.article p + p {
-  text-indent: 1.2em;
-  margin-top: 0;
 }
 
 .article ul,
@@ -695,7 +684,7 @@ a:focus-visible {
 
 .article strong {
   color: var(--color-ink);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .article em {
@@ -731,6 +720,10 @@ a:focus-visible {
   text-align: center;
 }
 
+.article > figure:has(figcaption) {
+  counter-increment: figure;
+}
+
 .article figure img {
   margin-inline: auto;
 }
@@ -746,6 +739,7 @@ a:focus-visible {
 
 /* Code — quietly utilitarian against the paper canvas */
 .article pre {
+  position: relative;
   background: var(--color-canvas-deep);
   color: var(--color-ink);
   border: 1px solid var(--color-hairline);
@@ -753,8 +747,7 @@ a:focus-visible {
   padding: 24px 26px;
   font-family: var(--font-mono);
   font-size: 13.5px;
-  font-weight: 300;
-  font-stretch: 80%;
+  font-weight: 400;
   line-height: 1.7;
   margin: var(--space-xl) auto;
   width: 100%;
@@ -763,6 +756,61 @@ a:focus-visible {
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: anywhere;
+}
+
+/* Language eyebrow + copy chip on highlighted blocks. Skip mermaid: that pre
+   is replaced by the mermaid script before paint. */
+.article pre[data-language]:not([data-language="mermaid"]) {
+  padding-top: 38px;
+}
+
+.article pre[data-language]:not([data-language="mermaid"])::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 12px;
+  left: 26px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.article pre .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  appearance: none;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: 0;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+.article pre:hover .copy-btn,
+.article pre .copy-btn:focus-visible {
+  opacity: 1;
+}
+
+.article pre .copy-btn:hover {
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.article pre .copy-btn[data-copied="true"] {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  opacity: 1;
 }
 
 /* Shiki injects an inline background-color on .astro-code — override it so
@@ -779,14 +827,12 @@ a:focus-visible {
   word-wrap: break-word;
   overflow-wrap: anywhere;
   font-weight: inherit;
-  font-stretch: inherit;
 }
 
 .article code {
   font-family: var(--font-mono);
   font-size: 0.84em;
-  font-weight: 300;
-  font-stretch: 80%;
+  font-weight: 400;
 }
 
 .article :not(pre) > code {
@@ -800,16 +846,16 @@ a:focus-visible {
 /* Pull quote — newspaper convention with thick top + thin bottom rules */
 .article blockquote {
   margin: var(--space-xxl) auto;
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-lg) var(--space-lg);
   border-top: 3px solid var(--color-ink);
   border-bottom: 1px solid var(--color-ink);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.5;
+  letter-spacing: 0;
   color: var(--color-ink);
-  text-align: center;
+  text-align: left;
   font-style: italic;
   max-width: var(--reading);
 }
@@ -822,14 +868,16 @@ a:focus-visible {
 .article .mermaid {
   position: relative;
   margin: var(--space-xl) 0;
-  padding: var(--space-xl) var(--space-lg) var(--space-lg);
-  background: var(--color-canvas-soft);
+  padding: 40px var(--space-lg) var(--space-lg);
+  background: var(--color-canvas);
   border: 1px solid var(--color-hairline);
+  border-left: 3px solid var(--color-ink);
   /* No horizontal scroll — SVG below is forced to scale to container width */
   overflow: hidden;
   text-align: center;
   font-size: 0;
   opacity: 0;
+  counter-increment: figure;
   transition: opacity 240ms var(--ease-out);
 }
 
@@ -838,16 +886,26 @@ a:focus-visible {
 }
 
 .article .mermaid::before {
-  content: "Diagram";
+  content: "Fig. " counter(figure);
   position: absolute;
-  top: 12px;
+  top: 14px;
   left: 18px;
   font-family: var(--font-ui);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-muted);
+}
+
+.article .mermaid::after {
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: 18px;
+  right: 18px;
+  height: 0;
+  border-top: 1px solid var(--color-hairline);
 }
 
 .article .mermaid svg {
@@ -861,7 +919,7 @@ a:focus-visible {
 @media (max-width: 600px) {
   .article .mermaid {
     margin: var(--space-lg) calc(var(--gutter) * -0.5);
-    padding: var(--space-xl) var(--space-base) var(--space-base);
+    padding: 40px var(--space-base) var(--space-base);
   }
 }
 
@@ -889,7 +947,7 @@ a:focus-visible {
   color: var(--color-ink);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -905,7 +963,7 @@ a:focus-visible {
   text-align: center;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -937,7 +995,7 @@ a:focus-visible {
   display: inline-block;
   margin: 0 0 var(--space-sm);
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 700;
   font-size: 22px;
   letter-spacing: -0.005em;
   color: var(--color-ink);
@@ -959,7 +1017,7 @@ a:focus-visible {
   justify-content: center;
   gap: var(--space-base);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -1012,14 +1070,8 @@ a:focus-visible {
   display: inline-block;
 }
 
-/* On mobile, narrow measure: justify becomes ugly. Fall back to flush left. */
-@media (max-width: 700px) {
-  .article p {
-    text-align: left;
-    hyphens: manual;
-    -webkit-hyphens: manual;
-  }
-}
+/* On mobile, narrow measure: nothing extra needed now that desktop is
+   left-aligned without hyphens. */
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -1089,7 +1141,7 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1122,7 +1174,7 @@ a:focus-visible {
   gap: 8px;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1198,7 +1250,7 @@ a:focus-visible {
 .brief__more a {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1215,7 +1267,7 @@ a:focus-visible {
   text-align: center;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -1344,7 +1396,7 @@ a:focus-visible {
 .index__desk {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -1355,7 +1407,7 @@ a:focus-visible {
 .index__date {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--color-muted);
   text-align: right;
@@ -1373,4 +1425,93 @@ a:focus-visible {
     grid-column: 2;
     text-align: left;
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Site polish                                                               */
+/* -------------------------------------------------------------------------- */
+
+/* Wine selection — replaces browser default blue */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-canvas);
+}
+
+/* External links inside prose get a small leaving-the-page glyph. The
+   selector excludes our own domain (subdomain-relative root links stay
+   un-marked because they don't start with http). */
+.article a[href^="http"]:not([href*="genisisiq.com"])::after {
+  content: " ↗";
+  font-feature-settings: "kern";
+  color: var(--color-muted);
+  margin-left: 1px;
+}
+
+/* Auto-numbered figures — share the FIG. counter with mermaid blocks */
+.article > figure > figcaption::before {
+  content: "Fig. " counter(figure) " — ";
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-right: 4px;
+  vertical-align: 0.06em;
+}
+
+/* Hero lede — bigger headline / deck for the front-page lead story */
+.featured__lead .lede__category {
+  font-size: 12px;
+}
+
+.featured__lead .lede__headline {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.04;
+}
+
+.featured__lead .lede__deck {
+  font-size: clamp(18px, 1.6vw, 22px);
+  max-width: 64ch;
+}
+
+/* Archive — year grouping with a giant numeral header */
+.year-block {
+  margin-block: var(--space-xxl) 0;
+}
+
+.year-block + .year-block {
+  margin-top: var(--space-xxl);
+}
+
+.year-block__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-base);
+  border-bottom: 3px solid var(--color-ink);
+  padding-bottom: var(--space-xs);
+  margin: 0 0 var(--space-base);
+}
+
+.year-block__numeral {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(64px, 11vw, 120px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  font-feature-settings: "tnum", "lnum";
+}
+
+.year-block__count {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  white-space: nowrap;
 }

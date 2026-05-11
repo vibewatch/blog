@@ -10,7 +10,7 @@ const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
 if (mermaidBlocks.length > 0) {
   const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
 
-  const fontStack = '"Martian Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace';
+  const fontStack = '"Mona Sans Variable", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif';
 
   mermaid.initialize({
     startOnLoad: false,
@@ -18,66 +18,84 @@ if (mermaidBlocks.length > 0) {
     theme: 'base',
     fontFamily: fontStack,
     themeVariables: {
-      background: '#f7f3e9',
+      background: '#f3eee2',
       primaryColor: '#f7f3e9',
-      primaryTextColor: '#1a1714',
-      primaryBorderColor: '#1a1714',
+      primaryTextColor: '#3a322a',
+      primaryBorderColor: '#3a322a',
       secondaryColor: '#ece6d5',
-      secondaryTextColor: '#1a1714',
+      secondaryTextColor: '#3a322a',
       secondaryBorderColor: '#7a1f1f',
       tertiaryColor: '#f3eee2',
-      tertiaryTextColor: '#1a1714',
+      tertiaryTextColor: '#3a322a',
       tertiaryBorderColor: '#c8c1b1',
-      lineColor: '#2c2822',
-      edgeLabelBackground: '#f7f3e9',
+      lineColor: '#4a4137',
+      edgeLabelBackground: '#f3eee2',
       clusterBkg: '#ece6d5',
-      clusterBorder: '#1a1714',
-      titleColor: '#1a1714',
-      noteBkgColor: '#f3eee2',
+      clusterBorder: '#3a322a',
+      titleColor: '#3a322a',
+      noteBkgColor: '#ece6d5',
       noteBorderColor: '#7a1f1f',
-      noteTextColor: '#1a1714',
+      noteTextColor: '#3a322a',
       actorBkg: '#f7f3e9',
-      actorBorder: '#1a1714',
-      actorTextColor: '#1a1714',
-      actorLineColor: '#2c2822',
-      signalColor: '#1a1714',
-      signalTextColor: '#1a1714',
+      actorBorder: '#3a322a',
+      actorTextColor: '#3a322a',
+      actorLineColor: '#4a4137',
+      signalColor: '#3a322a',
+      signalTextColor: '#3a322a',
       labelBoxBkgColor: '#ece6d5',
-      labelBoxBorderColor: '#1a1714',
-      labelTextColor: '#1a1714',
-      loopTextColor: '#1a1714',
+      labelBoxBorderColor: '#3a322a',
+      labelTextColor: '#3a322a',
+      loopTextColor: '#3a322a',
       sectionBkgColor: '#ece6d5',
-      altSectionBkgColor: '#f7f3e9',
+      altSectionBkgColor: '#f3eee2',
       gridColor: '#c8c1b1',
       git0: '#7a1f1f',
-      git1: '#1a1714',
+      git1: '#3a322a',
       git2: '#6f6a5e',
       git3: '#8b8678',
-      fontSize: '15px',
+      fontSize: '14px',
       fontFamily: fontStack
     },
     themeCSS: `
-      .node rect, .node circle, .node ellipse, .node polygon, .node path { stroke-width: 1.25px; }
-      .cluster rect { stroke-dasharray: 0; rx: 2; ry: 2; }
-      .cluster .nodeLabel, .cluster .label { font-weight: 500; letter-spacing: 0.01em; }
-      .edgePath .path { stroke-width: 1.25px; }
-      .arrowheadPath, marker path { fill: #2c2822; stroke: none; }
-      .edgeLabel { padding: 2px 6px; font-size: 13px; color: #2c2822; }
-      .edgeLabel rect { fill: #f7f3e9 !important; }
+      .node rect, .node circle, .node ellipse, .node polygon, .node path { stroke-width: 1.1px; }
+      .cluster rect {
+        stroke-dasharray: 4 3;
+        stroke-width: 1px;
+        rx: 2; ry: 2;
+      }
+      .cluster .nodeLabel, .cluster .label {
+        font-weight: 700;
+        font-size: 11.5px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #6f6a5e;
+      }
+      .edgePath .path { stroke-width: 1.1px; }
+      .arrowheadPath, marker path { fill: #4a4137; stroke: none; }
+      .edgeLabel {
+        padding: 2px 6px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: #4a4137;
+      }
+      .edgeLabel rect {
+        fill: #f3eee2 !important;
+        stroke: #c8c1b1;
+        stroke-width: 1px;
+      }
       .label foreignObject { overflow: visible; }
-      .nodeLabel, .label { font-weight: 500; }
-      .marker.cross { stroke: #2c2822; }
-      /* Apply Martian Mono condensed width to all text in the diagram */
+      .nodeLabel, .label { font-weight: 460; }
+      .marker.cross { stroke: #4a4137; }
+      /* Apply the body sans family to all text in the diagram */
       text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
-        font-stretch: 80%;
         font-family: ${fontStack};
       }
     `,
     flowchart: {
-      curve: 'basis',
-      padding: 18,
-      nodeSpacing: 50,
-      rankSpacing: 60,
+      curve: 'monotoneX',
+      padding: 22,
+      nodeSpacing: 62,
+      rankSpacing: 72,
       htmlLabels: true,
       useMaxWidth: true,
       diagramPadding: 12

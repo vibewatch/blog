@@ -27,6 +27,53 @@ function prefixRootLinks() {
   };
 }
 
+// Wrap solo `<p><img></p>` patterns in `<figure><img><figcaption>{alt}</figcaption></figure>`
+// so prose images participate in the FIG. counter and get a real caption.
+function wrapImagesInFigure() {
+  const isWhitespace = (n) => n.type === 'text' && /^\s*$/.test(n.value);
+  return (tree) => {
+    const visit = (node) => {
+      if (!node || typeof node !== 'object' || !Array.isArray(node.children)) return;
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i];
+        if (
+          child.type === 'element' &&
+          child.tagName === 'p' &&
+          Array.isArray(child.children)
+        ) {
+          const meaningful = child.children.filter((c) => !isWhitespace(c));
+          if (
+            meaningful.length === 1 &&
+            meaningful[0].type === 'element' &&
+            meaningful[0].tagName === 'img'
+          ) {
+            const img = meaningful[0];
+            const alt = img.properties && img.properties.alt;
+            const figureChildren = [img];
+            if (alt) {
+              figureChildren.push({
+                type: 'element',
+                tagName: 'figcaption',
+                properties: {},
+                children: [{ type: 'text', value: String(alt) }]
+              });
+            }
+            node.children[i] = {
+              type: 'element',
+              tagName: 'figure',
+              properties: {},
+              children: figureChildren
+            };
+            continue;
+          }
+        }
+        visit(child);
+      }
+    };
+    visit(tree);
+  };
+}
+
 export default defineConfig({
   site: siteConfig.baseUrl,
   base: basePath || '/',
@@ -41,6 +88,6 @@ export default defineConfig({
       theme: 'min-light',
       wrap: true
     },
-    rehypePlugins: [prefixRootLinks]
+    rehypePlugins: [wrapImagesInFigure, prefixRootLinks]
   }
 });

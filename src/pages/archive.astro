@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getPosts } from '../lib/content';
+import { getPosts, type BlogItem } from '../lib/content';
 import { sitePath } from '../lib/site';
 
 const posts = getPosts();
@@ -13,6 +13,14 @@ const indexDateFormatter = new Intl.DateTimeFormat('en', {
 function indexDate(d: Date) {
   return indexDateFormatter.format(d).toUpperCase();
 }
+
+const byYear = new Map<number, BlogItem[]>();
+for (const p of posts) {
+  const y = p.date.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <BaseLayout
@@ -25,17 +33,30 @@ function indexDate(d: Date) {
       <h2 class="section-head__title">The Index</h2>
       <span class="section-head__meta">{posts.length} dispatches in print</span>
     </header>
-    <ol class="index" role="list">
-      {posts.map((p) => (
-        <li class="index__row">
-          <a class="index__link" href={sitePath(`/${p.slug}/`)}>
-            <span class="index__id">{p.desk?.sectionId ?? '—'}</span>
-            <span class="index__title">{p.title}</span>
-            <span class="index__desk">{p.desk?.desk.name ?? ''}</span>
-            <time class="index__date" datetime={p.date.toISOString()}>{indexDate(p.date)}</time>
-          </a>
-        </li>
-      ))}
-    </ol>
+    {years.map((year) => {
+      const yearPosts = byYear.get(year)!;
+      return (
+        <section class="year-block" aria-label={`Dispatches from ${year}`}>
+          <header class="year-block__head">
+            <h3 class="year-block__numeral">{year}</h3>
+            <span class="year-block__count">
+              {yearPosts.length} {yearPosts.length === 1 ? 'dispatch' : 'dispatches'}
+            </span>
+          </header>
+          <ol class="index" role="list">
+            {yearPosts.map((p) => (
+              <li class="index__row">
+                <a class="index__link" href={sitePath(`/${p.slug}/`)}>
+                  <span class="index__id">{p.desk?.sectionId ?? '—'}</span>
+                  <span class="index__title">{p.title}</span>
+                  <span class="index__desk">{p.desk?.desk.name ?? ''}</span>
+                  <time class="index__date" datetime={p.date.toISOString()}>{indexDate(p.date)}</time>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      );
+    })}
   </section>
 </BaseLayout>

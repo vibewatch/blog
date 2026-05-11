@@ -3,6 +3,8 @@ import { buildAssignments, desks, type DeskAssignment, type DeskKey } from './de
 type MarkdownModule = {
   frontmatter: Record<string, any>;
   default: any;
+  rawContent?: () => string;
+  compiledContent?: () => string;
 };
 
 export type BlogItem = {
@@ -15,6 +17,7 @@ export type BlogItem = {
   authors: string[];
   tags: string[];
   Content: any;
+  readingTime: number;
   desk?: DeskAssignment;
 };
 
@@ -23,6 +26,21 @@ const pageModules = import.meta.glob<MarkdownModule>('../../content/pages/*.md',
 
 function fileSlug(file: string) {
   return file.split('/').pop()?.replace(/\.md$/, '') ?? '';
+}
+
+function estimateReadingTime(module: MarkdownModule): number {
+  const raw =
+    typeof module.rawContent === 'function'
+      ? module.rawContent()
+      : typeof module.compiledContent === 'function'
+      ? module.compiledContent().replace(/<[^>]+>/g, ' ')
+      : '';
+  // Word count: split on whitespace for latin words; add CJK char count for
+  // east-asian content (each character is roughly one word's reading load).
+  const latinWords = (raw.match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length;
+  const cjkChars = (raw.match(/[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]/g) || []).length;
+  const effective = latinWords + cjkChars / 2;
+  return Math.max(1, Math.round(effective / 220));
 }
 
 function normalize(file: string, module: MarkdownModule, fallbackType: 'post' | 'page'): BlogItem {
@@ -36,7 +54,8 @@ function normalize(file: string, module: MarkdownModule, fallbackType: 'post' | 
     featureImage: String(data.feature_image ?? ''),
     authors: Array.isArray(data.authors) ? data.authors.map(String) : [],
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    Content: module.default
+    Content: module.default,
+    readingTime: estimateReadingTime(module)
   };
 }
 

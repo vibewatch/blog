@@ -6,6 +6,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@fontsource-variable/mona-sans": "^5.2.8",
+    "@fontsource/monaspace-neon": "^5.2.5",
     "astro": "^6.2.1"
   },
   "devDependencies": {
