@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts } from '../lib/content';
+import { sitePath } from '../lib/site';
+
+const posts = getPosts();
+
+const indexDateFormatter = new Intl.DateTimeFormat('en', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+});
+function indexDate(d: Date) {
+  return indexDateFormatter.format(d).toUpperCase();
+}
+---
+
+<BaseLayout
+  title="The Index"
+  description="A complete index of every dispatch, by desk and date."
+  canonical="/archive/"
+>
+  <section class="container section--tight">
+    <header class="section-head">
+      <h2 class="section-head__title">The Index</h2>
+      <span class="section-head__meta">{posts.length} dispatches in print</span>
+    </header>
+    <ol class="index" role="list">
+      {posts.map((p) => (
+        <li class="index__row">
+          <a class="index__link" href={sitePath(`/${p.slug}/`)}>
+            <span class="index__id">{p.desk?.sectionId ?? '—'}</span>
+            <span class="index__title">{p.title}</span>
+            <span class="index__desk">{p.desk?.desk.name ?? ''}</span>
+            <time class="index__date" datetime={p.date.toISOString()}>{indexDate(p.date)}</time>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>

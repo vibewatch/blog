@@ -3,11 +3,14 @@
  * Theme tuned to the Quiet Broadsheet palette: ink on warm cream, single
  * op-ed wine accent for highlighted edges and label backgrounds.
  */
-const mermaidBlocks = document.querySelectorAll('pre > code.language-mermaid');
+// Shiki tags mermaid blocks as `<pre data-language="mermaid">` and wraps each
+// line in <span class="line">. We grab the <pre>, read its textContent (which
+// reassembles the source verbatim), then swap it for a .mermaid container.
+const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
 if (mermaidBlocks.length > 0) {
   const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
 
-  const fontStack = '"Crimson Pro", "Iowan Old Style", Georgia, "Times New Roman", serif';
+  const fontStack = '"Martian Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace';
 
   mermaid.initialize({
     startOnLoad: false,
@@ -64,6 +67,11 @@ if (mermaidBlocks.length > 0) {
       .label foreignObject { overflow: visible; }
       .nodeLabel, .label { font-weight: 500; }
       .marker.cross { stroke: #2c2822; }
+      /* Apply Martian Mono condensed width to all text in the diagram */
+      text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
+        font-stretch: 80%;
+        font-family: ${fontStack};
+      }
     `,
     flowchart: {
       curve: 'basis',
@@ -88,12 +96,11 @@ if (mermaidBlocks.length > 0) {
     er: { useMaxWidth: true }
   });
 
-  mermaidBlocks.forEach((code, i) => {
-    const pre = code.parentElement;
+  mermaidBlocks.forEach((pre, i) => {
     const container = document.createElement('div');
     container.className = 'mermaid';
     container.id = `mermaid-${i}`;
-    container.textContent = code.textContent;
+    container.textContent = pre.textContent;
     pre.replaceWith(container);
   });
 
