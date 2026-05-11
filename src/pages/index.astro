@@ -20,11 +20,6 @@ const briefGroups = postsByDesk()
 
 <BaseLayout title={config.title} description={config.description} canonical="/">
   <section class="container section--tight featured">
-    <header class="section-head">
-      <h2 class="section-head__title">Above the Fold</h2>
-      <span class="section-head__meta">Recent dispatches</span>
-    </header>
-
     {lead && (
       <div class="featured__lead">
         <Lede post={lead} />
@@ -72,14 +67,5 @@ const briefGroups = postsByDesk()
     <p class="section-foot">
       <a href={sitePath('/archive/')}>Read the full index of {posts.length} dispatches →</a>
     </p>
-  </section>
-
-  <section class="strip">
-    <div class="container">
-      <p class="strip__label">Subscribe</p>
-      <h2 class="strip__title">Read at your own pace.</h2>
-      <p class="strip__deck">No newsletter, no inbox clutter — only an old-fashioned RSS feed for new dispatches.</p>
-      <a class="strip__action" href={sitePath('/feed.xml')}>Open the RSS feed →</a>
-    </div>
   </section>
 </BaseLayout>

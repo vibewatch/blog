@@ -36,14 +36,13 @@ const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Instrument Serif: editorial display
-      Crimson Pro: modern Garamond revival for body
-      Geist: UI sans
-      IBM Plex Mono: plain workhorse monospace
+      Two families:
+      - Instrument Serif: display + UI + body (editorial serif, italic for emphasis)
+      - Martian Mono:     code (variable mono with wdth 75–112.5, wght 100–800)
     -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Geist:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap"
     />
 
     <meta property="og:title" content={fullTitle} />

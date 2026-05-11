@@ -7,7 +7,7 @@ const mermaidBlocks = document.querySelectorAll('pre > code.language-mermaid');
 if (mermaidBlocks.length > 0) {
   const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
 
-  const fontStack = '"Crimson Pro", "Iowan Old Style", Georgia, "Times New Roman", serif';
+  const fontStack = '"Martian Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace';
 
   mermaid.initialize({
     startOnLoad: false,
@@ -64,6 +64,11 @@ if (mermaidBlocks.length > 0) {
       .label foreignObject { overflow: visible; }
       .nodeLabel, .label { font-weight: 500; }
       .marker.cross { stroke: #2c2822; }
+      /* Apply Martian Mono condensed width to all text in the diagram */
+      text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
+        font-stretch: 80%;
+        font-family: ${fontStack};
+      }
     `,
     flowchart: {
       curve: 'basis',

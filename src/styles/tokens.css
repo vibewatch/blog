@@ -17,7 +17,6 @@
   --color-muted: #6f6a5e;           /* meta / folio */
   --color-muted-soft: #8b8678;
   --color-hairline: #c8c1b1;        /* standard rule */
-  --color-hairline-soft: #ddd6c5;
   --color-hairline-ink: #1a1714;    /* heavy rule (masthead) */
 
   /* Single editorial accent — used scarcely */
@@ -25,16 +24,15 @@
   --color-accent-soft: #b15151;
 
   /* Type families
-   * Display: Instrument Serif — high-contrast editorial display
-   * Body:    Crimson Pro — modern Garamond revival, open on screen,
-   *          longer descenders, classic book proportions
-   * UI:      Geist — Vercel's geometric sans for labels, nav, small caps
-   * Code:    IBM Plex Mono — plain workhorse monospace, no ligatures
+   * Display + UI + Body: Instrument Serif — high-contrast editorial serif,
+   *                     used for headings, body text, nav, eyebrows, labels.
+   * Code: Martian Mono — geometric mono with a real width axis (wdth
+   *       75–112.5); we run it condensed (~75) for narrow letterforms.
    */
-  --font-display: "Instrument Serif", "Crimson Pro", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --font-body: "Crimson Pro", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
-  --font-ui: "Geist", "Inter", "Helvetica Neue", system-ui, Helvetica, Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --font-display: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", serif;
+  --font-ui: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-mono: "Martian Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   /* Spacing — editorial rhythm */
   --space-xxs: 4px;
@@ -45,12 +43,11 @@
   --space-lg: 24px;
   --space-xl: 32px;
   --space-xxl: 48px;
-  --space-section: 64px;
 
   /* Layout */
   --container: 1320px;
-  --reading: 820px;      /* article body — generous measure */
-  --reading-wide: 1120px; /* media / code / diagrams bleed */
+  --reading: 880px;      /* article body — generous measure */
+  --reading-wide: 1120px; /* media / diagrams bleed */
   --gutter: 32px;
 
   /* Motion */
@@ -60,7 +57,6 @@
 @media (max-width: 760px) {
   :root {
     --gutter: 20px;
-    --space-section: 44px;
     --space-xxl: 36px;
   }
 }
