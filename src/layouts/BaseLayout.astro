@@ -1,5 +1,17 @@
 ---
 import '../styles/global.css';
+// Self-hosted variable fonts (no FOUT / no network round-trip).
+// Variable weight files cover all weights we use; italic loaded for body italics.
+import '@fontsource-variable/mona-sans/wght.css';
+import '@fontsource-variable/mona-sans/wght-italic.css';
+// Monaspace Neon ships per-weight (no variable build); only 400 and 500 are used
+// (Shiki's min-light theme emits no bold/italic tokens, body italics stay sans).
+import '@fontsource/monaspace-neon/400.css';
+import '@fontsource/monaspace-neon/500.css';
+// Preload the Latin subsets so the browser fetches them on HTML parse,
+// in parallel with the stylesheet — eliminates the visible Arial→Mona Sans swap.
+import monaSansLatin from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-normal.woff2?url';
+import monaSansLatinItalic from '@fontsource-variable/mona-sans/files/mona-sans-latin-wght-italic.woff2?url';
 import Masthead from '../components/Masthead.astro';
 import Colophon from '../components/Colophon.astro';
 import { config, absoluteUrl } from '../lib/site';
@@ -33,17 +45,8 @@ const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
     <link rel="canonical" href={absoluteUrl(canonical)} />
     <link rel="alternate" type="application/rss+xml" title={config.title} href={absoluteUrl('/feed.xml')} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!--
-      Two families:
-      - Instrument Serif: display + UI + body (editorial serif, italic for emphasis)
-      - Martian Mono:     code (variable mono with wdth 75–112.5, wght 100–800)
-    -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap"
-    />
+    <link rel="preload" href={monaSansLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monaSansLatinItalic} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />

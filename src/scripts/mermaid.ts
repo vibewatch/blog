@@ -10,7 +10,7 @@ const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
 if (mermaidBlocks.length > 0) {
   const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
 
-  const fontStack = '"Martian Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace';
+  const fontStack = '"Mona Sans Variable", "Mona Sans Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif';
 
   mermaid.initialize({
     startOnLoad: false,
@@ -67,9 +67,8 @@ if (mermaidBlocks.length > 0) {
       .label foreignObject { overflow: visible; }
       .nodeLabel, .label { font-weight: 500; }
       .marker.cross { stroke: #2c2822; }
-      /* Apply Martian Mono condensed width to all text in the diagram */
+      /* Apply the body sans family to all text in the diagram */
       text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
-        font-stretch: 80%;
         font-family: ${fontStack};
       }
     `,

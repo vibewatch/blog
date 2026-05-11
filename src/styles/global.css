@@ -14,12 +14,12 @@ html {
   background: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "kern", "liga", "onum";
+  font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
 }
 
 body {
@@ -128,33 +128,12 @@ a:focus-visible {
   padding: var(--space-xl) 0 0;
 }
 
-.masthead__folio {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-base);
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  padding-bottom: var(--space-xs);
-}
-
-.masthead__folio span + span::before {
-  content: "·";
-  margin: 0 8px;
-  color: var(--color-muted-soft);
-}
-
 .masthead__nameplate {
   display: block;
   margin: var(--space-md) 0 var(--space-base);
   text-align: center;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(40px, 6vw, 68px);
   line-height: 0.98;
   letter-spacing: -0.01em;
@@ -186,7 +165,7 @@ a:focus-visible {
   padding: var(--space-sm) 0;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -221,7 +200,7 @@ a:focus-visible {
   color: var(--color-accent);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -229,7 +208,7 @@ a:focus-visible {
 .lede__headline {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(28px, 3.2vw, 44px);
   line-height: 1.08;
   letter-spacing: -0.012em;
@@ -275,7 +254,7 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .lede__media {
@@ -330,7 +309,7 @@ a:focus-visible {
 .section-head__title {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 800;
   font-size: 18px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -340,7 +319,7 @@ a:focus-visible {
 .section-head__meta {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -398,7 +377,7 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-ui);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -407,7 +386,7 @@ a:focus-visible {
 .story__headline {
   margin: 4px 0 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 21px;
   line-height: 1.2;
   letter-spacing: -0.005em;
@@ -454,7 +433,7 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -476,7 +455,7 @@ a:focus-visible {
   margin: 0 0 var(--space-base);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -485,7 +464,7 @@ a:focus-visible {
 .post-title {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
   font-size: clamp(28px, 3.4vw, 42px);
   line-height: 1.08;
   letter-spacing: -0.012em;
@@ -519,14 +498,14 @@ a:focus-visible {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   color: var(--color-ink);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .post-meta time {
   font-family: var(--font-ui);
   font-style: normal;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -555,10 +534,9 @@ a:focus-visible {
 .article {
   color: var(--color-body);
   font-family: var(--font-body);
-  font-size: 19px;
-  line-height: 1.6;
-  hyphens: auto;
-  font-feature-settings: "kern", "liga", "onum";
+  font-size: clamp(1.02rem, 0.18vw + 0.96rem, 1.12rem);
+  line-height: 1.55;
+  font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
   /*
    * Three-column grid: a centered reading column (var(--reading)) with two
    * gutters on either side. Children default into the middle column; figures,
@@ -625,7 +603,7 @@ a:focus-visible {
   font-family: var(--font-display);
   color: var(--color-ink);
   line-height: 1.2;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .article h2 {
@@ -645,7 +623,7 @@ a:focus-visible {
 .article h4 {
   margin: var(--space-lg) 0 var(--space-xxs);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   font-variant: small-caps;
   letter-spacing: 0.06em;
   color: var(--color-ink);
@@ -655,19 +633,6 @@ a:focus-visible {
 .article ul,
 .article ol {
   margin: 0 0 var(--space-sm);
-}
-
-.article p {
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphenate-limit-chars: 7 3 3;
-}
-
-.article p + p {
-  text-indent: 1.2em;
-  margin-top: 0;
 }
 
 .article ul,
@@ -695,7 +660,7 @@ a:focus-visible {
 
 .article strong {
   color: var(--color-ink);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .article em {
@@ -753,8 +718,7 @@ a:focus-visible {
   padding: 24px 26px;
   font-family: var(--font-mono);
   font-size: 13.5px;
-  font-weight: 300;
-  font-stretch: 80%;
+  font-weight: 400;
   line-height: 1.7;
   margin: var(--space-xl) auto;
   width: 100%;
@@ -779,14 +743,12 @@ a:focus-visible {
   word-wrap: break-word;
   overflow-wrap: anywhere;
   font-weight: inherit;
-  font-stretch: inherit;
 }
 
 .article code {
   font-family: var(--font-mono);
   font-size: 0.84em;
-  font-weight: 300;
-  font-stretch: 80%;
+  font-weight: 400;
 }
 
 .article :not(pre) > code {
@@ -800,16 +762,16 @@ a:focus-visible {
 /* Pull quote — newspaper convention with thick top + thin bottom rules */
 .article blockquote {
   margin: var(--space-xxl) auto;
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-lg) var(--space-lg);
   border-top: 3px solid var(--color-ink);
   border-bottom: 1px solid var(--color-ink);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.5;
+  letter-spacing: 0;
   color: var(--color-ink);
-  text-align: center;
+  text-align: left;
   font-style: italic;
   max-width: var(--reading);
 }
@@ -844,7 +806,7 @@ a:focus-visible {
   left: 18px;
   font-family: var(--font-ui);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -889,7 +851,7 @@ a:focus-visible {
   color: var(--color-ink);
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -905,7 +867,7 @@ a:focus-visible {
   text-align: center;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -937,7 +899,7 @@ a:focus-visible {
   display: inline-block;
   margin: 0 0 var(--space-sm);
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 700;
   font-size: 22px;
   letter-spacing: -0.005em;
   color: var(--color-ink);
@@ -959,7 +921,7 @@ a:focus-visible {
   justify-content: center;
   gap: var(--space-base);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
@@ -1012,14 +974,8 @@ a:focus-visible {
   display: inline-block;
 }
 
-/* On mobile, narrow measure: justify becomes ugly. Fall back to flush left. */
-@media (max-width: 700px) {
-  .article p {
-    text-align: left;
-    hyphens: manual;
-    -webkit-hyphens: manual;
-  }
-}
+/* On mobile, narrow measure: nothing extra needed now that desktop is
+   left-aligned without hyphens. */
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
@@ -1089,7 +1045,7 @@ a:focus-visible {
   margin: 0;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1122,7 +1078,7 @@ a:focus-visible {
   gap: 8px;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1198,7 +1154,7 @@ a:focus-visible {
 .brief__more a {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-ink);
@@ -1215,7 +1171,7 @@ a:focus-visible {
   text-align: center;
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -1344,7 +1300,7 @@ a:focus-visible {
 .index__desk {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -1355,7 +1311,7 @@ a:focus-visible {
 .index__date {
   font-family: var(--font-ui);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--color-muted);
   text-align: right;
