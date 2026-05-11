@@ -36,7 +36,11 @@ export default defineConfig({
     format: 'directory'
   },
   markdown: {
-    syntaxHighlight: false,
+    syntaxHighlight: 'shiki',
+    shikiConfig: {
+      theme: 'min-light',
+      wrap: true
+    },
     rehypePlugins: [prefixRootLinks]
   }
 });

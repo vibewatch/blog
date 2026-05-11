@@ -765,6 +765,14 @@ a:focus-visible {
   overflow-wrap: anywhere;
 }
 
+/* Shiki injects an inline background-color on .astro-code — override it so
+   highlighted blocks keep the warm paper background, while letting Shiki's
+   token color styles (also inline) win for the actual syntax colors. */
+.article pre.astro-code,
+.article pre.shiki {
+  background-color: var(--color-canvas-deep) !important;
+}
+
 .article pre code {
   /* Inherit wrapping from <pre> — Shiki/Prism wrap children in <code> */
   white-space: pre-wrap;
@@ -860,10 +868,11 @@ a:focus-visible {
 /* Tables */
 .article table {
   display: block;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
-  margin: var(--space-lg) 0;
+  margin: var(--space-lg) auto;
   font-family: var(--font-body);
   font-size: 15px;
 }
