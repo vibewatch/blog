@@ -1,5 +1,5 @@
 ---
-title: "Deploy a Ubuntu Based Flannel K8S Cluster in Azure with ARM Template and Kubeadm"
+title: "Deploy a Ubuntu-Based Flannel K8S Cluster in Azure with an ARM Template and Kubeadm"
 slug: "deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure-with-arm-template-and-kubeadm"
 date: "2018-05-23 11:34:53"
 updated: "2018-05-24 14:23:22"
@@ -12,18 +12,18 @@ feature_image: "/assets/posts/deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure
 authors: ["Yingting Huang"]
 tags: ["Azure", "Linux", "Network", "Ubuntu", "K8S", "Kubernetes"]
 ---
-The infomation migth be outdated here as acs-engine adds support for Flannel recently with PR [2967](https://github.com/Azure/acs-engine/pull/2967)
+> **Note (May 2026):** This article was written for the Kubernetes 1.10-era Azure/acs-engine ecosystem. The kubeadm API, Azure cloud-provider integration, Docker runtime defaults, Flannel manifests, and Azure CLI behaviors may have changed significantly. Treat the commands as historical reference and verify them against current Kubernetes and Azure documentation before using them.
 
-However, if you want to gain more control on your kubernetes cluster in Azure, in our case, by using kubeadm, this article still applies.
+However, if you want to gain more control over your Kubernetes cluster in Azure by using kubeadm, this article still applies.
 
 ## 0\. Prerequisites
 
 *   Azure subscription
 *   An Azure account has sufficient permission to create a service principal
 
-## 1\. Create a service principal which will be used to manage azure resources in K8S cluster
+## 1\. Create a service principal to manage Azure resources in the K8S cluster
 
-Follow [Install Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) install Azure CLI. From command prompt/shell, login and create a service principal by issueing below commands, replace YOUR\_SUBSCRIPTION\_ID with your Azure subscription ID.
+Follow [Install Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) to install Azure CLI. From a command prompt or shell, log in and create a service principal by issuing the following commands. Replace YOUR\_SUBSCRIPTION\_ID with your Azure subscription ID.
 
 ```bash
 az login
@@ -31,7 +31,7 @@ az account set --subscription "YOUR_SUBSCIPTION_ID"
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/YOUR_SUBSCRIPTION_ID"
 ```
 
-Once the service principal get created, the result looks like below
+Once the service principal is created, the result looks like this.
 
 ```json
 {
@@ -47,7 +47,7 @@ Record appId and password, they will be used as configured parameters in ARM tem
 
 ## 2\. Customize your K8s deployment script
 
-[Azure Custom Script Extension](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux) will be ussed to install docker and kubeadm from ARM template. To do that, create a file called script.sh, paste below content into it
+[Azure Custom Script Extension](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux) will be used to install Docker and kubeadm from the ARM template. To do that, create a file called script.sh and paste the following content into it.
 
 ```bash
 #!/bin/sh
@@ -80,7 +80,7 @@ echo "net.bridge.bridge-nf-call-ip6tables = 1" >> /etc/sysctl.conf
 /sbin/sysctl -p /etc/sysctl.conf
 ```
 
-[Azure Custom Script Extension](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux) requies a base64 encoded script to execute
+[Azure Custom Script Extension](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-linux) requires a base64-encoded script to execute.
 
 > The script **must** be base64 encoded. The script can **optionally** be gzip'ed.
 
@@ -90,7 +90,7 @@ Here is the command to generate a base64 encoded script with gzip enabled
 cat script.sh | gzip -9 | base64 -w 0
 ```
 
-The result will be below, copy/paste it to the ARM template in Step 3
+The result will look like the output below. Copy and paste it into the ARM template in Step 3.
 
 ```bash
 H4sIAOcA8FoCA61UXW/UMBB8z69YCmoByfalqioU9U4q1bVCUIo44OmkyrHdnBVfbNnOtYf48Wzc3GdB9IGXrDy7npn1rvLyBSt1w8Is4y6SSkVoneRRrY+6CZEbA2QJ0opaeartXi0cHsIfyjsoet4EZ30ksxhdANF6k3UfIAESVDDmuKh5pQIVxraSVtZWRlFh5wwpGKp2kdRqSStXwS/oT8ClBJIJHuHsbHxzCSOmYqplwbZeIKHRIVLJ6rZUvlGxRzKpyiSO2lhNt9LaMtgcyYNqNDcw57rJUOEZb9RdNgh1kct5iiKaJy43IqwvxYabu8zpH8oHbZtiRUHrd8nXIufGzXie1bqRBVzzEJW/wDu6aj2PeCVL7/fF24WWyhfAf7ZeZRulNXNO8wE9Rvt6ovxC+fEDzuncV6HIABIJcXssK1wkwQL2m9jOZhiit8Yof80bnOx/F0Do3np8iKojdFZO2hIx7Az7OjmhAzpg+WkaWVC4JBrIGI4Ce03fvvn4/f340/jbbRcvbj5ffri6Pf96NRl2uVdsmv8tT8iu8WHyDSv40dlw2vmebhmf7jiH6TE7euwtLHGAc9lH1i8ODTgRLRRubT4gO6uhxMzCAZLS0mtZqT6Q5o4I3D6iXeSlUQGGkB/AaLSWwf17LsPpvyhYSL+LhABxTwuy32x+HQVSBAAA
@@ -98,7 +98,7 @@ H4sIAOcA8FoCA61UXW/UMBB8z69YCmoByfalqioU9U4q1bVCUIo44OmkyrHdnBVfbNnOtYf48Wzc3GdB
 
 ## 3\. ARM template
 
-Create a file called template.json, paste below content into it
+Create a file called template.json and paste the following content into it.
 
 ```json
 {
@@ -430,11 +430,11 @@ Create a file called template.json, paste below content into it
 
 Replace "script": "<Replace it with base64 output from step 2>" with the base64 output from step 2.
 
-NOTE: this script will also genereate a configuration file /etc/kubernetes/cloud-config, the magic is in "customerData" part of above template, it uses [cloud-init](http://cloudinit.readthedocs.io/en/latest/topics/examples.html)
+NOTE: this script will also generate a configuration file, /etc/kubernetes/cloud-config. The magic is in the "customerData" part of the template above; it uses [cloud-init](http://cloudinit.readthedocs.io/en/latest/topics/examples.html).
 
 ## 4\. Customize ARM template parameters
 
-Create a file called params.json, modify all parametes to suit the needs, fill aadClientId with appId and aadClientSecret with password from Step 1's output.
+Create a file called params.json, modify all parameters to suit your needs, fill aadClientId with appId, and fill aadClientSecret with the password from Step 1's output.
 
 ```json
 {
@@ -483,7 +483,7 @@ az group deployment create --name FlannelDeployment --resource-group Flannel --t
 
 ## 6\. Deploy Flannel network with kubeadm
 
-Once VMs get deployed successfully, SSH into the the first node k8snode-{uniquestring}-0, run below commands to deploy K8S
+Once the VMs are deployed successfully, SSH into the first node k8snode-{uniquestring}-0 and run the following commands to deploy K8S.
 
 ```bash
 sudo -i
@@ -491,7 +491,7 @@ cd /etc/kubernetes
 kubeadm init --config kubeadm.conf
 ```
 
-kubeadm will output result similar to below if it succeeded without any errors
+kubeadm will output a result similar to the following if it succeeds without any errors.
 
 ```bash
 [init] Using Kubernetes version: v1.10.2
@@ -556,7 +556,7 @@ as root:
   kubeadm join 172.16.0.4:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<DISCOVERY_TOKEN_CA_CERT_HASH>
 ```
 
-Now, copy kubernetes cluster configuration to $HOME/.kube, essentially kubectl needs this config file to get cluster info.
+Now, copy the Kubernetes cluster configuration to $HOME/.kube. kubectl needs this config file to get cluster information.
 
 ```bash
 mkdir -p $HOME/.kube
@@ -564,13 +564,13 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-Install Flannel by using below commands
+Install Flannel by using the following command.
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
-Addtionally, if other nodes need to be added into K8S cluster, we can login to k8snode-{uniquestring}-1, ..., k8snode-{uniquestring}-n node, run below commands
+Additionally, if other nodes need to be added to the K8S cluster, we can log in to k8snode-{uniquestring}-1, ..., k8snode-{uniquestring}-n and run the following commands.
 
 ```bash
 sudo -i

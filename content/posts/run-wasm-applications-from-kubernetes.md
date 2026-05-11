@@ -12,29 +12,29 @@ feature_image: "/assets/posts/run-wasm-applications-from-kubernetes/hero.png"
 authors: ["Yingting Huang"]
 tags: []
 ---
-*   Interested in running WASM workload from Kubernetes?
-*   Interested in turning your Kubernetes cluster to support multiple container shims?
-*   Even more, wasm with dapr support?
+*   Interested in running WASM workloads from Kubernetes?
+*   Interested in enabling your Kubernetes cluster to support multiple container shims?
+*   Even better, interested in WASM with Dapr support?
 
-The steps documented here help run WASM workload from Kubernetes cluster based on great work from
+The steps documented here help run WASM workloads from a Kubernetes cluster, based on great work from:
 
 *   [Containerd Wasm Shims](https://github.com/deislabs/containerd-wasm-shims)
 *   [WasmEdge Runtime - Kubernetes + Containerd](https://wasmedge.org/book/en/use_cases/kubernetes/kubernetes/kubernetes-containerd.html)
 *   [Spin](https://www.fermyon.com/blog/introducing-spin)
 
-Sample applications and deploy manifests are located at this [repo](https://github.com/huangyingting/wasm)
+Sample applications and deployment manifests are located in this [repo](https://github.com/huangyingting/wasm).
 
-Below are pre-requisite
+The prerequisites are below:
 
-*   A Kubernetes cluster, node can be accessed directly to install shims and configure containerd. For managed Kubernetes cluster, a potential workaround is using daemonset to install shim and configure containerd. Some Kubernetes distribution, for example AKS already provided [preview feature](https://learn.microsoft.com/en-us/azure/aks/use-wasi-node-pools) to enable WASM support
+*   A Kubernetes cluster whose nodes can be accessed directly to install shims and configure containerd. For managed Kubernetes clusters, a potential workaround is to use a DaemonSet to install the shim and configure containerd. Some Kubernetes distributions, such as AKS, already provide a [preview feature](https://learn.microsoft.com/en-us/azure/aks/use-wasi-node-pools) to enable WASM support.
 
 ## WasmEdge Containerd Crun Shims
 
-WasmEdge containerd shim is based on crun project, to bake WasmEdge runtime into crun, we need to add WasmEdge to Kubernetes cluster and build crun with WasmEdge support manully.
+The WasmEdge containerd shim is based on the crun project. To bake the WasmEdge runtime into crun, we need to add WasmEdge to the Kubernetes cluster and build crun with WasmEdge support manually.
 
 ### Install WasmEdge
 
-Install WasmEdge to Kubernetes node
+Install WasmEdge on a Kubernetes node.
 
 ```bash
 curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | sudo bash -s -- -p /usr/local
@@ -62,7 +62,7 @@ make
 sudo make install
 ```
 
-Maps the runtime type to the shim binary
+Map the runtime type to the shim binary.
 
 ```bash
 vi /etc/containerd/config.toml
@@ -82,7 +82,7 @@ systemctl restart containerd
 systemctl status containerd
 ```
 
-Add a `RuntimeClass` to support WasmEdge crun containerd shim from Kubernetes cluster
+Add a `RuntimeClass` to support the WasmEdge crun containerd shim from the Kubernetes cluster.
 
 ```yaml
 # wasmedge-crun-v2.yaml
@@ -96,7 +96,7 @@ scheduling:
     kubernetes.azure.com/wasmedge-crun: "true"
 ```
 
-Add label to Kubernetes nodes, mark them to support WasmEdge workload
+Add labels to Kubernetes nodes to mark them as supporting WasmEdge workloads.
 
 ```bash
 kubectl apply -f wasmedge-crun.yaml
@@ -109,13 +109,13 @@ Deploy sample WASM application
 kubectl apply -f https://raw.githubusercontent.com/huangyingting/wasm/main/deploy/rust-wasmedge.yaml
 ```
 
-Test WASM application, open two terminal windows, from first terminal window, run
+To test the WASM application, open two terminal windows. In the first terminal window, run:
 
 ```bash
 kubectl port-forward svc/rust-wasmedge 8080:80
 ```
 
-From second terminal window, run below command and notice the request is echoed back
+In the second terminal window, run the following command and notice that the request is echoed back:
 
 ```bash
 curl http://localhost:8080
@@ -130,18 +130,18 @@ Accept: */*
 
 ## Deis Labs Containerd Wasm Shims
 
-Deis Labs provided two great containerd shims
+Deis Labs provides two great containerd shims:
 
-*   Spin shim - support [spin framework](https://github.com/fermyon/spin)
-*   Slight (SpiderLightning) shim - support [Deislabs SpiderLightning](https://github.com/deislabs/spiderlightning)
+*   Spin shim - supports the [Spin framework](https://github.com/fermyon/spin)
+*   Slight (SpiderLightning) shim - supports [Deis Labs SpiderLightning](https://github.com/deislabs/spiderlightning)
 
 ### Install Deis Labs Containerd Wasm Shims
 
-[Using a shim in Kubernetes](https://github.com/deislabs/containerd-wasm-shims#using-a-shim-in-kubernetes) has brief steps to install deis lab containerd wasm shims
+[Using a shim in Kubernetes](https://github.com/deislabs/containerd-wasm-shims#using-a-shim-in-kubernetes) has brief steps to install Deis Labs containerd WASM shims.
 
-Here are more detailed steps
+Here are more detailed steps.
 
-Install containerd shims to Kubernetes node
+Install containerd shims on a Kubernetes node.
 
 ```bash
 RELEASE=v0.9.1
@@ -167,7 +167,7 @@ systemctl restart containerd
 systemctl status containerd
 ```
 
-Add `RuntimeClass` to support spin & slight from Kubernetes cluster
+Add `RuntimeClass` resources to support Spin and Slight from the Kubernetes cluster.
 
 ```yaml
 # runtimeclass.yaml
@@ -190,7 +190,7 @@ scheduling:
     kubernetes.azure.com/wasmtime-spin: "true"
 ```
 
-Label Kubernetes nodes to support spin & slight workload
+Label Kubernetes nodes to support Spin and Slight workloads.
 
 ```bash
 kubectl apply -f runtimeclass.yaml
@@ -204,13 +204,13 @@ Deploy sample WASM application
 kubectl apply -f https://raw.githubusercontent.com/huangyingting/wasm/main/deploy/go-spin.yaml
 ```
 
-Test WASM application, open two terminal windows, from first terminal window, run
+To test the WASM application, open two terminal windows. In the first terminal window, run:
 
 ```bash
 kubectl port-forward svc/go-spin 8080:80
 ```
 
-From second terminal window, run below command and notice the request is echoed back
+In the second terminal window, run the following command and notice that the request is echoed back:
 
 ```bash
 curl http://localhost:8080
@@ -234,7 +234,7 @@ version: v0.1.0
 
 ## Sample applications
 
-This [repo](https://github.com/huangyingting/wasm) also provides a few of sample applications to run WASM applications from Kubernetes cluster
+This [repo](https://github.com/huangyingting/wasm) also provides a few sample applications for running WASM applications from a Kubernetes cluster.
 
 *   dotnet-spin, a simple WASM http echo server written on c# language
 *   go-spin, a simple WASM http echo server written on golang language
@@ -242,11 +242,11 @@ This [repo](https://github.com/huangyingting/wasm) also provides a few of sample
 
 ### Build and deploy
 
-This [repo](https://github.com/huangyingting/wasm) has github action workflows to build and push images to ghcr.io. Check .github/workflows/build-spin-images.yaml and .github/workflows/build-wasmedge-images.yaml for how those WASM container images are built.
+This [repo](https://github.com/huangyingting/wasm) has GitHub Actions workflows to build and push images to ghcr.io. Check `.github/workflows/build-spin-images.yaml` and `.github/workflows/build-wasmedge-images.yaml` to see how those WASM container images are built.
 
 `deploy` directory has all the Kubernetes manifests to deploy sample applications.
 
-To run applications locally, it requires
+To run applications locally, you need:
 
 *   [Rust](https://www.rust-lang.org/tools/install)
 *   [.NET 7.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
@@ -263,7 +263,7 @@ cargo build --release --target wasm32-wasi
 wasmedge target/wasm32-wasi/release/rust-wasmedge.wasm
 ```
 
-rust-wasmedge also supports dapr, to add dapr sidecar, add below annotations to deploy/rust-wasmedge.yaml
+rust-wasmedge also supports Dapr. To add a Dapr sidecar, add the following annotations to deploy/rust-wasmedge.yaml:
 
 ```yaml
 ...

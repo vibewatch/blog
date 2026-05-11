@@ -12,6 +12,8 @@ feature_image: "/assets/posts/useful-kubernetes-tricks/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "Linux"]
 ---
+> **Note (May 2026):** Some snippets in this post reference older Kubernetes and Helm behavior, such as Helm stable charts and kube-proxy iptables resync tricks. They may still be useful for troubleshooting older clusters, but verify commands against your current Kubernetes version, package manager, and CNI/data-plane implementation.
+
 ## Find which RoleBinding/ClusterRoleBinding is related to a ServiceAccount
 
 ```bash

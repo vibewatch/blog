@@ -1,5 +1,5 @@
 ---
-title: "Docker Macvlan Demystify"
+title: "Docker Macvlan Demystified"
 slug: "docker-macvlan-demystify"
 date: "2018-05-25 10:42:11"
 updated: "2018-05-28 13:04:28"
@@ -12,7 +12,7 @@ feature_image: "/assets/posts/docker-macvlan-demystify/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Macvlan", "Docker", "Ubuntu", "Linux"]
 ---
-In this article, we are going to disucss a little bit about `Macvlan` and setup a `Macvlan` lab environment under Hyper-V host with 3 Ubuntu 16.04 VMs.
+In this article, we are going to discuss `Macvlan` and set up a `Macvlan` lab environment on a Hyper-V host with three Ubuntu 16.04 VMs.
 
 ## 0 What is Macvlan
 
@@ -26,20 +26,20 @@ Refer to [Use Macvlan networks](https://docs.docker.com/network/macvlan/)
 
 ## 1 Macvlan Lab Environment
 
-To illustrate how `Macvlan` works, we will use 3 VMs to demostrate `Macvlan`, one VM is master VM which will severs as gateway to route VLAN traffics between VLAN's sub-interfaces, other 2 VMs are docker nodes, node0 and node1. Those VMs will be created under Hyper-V environment.
+To illustrate how `Macvlan` works, we will use three VMs. One VM is the master VM, which will serve as the gateway to route VLAN traffic between VLAN subinterfaces. The other two VMs are Docker nodes, node0 and node1. These VMs will be created in a Hyper-V environment.
 
 ### 1.1 Network Diagram
 
 ![MACVLAN](/assets/posts/docker-macvlan-demystify/macvlan.svg)  
-Refer to above diagram, each VM will have two network interfaces, eth0 is for management, eth1 is the interface to create `Macvlan`
+As shown in the diagram above, each VM will have two network interfaces: eth0 is for management, and eth1 is the interface used to create `Macvlan`.
 
 ### 1.2 Hyper-V network & VM's configuration
 
-Before creating those VMs, we need to create two virtual switches under Hyper-V. One is for management, eth0's network (has internet connectivity to download/install docker, able to SSH etc.), Another is for `Macvlan`, eth1's network.
+Before creating these VMs, we need to create two virtual switches in Hyper-V. One is for management, eth0's network (with internet connectivity for downloading/installing Docker, SSH access, etc.). The other is for `Macvlan`, eth1's network.
 
 From Powershell window, add two virtual switches
 
-```Powershell
+```powershell
 # eth0
 New-VMSwitch -SwitchName "NAT" -SwitchType Internal
 # eth1
@@ -48,7 +48,7 @@ New-VMSwitch -SwitchName "VLAN" -SwitchType Internal
 
 Configure virtual switch 'NAT' in NAT mode. We need ifIndex to associate it with NAT network
 
-```Powershell
+```powershell
 Get-NetAdapter
 ```
 
@@ -63,12 +63,12 @@ vEthernet (NAT)           Hyper-V Virtual Ethernet Adapter #3          11 Up    
 
 Create NAT network and associate it with 'NAT' virtual switch
 
-```Powershell
+```powershell
 New-NetIPAddress -IPAddress 172.16.0.1 -PrefixLength 16 -InterfaceIndex 11
 New-NetNat -Name NATNetwork -InternalIPInterfaceAddressPrefix 172.16.0.0/16
 ```
 
-Now, from Hyper-V management console, create three VMs with name "master", "node0" and "node1", assign fist 'Network Adatper" to 'NAT' virtual switch.
+Now, from the Hyper-V management console, create three VMs named "master", "node0", and "node1", and assign the first "Network Adapter" to the "NAT" virtual switch.
 
 After VMs are created, we will add second 'Network Adapter' to them. Before that, let's talk a little bit about Hyper-V virtual switch mode.
 
@@ -78,9 +78,9 @@ Hyper-V virtual switch works in either Access mode or Trunk mode, the default mo
 
 **Access Mode**, virtual switch receives network packets in which it first checks the VLAN ID tagged in the network packet. If the VLAN ID tagged in the network packet matches the one configured on the virtual switch, then the network packet is accepted by the virtual switch. Any incoming network packet that is not tagged with the same VLAN ID will be discarded by the virtual switch.
 
-Since `Macvlan` is implemented in guest OS, that means Hyper-V virtual switch needs to forward VLAN traffics to guest OS, which also means we need to configure trunk mode for second network adapter connect to virtual switch 'VLAN'. Follow below steps to add network adapter into each VM and configure them in trunk mode
+Since `Macvlan` is implemented in the guest OS, the Hyper-V virtual switch needs to forward VLAN traffic to the guest OS. This also means we need to configure trunk mode for the second network adapter connected to the "VLAN" virtual switch. Follow the steps below to add a network adapter to each VM and configure them in trunk mode.
 
-```Powershell
+```powershell
 Add-VMNetworkAdapter -SwitchName VLAN -VMName "node0" -Name "VLAN-Nic"
 Set-VMNetworkAdapterVlan -Trunk -AllowedVlanIdList "10,20,30,40,50,60" -VMName "node0" -V
 MNetworkAdapterName "VLAN-NIC" -NativeVlanId 100
@@ -94,7 +94,7 @@ Set-VMNetworkAdapterVlan -Trunk -AllowedVlanIdList "10,20,30,40,50,60" -VMName "
 VMNetworkAdapterName "VLAN-NIC" -NativeVlanId 100
 ```
 
-`Macvlan` uses a unique MAC address per ethernet interface, by default, Hyper-V only allows traffics with MAC address sticks to the virutal switch port, we need to "Enable MAC address spoofing" to prevent virtual switch dropping VLAN's traffic.  
+`Macvlan` uses a unique MAC address per Ethernet interface. By default, Hyper-V only allows traffic with MAC addresses that stick to the virtual switch port, so we need to "Enable MAC address spoofing" to prevent the virtual switch from dropping VLAN traffic.
 ![address-spoofing](/assets/posts/docker-macvlan-demystify/address-spoofing.jpg)
 
 ### 1.3 Install Ubuntu
@@ -155,15 +155,15 @@ apt install docker.io
 
 We are going to configure eth1 interface as an IEEE 802.1Q VLAN trunk interface.
 
-There are two ways to connect a ethernet interface to a switch that carries 802.1Q VLANs:
+There are two ways to connect an Ethernet interface to a switch that carries 802.1Q VLANs:
 
-*   Via a untagged port, where VLAN support is handled by the switch (so the attached machine sees ordinary Ethernet frames);  
+*   Via an untagged port, where VLAN support is handled by the switch (so the attached machine sees ordinary Ethernet frames);
     Or
-*   Via a tagged (trunk) port, where VLAN support is handled by the attached ethernet interface (which sees 802.1Q-encapsulated Ethernet frames).
+*   Via a tagged (trunk) port, where VLAN support is handled by the attached Ethernet interface (which sees 802.1Q-encapsulated Ethernet frames).
 
-The advantage of a tagged port is that it allows multiple VLANs to be carried by a single physical bearer. The disadvantage is that the ethernet interface in question must support 801.q and be configured to use it.
+The advantage of a tagged port is that it allows multiple VLANs to be carried by a single physical bearer. The disadvantage is that the Ethernet interface in question must support 802.1Q and be configured to use it.
 
-VLAN requies 802.1Q kernel module, to load 802.1Q kernel module, from master, node0 and node1, run below commands
+VLAN requires the 802.1Q kernel module. To load it from master, node0, and node1, run the following commands.
 
 ```bash
 sudo -i
@@ -450,11 +450,11 @@ PING 192.169.2.1 (192.169.2.1): 56 data bytes
 
 You can see it's failed, this is because even VLAN 10 and VLAN 20 are attached to same physical network interface eth1 from node0, packets still won't be forwarded between different VLANs.
 
-Later, we will discuss how to use master as a gateway to route traffics between different VLANs.
+Later, we will discuss how to use master as a gateway to route traffic between different VLANs.
 
-## 4 Route Traffics Between VLANs
+## 4 Route Traffic Between VLANs
 
-Here is the solution to route traffics between different VLANs. We will use master as a gateway to route VLAN traffics
+Here is the solution to route traffic between different VLANs. We will use master as a gateway to route VLAN traffic.
 
 Enable IP forwarding on master
 
@@ -462,7 +462,7 @@ Enable IP forwarding on master
 sysctl -w net.ipv4.ip_forward=1
 ```
 
-Append below configurations to /etc/network/interfaces to create VLAN subinterfaces under eth1
+Append the following configurations to /etc/network/interfaces to create VLAN subinterfaces under eth1.
 
 ```bash
 vi /etc/network/interfaces
@@ -486,7 +486,7 @@ ifup eth1.10
 ifup eth1.20
 ```
 
-Verfiy VLANs are created and up.
+Verify that VLANs are created and up.
 
 ```bash
 cat /proc/net/vlan/config
@@ -506,7 +506,7 @@ ip address add 192.168.3.0/24 dev eth1.10
 ip address add 192.169.3.0/24 dev eth1.20
 ```
 
-The last step is to configure iptables, so that eth1.10(VLAN 10) and eth1.20(VLAN 20) can forward traffics to each other.
+The last step is to configure iptables so that eth1.10 (VLAN 10) and eth1.20 (VLAN 20) can forward traffic to each other.
 
 ```bash
 iptables -A FORWARD -i eth1.10 -o eth1.20 -j ACCEPT
@@ -541,7 +541,7 @@ PING 192.169.3.2 (192.169.3.2): 56 data bytes
 round-trip min/avg/max = 0.525/0.632/0.697 ms
 ```
 
-This is because master begins to forward traffics between differnt VLANs, if we capture network trace from master's eth1 interface, we can see traffics in below
+This is because master begins to forward traffic between different VLANs. If we capture a network trace from master's eth1 interface, we can see the traffic below.
 
 ```bash
 21:10:20.668524 02:42:c0:a8:02:01 > 00:15:5d:10:31:14, ethertype 802.1Q (0x8100), length 102: vlan 10, p 0, ethertype IPv4, 192.168.2.1 > 192.169.3.2: ICMP echo request, id 3072, seq 0, length 64
@@ -552,4 +552,4 @@ This is because master begins to forward traffics between differnt VLANs, if we 
 
 ## 5 Summary
 
-`Macvlan` allows creation of multiple virtual network interfaces behind the host’s single physical interface Each virtual interface has unique MAC and IP addresses assigned with restriction: the IP address needs to be in the same broadcast domain as the physical interface eliminates the need for the Linux bridge, NAT and port- mapping allowing you to connect directly to physical interface.
+`Macvlan` allows you to create multiple virtual network interfaces behind a host’s single physical interface. Each virtual interface has a unique MAC and IP address, with one restriction: the IP address needs to be in the same broadcast domain as the physical interface. This eliminates the need for the Linux bridge, NAT, and port mapping, allowing you to connect directly to the physical interface.

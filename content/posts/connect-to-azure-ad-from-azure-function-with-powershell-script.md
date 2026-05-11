@@ -1,5 +1,5 @@
 ---
-title: "Connect to Azure AD from Azure Functions with Powershell Script"
+title: "Connect to Azure AD from Azure Functions with a PowerShell Script"
 slug: "connect-to-azure-ad-from-azure-function-with-powershell-script"
 date: "2018-05-30 10:15:51"
 updated: "2018-05-30 10:26:52"
@@ -10,25 +10,25 @@ featured: false
 excerpt: ""
 feature_image: "/assets/posts/connect-to-azure-ad-from-azure-function-with-powershell-script/hero.png"
 authors: ["Yingting Huang"]
-tags: ["Azure Function", "Azure", "Function App", "Powershell", "AzureAD", "AAD"]
+tags: ["Azure Function", "Azure", "Function App", "PowerShell", "AzureAD", "AAD"]
 ---
-There are certain things to overcome to use Connect-AzureAD from powershell script under azure functions by authenticating with certificate. This article explains how to do it.
+There are certain things to overcome when using Connect-AzureAD from a PowerShell script under Azure Functions by authenticating with a certificate. This article explains how to do it.
 
 ## 0 Prerequisites
 
-Azure functions has been deployed already.
+Azure Functions has been deployed already.
 
 ## 1 Generate Certificate and Service Principal
 
-To run Azure AD powershell commands, we need to connect to Azure AD first. Connect-AzureAD currently supports three methods to connect to Azure AD, refer to [Connect-AzureAD](https://docs.microsoft.com/en-us/powershell/module/azuread/connect-azuread?view=azureadps-2.0)
+To run Azure AD PowerShell commands, we need to connect to Azure AD first. Connect-AzureAD currently supports three methods to connect to Azure AD. Refer to [Connect-AzureAD](https://docs.microsoft.com/en-us/powershell/module/azuread/connect-azuread?view=azureadps-2.0).
 
 *   By credential
 *   By CertificateThumbprint & ApplicationId
 *   By AadAccessToken & AccountId
 
-Since we don't want to store cleartext credentials in our azure functions app, the best choice here is to use certificate.
+Since we don't want to store cleartext credentials in our Azure Functions app, the best choice here is to use a certificate.
 
-To generate a self-signed certificate and associate it with an AAD applicaiton service principal, we can follow below steps.  
+To generate a self-signed certificate and associate it with an AAD application service principal, we can follow the steps below.
 **NOTE:** Please replace `YOUR_PASSWORD`, `YOUR_PFX_PATH` and `YOUR_APP_NAME` with corresponding values.
 
 ```powershell
@@ -72,7 +72,7 @@ Write-Host "Thumbprint: "$thumb
 
 ## 2 Configure Azure Function to Use Certificate
 
-To use the generated certificate to connect to Azure AD, we need to make the certificate avaiable to Azure functions, from Azure portal
+To use the generated certificate to connect to Azure AD, we need to make the certificate available to Azure Functions from the Azure portal.
 
 *   YOUR\_AZURE\_FUNCTION->Platform features->SSL, click 'Upload Certificate' to upload the exported .pfx format certificate in **Step 1**  
     ![add-ssl](/assets/posts/connect-to-azure-ad-from-azure-function-with-powershell-script/add-ssl.jpg)
@@ -85,28 +85,28 @@ To use the generated certificate to connect to Azure AD, we need to make the cer
 
 ## 3 Copy AzureAD PowerShell Module to Azure Function
 
-Azure functions hosting environment doesn't provide AzureAD powershell module by default, to use AzureAD powershell module, we need to 'INJECT' it into the Azure functions host environment. Basically we need a central place to store AzureAD powershell module and load it from this central place. We will use wwwroot\\YOUR\_FUNCTION\_NAME as the central place.
+The Azure Functions hosting environment doesn't provide the AzureAD PowerShell module by default. To use the AzureAD PowerShell module, we need to 'INJECT' it into the Azure Functions host environment. Basically, we need a central place to store the AzureAD PowerShell module and load it from this central place. We will use wwwroot\\YOUR\_FUNCTION\_NAME as the central place.
 
-*   First, let's store a copy of AzureAD module from local powershell environment, from a Windows machine, run
+*   First, let's store a copy of the AzureAD module from a local PowerShell environment. From a Windows machine, run:
 
 ```powershell
 Save-Module AzureAD -Repository PSGallery -Path C:\Temp
 ```
 
 *   A folder named AzureAD will be created under C:\\Temp and all AzureAD related files will be downloaded into this folder.
-*   Now copy AzureAD module to Azure function hosting environment, from YOUR\_AZURE\_FUNCTION->Platform features-Properties, find ftp URL of 'FTP Host Name'  
+*   Now copy the AzureAD module to the Azure Functions hosting environment. From YOUR\_AZURE\_FUNCTION->Platform features-Properties, find the FTP URL of 'FTP Host Name'.
     ![ftp-settings](/assets/posts/connect-to-azure-ad-from-azure-function-with-powershell-script/ftp-settings.jpg)
-*   from Windows Explorer, access 'FTP Host Name' URL with deployment credential configured preivously in **Step 2**
+*   From Windows Explorer, access the 'FTP Host Name' URL with the deployment credential configured previously in **Step 2**.
 *   Navigate to site/wwwroot/YOUR\_FUNCTION\_NAME then copy AzureAD into it  
     ![ftp-folder](/assets/posts/connect-to-azure-ad-from-azure-function-with-powershell-script/ftp-folder.jpg)
 
 ## 4 Write PowerShell Script from Azure Function to Connect to Azure AD
 
-With the configurations & setups from Step 1, Step 2 and Step 3, we are good to run AzureAD powershell scripts from Azure function now. Here are the steps to create powershell azure functions and call Connect-AzureAD,
+With the configurations and setup from Step 1, Step 2, and Step 3, we are ready to run AzureAD PowerShell scripts from Azure Functions now. Here are the steps to create a PowerShell Azure Function and call Connect-AzureAD.
 
-From Azure portal, create an Azure powershell function  
+From the Azure portal, create an Azure PowerShell function.
 ![powershell-fun](/assets/posts/connect-to-azure-ad-from-azure-function-with-powershell-script/powershell-fun.jpg)  
-Then copy/paste below code snippet into it
+Then copy/paste the code snippet below into it.
 
 ```powershell
 Write-Output "PowerShell function executing at:$(get-date)";
@@ -133,10 +133,10 @@ Write-Output "PowerShell function executed at:$(get-date)";
 **Note:**
 
 *   YOUR\_FUNCTION\_NAME needs to be replaced with real azure function name.
-*   YOUR\_TENANT\_ID, YOUR\_APP\_ID and YOUR\_THUMBPRINT needs to be replaced as well, those information can be found from Step 1's output.
-*   Depends on the exported AzureAD module version, $ModuleVersion need to be changed. To check AzureAD module, check the subfolder under AzureAD folder, the subfolder's name is the module version.
+*   YOUR\_TENANT\_ID, YOUR\_APP\_ID, and YOUR\_THUMBPRINT need to be replaced as well. This information can be found from Step 1's output.
+*   Depending on the exported AzureAD module version, $ModuleVersion needs to be changed. To check the AzureAD module, check the subfolder under the AzureAD folder; the subfolder's name is the module version.
 
-The powershell Azure function should be ready now, click 'Run' button, the output should be like below
+The PowerShell Azure Function should be ready now. Click the 'Run' button, and the output should look like the following.
 
 ```bash
 2018-05-30T10:03:59  Welcome, you are now connected to log-streaming service.

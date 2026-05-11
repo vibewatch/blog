@@ -7,42 +7,44 @@ type: "post"
 status: "published"
 visibility: "public"
 featured: true
-excerpt: "This post will explain how to deploy a kubernetes cluster in multiple zones on Azure with detailed steps, together with enabling IPVS for high performance and Calico network policy for secure network connectivity. We will explore some concepts in multiple zones cluter and show how they work as well."
+excerpt: "This post will explain how to deploy a Kubernetes cluster across multiple zones on Azure with detailed steps, together with enabling IPVS for high performance and Calico network policy for secure network connectivity. We will also explore some concepts in a multiple-zone cluster and show how they work."
 feature_image: "/assets/posts/k8s-in-multiple-zones-on-azure-with-calico-and-ipvs/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S", "Azure", "Ubuntu"]
 ---
+> **Note (May 2026):** This post targets the Kubernetes 1.12-era Azure cloud provider, kubeadm `v1beta1` configuration, Docker-based nodes, Calico/Canal v3.4 manifests, and kube-proxy IPVS setup. Azure availability zone support, kubeadm APIs, container runtimes, and Calico installation methods have evolved since then. Validate all manifests and commands against current Kubernetes, Calico, and Azure documentation before reuse.
+
 # 0 Background
 
 Since 1.2, Kubernetes adds support for running a single cluster in multiple failure zones (GCE calls them simply “zones”, AWS calls them “availability zones”), while [Running in Multiple Zones](https://kubernetes.io/docs/setup/multiple-zones/) says
 
 > Only GCE and AWS are currently supported automatically
 
-However there is a way to deploy multiple zones(Azure calls them "availability zones") K8S cluster in Azure if kubernetes version is 1.12 above. This feature is added into azure cloud provider recently, per article [Availability Zones](https://github.com/kubernetes/cloud-provider-azure/blob/master/docs/using-availability-zones.md)
+However, there is a way to deploy a multiple-zone K8S cluster in Azure (Azure calls them "availability zones") if the Kubernetes version is 1.12 or above. This feature was recently added to the Azure cloud provider, per the article [Availability Zones](https://github.com/kubernetes/cloud-provider-azure/blob/master/docs/using-availability-zones.md).
 
 > With multiple-zone clusters, this spreading behavior is extended across zones (to reduce the impact of zone failures.) (This is achieved via SelectorSpreadPriority).
 
-This post will explain how to deploy a kubernetes cluster in multiple zones on Azure with detailed steps, together with enabling IPVS for high performance and Calico network policy for secure network connectivity. We will explore some concepts in multiple zones cluter and show how they work as well.
+This post will explain how to deploy a Kubernetes cluster across multiple zones on Azure with detailed steps, together with enabling IPVS for high performance and Calico network policy for secure network connectivity. We will also explore some concepts in a multiple-zone cluster and show how they work.
 
 # 1 Environment
 
-The setup requires 3 VMs deployed to 3 Zones in Azure SouthEast Asia region
+The setup requires three VMs deployed to three zones in the Azure Southeast Asia region.
 
 *   k8s-01, zone 1, master node
 *   k8s-02, zone 2, agent node
 *   k8s-03, zone 3, agent node  
     Kubernetes cluster will be deployed with [kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/)
 
-# 2 Step by Steps Guide
+# 2 Step-by-Step Guide
 
-## 2.1 Deploy 3 VMs to 3 Zones in Azure SouthEast Asia Region
+## 2.1 Deploy Three VMs to Three Zones in the Azure Southeast Asia Region
 
 Copy/Paste below script and run from command prompt window, be sure to have [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) installed already.
 
-**Note**: To simplify the setup, I used Azure SouthEast Asia region as it supports availability zones, any other regions can also be used as long as availability zones are supported.
+**Note**: To simplify the setup, I used the Azure Southeast Asia region because it supports availability zones. Any other region can also be used as long as availability zones are supported.
 
 ```bash
-set SUB_ID=<replace it wth your subscription id>
+set SUB_ID=<replace it with your subscription id>
 set RG_NAME=<replace it with your resource group name>
 set SSH_USERNAME=<replace it with your ssh username>
 set SSH_PUBLIC_KEY_FILE=<replace it with your ssh public key file>
@@ -82,13 +84,13 @@ az network nsg rule create --resource-group %RG_NAME% --nsg-name k8s-nsg --name 
 
 ## 2.2 Install Prerequisites
 
-To procceed kubernetes cluster setup, it requires docker, IPVS modules and kubernetes bootstrap binaries ready, here are the steps
+To proceed with the Kubernetes cluster setup, Docker, IPVS modules, and Kubernetes bootstrap binaries need to be ready. Here are the steps.
 
 **On each VM(SSH with private key), `sudo -i` as root**
 
 ### 2.2.1 Install Docker
 
-Install docker from bash with below commands
+Install Docker from bash with the following commands.
 
 ```bash
 apt-get update
@@ -97,7 +99,7 @@ apt-get install -y docker.io
 
 ### 2.2.2 Enable IPVS Modules
 
-Enable IPVS modules with below commands
+Enable IPVS modules with the following commands.
 
 ```bash
 echo nf_conntrack_ipv4 >> /etc/modules
@@ -119,7 +121,7 @@ echo ip_vs_ftp >> /etc/modules
 
 Then `reboot` OS, verify if IPVS is enabled by executing `cut -f1 -d " " /proc/modules | grep -e ip_vs -e nf_conntrack_ipv4`
 
-If ip\_vs and nf\_conntrack\_ipv4 are enabled, output will be similar like below
+If ip\_vs and nf\_conntrack\_ipv4 are enabled, the output will be similar to the following.
 
 ```bash
 ip_vs_ftp
@@ -143,7 +145,7 @@ Finally executing `apt install ipvsadm` to install ipvsadm.
 
 ### 2.2.3 Install Kubernetes Bootstrap Binaries
 
-Run below commands to install kubernetes bootstrap binaries
+Run the following commands to install Kubernetes bootstrap binaries.
 
 ```bash
 apt-get update && apt-get install -y apt-transport-https curl
@@ -159,7 +161,7 @@ apt-get install -y kubelet kubeadm kubectl
 
 ## 3.1 Create Master Node Kubeadm Configuration File
 
-Before run `kubeadm init` to create kubernetes cluster on master node, we need a configuration file, from master node k8s-01 VM, `sudo -i` as root, from bash, run
+Before running `kubeadm init` to create the Kubernetes cluster on the master node, we need a configuration file. From the master node k8s-01 VM, run `sudo -i` as root, then run the following from bash.
 
 ```bash
 cat <<EOF >/etc/kubernetes/kubeadm.conf
@@ -218,7 +220,7 @@ It will create a configuration file at path /etc/kubernetes/kubeadm.conf.
 
 ## 3.2 Create Cloud Provider Configuration File
 
-In 3.1, `/etc/kubernetes/azure.json` is specified as cloud provider configuration file, to create the file, from bash, run
+In 3.1, `/etc/kubernetes/azure.json` is specified as the cloud provider configuration file. To create the file, run the following from bash.
 
 ```bash
 cat <<EOF >/etc/kubernetes/azure.json
@@ -254,16 +256,16 @@ EOF
 
 **Note**:
 
-1.  `tenantId`, `subscriptionId`, `aadClientId`, `aadClientSecret` and `resourceGrop` need to fill with the correct information.
-2.  `tenantId` and `subscriptionId` can get from `az account show`
-3.  `aadClientId` and `aadClientSecret`can create from `az ad sp create-for-rbac --role=Contributor`
+1.  `tenantId`, `subscriptionId`, `aadClientId`, `aadClientSecret`, and `resourceGroup` need to be filled with the correct information.
+2.  `tenantId` and `subscriptionId` can be obtained from `az account show`.
+3.  `aadClientId` and `aadClientSecret` can be created from `az ad sp create-for-rbac --role=Contributor`.
 4.  `resourceGroup` is the resource group name specified in section 2.1 `set RG_NAME=<replace it with your resource group name>`
 
 ## 3.3 Init Kubernetes Cluster
 
 From master node k8s-01 VM, `sudo -i` as root, run  
 `kubeadm init --config /etc/kubernetes/kubeadm.conf` to setup kubernetes cluster.  
-Once finished, record **<TOKEN>** from ouput, this token will be used to join agent node later
+Once finished, record **<TOKEN>** from the output. This token will be used to join agent nodes later.
 
 ```bash
 kubeadm join 172.16.0.4:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:9b14f7c73f69c15a953bb9ee0cbffff779fa694240794c7c357b64c4e1b54876
@@ -271,7 +273,7 @@ kubeadm join 172.16.0.4:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha2
 
 ## 3.4 Apply Calico Network Plugin/Policy
 
-From master node, run below commands to get kubeconfig file which will be used by kubectl.
+From the master node, run the following commands to get the kubeconfig file that will be used by kubectl.
 
 ```bash
 mkdir -p $HOME/.kube
@@ -293,7 +295,7 @@ With all steps carried out from 3.1 - 3.4, kubernetes master node should up and 
 
 ## 3.5 Create Agent Nodes Join Configuration File
 
-From agent node k8s-02 and k8s-03 VMs, `sudo -i` as root, run below commands to create kubeadm join configuraiton file
+From agent node k8s-02 and k8s-03 VMs, run `sudo -i` as root, then run the following commands to create the kubeadm join configuration file.
 
 ```bash
 cat <<EOF >/etc/kubernetes/kubeadm.conf 
@@ -316,12 +318,12 @@ EOF
 
 ## 3.6 Join Agent Nodes
 
-From agent node k8s-02 and k8s-03 VMs, repeat section 3.2 steps to create cloud provider configuratio file, then `sudo -i` as root, run below command to join agent node  
+From agent node k8s-02 and k8s-03 VMs, repeat the steps in section 3.2 to create the cloud provider configuration file. Then run `sudo -i` as root and run the following command to join the agent node.
 `kubeadm join --config /etc/kubernetes/kubeadm.conf`
 
 ## 3.7 Post Installation
 
-We will use this multiple zone cluster to explain a few of concepts in section 4, before that, we need to do a small tweak so that all 3 nodes will be treated equally(no master node)
+We will use this multiple-zone cluster to explain a few concepts in section 4. Before that, we need to make a small tweak so that all three nodes will be treated equally (no master node).
 
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master-
@@ -330,7 +332,7 @@ kubectl label nodes --all node-role.kubernetes.io/master-
 
 By doing this, we remove master node taint/label from k8s-01.
 
-With steps 3.1 - 3.7 carried out, we should have a kubernetes cluster running in multiple zones environment
+With steps 3.1 - 3.7 carried out, we should have a Kubernetes cluster running in a multiple-zone environment.
 
 # 4 Explore Multiple Zones Cluster's Feature
 
@@ -640,7 +642,7 @@ iptables-save|grep KUBE
 -A KUBE-FORWARD -d 192.168.0.0/16 -m comment --comment "kubernetes forwarding conntrack pod destination rule" -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ```
 
-> Specifically, ipvs proxier will use ipset to store source or destination address of traffics that need DROP or do masquerade, to make sure the number of iptables rules be constant, no metter how many services we have.
+> Specifically, ipvs proxier will use ipset to store source or destination addresses of traffic that need DROP or masquerade, to make sure the number of iptables rules stays constant, no matter how many services we have.
 
 Execute `ipset list` will list all ipset sets that kubernetes IPVS used
 

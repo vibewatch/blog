@@ -12,28 +12,30 @@ feature_image: "/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "Prometheus", "TICK", "Monitoring"]
 ---
+> **Note (May 2026):** This article uses Helm v2-style commands and older Helm stable charts, including the historical `stable/prometheus-operator` chart. Modern clusters typically use Helm v3, `kube-prometheus-stack`, updated Fluent Bit/Prometheus/Grafana charts, and newer CRD/API versions. Treat the architecture ideas as reference and update the installation commands before applying them today.
+
 # 0 Introduction
 
-This post doesn't intend to introduce prometheus or influxdb, it serves as a reference for building up a monitoring/logging system in kubernetes with open source softwares.  
-The monitoring/logging/alerting system composes of 4 open sources softwares, refer to diagram below  
+This post does not intend to introduce Prometheus or InfluxDB. It serves as a reference for building a monitoring/logging system in Kubernetes with open-source software.
+The monitoring/logging/alerting system consists of four open-source software components. Refer to the diagram below.
 ![K8SMon-Arch](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/k8smon-arch.svg)
 
-1.  [Fluentbit](https://fluentbit.io/) is used for log collecting, fluentbit is deployed as kubernetes daemonset to all kubernetes nodes, it collects container's log and enriches them with metadata from kubernetes API.
-2.  [InfluxDB](https://www.influxdata.com) is used to store collected/enriched logs from fluentbit.
-3.  [Prometheus](https://prometheus.io) is used for monitoring, it pulls metrics from service monitoring targets and store metrics to its own time series database.
-4.  [Granfa](https://grafana.com/) is used for metris analytics & visualization, it serves as a dashboard system.
+1.  [Fluent Bit](https://fluentbit.io/) is used for log collection. Fluent Bit is deployed as a Kubernetes DaemonSet to all Kubernetes nodes. It collects container logs and enriches them with metadata from the Kubernetes API.
+2.  [InfluxDB](https://www.influxdata.com) is used to store collected/enriched logs from Fluent Bit.
+3.  [Prometheus](https://prometheus.io) is used for monitoring. It pulls metrics from service monitoring targets and stores metrics in its own time-series database.
+4.  [Grafana](https://grafana.com/) is used for metrics analytics and visualization. It serves as a dashboard system.
 
 # 1 Prerequisites
 
-The whole deployment requires helm, charts and a few of customized configuration files, follow below steps to download them in advance
+The whole deployment requires Helm, charts, and a few customized configuration files. Follow the steps below to download them in advance.
 
 ## 1.1 Helm
 
-Refer to [Install applications with Helm in Azure Kubernetes Service (AKS)](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/aks/kubernetes-helm.md), install helm
+Refer to [Install applications with Helm in Azure Kubernetes Service (AKS)](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/aks/kubernetes-helm.md) to install Helm.
 
 ## 1.2 TICK Charts
 
-Clone TICK charts from below repository
+Clone TICK charts from the repository below.
 
 ```bash
 git clone https://github.com/influxdata/tick-charts.git
@@ -48,7 +50,7 @@ TICK stands for
 
 ## 1.3 Monitoring Configuration Files
 
-Download kubernetes monitoring configuration files from below repository
+Download the Kubernetes monitoring configuration files from the repository below.
 
 ```bash
 git clone https://github.com/huangyingting/k8smon.git
@@ -72,7 +74,7 @@ helm install --name polling --namespace tick ./telegraf-s/
 
 ## 2.2 Configure InfluxDB UDP Port
 
-The default setting of influxdb is incorrect for udp service, we need to change protocol from TCP to UDP with below steps  
+The default setting of InfluxDB is incorrect for UDP service, so we need to change the protocol from TCP to UDP with the steps below.
 `kubectl edit service data-influxdb -n=tick`  
 Modify
 
@@ -95,19 +97,19 @@ To
 ## 2.3 InfluxDB Configuration
 
 From command prompt/shell, run `kubectl port-forward svc/dash-chronograf -n=tick 8080:80`  
-Open a brower and access URL [http://localhost:8080](http://localhost:8080), follow the wizard set
+Open a browser and access [http://localhost:8080](http://localhost:8080), then follow the wizard and set:
 
 *   InfluxDB address to [http://data-influxdb.tick:8086](http://data-influxdb.tick:8086)
-*   Kapacitor address to [http://alerts-kapacitor.tick:9092](http://alerts-kapacitor.tick:9092)  
-    From "InfluxDB Admin", create two database called "fluentbit" and "telegraf" with below settings  
+*   Kapacitor address to [http://alerts-kapacitor.tick:9092](http://alerts-kapacitor.tick:9092)
+  From "InfluxDB Admin", create two databases called "fluentbit" and "telegraf" with the settings below.
     ![InfluxDB-Conf](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/influxdb-conf.jpg)
 
 ## 2.4 Install Fluentbit to Collect Container's Log
 
-Fluentbit is a lightweight log collector, according to [Fluentbit](https://fluentbit.io/)
+Fluent Bit is a lightweight log collector. According to [Fluent Bit](https://fluentbit.io/):
 
-> Fluent Bit is an open source and multi-platform Log Processor and Forwarder which allows you to collect data/logs from different sources, unify and send them to multiple destinations. It's fully compatible with Docker and Kubernetes environments.  
-> Fluentbit is used here to collect and populate kubernetes container logs to influxdb, to install it into kubernetes, change directory to k8smon
+> Fluent Bit is an open source and multi-platform Log Processor and Forwarder which allows you to collect data/logs from different sources, unify and send them to multiple destinations. It's fully compatible with Docker and Kubernetes environments.
+> Fluent Bit is used here to collect and populate Kubernetes container logs into InfluxDB. To install it into Kubernetes, change directory to k8smon.
 
 ```bash
 kubectl create namespace logging
@@ -117,14 +119,14 @@ kubectl apply -f fluentbit-ds.yaml
 
 ## 2.5 Verify Log Collecting
 
-Fluentbit should start to collect container's logs and store them into influxdb, to verify it works appropriately, from chronograf "Explore", hightlight database "fluentbit", it should list containers measurements like below  
+Fluent Bit should start collecting container logs and storing them in InfluxDB. To verify it works properly, go to Chronograf "Explore" and highlight the "fluentbit" database. It should list container measurements as shown below.
 ![InfluxDB-Explore](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/influxdb-explore.jpg)
 
 # 3 Install/Configure Prometheus for Monitoring
 
 [Prometheus](https://prometheus.io/docs/introduction/overview/) is an open-source systems monitoring and alerting toolkit originally built at SoundCloud.
 
-We choose prometheus operator as it has a set of pre-configured dashboards and alerts.
+We choose Prometheus Operator because it has a set of preconfigured dashboards and alerts.
 
 ## 3.1 Install Prometheus Operator
 
@@ -136,7 +138,7 @@ helm install --name prom --namespace prom stable/prometheus-operator -f promethe
 
 ## 3.2 Configure ETCD Monitoring
 
-Newest kubernetes cluster shold have SSL/TLS enabled for ETCD, prometheus needs to have a client certificate to monitor ETCD, for example, in a kubeadm setup cluster, client certificate/key/ca certificate are in master node's directory /etc/kubernetes/pki/etcd, copy/rename CA certificate to ca.crt, etcd client certificate to etcd.crt and etcd client key to etcd.key, then create a yaml with below commands
+Newer Kubernetes clusters should have SSL/TLS enabled for etcd, and Prometheus needs a client certificate to monitor etcd. For example, in a kubeadm-based cluster, the client certificate, client key, and CA certificate are in the master node's /etc/kubernetes/pki/etcd directory. Copy/rename the CA certificate to ca.crt, the etcd client certificate to etcd.crt, and the etcd client key to etcd.key, then create a YAML file with the following commands.
 
 ```bash
 cat <<-EOF > etcd-client-cert.yaml
@@ -153,21 +155,21 @@ type: Opaque
 EOF
 ```
 
-And apply it to kubernetes cluster  
+And apply it to the Kubernetes cluster.
 `kubectl apply -f etcd-client-cert.yaml`
 
 ## 3.3 Configure Controller Manager and Scheduler Monitoring
 
-Monitoring kubernetes controller manager and scheduler requires they are listening at 0.0.0.0 address, if kubernetes is deployed with kubeadm, we need to change following settings and then reboot master node
+Monitoring the Kubernetes controller manager and scheduler requires them to listen on the 0.0.0.0 address. If Kubernetes is deployed with kubeadm, we need to change the following settings and then reboot the master node.
 
 ```bash
 sed -e "s/- --address=127.0.0.1/- --address=0.0.0.0/" -i /etc/kubernetes/manifests/kube-controller-manager.yaml
 sed -e "s/- --address=127.0.0.1/- --address=0.0.0.0/" -i /etc/kubernetes/manifests/kube-scheduler.yaml
 ```
 
-## 3.4 Configure Telegraf Ouput to Prometheus
+## 3.4 Configure Telegraf Output to Prometheus
 
-We'd like to use prometheus to collect influxdb's metrics and have influxdb monitored by prometheus, unfortunately influxdb doesn't expose its metrics to prometheuse. However, telegraf can collect influxdb's metrics and output to prometheus, so we can configure telegraf to transit influxdb metrics to prometheus, to do that, change directory to tick-charts, from command prompt/shell, run
+We'd like to use Prometheus to collect InfluxDB's metrics and have InfluxDB monitored by Prometheus. Unfortunately, InfluxDB doesn't expose its metrics to Prometheus. However, Telegraf can collect InfluxDB's metrics and output them to Prometheus, so we can configure Telegraf to transmit InfluxDB metrics to Prometheus. To do that, change directory to tick-charts, then run the following from a command prompt or shell.
 
 ```bash
 helm upgrade polling --namespace tick ./telegraf-s/ -f ../k8smon/telegraf_values.yaml
@@ -183,9 +185,9 @@ kubectl port-forward svc/prom-prometheus-operator-prometheus -n=prom 9090:9090
 
 Now, open a browser and visit  
 [http://localhost:9090/targets](http://localhost:9090/targets)  
-All targers should be green  
+All targets should be green.
 ![Prom-Targets](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/prom-targets.jpg)  
-Also, accessing [http://localhost:9090/graph](http://localhost:9090/graph), all metrics should be populated  
+Also, when accessing [http://localhost:9090/graph](http://localhost:9090/graph), all metrics should be populated.
 ![Prom-Metrics](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/prom-metrics.jpg)
 
 # 4 Alerting
@@ -257,21 +259,21 @@ Then open a browser to [http://localhost:9093/#/alerts](http://localhost:9093/#/
 
 # 5 Grafana
 
-The default setup will install a few of pre-configured dashboards into grafana, to access those dashboard, we need to login to grafana first,
+The default setup will install a few preconfigured dashboards into Grafana. To access those dashboards, we need to log in to Grafana first.
 
-1.  Follow below steps to get username/password
+1.  Follow the steps below to get the username/password.
 
 ```bash
 kubectl get secret -n=prom prom-grafana -o jsonpath="{.data.admin-user}"|base64 --decode;echo
 kubectl get secret -n=prom prom-grafana -o jsonpath="{.data.admin-password}"|base64 --decode;echo
 ```
 
-2.  Run `kubectl port-forward svc/prom-grafana -n=prom 18080:80`, and open browser to access [http://localhost:18080/login](http://localhost:18080/login), login with username/password retrieved from step 1.
-3.  From "Home", find those pre-configured dashboards  
+2.  Run `kubectl port-forward svc/prom-grafana -n=prom 18080:80`, open a browser to access [http://localhost:18080/login](http://localhost:18080/login), and log in with the username/password retrieved from step 1.
+3.  From "Home", find those preconfigured dashboards.
     ![Grafana-DashList](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/grafana-dashlist.jpg)
 4.  Click any of them, for example "Node" dashboard will list all performance metrics  
     ![Grafana-NodeDash](/assets/posts/kubernetes-cloud-native-monitoring-up-and-running/grafana-nodedash.jpg)
 
 # 6 Summary
 
-Above setup should make the kubernetes cluster monitoring/alerting/logging up and running, this solution could be applied to a small/middle sized kubernetes cluster as well if it is self-hosted.
+The setup above should get monitoring/alerting/logging up and running for the Kubernetes cluster. This solution could also be applied to a small or mid-sized self-hosted Kubernetes cluster.

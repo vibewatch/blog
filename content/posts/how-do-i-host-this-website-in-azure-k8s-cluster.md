@@ -1,5 +1,5 @@
 ---
-title: "How do I host this website in Azure K8S cluster"
+title: "How Do I Host This Website in an Azure K8S Cluster"
 slug: "how-do-i-host-this-website-in-azure-k8s-cluster"
 date: "2018-12-23 12:39:23"
 updated: "2019-01-06 09:22:34"
@@ -7,24 +7,26 @@ type: "post"
 status: "published"
 visibility: "public"
 featured: true
-excerpt: "Explain how I built up my website from Azure hosted K8S cluster"
+excerpt: "Explains how I built my website on an Azure-hosted K8S cluster."
 feature_image: "/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["K8S", "Kubernetes"]
 ---
+> **Note (May 2026):** This article reflects the AKS-Engine, Helm v2/Tiller, older cert-manager, and `extensions/v1beta1` Ingress APIs used around Kubernetes 1.10-1.13. Modern Kubernetes clusters generally use Helm v3, newer cert-manager APIs, `networking.k8s.io/v1` Ingress, and managed AKS or Cluster API-style provisioning. Use this post as historical context and update the manifests before applying them today.
+
 # 0 Background
 
-This website is hosted in a kubernetes cluster with 3 Azure B2S VMs. In the following sections, I am going to explain how I build up the whole cluster, how to leverage kubernetes to provide the infrastructure support, aks-engine, helm, cert-manager and nginx-ingress controller will be discussed here.
+This website is hosted in a Kubernetes cluster with three Azure B2S VMs. In the following sections, I am going to explain how I built the whole cluster and how to leverage Kubernetes to provide the infrastructure support. aks-engine, Helm, cert-manager, and the nginx-ingress controller will be discussed here.
 
-# 1 Setup a K8S cluster with AKS-Engine
+# 1 Set Up a K8S Cluster with AKS-Engine
 
-Recently, Microsoft started a new project called AKS-Engine to replace its old project ACS-Engine. Basically AKS-Engine is the successor of ACS-Engine, Microsoft migrated all ACS-Engine code to AKS-Engine and provide updated support for new K8S deployment. So I decide to use AKS-Engine to deployment my K8S cluster.
+Recently, Microsoft started a new project called AKS-Engine to replace its old project ACS-Engine. Basically, AKS-Engine is the successor to ACS-Engine. Microsoft migrated all ACS-Engine code to AKS-Engine and provides updated support for new K8S deployments. So I decided to use AKS-Engine to deploy my K8S cluster.
 
-The latest AKS-Engine can be downloaded from [Here](https://github.com/Azure/aks-engine/releases/latest). Download and extract aks-engine so we can use it to create a K8S cluster. The completed deploy guide can be found from this [link](https://github.com/Azure/aks-engine/blob/master/docs/kubernetes/deploy.md)
+The latest AKS-Engine can be downloaded from [here](https://github.com/Azure/aks-engine/releases/latest). Download and extract aks-engine so we can use it to create a K8S cluster. The complete deployment guide can be found at this [link](https://github.com/Azure/aks-engine/blob/master/docs/kubernetes/deploy.md).
 
 ## 1.1 Define a template
 
-To create a cluster, we need a template file which will be used in aks-engine command line, I'd like to try the newest K8S release, so I set orchestratorRelease to 1.13.1, by default, aks-engine will use Azure advanced networking as network plugin. Here is my template k8s113.json
+To create a cluster, we need a template file that will be used in the aks-engine command line. I'd like to try the newest K8S release, so I set orchestratorRelease to 1.13.1. By default, aks-engine will use Azure advanced networking as the network plugin. Here is my template k8s113.json.
 
 ```json
 {
@@ -65,7 +67,7 @@ To create a cluster, we need a template file which will be used in aks-engine co
 }
 ```
 
-Note: clientID and secret maps to a service principal's appId and password, if you don't have service principal yet, you can create it by using below commands
+Note: clientID and secret map to a service principal's appId and password. If you don't have a service principal yet, you can create one by using the following commands.
 
 ```bash
 az login
@@ -75,30 +77,30 @@ az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/${SUBSCRI
 
 ## 1.2 Deploy K8S cluster
 
-Using aks-engine to deploy a K8S cluster is pretty simple, just run below command
+Using aks-engine to deploy a K8S cluster is pretty simple. Just run the command below.
 
 ```bash
 aks-engine deploy --resource-group "AKSEngine"   --location "<ANY_LOCATION>"   --subscription-id "<AZURE_SUBSCRIPTION_ID>"   --api-model "k8s113.json"
 ```
 
-Note: you can use `az account list-locations` to get a completed list of locations
+Note: you can use `az account list-locations` to get a complete list of locations.
 
 # 2 Deploy website
 
-This website is based on [ghost](https://ghost.org/), the professional publishing platform. To publish this website to internet, we also need a public IP address as well as a SSL certificate. So I am going to deploy&use below applications in K8S cluster.
+This website is based on [Ghost](https://ghost.org/), the professional publishing platform. To publish this website to the internet, we also need a public IP address as well as an SSL certificate. So I am going to deploy and use the following applications in the K8S cluster.
 
 *   cert-manager (to request a SSL certificate)
 *   nginx-ingress controller (expose website to internet)
 *   kubeapps (web based helm UI)
 *   ghost (my website)
 
-In K8S world, [helm](https://helm.sh/) can help manage kubernetes application, and there are plenty charts available, so I am going to use helm to deploy those applications.
+In the K8S world, [Helm](https://helm.sh/) can help manage Kubernetes applications, and there are plenty of charts available, so I am going to use Helm to deploy these applications.
 
-Helm can be downloaded and installed from [here](https://docs.helm.sh/using_helm/#installing-helm). Helm comes with two components, client tool helm and K8S server component Tiller, by default, aks-engine already has tiller deployed in kube-system namespace. However, to avoid error message like "incompatible versions client\[v2.x.x\] server\[v2.x.x\]", it's always a good practise to run `helm init --upgrade` to upgrade server component.
+Helm can be downloaded and installed from [here](https://docs.helm.sh/using_helm/#installing-helm). Helm comes with two components: the client tool helm and the K8S server component Tiller. By default, aks-engine already has Tiller deployed in the kube-system namespace. However, to avoid error messages like "incompatible versions client\[v2.x.x\] server\[v2.x.x\]", it's always a good practice to run `helm init --upgrade` to upgrade the server component.
 
 ## 2.1 Deploy cert-manager
 
-We are going to use cert-manager application with letsencrypt to request a free SSL certificate for our website, install cert-manager is very simple in helm, just run
+We are going to use cert-manager with Let's Encrypt to request a free SSL certificate for our website. Installing cert-manager is very simple with Helm; just run:
 
 ```bash
 helm install stable/cert-manager --name arracs-cert-manager --namespace kube-system --set ingressShim.defaultIssuerName=letsencrypt-prod --set ingressShim.defaultIssuerKind=ClusterIssuer
@@ -110,9 +112,9 @@ Note: cert-manager can be configured to automatically provision TLS certificates
 > \--set ingressShim.defaultIssuerName=letsencrypt-prod  
 > \--set ingressShim.defaultIssuerKind=ClusterIssuer
 
-Above command basically means, if an ingress object created, cert-manager will use letsencrypt-prod ClusterIssuer to automatically create a certificate for that Ingress object. And for all Ingress object with the kubernetes.io/tls-acme: "true" annotation, using the ClusterIssuer we have specified in "--set" to create the certificate.
+The command above basically means that if an Ingress object is created, cert-manager will use the letsencrypt-prod ClusterIssuer to automatically create a certificate for that Ingress object. For all Ingress objects with the kubernetes.io/tls-acme: "true" annotation, it uses the ClusterIssuer we specified in "--set" to create the certificate.
 
-As we use letsencrypt-prod ClusterIssuer, we also need to define it so that cert-manager can know where to request certificate, below letsencrypt-issuer.yaml defines two ClusterIssuer, one is for letsencrypt-prod(used in our production website), another is for letsencrypt-staging(used for testing purpose).
+As we use the letsencrypt-prod ClusterIssuer, we also need to define it so that cert-manager knows where to request certificates. The letsencrypt-issuer.yaml below defines two ClusterIssuers: one is for letsencrypt-prod (used in our production website), and the other is for letsencrypt-staging (used for testing).
 
 ```yaml
 # letsencrypt-issuer.yaml
@@ -148,7 +150,7 @@ spec:
     http01: {}
 ```
 
-Run below command to apply letsencrypt-issuer.yaml to K8S cluster
+Run the command below to apply letsencrypt-issuer.yaml to the K8S cluster.
 
 ```bash
 #kubectl apply -f letsencrypt-issuer.yaml
@@ -158,13 +160,13 @@ issuer.certmanager.k8s.io/letsencrypt-staging created
 
 ## 2.2 Deploy nginx-ingress controller
 
-We need an ingress controller to expose our service to internet, we will use nginx-ingress, here is the command to install this ingress controller
+We need an ingress controller to expose our service to the internet. We will use nginx-ingress. Here is the command to install this ingress controller.
 
 ```bash
 helm install stable/nginx-ingress --name arracs-nginx-ingress --namespace kube-system --set controller.replicaCount=2
 ```
 
-nginx-ingress controller will create a LoadBalancer with public IP, from output below, <pending> means cloud provider is still allocating the load balancer and the public IP address is not ready yet.
+The nginx-ingress controller will create a LoadBalancer with a public IP. From the output below, <pending> means the cloud provider is still allocating the load balancer and the public IP address is not ready yet.
 
 ```bash
 #kubectl get svc --all-namespaces
@@ -181,7 +183,7 @@ kube-system   tiller-deploy                          ClusterIP      10.0.217.230
 
 ## 2.3 Deploy kubeapps
 
-[Kubeapps](https://kubeapps.com/) is a web-based UI for deploying and managing applications in Kubernetes clusters. To experience web based deployment, I installed kubeapps with below steps
+[Kubeapps](https://kubeapps.com/) is a web-based UI for deploying and managing applications in Kubernetes clusters. To experience web-based deployment, I installed kubeapps with the steps below.
 
 ### 2.3.1 Add bitnami helm charts repo
 
@@ -224,7 +226,7 @@ kubeapps-internal-tiller-proxy   ClusterIP   10.0.95.205    <none>        8080/T
 kubeapps-mongodb                 ClusterIP   10.0.170.238   <none>        27017/TCP   22h
 ```
 
-Running below commands will create a port forwarding to kubeapps dashboard, accessing localhost:8080 will redirect to kubeapps-internal-dashboard
+Running the commands below will create port forwarding to the kubeapps dashboard. Accessing localhost:8080 will redirect to kubeapps-internal-dashboard.
 
 ```bash
 kubectl port-forward -n kubeapps svc/kubeapps-internal-dashboard 8080:8080
@@ -232,7 +234,7 @@ Forwarding from 127.0.0.1:8080 -> 8080
 Forwarding from [::1]:8080 -> 8080
 ```
 
-Now, we can access kubeapps from a browser by visiting [http://127.0.0.1:8080](http://127.0.0.1:8080) but we still need an API token to login, use below command to reterive the API token which is created in step 2.3.3
+Now, we can access kubeapps from a browser by visiting [http://127.0.0.1:8080](http://127.0.0.1:8080), but we still need an API token to log in. Use the command below to retrieve the API token created in step 2.3.3.
 
 ```bash
 kubectl get secret $(kubectl get serviceaccount kubeapps-operator -o jsonpath='{.secrets[].name}') -o jsonpath='{.data.token}' | base64 --decode
@@ -248,12 +250,12 @@ From command window, run
 kubectl create namespace ghost
 ```
 
-to create a namespace "ghost" in order to deploy all ghost related applications into it.
+to create a namespace "ghost" in order to deploy all Ghost-related applications into it.
 
-After logging into kubeapps web console, choose NAMESPACE to "ghost", then from "Catalog" tab, search ghost, click stable version  
+After logging into the kubeapps web console, choose NAMESPACE as "ghost", then from the "Catalog" tab, search for Ghost and click the stable version.
 ![kubeapps-ghost](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/kubeapps-ghost.jpg)
 
-Then click "Deploy using Helm", from the deployment page, name the deployment and values to below, then click "Submit" to deploy  
+Then click "Deploy using Helm". From the deployment page, name the deployment and set the values below, then click "Submit" to deploy.
 ![kubeapps-template](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/kubeapps-template.jpg)
 
 ```bash
@@ -372,7 +374,7 @@ mariadb:
       accessMode: ReadWriteOnce
       size: 8Gi
 
-## As ingress will be used in below, so just use ClusterIP for service
+## As ingress will be used below, just use ClusterIP for service
 ##
 service:
   type: ClusterIP
@@ -444,16 +446,16 @@ ingress:
       kubernetes.io/ingress.class: nginx
 ```
 
-Some comments on above values, since ingress is used, it will trigger cert-manager to request a certificate from letsencrypt, the protocol being used is ACME, letsencrypt will verify if you own the domain, that means you must point DNS A record msazure.club to ingress controller's public IP, otherwise certificate request will get failed. For more details, please refer to [How It Works - Let's Encrypt](https://letsencrypt.org/how-it-works/).
+Some comments on the values above: since ingress is used, it will trigger cert-manager to request a certificate from Let's Encrypt. The protocol being used is ACME. Let's Encrypt will verify that you own the domain, which means you must point the DNS A record msazure.club to the ingress controller's public IP; otherwise, the certificate request will fail. For more details, please refer to [How It Works - Let's Encrypt](https://letsencrypt.org/how-it-works/).
 
 If the deployment goes well, kubeapps will eventually show "Deployed" like below  
 ![ghost-deployed](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/ghost-deployed.jpg)
 
 ## 2.5 Visiting/tuning website
 
-Once the deployment is finished, open a browser and access **GHOST\_URL**/, it should render the website correctly.
+Once the deployment is finished, open a browser and access **GHOST\_URL**/. It should render the website correctly.
 
-As we use nginx-ingress controller, by default, it only allows uploading 1MB sized file, if the uploaded image size is exceed 1MB, ghost will report "The image you uploaded was larger than the maximum file size your server allows.". Luckly nginx ingress provide [annotations](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md) to specific ingress objects to customize their behavior. We can use "nginx.ingress.kubernetes.io/proxy-body-size" annotation to control nginx behavior.
+As we use the nginx-ingress controller, by default it only allows uploading files up to 1MB. If the uploaded image size exceeds 1MB, Ghost will report "The image you uploaded was larger than the maximum file size your server allows." Luckily, nginx ingress provides [annotations](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md) for specific ingress objects to customize their behavior. We can use the "nginx.ingress.kubernetes.io/proxy-body-size" annotation to control nginx behavior.
 
 So I followed below steps modified ingress object
 
@@ -489,7 +491,7 @@ metadata:
 ...
 ```
 
-When "nginx.ingress.kubernetes.io/proxy-body-size" annotation is added, the configuration change will be applied to nginx very soon, to verify it, we can run
+When the "nginx.ingress.kubernetes.io/proxy-body-size" annotation is added, the configuration change will be applied to nginx very soon. To verify it, we can run:
 
 ```bash
 kubectl get pod -n=kube-system | grep nginx-ingress-controller
@@ -504,43 +506,43 @@ kubectl exec -it -n=kube-system arracs-nginx-ingress-controller-8b955dc4c-5mnsh 
 			client_max_body_size                    10m;
 ```
 
-## 2.6 Up and running
+## 2.6 Up and Running
 
-With above configuraitons, my website **GHOST\_URL**/ should be up and running now :).
+With the configurations above, my website **GHOST\_URL**/ should be up and running now :).
 
 # 3 Upgrade K8S cluster
 
-For some unknown reasons, the kubernetes cluster version is not at 1.13.1, \`kubectl version' shows it is at version 1.10.12, I used below command upgraded my cluster to version 1.11.6, 1.12.4 till 1.13.1.
+For some unknown reason, the Kubernetes cluster version was not at 1.13.1. `kubectl version` showed it was at version 1.10.12, so I used the command below to upgrade my cluster to version 1.11.6, then 1.12.4, and finally 1.13.1.
 
 ```bash
 aks-engine upgrade   --subscription-id "REPLACE_WIHT_SUBSCRIPTION_ID"  --deployment-dir ./_output/arracs  --location <REPLACE_WITH_LOCATION>  --resource-group AKSEngine  --upgrade-version 1.11.6  --auth-method client_secret  --client-id <REPLACE_WITH_CLIENT_ID>  --client-secret <REPLACE_WITH_CLIENT_SECRET>
 ```
 
-Upgrading cluster from aks-engine basically works in below sequence
+Upgrading a cluster from aks-engine basically works in the following sequence.
 
-1.  Delete original master nodes and deploy new master nodes with upgraded version.
-2.  Drain agent node one by one, delete agent node and deploy agent node with upgraded version.
-3.  During upgrading, cluster public IP address remains.
+1.  Delete the original master nodes and deploy new master nodes with the upgraded version.
+2.  Drain agent nodes one by one, delete each agent node, and deploy an agent node with the upgraded version.
+3.  During the upgrade, the cluster public IP address remains.
 
-The whole upgrading process basically won't interrupt the services running from cluster, although there will be a short downtime window when pods are migrated from one node to another node. For example, during the upgrading, I am still able to access my website [](/).
+The whole upgrade process basically won't interrupt the services running from the cluster, although there will be a short downtime window when pods are migrated from one node to another. For example, during the upgrade, I was still able to access my website [](/).
 
 # 4 Explore K8S concepts
 
 ## 4.1 Access kubernetes dashboard
 
-By default, the ServiceAccount used by the dashboard has not enough rights to access all resources. To solve the problem, we need to assign cluster-admin role to it, here is the command to do it
+By default, the ServiceAccount used by the dashboard does not have enough rights to access all resources. To solve the problem, we need to assign the cluster-admin role to it. Here is the command to do it.
 
 ```bash
 kubectl create clusterrolebinding kubernetes-dashboard -n kube-system --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 ```
 
-After that, use below command to redirect traffics to API server
+After that, use the command below to redirect traffic to the API server.
 
 ```bash
 kubectl proxy --port 8080
 ```
 
-Then from browser, visit below URL, kubernetes dashboard should be able to access  
+Then, from a browser, visit the URL below, and the Kubernetes dashboard should be accessible.
 [http://localhost:8080/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/](http://localhost:8080/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
 
 ## 4.2 Services
@@ -562,15 +564,15 @@ kube-system   metrics-server                         ClusterIP      10.0.41.92  
 kube-system   tiller-deploy                          ClusterIP      10.0.202.135   <none>          44134/TCP                    2d23h
 ```
 
-When access service, the traffic flow will be
+When accessing a Service, the traffic flow will be:
 
 1.  ClusterIP: <ClusterIP>:<Port> -> <Pod IP>:<Port IP>
 2.  NodePort: <NodeIP>:<NodePort> -> <Pod IP>:<Port IP>
 3.  LoadBalancer:<LBIP>:<LBPort> -> <Pod IP>:<Port IP>
 
-Specially, LoadBalancer exposes the service externally using a cloud provider’s load balancer. In Azure, if you check the setting of load balancer's public IP, you will see it is using "Floating IP", when "Floating IP" is enabled, Azure will directly send packet to agent node without modifying its SrcIP and DestIP.  
+Specifically, LoadBalancer exposes the Service externally using a cloud provider’s load balancer. In Azure, if you check the setting of the load balancer's public IP, you will see it is using "Floating IP". When "Floating IP" is enabled, Azure will directly send packets to the agent node without modifying their SrcIP and DestIP.
 ![floating-ip](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/floating-ip.jpg)  
-Inbound traffics' destination IP(load balancer's public IP with floating IP enabled) will eventually DNAT to Pod's IP from agent node(not by Azure) by kubernetes, the purpose of using "Floating IP" is kubernetes needs destination IP address' information to associate it with corresponding service. Here is a sample for the iptables rules programmged for load balancer in my K8S cluster, `13.76.133.101` is load balancer's public IP address, the last rule is DNAT rule.
+Inbound traffic's destination IP (the load balancer's public IP with floating IP enabled) will eventually be DNAT-ed to the Pod IP from the agent node (not by Azure) by Kubernetes. The purpose of using "Floating IP" is that Kubernetes needs the destination IP address information to associate it with the corresponding Service. Here is a sample of the iptables rules programmed for the load balancer in my K8S cluster. `13.76.133.101` is the load balancer's public IP address, and the last rule is the DNAT rule.
 
 ```
 ...
@@ -584,8 +586,8 @@ Inbound traffics' destination IP(load balancer's public IP with floating IP enab
 
 ## 4.3 PersistentVolume(PV) and PersistentVolumeClaim(PVC)
 
-The detailed explanation of PV and PVC, can be found from [here](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).  
-Ghost helm charts will deploy 2 PVCs, one for MariaDB(DB to store ghost configuration) and one for ghost itself(store website data).
+The detailed explanation of PV and PVC can be found [here](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+Ghost Helm charts will deploy two PVCs, one for MariaDB (DB to store Ghost configuration) and one for Ghost itself (to store website data).
 
 ```bash
 kubectl get pvc -n=ghost
@@ -594,10 +596,10 @@ arracs-ghost                  Bound     pvc-a2d8532f-05f2-11e9-9dc7-000d3aa270bb
 data-arracs-ghost-mariadb-0   Bound     pvc-a2ec9cbc-05f2-11e9-9dc7-000d3aa270bb   8Gi        RWO            default        1d
 ```
 
-As this cluster uses Azure, K8S cloud provider will create two disks in azure  
+As this cluster uses Azure, the K8S cloud provider will create two disks in Azure.
 ![pvc-disks](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/pvc-disks.jpg)
 
-And the disks are programmed to attach to corresponding agent nodes where Pods claim to use them, for example, if we check agent VM from Azure portal, we can it has a data disk attached  
+And the disks are programmed to attach to the corresponding agent nodes where Pods claim to use them. For example, if we check the agent VM from the Azure portal, we can see it has a data disk attached.
 ![node-pvc-disk](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/node-pvc-disk.jpg)
 
 To check who is using the PVC, we can run
@@ -623,9 +625,9 @@ Events:        <none>
 Mounted By:    arracs-ghost-6d8c65c6db-h45x2
 ```
 
-PVC is mounted by a Pod, it will persist to it, even the pod restarts the same configuration can be applied. For example, if we run `kubectl delete pod arracs-ghost-6d8c65c6db-h45x2`, newly created pod still will mount this PVC it.
+PVC is mounted by a Pod, and data will persist in it. Even if the Pod restarts, the same configuration can be applied. For example, if we run `kubectl delete pod arracs-ghost-6d8c65c6db-h45x2`, the newly created Pod will still mount this PVC.
 
-If PVC is bound to a StatefulSet, even the whole StatefulSet is deleted, PVC still remains. In our case, data-arracs-ghost-mariadb-0 is bound to StatefulSet arracs-ghost-mariadb, so even I delete arracs-ghost-mariadb, PVC arracs-ghost-mariadb still remains.
+If PVC is bound to a StatefulSet, even if the whole StatefulSet is deleted, the PVC still remains. In our case, data-arracs-ghost-mariadb-0 is bound to StatefulSet arracs-ghost-mariadb, so even if I delete arracs-ghost-mariadb, PVC arracs-ghost-mariadb still remains.
 
 ```bash
 kubectl describe StatefulSet arracs-ghost-mariadb -n=ghost
@@ -680,7 +682,7 @@ Volume Claims:
 Events:          <none>
 ```
 
-To delete it manualy, we need to run `kubectl delete pvc arracs-ghost-mariadb -n=ghost`
+To delete it manually, we need to run `kubectl delete pvc arracs-ghost-mariadb -n=ghost`.
 
 ## 4.4 Jobs
 
@@ -694,11 +696,11 @@ apprepo-sync-stable-95879-tqp4t                               0/1     Completed 
 apprepo-sync-svc-cat-mdmhn-zgcbd                              0/1     Completed   2          4m56s
 ```
 
-Those Pods are actually created by Jobs, refe to [Jobs - Run to Completion](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/)
+Those Pods are actually created by Jobs. Refer to [Jobs - Run to Completion](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
 
 > A job creates one or more pods and ensures that a specified number of them successfully terminate
 
-Pick up one of the Pod in 'Completed' status, check `Controlled By: Job/apprepo-sync-bitnami-69xst`, it means this Pod is created by a Job.
+Pick one of the Pods in 'Completed' status and check `Controlled By: Job/apprepo-sync-bitnami-69xst`; it means this Pod is created by a Job.
 
 ```bash
 kubectl describe pod apprepo-sync-bitnami-69xst-4c2sz  -n=kubeapps

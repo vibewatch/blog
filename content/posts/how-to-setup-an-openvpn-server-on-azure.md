@@ -1,5 +1,5 @@
 ---
-title: "How to Setup an OpenVPN Server on Azure"
+title: "How to Set Up an OpenVPN Server on Azure"
 slug: "how-to-setup-an-openvpn-server-on-azure"
 date: "2018-05-19 09:34:42"
 updated: "2019-01-02 09:09:53"
@@ -12,13 +12,13 @@ feature_image: "/assets/posts/how-to-setup-an-openvpn-server-on-azure/hero.png"
 authors: ["Yingting Huang"]
 tags: ["OpenVPN", "Azure"]
 ---
-In this article, I will provide detailed steps to setup an OpenVPN server in Azure.
+In this article, I will provide detailed steps to set up an OpenVPN server in Azure.
 
 ## Prerequisites
 
-*   Ubuntu 16.04 VM deployed in Azure at least with one NIC which has public IP address enabled.
-*   User with sudo privilege on Ubuntu 16.04 VM.
-*   VM private IP address doesn't overlap with subnet 172.16.0.0/24
+*   An Ubuntu 16.04 VM deployed in Azure with at least one NIC that has a public IP address enabled.
+*   A user with sudo privileges on the Ubuntu 16.04 VM.
+*   The VM private IP address does not overlap with subnet 172.16.0.0/24.
 
 ## Step 1: Install OpenVPN & Easy-RSA
 
@@ -27,9 +27,9 @@ sudo apt-get update
 apt-get install openvpn easy-rsa
 ```
 
-## Step 2: Setup CA
+## Step 2: Set Up CA
 
-Create CA directory
+Create the CA directory.
 
 ```bash
 make-cadir ~/openvpn-ca
@@ -42,7 +42,7 @@ cd ~/openvpn-ca
 vi vars
 ```
 
-Find and modify below settings
+Find and modify the following settings:
 
 ```bash
 export KEY_COUNTRY="YOUR_COUNTRY"
@@ -55,7 +55,7 @@ export KEY_OU="YOUR_OU"
 export KEY_NAME="YOUR_KEY_NAME"
 ```
 
-After saving modified vars file, setup CA by typing below commands
+After saving the modified `vars` file, set up the CA by typing the following commands:
 
 ```bash
 cd ~/openvpn-ca
@@ -75,7 +75,7 @@ openvpn --genkey --secret keys/ta.key
 
 ## Step 4: Configure OpenVPN Service
 
-Copy certificates to /etc/openvpn
+Copy certificates to /etc/openvpn.
 
 ```bash
 cd ~/openvpn-ca/keys
@@ -83,13 +83,13 @@ sudo cp ca.crt ovpn.crt ovpn.key ta.key dh4096.pem /etc/openvpn
 sudo adduser --system --shell /usr/sbin/nologin --no-create-home openvpn
 ```
 
-Create server side configuration file
+Create the server-side configuration file.
 
 ```bash
 sudo vi /etc/openvpn/server.conf
 ```
 
-Add following content to server.conf
+Add the following content to server.conf.
 
 ```bash
 # OpenVPN listening address
@@ -106,7 +106,7 @@ dh dh4096.pem
 # OpenVPN network
 server 172.16.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
-# Redirect all traffics to OpenVPN
+# Redirect all traffic to OpenVPN
 push "redirect-gateway def1 bypass-dhcp"
 keepalive 10 120
 # This file is secret
@@ -129,7 +129,7 @@ ESC, type ":wq" to save the file.
 
 ## Step 5: Configure Iptables and Routing
 
-Configure iptables so that it can work under Azure environment, since all traffics will be routed from public IP address to the private IP address bound to a specific NIC, replace `ethx` with the real NIC device name.
+Configure iptables so that it can work in the Azure environment. Because all traffic will be routed from the public IP address to the private IP address bound to a specific NIC, replace `ethx` with the real NIC device name.
 
 ```bash
 # iptables configuration for openvpn
@@ -151,14 +151,14 @@ net.ipv4.ip_forward = 1
 sudo sysctl -p /etc/sysctl.conf
 ```
 
-If the VM has multiple NICs and their IPs are all in same subnets
+If the VM has multiple NICs and their IPs are all in the same subnet:
 
 ```bash
 sudo bash -c "echo '200 ethx-rt' >> /etc/iproute2/rt_tables"
 sudo vi /etc/network/interfaces.d/ethx.cfg
 ```
 
-Add following configuration to ethx.cfg
+Add the following configuration to ethx.cfg.
 
 ```bash
 auto ethx
@@ -174,7 +174,7 @@ iface ethx inet dhcp
 
 ## Step 6: Start and Enable OpenVPN Service
 
-Start openvpn service
+Start the OpenVPN service.
 
 ```bash
 sudo systemctl start openvpn@server
@@ -199,7 +199,7 @@ May 18 11:57:03 <server> systemd[1]: Starting OpenVPN connection to server...
 May 18 11:57:04 <server> systemd[1]: Started OpenVPN connection to server.
 ```
 
-If everything is OK, enable openvpn service so that it can start automatically when reboot OS
+If everything is OK, enable the OpenVPN service so that it can start automatically when the OS reboots.
 
 ```bash
 sudo systemctl enable openvpn@server
@@ -207,13 +207,13 @@ sudo systemctl enable openvpn@server
 
 ## Step 7: Generate Client Profile and Connect to OpenVPN Service
 
-Create a shell script to generate client profile
+Create a shell script to generate the client profile.
 
 ```bash
 vi genprofile.sh
 ```
 
-Add following lines into genprofile.sh
+Add the following lines to genprofile.sh.
 
 ```bash
 cd ~/openvpn-ca
@@ -243,7 +243,7 @@ Create a base client configuration file "base.conf"
 vi base.conf
 ```
 
-Add following lines into it
+Add the following lines to it.
 
 ```bash
 client
@@ -308,6 +308,6 @@ From OpenVPN server, run
 ./genprofile.sh <profile name>
 ```
 
-Above command will generate a client profile and save it into ~/client-configs/files, copy/download this profile to client side, from OpenVPN, import this profile and connect.
+The command above will generate a client profile and save it into ~/client-configs/files. Copy/download this profile to the client side, then import this profile from OpenVPN and connect.
 
-The client should have OpenVPN connection established and it should redirect all traffics to OpenVPN now.
+The client should have an OpenVPN connection established, and it should redirect all traffic to OpenVPN now.

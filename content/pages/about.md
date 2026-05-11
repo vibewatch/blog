@@ -12,4 +12,4 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["About"]
 ---
-This is an unoffical website discusses about cloud, cloud native, kubernetes, azure and opensource.
+This is an unofficial website about cloud, cloud native, Kubernetes, Azure, and open source technologies.

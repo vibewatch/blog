@@ -12,7 +12,7 @@ feature_image: "/assets/posts/azure-active-active-solution/hero.png"
 authors: ["Yingting Huang"]
 tags: ["Azure", "High Availability"]
 ---
-This article is based on my recent work at this [repo](https://github.com/huangyingting/azure_poc), the completed deployment scripts are at "Deploy" folder
+This article is based on my recent work in this [repo](https://github.com/huangyingting/azure_poc). The completed deployment scripts are in the "Deploy" folder.
 
 ## Purpose
 
@@ -22,7 +22,7 @@ To show various options to deploy an application in active-active high availabil
 *   Azure Front Door
 *   Azure Cross Region Load Balancer
 
-The application uses Azure sql failover group to provide geo-replication as well as automatic failover.
+The application uses an Azure SQL failover group to provide geo-replication and automatic failover.
 
 Estimated [solution monthly cost](https://azure.com/e/8be03981a30a4d0aad6cfc5637ad3051)
 
@@ -40,9 +40,9 @@ Architecture design diagram
 
 ### 1\. DNS
 
-The deployment require a domain name being registered and configured to be used for sub-sequence resources, including certificate automation from Let's Encrypt, Azure Front Door custom domain etc.
+The deployment requires a registered domain name configured for subsequent resources, including certificate automation from Let's Encrypt, an Azure Front Door custom domain, and so on.
 
-It is recommnended to follow below steps to get DNS work before deployment
+It is recommended to follow these steps to get DNS working before deployment:
 
 *   [Buy a custom domain name for Azure App Service  
     ](https://learn.microsoft.com/en-us/azure/app-service/manage-custom-dns-buy-domain)
@@ -60,10 +60,10 @@ In case you don't want the service principal to have such wide permissions, you 
 
 ### 3\. Customize deployment variables
 
-You will also need to create a file terraform.tfvars in Deploy folder with below values
+You will also need to create a `terraform.tfvars` file in the `Deploy` folder with the following values:
 
 ```
-email_address = "Your e-mail address used for request certificate from Let's Encrypt"
+email_address = "Your e-mail address used to request a certificate from Let's Encrypt"
 dns_zone_name = "Registered DNS name"
 certificate_name = "Your certificate name"
 dns_zone_resource_group_name = "Azure DNS resource group name in step 1"
@@ -84,7 +84,7 @@ terraform init
 terraform apply -auto-approve
 ```
 
-*   To destory the deployment, run
+*   To destroy the deployment, run
 
 ```
 terraform destroy -auto-approve

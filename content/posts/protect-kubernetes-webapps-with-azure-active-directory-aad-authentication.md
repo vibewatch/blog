@@ -12,6 +12,8 @@ feature_image: "/assets/posts/protect-kubernetes-webapps-with-azure-active-direc
 authors: ["Yingting Huang"]
 tags: ["AAD", "Kubernetes", "AzureAD", "Azure"]
 ---
+> **Note (May 2026):** This article uses older Kubernetes `extensions/v1beta1` Ingress resources and the historical `oauth2_proxy` naming/image ecosystem. Modern clusters should use `networking.k8s.io/v1` Ingress and review current oauth2-proxy, Microsoft Entra ID (formerly Azure AD), cert-manager, and ingress-nginx configuration guidance before applying the manifests.
+
 Adding authentication to webapps sometimes is a challenging task, requires knowledge and coding for user registration, login and authentication. Specially if you are a kubernetes cluster admin, you need to take extremely care of publishing your website/web service to internet since any malicious users can access the frontend and potentially gain backend access, this article will present a simple and easy approach for kubernetes admin to protect internet facing webapps without any extra developments by using [oauth2\_proxy](https://github.com/bitly/oauth2_proxy).
 
 oauth2\_proxy is
