@@ -18,7 +18,7 @@ if (mermaidBlocks.length > 0) {
     theme: 'base',
     fontFamily: fontStack,
     themeVariables: {
-      background: '#f7f3e9',
+      background: '#f3eee2',
       primaryColor: '#f7f3e9',
       primaryTextColor: '#1a1714',
       primaryBorderColor: '#1a1714',
@@ -29,11 +29,11 @@ if (mermaidBlocks.length > 0) {
       tertiaryTextColor: '#1a1714',
       tertiaryBorderColor: '#c8c1b1',
       lineColor: '#2c2822',
-      edgeLabelBackground: '#f7f3e9',
+      edgeLabelBackground: '#f3eee2',
       clusterBkg: '#ece6d5',
       clusterBorder: '#1a1714',
       titleColor: '#1a1714',
-      noteBkgColor: '#f3eee2',
+      noteBkgColor: '#ece6d5',
       noteBorderColor: '#7a1f1f',
       noteTextColor: '#1a1714',
       actorBkg: '#f7f3e9',
@@ -47,25 +47,44 @@ if (mermaidBlocks.length > 0) {
       labelTextColor: '#1a1714',
       loopTextColor: '#1a1714',
       sectionBkgColor: '#ece6d5',
-      altSectionBkgColor: '#f7f3e9',
+      altSectionBkgColor: '#f3eee2',
       gridColor: '#c8c1b1',
       git0: '#7a1f1f',
       git1: '#1a1714',
       git2: '#6f6a5e',
       git3: '#8b8678',
-      fontSize: '15px',
+      fontSize: '14px',
       fontFamily: fontStack
     },
     themeCSS: `
-      .node rect, .node circle, .node ellipse, .node polygon, .node path { stroke-width: 1.25px; }
-      .cluster rect { stroke-dasharray: 0; rx: 2; ry: 2; }
-      .cluster .nodeLabel, .cluster .label { font-weight: 500; letter-spacing: 0.01em; }
-      .edgePath .path { stroke-width: 1.25px; }
+      .node rect, .node circle, .node ellipse, .node polygon, .node path { stroke-width: 1.1px; }
+      .cluster rect {
+        stroke-dasharray: 4 3;
+        stroke-width: 1px;
+        rx: 2; ry: 2;
+      }
+      .cluster .nodeLabel, .cluster .label {
+        font-weight: 700;
+        font-size: 11.5px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #6f6a5e;
+      }
+      .edgePath .path { stroke-width: 1.1px; }
       .arrowheadPath, marker path { fill: #2c2822; stroke: none; }
-      .edgeLabel { padding: 2px 6px; font-size: 13px; color: #2c2822; }
-      .edgeLabel rect { fill: #f7f3e9 !important; }
+      .edgeLabel {
+        padding: 2px 6px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: #2c2822;
+      }
+      .edgeLabel rect {
+        fill: #f3eee2 !important;
+        stroke: #c8c1b1;
+        stroke-width: 1px;
+      }
       .label foreignObject { overflow: visible; }
-      .nodeLabel, .label { font-weight: 500; }
+      .nodeLabel, .label { font-weight: 460; }
       .marker.cross { stroke: #2c2822; }
       /* Apply the body sans family to all text in the diagram */
       text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
@@ -73,10 +92,10 @@ if (mermaidBlocks.length > 0) {
       }
     `,
     flowchart: {
-      curve: 'basis',
-      padding: 18,
-      nodeSpacing: 50,
-      rankSpacing: 60,
+      curve: 'monotoneX',
+      padding: 22,
+      nodeSpacing: 62,
+      rankSpacing: 72,
       htmlLabels: true,
       useMaxWidth: true,
       diagramPadding: 12

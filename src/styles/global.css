@@ -537,6 +537,7 @@ a:focus-visible {
   font-size: clamp(1.02rem, 0.18vw + 0.96rem, 1.12rem);
   line-height: 1.55;
   font-feature-settings: "kern", "liga", "cv11", "ss01", "ss03";
+  counter-reset: figure;
   /*
    * Three-column grid: a centered reading column (var(--reading)) with two
    * gutters on either side. Children default into the middle column; figures,
@@ -784,14 +785,16 @@ a:focus-visible {
 .article .mermaid {
   position: relative;
   margin: var(--space-xl) 0;
-  padding: var(--space-xl) var(--space-lg) var(--space-lg);
-  background: var(--color-canvas-soft);
+  padding: 40px var(--space-lg) var(--space-lg);
+  background: var(--color-canvas);
   border: 1px solid var(--color-hairline);
+  border-left: 3px solid var(--color-ink);
   /* No horizontal scroll — SVG below is forced to scale to container width */
   overflow: hidden;
   text-align: center;
   font-size: 0;
   opacity: 0;
+  counter-increment: figure;
   transition: opacity 240ms var(--ease-out);
 }
 
@@ -800,9 +803,9 @@ a:focus-visible {
 }
 
 .article .mermaid::before {
-  content: "Diagram";
+  content: "Fig. " counter(figure);
   position: absolute;
-  top: 12px;
+  top: 14px;
   left: 18px;
   font-family: var(--font-ui);
   font-size: 10px;
@@ -810,6 +813,16 @@ a:focus-visible {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-muted);
+}
+
+.article .mermaid::after {
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: 18px;
+  right: 18px;
+  height: 0;
+  border-top: 1px solid var(--color-hairline);
 }
 
 .article .mermaid svg {
@@ -823,7 +836,7 @@ a:focus-visible {
 @media (max-width: 600px) {
   .article .mermaid {
     margin: var(--space-lg) calc(var(--gutter) * -0.5);
-    padding: var(--space-xl) var(--space-base) var(--space-base);
+    padding: 40px var(--space-base) var(--space-base);
   }
 }
 
