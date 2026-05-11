@@ -37,6 +37,9 @@ const sectionId = isPage ? '' : item.desk?.sectionId ?? '';
       <p class="post-meta">
         {author ? <>By <strong>{author}</strong></> : null}
         <time datetime={item.date.toISOString()}>{formatDate(item.date)}</time>
+        {item.type === 'post' ? (
+          <span class="post-meta__readtime">{item.readingTime} min read</span>
+        ) : null}
       </p>
     </header>
 

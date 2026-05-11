@@ -27,12 +27,12 @@
   --color-canvas: #f3eee2;          /* warm newsprint */
   --color-canvas-deep: #ece6d5;     /* slightly deeper paper for inset blocks */
   --color-canvas-soft: #f7f3e9;     /* lifted paper (cards / quotes) */
-  --color-ink: #1a1714;             /* primary text */
-  --color-body: #2c2822;            /* running body */
+  --color-ink: #3a322a;             /* primary text — softened from pure dark */
+  --color-body: #4a4137;            /* running body — ~70% ink density on cream */
   --color-muted: #6f6a5e;           /* meta / folio */
   --color-muted-soft: #8b8678;
   --color-hairline: #c8c1b1;        /* standard rule */
-  --color-hairline-ink: #1a1714;    /* heavy rule (masthead) */
+  --color-hairline-ink: #1a1714;    /* heavy rule (masthead) — kept full ink */
 
   /* Single editorial accent — used scarcely */
   --color-accent: #7a1f1f;          /* op-ed wine */

@@ -20,37 +20,37 @@ if (mermaidBlocks.length > 0) {
     themeVariables: {
       background: '#f3eee2',
       primaryColor: '#f7f3e9',
-      primaryTextColor: '#1a1714',
-      primaryBorderColor: '#1a1714',
+      primaryTextColor: '#3a322a',
+      primaryBorderColor: '#3a322a',
       secondaryColor: '#ece6d5',
-      secondaryTextColor: '#1a1714',
+      secondaryTextColor: '#3a322a',
       secondaryBorderColor: '#7a1f1f',
       tertiaryColor: '#f3eee2',
-      tertiaryTextColor: '#1a1714',
+      tertiaryTextColor: '#3a322a',
       tertiaryBorderColor: '#c8c1b1',
-      lineColor: '#2c2822',
+      lineColor: '#4a4137',
       edgeLabelBackground: '#f3eee2',
       clusterBkg: '#ece6d5',
-      clusterBorder: '#1a1714',
-      titleColor: '#1a1714',
+      clusterBorder: '#3a322a',
+      titleColor: '#3a322a',
       noteBkgColor: '#ece6d5',
       noteBorderColor: '#7a1f1f',
-      noteTextColor: '#1a1714',
+      noteTextColor: '#3a322a',
       actorBkg: '#f7f3e9',
-      actorBorder: '#1a1714',
-      actorTextColor: '#1a1714',
-      actorLineColor: '#2c2822',
-      signalColor: '#1a1714',
-      signalTextColor: '#1a1714',
+      actorBorder: '#3a322a',
+      actorTextColor: '#3a322a',
+      actorLineColor: '#4a4137',
+      signalColor: '#3a322a',
+      signalTextColor: '#3a322a',
       labelBoxBkgColor: '#ece6d5',
-      labelBoxBorderColor: '#1a1714',
-      labelTextColor: '#1a1714',
-      loopTextColor: '#1a1714',
+      labelBoxBorderColor: '#3a322a',
+      labelTextColor: '#3a322a',
+      loopTextColor: '#3a322a',
       sectionBkgColor: '#ece6d5',
       altSectionBkgColor: '#f3eee2',
       gridColor: '#c8c1b1',
       git0: '#7a1f1f',
-      git1: '#1a1714',
+      git1: '#3a322a',
       git2: '#6f6a5e',
       git3: '#8b8678',
       fontSize: '14px',
@@ -71,12 +71,12 @@ if (mermaidBlocks.length > 0) {
         color: #6f6a5e;
       }
       .edgePath .path { stroke-width: 1.1px; }
-      .arrowheadPath, marker path { fill: #2c2822; stroke: none; }
+      .arrowheadPath, marker path { fill: #4a4137; stroke: none; }
       .edgeLabel {
         padding: 2px 6px;
         font-size: 12.5px;
         font-weight: 500;
-        color: #2c2822;
+        color: #4a4137;
       }
       .edgeLabel rect {
         fill: #f3eee2 !important;
@@ -85,7 +85,7 @@ if (mermaidBlocks.length > 0) {
       }
       .label foreignObject { overflow: visible; }
       .nodeLabel, .label { font-weight: 460; }
-      .marker.cross { stroke: #2c2822; }
+      .marker.cross { stroke: #4a4137; }
       /* Apply the body sans family to all text in the diagram */
       text, .nodeLabel, .label, .edgeLabel, foreignObject div, foreignObject span {
         font-family: ${fontStack};
