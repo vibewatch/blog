@@ -1112,37 +1112,56 @@ a:focus-visible {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Front page layout — lede + In Brief sidebar                               */
+/* -------------------------------------------------------------------------- */
+/*  Front page — lead row + cards + In Brief sidebar                          */
 /* -------------------------------------------------------------------------- */
 
-.front {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
-  gap: var(--space-xl);
-  max-width: 1080px;
-  margin-inline: auto;
-  padding-block: var(--space-lg) var(--space-xxl);
-  border-bottom: 1px solid var(--color-hairline);
-  align-items: start;
+.featured__lead {
+  border-bottom: 1px solid var(--color-hairline-ink);
+  padding-block: var(--space-lg) var(--space-xl);
+  margin-bottom: var(--space-xl);
 }
 
-.front__lede {
-  align-self: center;
-}
-
-/* Inside the front layout, the lede's internal 2-col (text|image) is too
-   cramped — collapse it so text sits above image. */
-.front .lede {
+/* The Lede component's default grid is text|image. When the lead has no
+   image, collapse to a single column so the headline doesn't end mid-row. */
+.featured__lead .lede:not(:has(.lede__media-wrap)) {
   grid-template-columns: 1fr;
-  gap: var(--space-lg);
+}
+
+.featured__lead .lede:not(:has(.lede__media-wrap)) .lede__body {
+  max-width: 60ch;
+}
+
+.featured__lead .lede {
   padding-block: 0;
 }
 
-.front .lede__body {
-  max-width: 56ch;
+.featured__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: var(--space-xl);
+  align-items: start;
 }
 
-.front__brief {
+.featured__stories {
+  min-width: 0;
+}
+
+/* When stories share a row with the brief sidebar, force two columns
+   (the original .stories rule is 3 columns at desktop, which becomes too
+   tight when 260px is reserved on the right). */
+.featured__body .stories {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.featured__body .stories > *:nth-child(3n) {
+  border-right: 1px solid var(--color-hairline);
+}
+.featured__body .stories > *:nth-child(2n) {
+  border-right: 0;
+}
+
+.featured__brief {
   position: sticky;
   top: var(--space-base);
   border-left: 1px solid var(--color-hairline);
@@ -1304,25 +1323,20 @@ a:focus-visible {
   border-bottom-color: var(--color-accent);
 }
 
-@media (max-width: 1100px) {
-  .front {
+/* Below 1024px: brief drops under stories and goes horizontal (2 desks
+   per row); under 700px it stacks vertical. */
+@media (max-width: 1024px) {
+  .featured__body {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
   }
-  .front__brief {
+  .featured__brief {
     position: static;
     border-left: 0;
     padding-left: 0;
     border-top: 1px solid var(--color-hairline);
     padding-top: var(--space-lg);
   }
-  .front__lede {
-    align-self: stretch;
-  }
-  .front .lede__body {
-    max-width: none;
-  }
-  /* When Brief becomes horizontal, split desks into 2 columns to keep it compact */
   .brief__groups {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1341,13 +1355,6 @@ a:focus-visible {
   .brief__group + .brief__group {
     padding-top: var(--space-base);
     border-top: 1px solid var(--color-hairline);
-  }
-}
-
-@media (max-width: 880px) {
-  .front .lede {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
   }
 }
 

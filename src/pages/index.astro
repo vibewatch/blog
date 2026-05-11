@@ -8,7 +8,7 @@ import { config, sitePath } from '../lib/site';
 const posts = getPosts();
 const [lead, ...rest] = posts;
 
-const aboveTheFold = rest.slice(0, 6);
+const aboveTheFold = rest.slice(0, 12);
 
 const briefGroups = postsByDesk()
   .map((g) => ({
@@ -19,50 +19,56 @@ const briefGroups = postsByDesk()
 ---
 
 <BaseLayout title={config.title} description={config.description} canonical="/">
-  <section class="container front">
-    <div class="front__lede">
-      {lead && <Lede post={lead} />}
-    </div>
-
-    <aside class="front__brief brief" aria-label="In Brief">
-      <header class="brief__head">
-        <p class="brief__eyebrow">In Brief</p>
-        <p class="brief__deck">Recent dispatches, by desk.</p>
-      </header>
-      <div class="brief__groups">
-        {briefGroups.map((g) => (
-          <section class="brief__group">
-            <p class="brief__desk">
-              <span class="brief__letter">{g.desk.letter}</span>
-              <span class="brief__name">{g.desk.name}</span>
-            </p>
-            <ul class="brief__list">
-              {g.posts.map((p) => (
-                <li class="brief__item">
-                  <a href={sitePath(`/${p.slug}/`)}>
-                    <span class="brief__sectionid">{p.desk?.sectionId}</span>
-                    <span class="brief__title">{p.title}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
-      <p class="brief__more">
-        <a href={sitePath('/archive/')}>See the full index →</a>
-      </p>
-    </aside>
-  </section>
-
-  <section class="container section--tight">
+  <section class="container section--tight featured">
     <header class="section-head">
       <h2 class="section-head__title">Above the Fold</h2>
       <span class="section-head__meta">Recent dispatches</span>
     </header>
-    <div class="stories">
-      {aboveTheFold.map((post) => <Story post={post} />)}
+
+    {lead && (
+      <div class="featured__lead">
+        <Lede post={lead} />
+      </div>
+    )}
+
+    <div class="featured__body">
+      <div class="featured__stories">
+        <div class="stories">
+          {aboveTheFold.map((post) => <Story post={post} />)}
+        </div>
+      </div>
+
+      <aside class="featured__brief brief" aria-label="In Brief">
+        <header class="brief__head">
+          <p class="brief__eyebrow">In Brief</p>
+          <p class="brief__deck">Recent dispatches, by desk.</p>
+        </header>
+        <div class="brief__groups">
+          {briefGroups.map((g) => (
+            <section class="brief__group">
+              <p class="brief__desk">
+                <span class="brief__letter">{g.desk.letter}</span>
+                <span class="brief__name">{g.desk.name}</span>
+              </p>
+              <ul class="brief__list">
+                {g.posts.map((p) => (
+                  <li class="brief__item">
+                    <a href={sitePath(`/${p.slug}/`)}>
+                      <span class="brief__sectionid">{p.desk?.sectionId}</span>
+                      <span class="brief__title">{p.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+        <p class="brief__more">
+          <a href={sitePath('/archive/')}>See the full index →</a>
+        </p>
+      </aside>
     </div>
+
     <p class="section-foot">
       <a href={sitePath('/archive/')}>Read the full index of {posts.length} dispatches →</a>
     </p>
