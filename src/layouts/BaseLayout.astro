@@ -32,6 +32,9 @@ const {
 
 const fullTitle = title === config.title ? title : `${title} | ${config.title}`;
 const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
+const rawGaId = import.meta.env.PUBLIC_GA_ID;
+const gaId = typeof rawGaId === 'string' && /^G-[A-Z0-9]+$/i.test(rawGaId.trim()) ? rawGaId.trim() : '';
+const enableGa = Boolean(gaId) && import.meta.env.PROD;
 ---
 
 <!doctype html>
@@ -55,6 +58,12 @@ const ogImageUrl = ogImage ? absoluteUrl(ogImage) : undefined;
     <meta property="og:url" content={absoluteUrl(canonical)} />
     {ogImageUrl ? <meta property="og:image" content={ogImageUrl} /> : null}
     <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    {enableGa && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`} />
+      </>
+    )}
   </head>
   <body>
     <Masthead />
