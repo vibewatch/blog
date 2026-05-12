@@ -20,7 +20,17 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
   font-feature-settings: "cv11", "ss01", "ss03";
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) transparent;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -67,13 +77,14 @@ a:focus-visible {
 }
 
 ::selection {
-  background: var(--color-ink);
+  background: var(--color-accent);
   color: var(--color-canvas);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--color-accent) 18%, transparent);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -226,15 +237,18 @@ a:focus-visible {
 .lede__headline a {
   color: inherit;
   text-decoration: none;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 4px;
+  transition: background-size 320ms var(--ease-out);
 }
 
 .lede__headline a:hover,
 .lede__headline a:focus-visible {
   color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
-  text-decoration-color: var(--color-accent);
+  background-size: 100% 1px;
 }
 
 .lede__deck {
@@ -276,8 +290,13 @@ a:focus-visible {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Slight desaturation gives a printed-photo feel */
-  filter: saturate(0.85) contrast(1.02);
+  /* Printed-photo feel; awakens to full color on hover */
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 500ms var(--ease-out);
+}
+
+.lede__media:hover img {
+  filter: saturate(1) contrast(1);
 }
 
 .lede__caption {
@@ -404,15 +423,18 @@ a:focus-visible {
 .story__headline a {
   color: inherit;
   text-decoration: none;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 3px;
+  transition: background-size 320ms var(--ease-out);
 }
 
 .story__headline a:hover,
 .story__headline a:focus-visible {
   color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--color-accent);
+  background-size: 100% 1px;
 }
 
 .story__excerpt {
@@ -541,8 +563,13 @@ a:focus-visible {
   max-height: 520px;
   object-fit: cover;
   margin: 0 0 var(--space-xs);
-  filter: saturate(0.85) contrast(1.02);
+  filter: saturate(0.82) contrast(1.02);
   border: 1px solid var(--color-hairline);
+  transition: filter 500ms var(--ease-out);
+}
+
+.feature-image:hover {
+  filter: saturate(1) contrast(1);
 }
 
 .feature-image-caption {
@@ -661,6 +688,12 @@ a:focus-visible {
   margin: 0 0 var(--space-sm);
 }
 
+/* Avoid orphan words at line ends in body copy */
+.article p,
+.article li {
+  text-wrap: pretty;
+}
+
 .article ul,
 .article ol {
   padding-left: 1.4em;
@@ -714,7 +747,12 @@ a:focus-visible {
   max-width: 100%;
   height: auto;
   border: 1px solid var(--color-hairline);
-  filter: saturate(0.85) contrast(1.02);
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 500ms var(--ease-out);
+}
+
+.article img:hover {
+  filter: saturate(1) contrast(1);
 }
 
 .article figure {
@@ -1520,4 +1558,560 @@ a:focus-visible {
   text-transform: uppercase;
   color: var(--color-muted);
   white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Tabular figures — keep numerals aligned in lists, dates and meta strips   */
+/* -------------------------------------------------------------------------- */
+
+.post-meta time,
+.post-meta__readtime,
+.section-head__meta,
+.year-block__count {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Optical text-box trim — pull display titles tight against their baseline  */
+/* -------------------------------------------------------------------------- */
+
+@supports (text-box-trim: trim-both) {
+  .masthead__nameplate,
+  .post-title,
+  .lede__headline,
+  .year-block__numeral {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Cross-document view transitions (no JS, graceful fallback)                */
+/* -------------------------------------------------------------------------- */
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Print — clean broadsheet                                                  */
+/* -------------------------------------------------------------------------- */
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    background-image: none !important;
+    color: #000;
+  }
+  .masthead__nav,
+  .post-back,
+  .colophon__links,
+  .article pre .copy-btn,
+  .featured__brief {
+    display: none !important;
+  }
+  .article a {
+    color: #000;
+    text-decoration: underline;
+  }
+  /* Reveal full URL after external links so paper readers can follow them */
+  .article a[href^="http"]:not([href*="genisisiq.com"])::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+  .article img,
+  .feature-image,
+  .lede__media img {
+    filter: none !important;
+  }
+  .article pre,
+  .article code,
+  .article :not(pre) > code {
+    background: #fafafa !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+  }
+  .article h2,
+  .article h3,
+  .article h4 {
+    page-break-after: avoid;
+  }
+  .article pre,
+  .article figure,
+  .article blockquote,
+  .article table {
+    page-break-inside: avoid;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Who Am I — editor's column flourishes (scoped to /about/)                 */
+/* -------------------------------------------------------------------------- */
+
+.article--about {
+  /* Shares the global § counter declared on .article--post, .article--about. */
+}
+
+/* Drop cap in accent — overrides the default ink color */
+.article--about > p:first-of-type::first-letter {
+  color: var(--color-accent);
+}
+
+/* Vitals strip — broadsheet "press card" with thick/thin rules */
+.article--about .vitals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-base);
+  margin: var(--space-xl) 0;
+  padding: var(--space-base) 0;
+  border-top: 3px solid var(--color-hairline-ink);
+  border-bottom: 1px solid var(--color-hairline-ink);
+  text-align: center;
+}
+
+.article--about .vitals > div {
+  border-right: 1px solid var(--color-hairline);
+}
+
+.article--about .vitals > div:last-child {
+  border-right: 0;
+}
+
+.article--about .vitals dt {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.article--about .vitals dd {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.005em;
+}
+
+/* Calling card — vertical contact list with hairline dividers */
+.article--about .card {
+  margin: var(--space-lg) 0;
+  padding: 0;
+  border-top: 3px solid var(--color-hairline-ink);
+  border-bottom: 1px solid var(--color-hairline-ink);
+}
+
+.article--about .card > div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-base);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.article--about .card > div:last-child {
+  border-bottom: 0;
+}
+
+.article--about .card dt {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.article--about .card dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--color-ink);
+  word-break: break-word;
+}
+
+.article--about .card dd a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-hairline);
+}
+
+.article--about .card dd a:hover,
+.article--about .card dd a:focus-visible {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+@media (max-width: 600px) {
+  .article--about .vitals {
+    grid-template-columns: 1fr;
+  }
+  .article--about .vitals > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-hairline);
+    padding-bottom: var(--space-sm);
+  }
+  .article--about .vitals > div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .article--about .card > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Site-wide editor's flourishes                                             */
+/* -------------------------------------------------------------------------- */
+
+/* Folio bar — broadsheet "publication info" strip above the nameplate */
+.masthead__folio {
+  margin: 0 0 var(--space-base);
+  padding: var(--space-xs) 0;
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.masthead__folio > span {
+  display: inline-block;
+}
+
+.masthead__folio > span + span {
+  margin-left: 8px;
+}
+
+.masthead__folio-sep {
+  color: var(--color-hairline);
+}
+
+@media (max-width: 600px) {
+  .masthead__folio {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+  }
+  .masthead__folio > span:nth-child(5),
+  .masthead__folio > span:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Numbered editorial sections — § 01 § 02 § 03 (posts + about) */
+.article--post,
+.article--about {
+  counter-reset: article-section;
+}
+
+.article--post h2,
+.article--about h2 {
+  counter-increment: article-section;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.article--post h2::before,
+.article--about h2::before {
+  content: "§ " counter(article-section, decimal-leading-zero);
+  flex: 0 0 auto;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums lining-nums;
+  align-self: center;
+}
+
+/* "— 30 —" — newspaper end-of-copy mark, automatic on every article */
+.article::after {
+  content: "— 30 —";
+  grid-column: 2 / 3;
+  margin-top: var(--space-xxl);
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  color: var(--color-muted);
+}
+
+/* Pull quote — giant accent quotation mark, faint behind the text */
+.article blockquote {
+  position: relative;
+}
+
+.article blockquote::before {
+  content: "“";
+  position: absolute;
+  top: -0.05em;
+  left: 0.18em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 4.6em;
+  line-height: 0.85;
+  color: var(--color-accent);
+  opacity: 0.18;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.article blockquote > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Highlighter ink for <mark> — like a soft accent marker */
+.article mark {
+  background: linear-gradient(
+    transparent 60%,
+    color-mix(in oklab, var(--color-accent) 22%, transparent) 60%
+  );
+  color: inherit;
+  padding: 0 2px;
+}
+
+/* Scroll-driven reading progress hairline at the very top of the viewport */
+@property --read-progress {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@supports (animation-timeline: scroll(root)) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--read-progress);
+    height: 2px;
+    background: var(--color-accent);
+    z-index: 999;
+    pointer-events: none;
+    animation: read-progress linear forwards;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes read-progress {
+    to {
+      --read-progress: 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Editorial micro-details                                                   */
+/* -------------------------------------------------------------------------- */
+
+/* Anchor offset — keep H2/H3 clear of the fixed reading-progress hairline */
+.article h2,
+.article h3,
+.article h4 {
+  scroll-margin-top: 16px;
+}
+
+/* Opening flourish — first line of the first paragraph in small caps,
+   reinforcing the drop cap. Shipping headline + lede + first line all align. */
+.article > p:first-of-type::first-line {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+/* Tufte sidenote — <aside> floats into the unused right gutter on desktop,
+   collapses inline on narrower screens. Pairs with the existing 3-col grid. */
+.article > aside {
+  grid-column: 3 / 4;
+  align-self: start;
+  margin: 0 0 var(--space-base);
+  padding-left: var(--space-base);
+  border-left: 2px solid var(--color-accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-muted);
+  font-feature-settings: "kern", "liga";
+}
+
+.article > aside::before {
+  content: "Note —";
+  display: block;
+  font-style: normal;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+@media (max-width: 1100px) {
+  .article > aside {
+    grid-column: 2 / 3;
+    margin-block: var(--space-base);
+  }
+}
+
+/* Editor's Note — collapsible broadsheet drawer using <details> / <summary> */
+.article details {
+  margin: var(--space-lg) 0;
+  border-top: 1px solid var(--color-hairline-ink);
+  border-bottom: 1px solid var(--color-hairline-ink);
+  padding: var(--space-sm) 0;
+}
+
+.article details > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.article details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.article details > summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-accent);
+  transition: transform 200ms var(--ease-out);
+}
+
+.article details[open] > summary::before {
+  content: "−";
+}
+
+.article details[open] > summary {
+  margin-bottom: var(--space-sm);
+}
+
+.article details > *:not(summary) {
+  margin-block: var(--space-xs);
+}
+
+/* <cite> inside a blockquote — right-aligned em-dash + small caps attribution */
+.article blockquote cite {
+  display: block;
+  margin-top: var(--space-sm);
+  text-align: right;
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.article blockquote cite::before {
+  content: "— ";
+}
+
+/* <kbd> — physical key cap for inline command docs */
+.article kbd {
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  font-weight: 500;
+  padding: 1px 6px;
+  margin: 0 1px;
+  border: 1px solid var(--color-hairline);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  background: var(--color-canvas-soft);
+  color: var(--color-ink);
+  white-space: nowrap;
+  vertical-align: 0.04em;
+}
+
+/* <abbr> — dotted underline + help cursor when title is provided */
+.article abbr[title] {
+  text-decoration: underline dotted var(--color-hairline);
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+/* External-link arrow ↗ — quietly animates outward and turns accent on hover */
+.article a[href^="http"]:not([href*="genisisiq.com"])::after {
+  display: inline-block;
+  transition: transform 200ms var(--ease-out), color 200ms var(--ease-out);
+}
+
+.article a[href^="http"]:not([href*="genisisiq.com"]):hover::after,
+.article a[href^="http"]:not([href*="genisisiq.com"]):focus-visible::after {
+  transform: translate(2px, -2px);
+  color: var(--color-accent);
+}
+
+/* Print pagination — broadsheet header/footer with auto page numbering.
+   Browser support for @page named regions is uneven, but harmless when ignored. */
+@page {
+  size: A4;
+  margin: 18mm 16mm;
+}
+
+@media print {
+  @page {
+    @top-center {
+      content: "Unofficial Azure Club";
+      font-family: "Mona Sans", serif;
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #555;
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: "Mona Sans", serif;
+      font-size: 9pt;
+      color: #555;
+    }
+    @bottom-left {
+      content: "blog.genisisiq.com";
+      font-family: "Mona Sans", serif;
+      font-size: 9pt;
+      color: #555;
+    }
+  }
 }
