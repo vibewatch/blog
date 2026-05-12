@@ -1375,10 +1375,12 @@ a:focus-visible {
 
 .index__title {
   font-family: var(--font-display);
-  font-size: 19px;
-  line-height: 1.25;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.2;
   color: var(--color-ink);
   letter-spacing: -0.005em;
+  text-wrap: balance;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-decoration-color: transparent;
@@ -1470,8 +1472,8 @@ a:focus-visible {
 
 .featured__lead .lede__headline {
   font-weight: 800;
-  font-size: var(--fs-display);
-  line-height: 1.04;
+  font-size: clamp(24px, 2.7vw, 38px);
+  line-height: 1.08;
   letter-spacing: var(--tracking-display-tight);
 }
 
@@ -1480,7 +1482,7 @@ a:focus-visible {
   max-width: 64ch;
 }
 
-/* Archive — year grouping with a giant numeral header */
+/* Archive — year grouping */
 .year-block {
   margin-block: var(--space-xxl) 0;
 }
@@ -1502,7 +1504,7 @@ a:focus-visible {
 .year-block__numeral {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: clamp(24px, 2.7vw, 38px);
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.005em;
