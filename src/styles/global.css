@@ -20,7 +20,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
   font-feature-settings: "cv11", "ss01", "ss03";
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) transparent;
 }
 
 body {
@@ -67,13 +70,14 @@ a:focus-visible {
 }
 
 ::selection {
-  background: var(--color-ink);
+  background: var(--color-accent);
   color: var(--color-canvas);
 }
 
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--color-accent) 18%, transparent);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -276,8 +280,13 @@ a:focus-visible {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Slight desaturation gives a printed-photo feel */
-  filter: saturate(0.85) contrast(1.02);
+  /* Printed-photo feel; awakens to full color on hover */
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 500ms var(--ease-out);
+}
+
+.lede__media:hover img {
+  filter: saturate(1) contrast(1);
 }
 
 .lede__caption {
@@ -541,8 +550,13 @@ a:focus-visible {
   max-height: 520px;
   object-fit: cover;
   margin: 0 0 var(--space-xs);
-  filter: saturate(0.85) contrast(1.02);
+  filter: saturate(0.82) contrast(1.02);
   border: 1px solid var(--color-hairline);
+  transition: filter 500ms var(--ease-out);
+}
+
+.feature-image:hover {
+  filter: saturate(1) contrast(1);
 }
 
 .feature-image-caption {
@@ -661,6 +675,12 @@ a:focus-visible {
   margin: 0 0 var(--space-sm);
 }
 
+/* Avoid orphan words at line ends in body copy */
+.article p,
+.article li {
+  text-wrap: pretty;
+}
+
 .article ul,
 .article ol {
   padding-left: 1.4em;
@@ -714,7 +734,12 @@ a:focus-visible {
   max-width: 100%;
   height: auto;
   border: 1px solid var(--color-hairline);
-  filter: saturate(0.85) contrast(1.02);
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 500ms var(--ease-out);
+}
+
+.article img:hover {
+  filter: saturate(1) contrast(1);
 }
 
 .article figure {
@@ -1520,4 +1545,98 @@ a:focus-visible {
   text-transform: uppercase;
   color: var(--color-muted);
   white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Tabular figures — keep numerals aligned in lists, dates and meta strips   */
+/* -------------------------------------------------------------------------- */
+
+.post-meta time,
+.post-meta__readtime,
+.section-head__meta,
+.year-block__count {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Optical text-box trim — pull display titles tight against their baseline  */
+/* -------------------------------------------------------------------------- */
+
+@supports (text-box-trim: trim-both) {
+  .masthead__nameplate,
+  .post-title,
+  .lede__headline,
+  .year-block__numeral {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Cross-document view transitions (no JS, graceful fallback)                */
+/* -------------------------------------------------------------------------- */
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.001ms !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Print — clean broadsheet                                                  */
+/* -------------------------------------------------------------------------- */
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    background-image: none !important;
+    color: #000;
+  }
+  .masthead__nav,
+  .post-back,
+  .colophon__links,
+  .article pre .copy-btn,
+  .featured__brief {
+    display: none !important;
+  }
+  .article a {
+    color: #000;
+    text-decoration: underline;
+  }
+  /* Reveal full URL after external links so paper readers can follow them */
+  .article a[href^="http"]:not([href*="genisisiq.com"])::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+  .article img,
+  .feature-image,
+  .lede__media img {
+    filter: none !important;
+  }
+  .article pre,
+  .article code,
+  .article :not(pre) > code {
+    background: #fafafa !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+  }
+  .article h2,
+  .article h3,
+  .article h4 {
+    page-break-after: avoid;
+  }
+  .article pre,
+  .article figure,
+  .article blockquote,
+  .article table {
+    page-break-inside: avoid;
+  }
 }
