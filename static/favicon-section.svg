@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Unofficial Azure Club">
+  <!-- Option: § section mark — same glyph used by article §-counters -->
+  <rect width="32" height="32" rx="7" fill="#f3eee2"/>
+  <text x="16" y="24.5" text-anchor="middle"
+        font-family="ui-serif, Georgia, 'Times New Roman', serif"
+        font-size="24" font-weight="700"
+        fill="#3a322a">§</text>
+  <circle cx="25" cy="25" r="1.6" fill="#7a1f1f"/>
+</svg>
