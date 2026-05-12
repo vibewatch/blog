@@ -56,7 +56,7 @@ export function classifyDesk(slug: string, tags: string[], title: string): DeskK
     return 'casebook';
   }
 
-  if (/articles-i-collected|business-architecture|architectural-characteristics|migration-checklist|advancements-in-ai|vibe.coding/.test(haystack)) {
+  if (/articles-i-collected|business-architecture|architectural-characteristics|migration-checklist|advancements-in-ai|vibe.coding|agent-skills.*security|mcp.*security/.test(haystack)) {
     return 'front';
   }
 
