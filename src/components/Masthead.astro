@@ -1,16 +1,26 @@
 ---
 import { config, sitePath } from '../lib/site';
+import { getPosts } from '../lib/content';
 
 const navLinks = [
   { href: '/', label: 'Front Page' },
   { href: '/archive/', label: 'Index' },
-  { href: '/about/', label: 'About' },
+  { href: '/about/', label: 'Colophon' },
   { href: '/feed.xml', label: 'RSS' },
 ];
+
+const dispatchCount = getPosts().length;
 ---
 
 <header class="masthead">
   <div class="container">
+    <p class="masthead__folio" aria-hidden="true">
+      <span>Est. MMXVIII</span>
+      <span class="masthead__folio-sep">·</span>
+      <span>No. {dispatchCount}</span>
+      <span class="masthead__folio-sep">·</span>
+      <span>Cloud · Kubernetes · AI · DevOps</span>
+    </p>
     <a class="masthead__nameplate" href={sitePath('/')}>{config.title}</a>
     {config.description ? <p class="masthead__motto">“{config.description}”</p> : null}
     <hr class="rule rule--double" />

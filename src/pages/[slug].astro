@@ -50,7 +50,7 @@ const sectionId = isPage ? '' : item.desk?.sectionId ?? '';
       </figure>
     ) : null}
 
-    <div class="article">
+    <div class:list={['article', `article--${item.type}`, `article--${item.slug}`]}>
       <Content />
     </div>
 
