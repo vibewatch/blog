@@ -7,23 +7,21 @@ type: "post"
 status: "published"
 visibility: "public"
 featured: true
-excerpt: "AI coding assistants are moving from predictable subscriptions to usage-based token economics. This comparison maps plans to token budgets, AI credits, cache behavior, and practical agent-session costs."
+excerpt: "A practical comparison of OpenAI Codex, GitHub Copilot, and Claude Code pricing through token budgets, AI credits, cache behavior, and real agent-session capacity."
 feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["AI Coding", "GitHub Copilot", "Claude Code", "OpenAI", "Token Economy"]
 ---
 
-AI coding assistants have crossed an economic boundary. What began as cheap autocomplete and chat has become a set of long-running software agents that read repositories, edit files, run commands, inspect logs, retry failed tests, and sometimes work for hours from a single prompt.
+AI coding assistants have crossed an economic boundary. Autocomplete and chat were cheap enough to bundle. Agents that read repositories, edit files, run commands, inspect logs, retry tests, and work for hours from one prompt are not.
 
-That capability is useful, but it breaks the old pricing model. A flat $10 or $20 subscription can work for lightweight completions. It does not work when one developer can ask an agent to carry a large repository context through dozens of expensive model calls. In 2026, the market is moving from "all you can eat" AI coding to metered inference: tokens, credits, rolling limits, and model-specific usage rates.
+A $10 or $20 subscription can still cover lightweight completions. It struggles when a coding agent carries a large repository context through dozens of model calls. In 2026, AI coding pricing is increasingly about tokens, credits, rolling limits, cache hit rates, and model choice.
 
-This post distills my longer research note into a practical pricing comparison for developers and engineering leaders. The exact numbers will continue to move, so treat this as a May 2026 snapshot. The most important part is not the headline subscription price; it is the mapping from plan allowance to token budget.
+This is a May 2026 snapshot for developers and engineering leaders. The exact numbers will move, but the useful comparison is stable: convert each plan into practical agent-session capacity, not just a headline monthly price.
 
 ## Why flat-fee AI coding broke
 
-The first generation of AI coding subscriptions hid the real cost of inference. Vendors subsidized heavy users because the goal was adoption: get developers used to AI-assisted coding, make it part of the daily workflow, then improve the economics later.
-
-Agentic coding changed the math. A normal chat request might send one prompt and receive one answer. An agentic session is a loop:
+The first generation of AI coding subscriptions hid inference cost. That worked for completion and chat. Agentic coding changed the unit of work: one human request can become a loop.
 
 1. Read files.
 2. Build a plan.
@@ -33,21 +31,19 @@ Agentic coding changed the math. A normal chat request might send one prompt and
 6. Re-read context.
 7. Try again.
 
-Each loop consumes input tokens, output tokens, tool schemas, system instructions, prior conversation history, and often repeated repository context. A single human instruction can become dozens of model invocations. The heavier the context window and the more capable the model, the more expensive the session becomes.
-
-That is why vendors are correcting course. The new pricing story is no longer just "which assistant is smartest?" It is also "which assistant gives me the right cost controls for the kind of work I do?"
+Each pass consumes input, output, tool schemas, system instructions, conversation history, and often repeated repository context. The pricing question is no longer only "which assistant is smartest?" It is "which assistant gives me the right model, cache behavior, and spending controls for this coding workflow?"
 
 ## The three pricing philosophies
 
-The major platforms are converging on usage awareness, but they are not doing it in the same way.
+The major coding platforms are all becoming usage-aware, but each places the guardrail in a different place.
 
 | Platform | Pricing philosophy | Best fit | Main risk |
 | :-- | :-- | :-- | :-- |
-| **OpenAI API + ChatGPT Codex** | Raw token utility billing, or ChatGPT plan windows with add-on credits | Teams building custom tools, internal agents, CI automation, and developers using Codex through ChatGPT plans | API costs scale directly; ChatGPT Codex plan value depends on model mix and hidden account limits |
+| **OpenAI API + ChatGPT Codex** | Raw token utility billing, or ChatGPT plan windows with add-on credits | Teams building coding tools, internal dev agents, CI automation, and developers using Codex through ChatGPT plans | API costs scale directly; ChatGPT Codex plan value depends on model mix and hidden account limits |
 | **GitHub Copilot** | Subscription plus AI Credits / usage-based metering for premium and agentic work | Developers who want IDE-native workflows, GitHub integration, and enterprise pooling | Budget predictability declines as agent mode and code review usage grows |
 | **Claude Code** | CLI subscription windows or direct API billing | Terminal-native developers who want strong agentic workflows and repository manipulation | Rolling limits interrupt work, while API mode can become expensive quickly |
 
-The important distinction is not only the sticker price. It is where the platform places the economic guardrail. OpenAI exposes both a direct API token meter and a ChatGPT Codex plan/credit model. GitHub wraps usage in subscription credits. Anthropic uses rolling windows for subscriptions and direct token billing for API usage.
+OpenAI exposes both direct token billing and ChatGPT Codex plan limits. GitHub wraps premium usage in AI Credits. Anthropic uses rolling windows for subscriptions and direct token billing for API mode.
 
 ```mermaid
 flowchart LR
@@ -64,7 +60,7 @@ flowchart LR
 
 ## How to translate a plan into tokens
 
-To make the comparison concrete, I use three formulas throughout this post.
+Three accounting models show up repeatedly.
 
 For API billing, the basic formula is:
 
@@ -75,7 +71,7 @@ cost = (fresh_input_tokens * input_rate
 	+ output_tokens * output_rate) / 1,000,000
 ```
 
-Not every provider exposes every category. OpenAI pricing generally uses fresh input, cached input, and output. Anthropic API pricing also separates cache writes from cache reads, and cache writes are priced at a multiplier of base input tokens.<sup>[5](#ref-5)</sup>
+Not every provider exposes every category. OpenAI generally uses fresh input, cached input, and output. Anthropic API pricing also separates cache writes from cache reads.<sup>[5](#ref-5)</sup>
 
 For GitHub Copilot, the dollar cost is converted to GitHub AI Credits:
 
@@ -83,7 +79,7 @@ For GitHub Copilot, the dollar cost is converted to GitHub AI Credits:
 GitHub AI Credits = API-equivalent dollar cost * 100
 ```
 
-That is because 1 GitHub AI Credit equals $0.01 USD.<sup>[4](#ref-4)</sup>
+1 GitHub AI Credit equals $0.01 USD.<sup>[4](#ref-4)</sup>
 
 For Claude subscriptions, the public product pages do not expose a direct token allowance. The best analysis I found is ShellaC's reverse-engineering of Claude's usage bars and SSE usage fractions.<sup>[9](#ref-9)</sup> In that analysis, Claude plan usage is tracked by an internal credit-like unit:
 
@@ -99,7 +95,7 @@ The inferred model rates are:
 | **Sonnet** | 6/15 = 0.400 credits/token | 30/15 = 2.000 credits/token | Middle |
 | **Opus** | 10/15 = 0.667 credits/token | 50/15 = 3.333 credits/token | Most expensive |
 
-This mirrors Anthropic API pricing ratios: output is roughly 5x input, and Opus is much more expensive than Haiku. The crucial difference is caching. On the Claude API, cache reads cost 10% of the input price. In ShellaC's observed Claude subscription accounting, cache reads do not consume plan credits, while cache writes count like regular input tokens.<sup>[9](#ref-9)</sup>
+This mirrors Anthropic API pricing ratios: output is roughly 5x input, and Opus is much more expensive than Haiku. The key difference is caching. Claude API cache reads cost 10% of input price; ShellaC observed that Claude subscription cache reads consume no plan credits, while cache writes count like input tokens.<sup>[9](#ref-9)</sup>
 
 To compare providers, I will use one reference workload for OpenAI and Copilot:
 
@@ -107,7 +103,7 @@ To compare providers, I will use one reference workload for OpenAI and Copilot:
 One reference agent model call = 100K cached input + 10K fresh input + 2K output
 ```
 
-That is not a whole coding session. It is one model call inside an agent loop. A real agent task may use 10, 25, or 50+ calls depending on how many files it reads, how many tests it runs, and how often it retries.
+That is one model call inside an agent loop, not a full coding session. A real task may use 10, 25, or 50+ calls depending on file reads, test runs, and retries.
 
 ```mermaid
 flowchart TB
@@ -127,9 +123,9 @@ flowchart TB
 
 ## OpenAI: utility pricing and model routing
 
-OpenAI's model is closest to cloud infrastructure pricing. You choose a model, send tokens, receive tokens, and pay according to the model's rate card. Higher-capability reasoning models cost more, while lighter models are cheaper and better suited for fast or repetitive tasks.
+OpenAI API billing is direct: choose a model, send tokens, receive tokens, and pay the rate card. Larger reasoning models cost more; smaller models are better for fast, low-risk coding tasks.
 
-The practical implication is that teams should stop thinking in terms of "one model for coding". A modern AI coding stack needs routing:
+The practical implication: there is no single "coding model". A useful stack routes by task.
 
 | Task type | Good routing choice | Why |
 | :-- | :-- | :-- |
@@ -137,9 +133,9 @@ The practical implication is that teams should stop thinking in terms of "one mo
 | Unit test generation or documentation | Mid-tier model | Needs context, but usually not the most expensive reasoning path |
 | Multi-file refactor | Agent-oriented coding model | Needs repository awareness and long-horizon task execution |
 | Architecture review, hard debugging, concurrency bugs | Frontier reasoning model | Quality can justify the premium when mistakes are expensive |
-| Bulk offline work such as documentation sweeps | Batch or lower-priority processing | Latency is less important than cost |
+| Bulk codebase documentation or mechanical migrations | Batch or lower-priority processing | Latency is less important than cost |
 
-OpenAI also offers cost levers that matter a lot for coding agents: prompt caching, batch processing, lower-priority routing, and hosted execution environments for code verification.<sup>[1](#ref-1)</sup> The lesson is simple: if you consume OpenAI directly, you need engineering discipline around prompts, cacheable prefixes, context pruning, and routing. Otherwise, the bill becomes a debugging artifact.
+OpenAI's useful cost levers for coding agents are prompt caching, batch processing, lower-priority routing, and hosted execution for code verification.<sup>[1](#ref-1)</sup> Direct API use needs prompt discipline: stable prefixes, small context, and explicit routing.
 
 Here is what the math looks like for a $10 API budget using the reference agent model call above:
 
@@ -150,13 +146,13 @@ Here is what the math looks like for a $10 API budget using the reference agent 
 | **GPT-5.3-Codex** | $1.75 / $0.175 / $14.00 per 1M tokens | 5.71M input, 57.1M cached input, or 0.71M output | $0.063 | 158 |
 | **GPT-5.4 mini** | $0.75 / $0.075 / $4.50 per 1M tokens | 13.3M input, 133.3M cached input, or 2.22M output | $0.024 | 416 |
 
-The spread is large. With the same $10, the reference workload runs about 62 GPT-5.5 calls or 416 GPT-5.4 mini calls. If a coding session takes 25 model calls, that is roughly $4.00 on GPT-5.5, $1.58 on GPT-5.3-Codex, or $0.60 on GPT-5.4 mini. This is why model routing is not a nice-to-have; it is the cost model.
+The spread is large. The same $10 buys about 62 GPT-5.5 reference calls or 416 GPT-5.4 mini calls. If a session takes 25 calls, that is roughly $4.00 on GPT-5.5, $1.58 on GPT-5.3-Codex, or $0.60 on GPT-5.4 mini. Model routing is the cost model.
 
 ## OpenAI Codex through ChatGPT plans: validated vs inferred
 
-OpenAI's Codex pricing page adds a second OpenAI path that is easy to confuse with API billing: sign in to Codex with a ChatGPT plan rather than an API key. In that mode, Codex is included in ChatGPT Free, Go, Plus, Pro, Business, Edu, and Enterprise plans, with Plus, Pro, and Business exposing plan-based usage limits and optional purchased credits after the included limits are exhausted.<sup>[13](#ref-13)</sup>
+Codex through ChatGPT plans is different from OpenAI API billing. You sign in with a ChatGPT plan, get plan-based Codex limits, and buy credits only after included usage is exhausted.<sup>[13](#ref-13)</sup>
 
-Here is what the public Codex page validates directly for Plus and Business standard seats:
+The public Codex page validates these plan shapes:
 
 | Plan | Published price | Published Codex allowance shape | Notes |
 | :-- | --: | :-- | :-- |
@@ -166,7 +162,7 @@ Here is what the public Codex page validates directly for Plus and Business stan
 | **ChatGPT Pro $100** | $100/month | Standard 5x Plus Codex usage; 10x Plus through May 31, 2026 promo | Individual plan |
 | **ChatGPT Pro $200** | $200/month | 20x Plus; temporary 25x five-hour Codex limits through May 31, 2026 | Heavy-use plan |
 
-The Business standard-seat pricing and the distinction between fixed-cost ChatGPT seats and $0 fixed-cost Codex-only seats are described in OpenAI's ChatGPT Business docs.<sup>[16](#ref-16)</sup>
+OpenAI's Business docs explain the standard-seat price and the $0 fixed-cost Codex-only seat.<sup>[16](#ref-16)</sup>
 
 The Plus and Business usage-limit table is expressed as messages or tasks, not dollars:
 
@@ -177,7 +173,7 @@ The Plus and Business usage-limit table is expressed as messages or tasks, not d
 | **GPT-5.4-mini** | 60-350 | Not available | Not available |
 | **GPT-5.3-Codex** | 30-150 | 10-60 | 20-50 |
 
-OpenAI says local-message and cloud-task usage share the same five-hour window, and that additional weekly limits may apply.<sup>[13](#ref-13)</sup> That wording matters: the public page validates the five-hour ranges above, but it does **not** publish a stable weekly or monthly dollar-equivalent allowance. The Codex usage dashboard and `/status` command are the source of truth for a specific account.
+OpenAI says local-message and cloud-task usage share the same five-hour window, and that additional weekly limits may apply.<sup>[13](#ref-13)</sup> The docs validate the five-hour ranges, not a stable weekly or monthly dollar-equivalent allowance. The Codex dashboard and `/status` command are the account-level source of truth.
 
 For token-based purchased-credit usage, OpenAI publishes this Codex rate card:<sup>[14](#ref-14)</sup>
 
@@ -188,17 +184,11 @@ For token-based purchased-credit usage, OpenAI publishes this Codex rate card:<s
 | **GPT-5.4-mini** | 18.75 credits | 1.875 credits | 113 credits |
 | **GPT-5.3-Codex** | 43.75 credits | 4.375 credits | 350 credits |
 
-So how should we treat the claim that Plus or Business gives "about $12 of tokens per five-hour window, $72 per week, and $284 per month"? I would not write it as an official OpenAI number. The official docs validate the five-hour message/task ranges and the token-based purchased-credit rate card, but they do not publish a fixed weekly or monthly dollar-equivalent allowance.
+The often-quoted estimate -- about **$12 per five-hour window**, **$70/week**, and **$280-$300/month** of Codex add-on-credit-equivalent usage for Plus or Business -- should be treated as a community conversion, not an official OpenAI allowance. The official docs publish message/task ranges and the purchased-credit rate card, not fixed dollar-equivalent quotas.
 
-The most defensible version is:
+The estimate is still useful as a sanity check. OpenAI's planning values put GPT-5.5 local tasks around 14 credits/message, GPT-5.4 around 7, GPT-5.3-Codex local tasks around 5, and GPT-5.3-Codex cloud tasks or reviews around 25 credits.<sup>[13](#ref-13)</sup> Applied to the five-hour ranges, that creates a wide band: GPT-5.5 local usage maps to roughly 210-1,120 credits per window, while GPT-5.3-Codex cloud tasks map to roughly 250-1,500 credits. The "roughly $12" number is plausible for some workloads, but not universal.
 
-> Based on community conversions of the published five-hour message ranges into add-on-credit equivalents, Plus and Business standard seats can plausibly feel like roughly **$10-$15 of Codex add-on-credit-equivalent usage per five-hour window** for some higher-end local, cloud, or review workflows. Some users extrapolate that to roughly **$70/week** and **$280-$300/month** of add-on-credit-equivalent capacity, but OpenAI does not publish those weekly/monthly dollar equivalents and the real value depends heavily on model choice, prompt size, cached context, output length, and account-specific limits.
-
-One way to sanity-check the range is to look at the legacy average message-card values that OpenAI still documents for planning: GPT-5.5 local tasks were around 14 credits per message, GPT-5.4 around 7, GPT-5.3-Codex around 5 for local tasks, and GPT-5.3-Codex cloud tasks or code reviews around 25 credits each.<sup>[13](#ref-13)</sup> Multiplying those by the Plus/Business five-hour ranges gives a very wide band: GPT-5.5 local usage maps to roughly 210-1,120 credits per five hours, while GPT-5.3-Codex cloud tasks map to roughly 250-1,500 credits. That makes a "roughly $12" five-hour conversion plausible under common community assumptions, but not universal.
-
-That caveat is not pedantry. The official table says GPT-5.5 local messages can range from 15 to 80 in the same five-hour window. If you model a GPT-5.5 prompt at about $0.90 of purchased-credit-equivalent usage, the low end is about $13.50 and the high end is $72. If you model the prompt at a lower effective cost, the same window looks much cheaper. The answer is therefore not one number; it is a workload distribution.
-
-The general efficiency conclusion does survive the caveat: included plan usage is much cheaper than buying all usage as add-on credits. If a $20 Plus seat behaves like roughly $280/month of add-on-credit-equivalent Codex capacity for your workload, then buying your way to the same usage would be about **14x** the subscription price. For a $25 monthly Business standard seat, the ratio is about **11x**. That is the basis for the "credits are around 10x more expensive than relying on built-in plan usage" rule of thumb, but I would present it as an order-of-magnitude estimate, not a guaranteed multiplier.
+The actionable takeaway is simpler: included plan usage is usually far cheaper than buying the same activity entirely as add-on credits. A $20 Plus seat that behaves like roughly $280/month of add-on-credit-equivalent Codex capacity would be about **14x** cheaper than buying those credits directly. A $25 monthly Business standard seat would be about **11x** cheaper. Treat "credits are around 10x more expensive" as an order-of-magnitude rule, not a guarantee.
 
 ```mermaid
 flowchart TD
@@ -211,15 +201,15 @@ flowchart TD
 	Rate --> Cost[workload-specific cost]
 ```
 
-There is one more validated recommendation: be careful with Fast mode. Codex Fast mode increases supported model speed by 1.5x, but it consumes credits at a higher rate: **2.5x standard for GPT-5.5** and **2x standard for GPT-5.4**.<sup>[15](#ref-15)</sup> So the practical advice is: leave Fast mode off by default unless latency is worth the burn rate. If you are regularly hitting usage limits, Fast mode is usually the first thing to disable.
+One more validated recommendation: be careful with Fast mode. It makes supported models 1.5x faster, but burns credits at **2.5x standard for GPT-5.5** and **2x standard for GPT-5.4**.<sup>[15](#ref-15)</sup> Leave it off unless latency is worth the burn rate.
 
-The commonly quoted prompt-level estimates -- GPT-5.5 xHigh around $1.30/prompt, GPT-5.5 High around $0.90/prompt, and GPT-5.4 High around $0.43/prompt -- are useful as field estimates, but I would not cite them as official pricing. They appear to come from scattered user measurements and can vary dramatically with repository size, reasoning effort, prompt simplicity, context reuse, output length, and whether Fast mode is enabled. Treat them as starting calibration points and measure your own workload.
+Prompt-level estimates such as GPT-5.5 xHigh at about $1.30/prompt, GPT-5.5 High at $0.90, and GPT-5.4 High at $0.43 are useful field calibration, not official pricing. Repository size, reasoning effort, cache reuse, output length, and Fast mode can all move the number.
 
 ## GitHub Copilot: from subscription comfort to AI Credits
 
-GitHub Copilot is the most familiar product for many developers, and its pricing transition is therefore the most visible. GitHub announced a move toward usage-based billing for Copilot, particularly for premium model and agentic workloads.<sup>[2](#ref-2)</sup>
+GitHub Copilot is the familiar IDE path, and its pricing shift is visible: premium models, agent mode, and AI review are moving toward usage-based billing.<sup>[2](#ref-2)</sup>
 
-The new pattern is a hybrid subscription model. Paid plans include a monthly allocation of GitHub AI Credits, where credits map back to the underlying model usage. In the individual plan structure, GitHub separates included usage into base credits and flex allotments.<sup>[3](#ref-3)</sup>
+Paid plans now include monthly GitHub AI Credits. Individual plans split that allowance into base credits and flex allotments.<sup>[3](#ref-3)</sup>
 
 | Copilot plan | Monthly price | Base credits | Flex allotment | Total monthly credits | Dollar-equivalent usage |
 | :-- | --: | --: | --: | --: | --: |
@@ -229,9 +219,9 @@ The new pattern is a hybrid subscription model. Paid plans include a monthly all
 | **Business** | $19/user | 1,900/user | N/A | Pooled at organization level | $19/user |
 | **Enterprise** | $39/user | 3,900/user | N/A | Pooled at organization level | $39/user |
 
-The subtle but important change is that not all Copilot activity has the same economic weight. Inline completions and lightweight suggestions can remain effectively unmetered or bundled because they run on optimized paths. Agent mode, premium chat, code review, and cloud workspace behavior are much more expensive because they rely on larger models and more context.
+Not all Copilot activity has the same weight. Inline completion can stay bundled because it uses optimized paths. Agent mode, premium chat, code review, and cloud workspaces consume larger models and more context.
 
-For enterprises, pooling credits across users is helpful because not every developer is a power user every day. Existing Copilot Business and Enterprise customers also receive promotional included usage during the initial transition period: 3,000 credits per Business seat and 7,000 credits per Enterprise seat before returning to the standard 1,900 and 3,900 credit allowances.<sup>[10](#ref-10)</sup> But pooling does not eliminate the need for governance. Automated reviews, background agents, and CI-linked workflows can consume both AI credits and ordinary build infrastructure such as GitHub Actions minutes.<sup>[4](#ref-4)</sup>
+Enterprise pooling helps because usage is uneven across developers. During the transition, existing Business and Enterprise customers receive promotional allowances of 3,000 and 7,000 credits per seat before returning to 1,900 and 3,900.<sup>[10](#ref-10)</sup> Pooling still needs governance: automated reviews, background agents, and CI-linked workflows can consume both AI Credits and GitHub Actions minutes.<sup>[4](#ref-4)</sup>
 
 Now map that to tokens. Using GPT-5.3-Codex inside Copilot, the reference call costs:
 
@@ -242,7 +232,7 @@ Now map that to tokens. Using GPT-5.3-Codex inside Copilot, the reference call c
 Total = $0.063 = 6.3 GitHub AI Credits
 ```
 
-That gives the following rough budget:
+That gives this rough budget:
 
 | Copilot allowance | Included usage | GPT-5.3-Codex reference calls | Approx. 25-call agent sessions |
 | :-- | --: | --: | --: |
@@ -252,7 +242,7 @@ That gives the following rough budget:
 | **Business standard per-seat pool contribution** | $19 / 1,900 credits | 301 | 12 |
 | **Enterprise standard per-seat pool contribution** | $39 / 3,900 credits | 619 | 24 |
 
-This is why Copilot's Max plan can be attractive for sustained agent use: its headline price is $100, but the included AI Credit value is $200. It is also why model choice matters. If the same task runs on GPT-5.5, the reference call costs 16 credits instead of 6.3; the Pro plan's 1,500 credits fall from 238 calls to about 93 calls. If it runs on GPT-5.4 mini, the same plan stretches to about 625 calls.
+Copilot Max is attractive for sustained agent use because the $100 plan includes $200 of AI Credit value. Model choice still dominates: the same reference call costs 16 credits on GPT-5.5, 6.3 on GPT-5.3-Codex, and about 2.4 on GPT-5.4 mini.
 
 ```mermaid
 flowchart TD
@@ -269,11 +259,11 @@ flowchart TD
 
 ## Claude Code: productive CLI, hard limits
 
-Claude Code has a different feel. It is less like an IDE feature and more like an agentic command-line collaborator. It can inspect a repo, run shell commands, edit files, and iterate in the terminal. That makes it powerful for focused engineering sessions.
+Claude Code feels less like an IDE feature and more like a terminal-native engineering agent. It inspects repos, runs commands, edits files, and iterates in the shell.
 
-Anthropic's subscription model uses rolling usage windows rather than a simple monthly token bucket. The benefit is predictable vendor exposure and some protection against runaway usage. The drawback is obvious to anyone who has hit the limit mid-refactor: your work can stop because the time window is exhausted.<sup>[5](#ref-5)</sup>
+Anthropic uses rolling usage windows instead of a simple monthly token bucket. That keeps spend predictable, but it can interrupt a refactor when the window is exhausted.<sup>[5](#ref-5)</sup>
 
-Claude Code can also be connected directly to API billing. That removes subscription interruptions, but it moves the risk to your wallet. Long agent loops are especially dangerous because the agent may repeatedly resubmit large context windows while debugging the same issue. Without compaction and pruning, repeated context becomes token waste.
+API billing removes those interruptions but moves the risk to your wallet. Long debugging loops can repeatedly resend large context windows unless you compact and prune.
 
 | Claude Code path | Benefit | Tradeoff |
 | :-- | :-- | :-- |
@@ -281,7 +271,7 @@ Claude Code can also be connected directly to API billing. That removes subscrip
 | API billing | No artificial session lockout | Costs can spike during long agent loops |
 | Team / Enterprise plan | More usage, admin controls, compliance features | Higher baseline seat cost |
 
-Anthropic's official pages explain the plan names and that limits depend on message length, attachments, conversation length, tool usage, model choice, and artifacts.<sup>[11](#ref-11)</sup> They do not publish a simple token-per-plan table. ShellaC's reverse-engineered numbers fill that gap. Treat the following as an unofficial but useful model, not an Anthropic contract.
+Anthropic says limits depend on message length, attachments, conversation length, tool usage, model choice, and artifacts.<sup>[11](#ref-11)</sup> It does not publish a token-per-plan table. ShellaC's reverse-engineered numbers are therefore useful, but unofficial.
 
 | Claude plan | Price | Inferred 5-hour session credits | Inferred weekly credits | Monthly credits equivalent | Opus token equivalent | API-equivalent value |
 | :-- | --: | --: | --: | --: | :-- | --: |
@@ -289,11 +279,9 @@ Anthropic's official pages explain the plan names and that limits depend on mess
 | **Max 5x** | $100/mo | 3,300,000 | 41,666,700 | 180.6M | 270.8M input or 54.2M output | ~$1,354, or 13.5x plan price |
 | **Max 20x** | $200/mo | 11,000,000 | 83,333,300 | 361.1M | 541.7M input or 108.3M output | ~$2,708, or 13.5x plan price |
 
-Two things stand out.
+Two things stand out. Max 5x is strong monthly value: it costs 5x Pro but has about 8.33x the inferred weekly credits. Max 20x is more about burst capacity: its five-hour ceiling is 20x Pro, but its weekly ceiling is only 2x Max 5x.
 
-First, Max 5x is the sweet spot if you care about monthly value. It costs 5x Pro, but the inferred weekly credit limit is about 8.33x Pro. Second, Max 20x is mainly about burst capacity in the five-hour window. Its session ceiling is 20x Pro, but its weekly ceiling is only 2x Max 5x. If you need all-day heavy usage, Max 20x helps; if you only compare monthly API-equivalent value per dollar, Max 5x is hard to beat.
-
-The cache behavior is the real economic surprise. Consider Opus with a large repeated context.
+Caching is the economic surprise. Consider Opus with a large repeated context.
 
 ### Claude cold-cache example
 
@@ -324,9 +312,7 @@ API cost:
 Total = $0.08125
 ```
 
-On the API, warm-cache turns still cost money because cache reads are billed at 10% of input. In the subscription accounting observed by ShellaC, cache reads consume no plan credits. Max 5x therefore supports about 10,416 warm-cache requests per week in this scenario. The API-equivalent value is roughly $3,667 per month, or 36.7x the $100 subscription price.
-
-This explains why Claude Code feels dramatically cheaper on a subscription than through direct API billing for long, repeated-context sessions. It also explains the limits: Anthropic must cap the rolling windows because warm agent loops can otherwise create enormous effective API value.
+Warm-cache turns show why Claude Code subscriptions can feel much cheaper than API billing for repeated-context coding sessions. API cache reads still cost money; the observed subscription accounting does not charge plan credits for reads. In this scenario, Max 5x supports about 10,416 warm-cache requests per week, an API-equivalent value of roughly $3,667 per month.
 
 ```mermaid
 flowchart LR
@@ -340,66 +326,64 @@ flowchart LR
 	ApiWarm --> MeterAnxiety[long loops still draw down<br/>credits or dollars]
 ```
 
-It also makes Claude-via-Copilot meaningfully different from Claude-native subscriptions. The warm Opus example above costs $0.08125, or 8.125 GitHub AI Credits, under API-style accounting. Copilot Max's $200 monthly credit allowance would cover about 2,461 such calls per month. The inferred Claude Max 5x subscription bucket supports about 10,416 such calls per week, or roughly 45,000 per month, because the 100K cache read does not drain subscription credits. That is not an apples-to-apples product comparison, but it is the clearest reason Claude Code subscriptions can outperform API or Copilot-style metering for repeated-context Claude workloads.
+The same warm Opus call would cost $0.08125, or 8.125 GitHub AI Credits, under API-style accounting. Copilot Max's $200 monthly allowance covers about 2,461 such calls per month. The inferred Claude Max 5x subscription bucket supports roughly 45,000 per month because the repeated 100K cache read does not drain plan credits. This is not an apples-to-apples product comparison, but it explains why Claude-native subscriptions can outperform API or Copilot-style metering for repeated-context Claude workloads.
 
-If your workflow is terminal-first and you value strong autonomous editing, Claude Code is compelling. But it rewards disciplined session management: compact context, avoid unnecessary file dumps, terminate idle agents, and route routine tasks to cheaper models where possible.<sup>[6](#ref-6)</sup> Claude's own support docs make the same operational point: clear between unrelated tasks, use `/compact` during long tasks, avoid pasting entire files when a path will do, keep `CLAUDE.md` lean, and reserve Opus for planning or truly hard problems.<sup>[12](#ref-12)</sup>
+Claude Code is compelling for terminal-first work, but it rewards discipline: compact context, avoid file dumps, terminate idle agents, and reserve Opus for planning or hard debugging.<sup>[6](#ref-6)</sup> Claude's own docs recommend the same habits: use `/compact`, pass file paths instead of full files, keep `CLAUDE.md` lean, and clear between unrelated tasks.<sup>[12](#ref-12)</sup>
 
-## The pros and cons of token-based billing
+## When the cheap model is the expensive choice
 
-Usage-based pricing is not purely bad. It fixes real problems, especially for vendors and light users. But it creates new psychological and operational costs for development teams.
+Routing to cheaper models is good; defaulting to the smallest possible model is not. In coding work, an almost-right answer can be more expensive than a correct expensive one because the difference is paid in retries, review time, and cleanup.
 
-### What gets better
+The pattern is well documented for coding workloads:
 
-**Vendor economics become sustainable.** Providers no longer need light users to subsidize the heaviest agentic sessions. Revenue tracks compute cost more closely.
+* CodeRabbit reports that AI-written code accumulates issues roughly **1.7x more often than human-written code**, with cost showing up as re-prompts, review threads, and rework.<sup>[17](#ref-17)</sup>
+* SmartBear summarizes the agentic shift well: what once took one call may now take fifty, so AI can be "cheaper per step but more expensive per solution."<sup>[18](#ref-18)</sup>
+* NetOrca puts it in routing terms: "a £0.05 pipeline that fails 30% of the time costs more than a £0.15 pipeline that works first time."<sup>[19](#ref-19)</sup>
 
-**Power users can run bigger jobs.** Instead of being blocked by hidden limits, teams can choose to pay for large refactors, migration work, or security sweeps when the business value is clear.
+For coding agents specifically, three failure modes turn a "cheap" model into the expensive one:
 
-**Bursty teams may pay more fairly.** A developer who uses AI heavily during one sprint and barely at all during another can benefit from usage alignment, assuming the platform exposes useful spending controls.
+| Failure mode | What you actually pay |
+| :-- | :-- |
+| **More iterations** | Each retry resends instructions, tool schemas, context, and prior turns. Many cheap calls can cost more than one strong call. |
+| **Subtle code errors** | Hallucinated APIs, missed preconditions, and repo-style violations make review and CI slower. |
+| **Human cleanup** | At roughly **$1-$2 per minute** of senior-engineer attention, 15 minutes of cleanup can cost more than the model run. |
 
-### What gets worse
+Example: Sonnet costs $0.30 and solves a task once. Haiku costs $0.06 but needs three tries plus 20 minutes of review and re-prompting. The token bill says $0.30 vs $0.18. Add 20 minutes at $90/hour and the comparison becomes $0.30 vs $30.18. The right target is *minimum cost to the correct outcome*, not minimum cost per call.
 
-**Budgets become less predictable.** A runaway agent can turn a simple ticket into a surprisingly expensive session, especially with large context windows and high-output models.<sup>[7](#ref-7)</sup>
+Concrete routing guidance that follows from this:
 
-**Developers feel meter anxiety.** When every prompt has a visible cost, experimentation feels less free. That can reduce the creative trial-and-error that made these tools valuable in the first place.
+* Start cheap for tasks that are easy to verify: formatting, regex, scripted refactors, log triage.
+* Start strong where wrong code is hard to detect: auth, data migration, security, concurrency, broad refactors.
+* Treat the smallest model as a first attempt, not the default. Escalate when it stalls and log the reason.<sup>[19](#ref-19)</sup>
 
-**Engineering teams inherit a new operations problem.** Developers now need to think about model choice, prompt shape, cache behavior, context size, and cost telemetry. That is cloud cost management all over again, but inside the software development loop.
+```mermaid
+flowchart LR
+	Task[coding task] --> Verifiable{cheap to verify<br/>and cheap to retry?}
+	Verifiable -->|yes| Small[start with small model]
+	Verifiable -->|no| Strong[start with strong model]
+	Small --> Pass{passed in 1-2 tries?}
+	Pass -->|yes| Done[ship - cheapest path]
+	Pass -->|no| Escalate[escalate to stronger model<br/>log the escalation]
+	Escalate --> Strong
+	Strong --> Review[human review]
+	Review --> Done
+```
 
 ## A practical cost-control playbook
 
-The answer is not to stop using AI coding agents. The answer is to treat inference as an engineering resource.
+The answer is not to stop using coding agents. It is to make agent sessions observable before large contexts, retries, and high-output models turn one ticket into a runaway loop.<sup>[7](#ref-7)</sup>
 
 ### 1. Make prompts cache-friendly
 
-Prompt caching works best when the beginning of the prompt stays stable. Put static instructions first: repository rules, tool definitions, coding standards, and durable architecture notes. Put dynamic content later: the specific user request, fresh logs, current error output, and temporary file snippets.
-
-This is the "layer cake" pattern:
-
-1. Static system and repo instructions.
-2. Semi-static project context.
-3. Retrieved files or relevant snippets.
-4. The current task and latest error output.
-
-Changing the top of the prompt breaks exact-prefix caching. Keeping the prefix stable lets providers reuse cached input at a discount or avoid repeated processing.<sup>[8](#ref-8)</sup>
+Prompt caching works best when the beginning stays stable. Put durable repo rules, tool definitions, and coding standards first; put the current request, logs, and temporary snippets last. Changing the top breaks exact-prefix caching; a stable prefix lets providers reuse cached input at a discount or avoid repeated processing.<sup>[8](#ref-8)</sup>
 
 ### 2. Prune context aggressively
 
-The most expensive token is the token you did not need to send. Avoid dumping entire repositories into context. Prefer search, retrieval, and small relevant snippets. In long sessions, periodically compact the conversation into a concise state summary and clear stale history.
-
-Good context management answers three questions:
-
-| Question | Why it matters |
-| :-- | :-- |
-| What does the model need to know now? | Keeps the prompt focused |
-| What can be retrieved later if needed? | Avoids paying repeatedly for cold context |
-| What is stale or already resolved? | Prevents the context window from becoming a landfill |
-
-This is especially important for agents because each retry can carry forward prior messages, tool schemas, logs, and file content.
+Avoid dumping whole repositories into context. Use search, retrieval, and small relevant snippets; compact long sessions into a concise state summary. This matters because every retry can carry prior messages, tool schemas, logs, and file content.
 
 ### 3. Route by task, not by habit
 
-Using the strongest model for every request is like compiling a hello-world program on a supercomputer. Sometimes justified, usually wasteful.
-
-Create a routing policy:
+Create a simple routing policy:
 
 | Use this model class | For these tasks |
 | :-- | :-- |
@@ -408,41 +392,28 @@ Create a routing policy:
 | Mid-tier coding model | Routine feature work, test generation, explanation |
 | Frontier reasoning model | Ambiguous architecture, difficult debugging, security-sensitive changes |
 
-Local models through tools like Ollama or LM Studio can handle many low-risk tasks with zero marginal token cost. Paid frontier models should be reserved for the places where reasoning quality matters.
+Local or small models can handle low-risk work. Paid frontier models should be reserved for cases where reasoning quality lowers total cost.
 
 ### 4. Put budgets and alerts near the workflow
 
-Cost controls work best when they are visible where developers work. Useful controls include:
+Put cost signals where developers work:
 
-* Per-user and per-team monthly budgets.
+* Per-user and per-team budgets.
 * Soft warnings before hard limits.
 * Per-session cost estimates.
 * Model-level usage reports.
-* CI cost attribution for AI code review and agent runs.
-* Kill switches for runaway background agents.
+* CI attribution for AI review and agent runs.
+* Kill switches for runaway agents.
 
-The goal is not to shame developers for using AI. The goal is to make expensive behavior observable before it surprises finance.
+The goal is visibility, not guilt.
 
 ### 5. Standardize agent operating procedures
 
-Teams should document how they expect agents to be used. For example:
+Document the default workflow: investigate before editing, prefer targeted diffs, run tests before asking the agent to retry, `/compact` or restart after milestones, and escalate models only for a named reason. This keeps cost decisions auditable.
 
-* Start with a small investigation prompt before asking for code changes.
-* Ask the agent to explain the file set it needs before loading large context.
-* Prefer targeted diffs over broad rewrites.
-* Run tests locally before asking the agent to retry repeatedly.
-* Compact or restart long sessions after a major milestone.
-* Escalate to a larger model only after a smaller one fails for a clear reason.
+## Conclusion
 
-These habits sound small, but they compound quickly across a team.
-
-## Conclusion: optimized intelligence wins
-
-The era of free or heavily subsidized coding intelligence is ending. That does not mean AI coding tools are becoming less useful. It means they are becoming real infrastructure.
-
-The teams that benefit most from AI coding in 2026 will not simply be the teams with access to the best model. They will be the teams that understand the token economy: cache static context, prune aggressively, route intelligently, monitor spending, and teach developers how to work with agents without turning every task into an open-ended inference loop.
-
-AI coding used to be priced like a gym membership. Increasingly, it is priced like cloud computing. The sooner engineering teams treat it that way, the less painful the transition will be.
+Free and heavily subsidized coding intelligence is ending. The winning teams will not simply pick the strongest model; they will cache static context, prune aggressively, route to *the cheapest model whose mistakes they can afford to clean up*, and watch the human meter as closely as the token meter. AI coding used to be priced like a gym membership. Now it is priced like cloud computing.
 
 #### Works cited
 
@@ -457,8 +428,11 @@ AI coding used to be priced like a gym membership. Increasingly, it is priced li
 9. <a id="ref-9"></a>suspiciously precise floats, or, how I got Claude's real limits, accessed May 15, 2026, [https://she-llac.com/claude-limits](https://she-llac.com/claude-limits)  
 10. <a id="ref-10"></a>Usage-based billing for organizations and enterprises - GitHub Docs, accessed May 15, 2026, [https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises](https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises)  
 11. <a id="ref-11"></a>Usage limit best practices - Claude Help Center, accessed May 15, 2026, [https://support.claude.com/en/articles/9797557-usage-limit-best-practices](https://support.claude.com/en/articles/9797557-usage-limit-best-practices)  
-12. <a id="ref-12"></a>Models, usage, and limits in Claude Code - Claude Help Center, accessed May 15, 2026, [https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code](https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code)
+12. <a id="ref-12"></a>Models, usage, and limits in Claude Code - Claude Help Center, accessed May 15, 2026, [https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code](https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code)  
 13. <a id="ref-13"></a>Codex Pricing - OpenAI Developers, accessed May 15, 2026, [https://developers.openai.com/codex/pricing](https://developers.openai.com/codex/pricing)  
 14. <a id="ref-14"></a>Codex rate card - OpenAI Help Center, accessed May 15, 2026, [https://help.openai.com/en/articles/20001106-codex-rate-card](https://help.openai.com/en/articles/20001106-codex-rate-card)  
 15. <a id="ref-15"></a>Speed - Codex - OpenAI Developers, accessed May 15, 2026, [https://developers.openai.com/codex/speed](https://developers.openai.com/codex/speed)  
-16. <a id="ref-16"></a>What is ChatGPT Business? - OpenAI Help Center, accessed May 15, 2026, [https://help.openai.com/en/articles/8792828-what-is-chatgpt-business](https://help.openai.com/en/articles/8792828-what-is-chatgpt-business)
+16. <a id="ref-16"></a>What is ChatGPT Business? - OpenAI Help Center, accessed May 15, 2026, [https://help.openai.com/en/articles/8792828-what-is-chatgpt-business](https://help.openai.com/en/articles/8792828-what-is-chatgpt-business)  
+17. <a id="ref-17"></a>Misalignment: The hidden cost of AI coding agents isn't from AI at all - CodeRabbit, accessed May 15, 2026, [https://www.coderabbit.ai/blog/the-hidden-cost-of-ai-coding-agents-isnt-from-ai-at-all](https://www.coderabbit.ai/blog/the-hidden-cost-of-ai-coding-agents-isnt-from-ai-at-all)  
+18. <a id="ref-18"></a>Rethinking the Economics of Agentic AI: When 'Cheap' Gets Complicated - SmartBear, accessed May 15, 2026, [https://smartbear.com/blog/rethinking-the-economics-of-agentic-ai-when-cheap-gets-complicated/](https://smartbear.com/blog/rethinking-the-economics-of-agentic-ai-when-cheap-gets-complicated/)  
+19. <a id="ref-19"></a>Building a Cost Optimisation Loop for AI Agents - NetOrca, accessed May 15, 2026, [https://blog.netorca.io/blog/2026/02/05/ai-cost-optimisation-loop/](https://blog.netorca.io/blog/2026/02/05/ai-cost-optimisation-loop/)
