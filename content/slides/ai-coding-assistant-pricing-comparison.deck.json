@@ -3,7 +3,7 @@
   "slug": "ai-coding-assistant-pricing-comparison",
   "articleSlug": "ai-coding-assistant-pricing-comparison",
   "title": "AI Coding Assistant Pricing in 2026",
-  "subtitle": "From flat subscriptions to token budgets, AI credits, cache economics, and real agent-session capacity.",
+  "subtitle": "From flat subscriptions to token budgets, AI credits, cache economics, China-market billing units, and real agent-session capacity.",
   "date": "2026-05-15",
   "slides": [
     {
@@ -50,7 +50,7 @@
       "id": "three-philosophies",
       "layout": "comparison",
       "kicker": "Market map",
-      "title": "Three pricing philosophies are converging",
+      "title": "Pricing guardrails moved to different layers",
       "columns": [
         {
           "heading": "OpenAI / Codex",
@@ -68,8 +68,8 @@
           "bullets": ["Best terminal workflow", "Risk: interrupted sessions"]
         }
       ],
-      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "The three pricing philosophies" },
-      "speakerNotes": "Emphasize that the products feel different, but the underlying driver is the same: expensive long-context agent work."
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "The pricing map" },
+      "speakerNotes": "Emphasize that the products feel different, but the underlying driver is the same: expensive long-context agent work. This slide shows the core OpenAI, Copilot, and Claude comparison; the next China-market slide broadens the map to API tokens, wallets, credits, action caps, and per-seat ecosystem plans."
     },
     {
       "id": "translate-to-tokens",
@@ -86,6 +86,23 @@
       ],
       "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "How to translate a plan into tokens" },
       "speakerNotes": "This slide sets up the math. Avoid debating exact future rates; the method remains useful even when price sheets move."
+    },
+    {
+      "id": "china-billing-units",
+      "layout": "table",
+      "kicker": "China market lens",
+      "title": "Chinese coding products expose more billing units",
+      "headers": ["Pattern", "Examples", "Visible meter", "Cost lesson"],
+      "rows": [
+        ["API tokens", "DeepSeek / Kimi", "input + cached + output", "Transparent, router-friendly"],
+        ["Usage wallet", "Trae IDE", "plan balance", "Can drain fast in agent loops"],
+        ["Credits", "Tencent CodeBuddy", "task + model weight", "Copilot-like abstraction"],
+        ["Action caps", "Tongyi / Trae free", "turns or completions", "Easy entry, hidden context cost"],
+        ["Per-seat", "Alibaba / Tencent teams", "user/month", "Predictable enterprise budget"]
+      ],
+      "caption": "Tokens are the substrate; products expose wallets, credits, action limits, seats, or future value metrics.",
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "Chinese AI coding products" },
+      "speakerNotes": "Use this as the second lens. Chinese products do not all bill users directly by tokens. DeepSeek and Kimi APIs do. Trae wraps token burn in a wallet. Tencent-style products use credits. Tongyi and free tiers may count turns or completions. Enterprise plans sell per-seat predictability while the vendor absorbs or manages the token risk. The key comparison question is who owns variance risk: developer, vendor, or a shared credit bucket. Also ask whether the product exposes cost by model and session, and whether teams can bring their own API key or are locked into one cloud ecosystem."
     },
     {
       "id": "token-meter",
@@ -141,17 +158,17 @@
       "layout": "table",
       "kicker": "GitHub Copilot",
       "title": "AI Credits turn Copilot into a shared budget",
-      "headers": ["Plan", "Monthly credits", "Reference calls", "25-call sessions"],
+      "headers": ["Plan", "Base", "Flex", "Total", "Est. tasks/mo"],
       "rows": [
-        ["Pro", "1,500", "238", "9"],
-        ["Pro+", "7,000", "1,111", "44"],
-        ["Max", "20,000", "3,174", "126"],
-        ["Business", "1,900 / seat", "301", "12"],
-        ["Enterprise", "3,900 / seat", "619", "24"]
+        ["Pro", "1,000", "500", "1,500", "9"],
+        ["Pro+", "3,900", "3,100", "7,000", "44"],
+        ["Max", "10,000", "10,000", "20,000", "126"],
+        ["Business", "1,900", "—", "pooled", "12/seat"],
+        ["Enterprise", "3,900", "—", "pooled", "24/seat"]
       ],
-      "caption": "Using GPT-5.3-Codex reference-call math from the article.",
+      "caption": "Same formula for every plan: total credits ÷ (6.3 credits/call × 25 calls/task).",
       "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "GitHub Copilot" },
-      "speakerNotes": "Enterprise pooling helps because usage is uneven. But automated reviews, background agents, and CI workflows need guardrails."
+      "speakerNotes": "This mirrors the GitHub Blog announcement: Pro, Pro+, and Max have fixed base credits matched to plan price plus a variable flex allotment. The product math is the same across plans; what changes is the monthly included credit bucket. The last column is not a GitHub billing unit. It is this article's workload estimate: one medium agent task is modeled as about 25 reference model calls, and each GPT-5.3-Codex reference call costs about 6.3 AI Credits."
     },
     {
       "id": "claude-code",
@@ -179,6 +196,21 @@
       "speakerNotes": "This is a workflow choice. Claude Code is strong for terminal-native engineering, but you must manage context and session boundaries."
     },
     {
+      "id": "claude-inferred-limits",
+      "layout": "table",
+      "kicker": "Claude limits",
+      "title": "Inferred Claude plan buckets are not linear",
+      "headers": ["Plan", "5h bucket", "Weekly bucket", "Opus equiv/mo", "API value"],
+      "rows": [
+        ["Pro ($20)", "550K", "5.0M", "32.5M in / 6.5M out", "~$163 · 8.1×"],
+        ["Max 5x ($100)", "3.3M", "41.7M", "270.8M in / 54.2M out", "~$1,354 · 13.5×"],
+        ["Max 20x ($200)", "11.0M", "83.3M", "541.7M in / 108.3M out", "~$2,708 · 13.5×"]
+      ],
+      "caption": "Buckets from ShellaC; monthly = weekly × 52/12; Opus equiv = credits ÷ Opus rates; API value = Opus tokens × API price.",
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "Claude Code" },
+      "speakerNotes": "This is the highlighted Claude table from the article, compressed for slide readability. The 5-hour and weekly buckets come from ShellaC's community reverse-engineering: unrounded Claude SSE usage fractions were treated as used-over-limit values, denominator LCMs across samples inferred the buckets, and observed token-to-credit changes validated the rates. Monthly equivalent is weekly credits × 52/12. Opus-token equivalents use the inferred Opus rates: input 10/15 credits per token and output 50/15 credits per token. API-equivalent value then applies Anthropic API pricing to the same Opus token volume. The non-linear lesson: Max 20x has a much higher five-hour burst than Max 5x, but only about 2x the weekly bucket."
+    },
+    {
       "id": "claude-cache",
       "layout": "diagram",
       "kicker": "Caching",
@@ -193,7 +225,7 @@
         "Warm subscription turns may avoid charging cache reads.",
         "API-style meters still price repeated context reads."
       ],
-      "speakerNotes": "Use this slide to explain why Claude subscriptions can feel dramatically cheaper for repeated-context sessions than API-style metering. Mark the underlying subscription figures as inferred, not official."
+      "speakerNotes": "Use this slide to explain why Claude subscriptions can feel dramatically cheaper for repeated-context sessions than API-style metering. The previous slide covered the inferred plan buckets and how the table values are calculated. Here, focus on the economic punchline: warm cache reads still cost money on API pricing, but the observed subscription accounting does not drain plan credits for those reads."
     },
     {
       "id": "cheap-can-cost-more",
