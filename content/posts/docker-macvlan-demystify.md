@@ -12,6 +12,8 @@ feature_image: "/assets/posts/docker-macvlan-demystify/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Macvlan", "Docker", "Ubuntu", "Linux"]
 ---
+# Docker Macvlan Demystified
+
 In this article, we are going to discuss `Macvlan` and set up a `Macvlan` lab environment on a Hyper-V host with three Ubuntu 16.04 VMs.
 
 ## 0 What is Macvlan

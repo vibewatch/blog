@@ -12,6 +12,7 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["AI Agents", "MCP", "Security", "LLM", "OWASP"]
 ---
+# Agent Skills and MCP Security: A Survey of Scanning and Defenses
 
 ## Paradigm Shift in Agent Architecture and Infrastructure
 The foundational architecture of AI is currently undergoing a profound paradigm shift. Large Language Models (LLMs) have completely evolved from simple, stateless text generators into Agentic AI systems capable of autonomous planning, decision-making, and executing operations in external physical and digital environments.<sup>[1](#ref-1)</sup> The core infrastructure enabling this leap is widely known as "Agent Skills." Depending on the tech stack, these skills may be called Tools, Plugins, or Function Calling. Through standardized interfaces, they grant language models the powerful ability to query private databases, execute dynamic code, control external cloud services, and even autonomously interact with other agents.<sup>[1](#ref-1)</sup>

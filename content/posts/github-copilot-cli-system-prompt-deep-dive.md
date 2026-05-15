@@ -12,6 +12,7 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["github-copilot", "ai", "cli", "system-prompt"]
 ---
+# GitHub Copilot CLI System Prompt
 
 This is the system prompt from GitHub Copilot CLI.
 

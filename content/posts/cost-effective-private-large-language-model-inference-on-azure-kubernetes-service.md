@@ -12,6 +12,8 @@ feature_image: "/assets/posts/cost-effective-private-large-language-model-infere
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Cost-Effective Private Large Language Model Inference on Azure Kubernetes Service
+
 ## Introduction
 
 This article provides a method for private and cost-optimized deployment of large language models on the Azure cloud. It assumes the reader has foundational knowledge of large language models and Kubernetes.

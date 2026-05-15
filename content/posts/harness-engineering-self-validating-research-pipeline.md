@@ -12,6 +12,7 @@ feature_image: "/assets/posts/harness-engineering-self-validating-research-pipel
 authors: ["Yingting Huang"]
 tags: ["AI Agents", "LLM", "Harness Engineering", "Astro", "Schema-Driven"]
 ---
+# Harness Engineering: Shipping a Self-Validating Research Pipeline With Coding Agents
 
 > A walk-through of the design behind [`startup.genisisiq.com`](https://startup.genisisiq.com): a pipeline where a coding agent end-to-end generates, validates, assembles and renders structured diligence reports on private and public companies. As of writing, the site holds **46 complete reports**, backed by roughly **9,400 cited sources** and **14,400 atomic claims** — all produced autonomously, none manually transcribed.
 

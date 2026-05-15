@@ -12,6 +12,8 @@ feature_image: "/assets/posts/connect-to-azure-ad-from-azure-function-with-power
 authors: ["Yingting Huang"]
 tags: ["Azure Function", "Azure", "Function App", "PowerShell", "AzureAD", "AAD"]
 ---
+# Connect to Azure AD from Azure Functions with a PowerShell Script
+
 There are certain things to overcome when using Connect-AzureAD from a PowerShell script under Azure Functions by authenticating with a certificate. This article explains how to do it.
 
 ## 0 Prerequisites

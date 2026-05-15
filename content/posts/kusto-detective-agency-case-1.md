@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Kusto Detective Agency Case 1
+
 ## The rarest book is missing!
 
 This was supposed to be a great day for Digitown’s National Library Museum and all of Digitown.  

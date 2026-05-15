@@ -12,6 +12,8 @@ feature_image: "/assets/posts/azure-custom-role-cook-guide/hero.png"
 authors: ["Yingting Huang"]
 tags: ["Azure", "RBAC", "Custom Role"]
 ---
+# Azure Custom Roles - Cook Guide
+
 This article provides a workflow to help you customize roles to suit your needs.
 
 [Azure role-based access control (Azure RBAC)](https://docs.microsoft.com/en-us/azure/role-based-access-control/overview) has several Azure built-in roles that you can assign to users, groups, service principals, and managed identities. RBAC ensures the proper segregation of administration between the different subscriptions, workloads and services. Role assignments are the way you control access to Azure resources. If the built-in roles don't meet the specific needs of your organization, you can create your own [Azure custom roles](https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles).

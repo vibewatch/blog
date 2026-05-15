@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["VSCode", "Debugging", "Kubernetes"]
 ---
+# Cheap Visual Studio Code(VSCode) Online Solution
+
 Microsoft just released [Visual Studio Code Online](https://visualstudio.microsoft.com/services/visual-studio-online/) preview.
 
 When using it for full-time development, [Visual Studio Online pricing](https://azure.microsoft.com/en-us/pricing/details/visual-studio-online/) will cost about ~$50/month. If you are looking for a much cheaper alternative with similar functionality to VSCode online, you can use [code-server](https://github.com/cdr/code-server) and host a similar online service in your own cloud.

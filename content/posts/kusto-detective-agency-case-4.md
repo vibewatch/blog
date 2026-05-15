@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Kusto Detective Agency Case 4
+
 ## El Puente - **Ready to play?**
 
 Hello. I have been watching you, and I am pretty impressed with your abilities of hacking and cracking little crimes.  

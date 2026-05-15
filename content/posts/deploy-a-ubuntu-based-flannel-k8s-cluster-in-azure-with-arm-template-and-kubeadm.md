@@ -12,6 +12,8 @@ feature_image: "/assets/posts/deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure
 authors: ["Yingting Huang"]
 tags: ["Azure", "Linux", "Network", "Ubuntu", "K8S", "Kubernetes"]
 ---
+# Deploy a Ubuntu-Based Flannel K8S Cluster in Azure with an ARM Template and Kubeadm
+
 > **Note (May 2026):** This article was written for the Kubernetes 1.10-era Azure/acs-engine ecosystem. The kubeadm API, Azure cloud-provider integration, Docker runtime defaults, Flannel manifests, and Azure CLI behaviors may have changed significantly. Treat the commands as historical reference and verify them against current Kubernetes and Azure documentation before using them.
 
 However, if you want to gain more control over your Kubernetes cluster in Azure by using kubeadm, this article still applies.

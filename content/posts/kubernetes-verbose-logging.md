@@ -12,6 +12,8 @@ feature_image: "/assets/posts/kubernetes-verbose-logging/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S"]
 ---
+# Kubernetes Verbose Logging
+
 # Kubectl Verbose Logging
 
 ```bash

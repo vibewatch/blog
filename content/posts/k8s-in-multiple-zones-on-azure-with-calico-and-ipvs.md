@@ -12,6 +12,8 @@ feature_image: "/assets/posts/k8s-in-multiple-zones-on-azure-with-calico-and-ipv
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S", "Azure", "Ubuntu"]
 ---
+# Running a K8S Cluster in Multiple Zones on Azure with Calico and IPVS
+
 > **Note (May 2026):** This post targets the Kubernetes 1.12-era Azure cloud provider, kubeadm `v1beta1` configuration, Docker-based nodes, Calico/Canal v3.4 manifests, and kube-proxy IPVS setup. Azure availability zone support, kubeadm APIs, container runtimes, and Calico installation methods have evolved since then. Validate all manifests and commands against current Kubernetes, Calico, and Azure documentation before reuse.
 
 # 0 Background

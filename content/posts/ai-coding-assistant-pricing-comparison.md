@@ -12,6 +12,7 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["AI Coding", "GitHub Copilot", "Claude Code", "OpenAI", "Chinese AI", "Token Economy"]
 ---
+# AI Coding Assistant Pricing in 2026: The End of the Flat-Fee Era
 
 AI coding assistants have crossed an economic boundary. Autocomplete and chat were cheap enough to bundle. Agents that read repositories, edit files, run commands, inspect logs, retry tests, and work for hours from one prompt are not.
 

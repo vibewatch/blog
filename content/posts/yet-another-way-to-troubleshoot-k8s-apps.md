@@ -12,6 +12,8 @@ feature_image: "/assets/posts/yet-another-way-to-troubleshoot-k8s-apps/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "Linux", "Network", "K8S", "Docker"]
 ---
+# Yet Another Way to Troubleshoot K8S Applications
+
 There are plenty of articles explaining how to debug K8S applications, for example:
 
 *   [Troubleshoot Applications  

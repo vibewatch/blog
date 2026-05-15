@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Kusto Detective Agency Case 2
+
 ## Election fraud?
 
 The mayor of Digitown, Mrs. Gaia Budskott, has found herself in quite a pickle. The election for the city’s mascot was run online for the first time, and it was a huge success! Or was it??  
