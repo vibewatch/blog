@@ -1,0 +1,55 @@
+---
+import DeckSlide from '../../components/slides/DeckSlide.astro';
+import SlideLayout from '../../layouts/SlideLayout.astro';
+import { getSlideDecks } from '../../lib/slides/load';
+import { sitePath } from '../../lib/site';
+
+export function getStaticPaths() {
+  return getSlideDecks().map((deck) => ({
+    params: { slug: deck.slug },
+    props: { deck }
+  }));
+}
+
+const { deck } = Astro.props;
+const canonical = `/slides/${deck.slug}/`;
+const articleHref = sitePath(`/${deck.articleSlug}/`);
+const notesPayload = JSON.stringify(deck.slides.map((slide) => slide.speakerNotes || '')).replace(/</g, '\\u003c');
+---
+
+<SlideLayout deck={deck} canonical={canonical}>
+  <main class="slide-stage" data-slide-stage>
+    <nav class="slide-topbar" aria-label="Slide controls">
+      <a class="slide-topbar__brand" href={articleHref}>← Article</a>
+      <div class="slide-topbar__status" aria-live="polite">
+        <span data-slide-current>1</span>/<span data-slide-total>{deck.slides.length}</span>
+      </div>
+      <div class="slide-topbar__actions">
+        <button type="button" data-slide-action="prev" aria-label="Previous slide">Prev</button>
+        <button type="button" data-slide-action="next" aria-label="Next slide">Next</button>
+        <button type="button" data-slide-action="fullscreen" aria-label="Toggle fullscreen">Full</button>
+        <button type="button" data-slide-action="notes" aria-label="Toggle speaker notes">Notes</button>
+        <button type="button" data-slide-action="overview" aria-label="Toggle slide overview">Overview</button>
+      </div>
+    </nav>
+
+    <div class="slide-track" data-slide-track>
+      {deck.slides.map((slide, index) => <DeckSlide slide={slide} index={index} total={deck.slides.length} />)}
+    </div>
+
+    <div class="slide-progress" aria-hidden="true"><span data-slide-progress></span></div>
+  </main>
+
+  <aside class="slide-notes" data-slide-notes hidden>
+    <h2>Speaker notes</h2>
+    <p data-slide-note-text></p>
+  </aside>
+
+  <script type="application/json" id="slide-notes-data" set:html={notesPayload} />
+  <script>
+    import '../../scripts/slides';
+  </script>
+  <script>
+    import '../../scripts/mermaid';
+  </script>
+</SlideLayout>

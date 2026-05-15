@@ -1,0 +1,137 @@
+---
+import type { Slide } from '../../lib/slides/schema';
+
+type Props = {
+  slide: Slide;
+  index: number;
+  total: number;
+};
+
+const { slide, index, total } = Astro.props;
+const data = slide as any;
+const slideNumber = `${index + 1}`.padStart(2, '0');
+const totalNumber = `${total}`.padStart(2, '0');
+---
+
+<section
+  class:list={['deck-slide', `deck-slide--${slide.layout}`, slide.appendix ? 'is-appendix' : null]}
+  id={slide.id}
+  data-slide
+  data-slide-index={index}
+  aria-label={`${index + 1}. ${slide.title}`}
+>
+  <div class="slide-frame">
+    <header class="slide-header">
+      <span class="slide-kicker">{slide.kicker || (slide.appendix ? 'Appendix' : 'Briefing')}</span>
+      <span class="slide-folio">{slideNumber}/{totalNumber}</span>
+    </header>
+
+    <div class="slide-content">
+      {slide.layout === 'title' ? (
+        <div class="slide-title-card">
+          <p class="slide-title-card__eyebrow">Presentation deck</p>
+          <h1>{slide.title}</h1>
+          {data.subtitle ? <p class="slide-subtitle">{data.subtitle}</p> : null}
+          {data.meta ? <p class="slide-meta">{data.meta}</p> : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'section' ? (
+        <div class="slide-section-card">
+          <p class="slide-section-card__index">{slideNumber}</p>
+          <h2>{slide.title}</h2>
+          {data.statement ? <p>{data.statement}</p> : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'statement' ? (
+        <div class="slide-statement-card">
+          <h2>{slide.title}</h2>
+          <p class="slide-statement">{data.statement}</p>
+          {Array.isArray(data.supports) ? (
+            <div class="slide-support-grid">
+              {data.supports.map((item: string) => <p>{item}</p>)}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'bullets' ? (
+        <div class="slide-copy-card">
+          <h2>{slide.title}</h2>
+          {data.lede ? <p class="slide-lede">{data.lede}</p> : null}
+          <ul class="slide-bullets">
+            {data.bullets.map((item: string) => <li>{item}</li>)}
+          </ul>
+        </div>
+      ) : null}
+
+      {slide.layout === 'comparison' ? (
+        <div class="slide-copy-card">
+          <h2>{slide.title}</h2>
+          <div class:list={['slide-columns', `slide-columns--${data.columns.length}`]}>
+            {data.columns.map((column: any) => (
+              <article class="slide-column-card">
+                <h3>{column.heading}</h3>
+                {column.body ? <p>{column.body}</p> : null}
+                {Array.isArray(column.bullets) ? (
+                  <ul>
+                    {column.bullets.map((item: string) => <li>{item}</li>)}
+                  </ul>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {slide.layout === 'diagram' ? (
+        <div class="slide-diagram-card">
+          <h2>{slide.title}</h2>
+          <figure>
+            <pre data-language="mermaid" aria-label={data.diagram.alt}>{data.diagram.mermaid}</pre>
+            {data.diagram.caption ? <figcaption>{data.diagram.caption}</figcaption> : null}
+          </figure>
+          {Array.isArray(data.bullets) ? (
+            <ul class="slide-bullets slide-bullets--compact">
+              {data.bullets.map((item: string) => <li>{item}</li>)}
+            </ul>
+          ) : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'table' ? (
+        <div class="slide-table-card">
+          <h2>{slide.title}</h2>
+          <table>
+            <thead>
+              <tr>{data.headers.map((header: string) => <th>{header}</th>)}</tr>
+            </thead>
+            <tbody>
+              {data.rows.map((row: string[]) => (
+                <tr>{row.map((cell: string) => <td>{cell}</td>)}</tr>
+              ))}
+            </tbody>
+          </table>
+          {data.caption ? <p class="slide-caption">{data.caption}</p> : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'code' ? (
+        <div class="slide-code-card">
+          <h2>{slide.title}</h2>
+          <pre data-language={data.language || 'text'}><code>{data.code}</code></pre>
+        </div>
+      ) : null}
+
+      {slide.layout === 'takeaways' ? (
+        <div class="slide-copy-card">
+          <h2>{slide.title}</h2>
+          <ol class="slide-takeaways">
+            {data.items.map((item: string) => <li>{item}</li>)}
+          </ol>
+        </div>
+      ) : null}
+    </div>
+  </div>
+</section>
