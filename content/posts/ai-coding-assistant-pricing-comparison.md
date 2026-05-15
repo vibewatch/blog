@@ -219,6 +219,8 @@ Paid plans now include monthly GitHub AI Credits. Individual plans split that al
 | **Business** | $19/user | 1,900/user | N/A | Pooled at organization level | $19/user |
 | **Enterprise** | $39/user | 3,900/user | N/A | Pooled at organization level | $39/user |
 
+GitHub uses base credits first, then applies the flex allotment automatically. Base credits are fixed to the subscription price; flex is the variable part that can move as model pricing, new models, and efficiency change. Code completions and next edit suggestions remain unlimited on paid plans and do not consume AI Credits.<sup>[3](#ref-3)</sup>
+
 Not all Copilot activity has the same weight. Inline completion can stay bundled because it uses optimized paths. Agent mode, premium chat, code review, and cloud workspaces consume larger models and more context.
 
 Enterprise pooling helps because usage is uneven across developers. During the transition, existing Business and Enterprise customers receive promotional allowances of 3,000 and 7,000 credits per seat before returning to 1,900 and 3,900.<sup>[10](#ref-10)</sup> Pooling still needs governance: automated reviews, background agents, and CI-linked workflows can consume both AI Credits and GitHub Actions minutes.<sup>[4](#ref-4)</sup>
@@ -232,9 +234,13 @@ Now map that to tokens. Using GPT-5.3-Codex inside Copilot, the reference call c
 Total = $0.063 = 6.3 GitHub AI Credits
 ```
 
-That gives this rough budget:
+That gives this rough monthly capacity estimate. The formula is the same for every plan; only the included credit bucket changes:
 
-| Copilot allowance | Included usage | GPT-5.3-Codex reference calls | Approx. 25-call agent sessions |
+```text
+Estimated medium agent tasks = included AI Credits / (6.3 credits per call * 25 calls)
+```
+
+| Copilot allowance | Included usage | GPT-5.3-Codex reference calls | Estimated medium agent tasks/month |
 | :-- | --: | --: | --: |
 | **Pro** | $15 / 1,500 credits | 238 | 9 |
 | **Pro+** | $70 / 7,000 credits | 1,111 | 44 |

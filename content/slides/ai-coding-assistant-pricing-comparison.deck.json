@@ -141,17 +141,17 @@
       "layout": "table",
       "kicker": "GitHub Copilot",
       "title": "AI Credits turn Copilot into a shared budget",
-      "headers": ["Plan", "Monthly credits", "Reference calls", "25-call sessions"],
+      "headers": ["Plan", "Base", "Flex", "Total", "Est. tasks/mo"],
       "rows": [
-        ["Pro", "1,500", "238", "9"],
-        ["Pro+", "7,000", "1,111", "44"],
-        ["Max", "20,000", "3,174", "126"],
-        ["Business", "1,900 / seat", "301", "12"],
-        ["Enterprise", "3,900 / seat", "619", "24"]
+        ["Pro", "1,000", "500", "1,500", "9"],
+        ["Pro+", "3,900", "3,100", "7,000", "44"],
+        ["Max", "10,000", "10,000", "20,000", "126"],
+        ["Business", "1,900", "—", "pooled", "12/seat"],
+        ["Enterprise", "3,900", "—", "pooled", "24/seat"]
       ],
-      "caption": "Using GPT-5.3-Codex reference-call math from the article.",
+      "caption": "Same formula for every plan: total credits ÷ (6.3 credits/call × 25 calls/task).",
       "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "GitHub Copilot" },
-      "speakerNotes": "Enterprise pooling helps because usage is uneven. But automated reviews, background agents, and CI workflows need guardrails."
+      "speakerNotes": "This mirrors the GitHub Blog announcement: Pro, Pro+, and Max have fixed base credits matched to plan price plus a variable flex allotment. The product math is the same across plans; what changes is the monthly included credit bucket. The last column is not a GitHub billing unit. It is this article's workload estimate: one medium agent task is modeled as about 25 reference model calls, and each GPT-5.3-Codex reference call costs about 6.3 AI Credits."
     },
     {
       "id": "claude-code",
