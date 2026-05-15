@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "slug": "ai-coding-assistant-pricing-comparison",
+  "articleSlug": "ai-coding-assistant-pricing-comparison",
+  "title": "AI Coding Assistant Pricing in 2026",
+  "subtitle": "From flat subscriptions to token budgets, AI credits, cache economics, and real agent-session capacity.",
+  "date": "2026-05-15",
+  "theme": "quiet-broadsheet",
+  "slides": [
+    {
+      "id": "title",
+      "layout": "title",
+      "kicker": "Token economy",
+      "title": "AI Coding Pricing in 2026",
+      "subtitle": "The end of the flat-fee era: compare coding tools by agent-session capacity, not monthly sticker price.",
+      "meta": "Yingting Huang · May 2026",
+      "speakerNotes": "Open by framing the shift: autocomplete and chat were cheap enough to bundle, but agentic coding reads repos, edits files, runs tests, and retries. Pricing now looks more like cloud computing than a gym membership."
+    },
+    {
+      "id": "flat-fee-broke",
+      "layout": "statement",
+      "kicker": "The thesis",
+      "title": "Flat-fee pricing broke when coding became agentic",
+      "statement": "One human prompt can now trigger dozens of model calls, repeated repository context, tool schemas, test logs, and retry loops.",
+      "supports": [
+        "Autocomplete was one cheap inference path.",
+        "Agents run multi-step loops that compound context cost.",
+        "The useful unit is no longer a message; it is a completed task."
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "Why flat-fee AI coding broke" },
+      "speakerNotes": "Use the article's seven-step loop: read files, plan, edit, run tests, parse errors, re-read context, try again. The important shift is cost per outcome, not cost per prompt."
+    },
+    {
+      "id": "agent-loop",
+      "layout": "diagram",
+      "kicker": "Cost anatomy",
+      "title": "A coding request becomes an economic loop",
+      "diagram": {
+        "mermaid": "flowchart LR\n  Prompt[user prompt] --> Loop[agent loop<br/>read - edit - test - retry]\n  Loop --> OpenAI[OpenAI API<br/>direct token meter]\n  Loop --> CodexPlan[ChatGPT Codex<br/>plan windows + credits]\n  Loop --> Copilot[GitHub Copilot<br/>AI Credits bucket]\n  Loop --> Claude[Claude Code<br/>rolling plan windows]\n  OpenAI --> OCost[fresh + cached input<br/>output]\n  CodexPlan --> XCost[message/task limits<br/>then add-on credits]\n  Copilot --> CCost[token cost converted<br/>1 credit = 1 cent]\n  Claude --> ACost[plan credits<br/>session and weekly caps]",
+        "alt": "Prompt flows into an agent loop, then into OpenAI, Copilot, Codex plan, and Claude pricing meters.",
+        "caption": "Rendered live from the article's first Mermaid diagram."
+      },
+      "bullets": [
+        "The same workflow can be billed as tokens, credits, or rolling windows.",
+        "Repeated context and output length dominate long sessions.",
+        "Model routing changes the cost curve more than plan price alone."
+      ],
+      "speakerNotes": "This is the core mental model. Every provider puts the guardrail in a different place, but they are all reacting to the same agent loop."
+    },
+    {
+      "id": "three-philosophies",
+      "layout": "comparison",
+      "kicker": "Market map",
+      "title": "Three pricing philosophies are converging",
+      "columns": [
+        {
+          "heading": "OpenAI / Codex",
+          "body": "Raw token utility billing or plan windows with add-on credits.",
+          "bullets": ["Best for tool builders", "Risk: costs scale directly"]
+        },
+        {
+          "heading": "GitHub Copilot",
+          "body": "Subscription plus AI Credits for premium and agentic work.",
+          "bullets": ["Best IDE integration", "Risk: budget predictability"]
+        },
+        {
+          "heading": "Claude Code",
+          "body": "CLI subscription windows or direct API billing.",
+          "bullets": ["Best terminal workflow", "Risk: interrupted sessions"]
+        }
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "The three pricing philosophies" },
+      "speakerNotes": "Emphasize that the products feel different, but the underlying driver is the same: expensive long-context agent work."
+    },
+    {
+      "id": "translate-to-tokens",
+      "layout": "bullets",
+      "kicker": "Normalization",
+      "title": "Translate plans into token-like units",
+      "lede": "Comparing sticker prices hides the actual unit of work. Normalize everything to agent-call capacity.",
+      "bullets": [
+        "API billing: fresh input + cached input + cache writes + output.",
+        "GitHub Copilot: API-equivalent dollars converted into AI Credits.",
+        "Claude subscriptions: rolling internal credit-like windows.",
+        "A full task may use 10, 25, or 50+ model calls.",
+        "Reference call: 100K cached + 10K fresh + 2K output tokens."
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "How to translate a plan into tokens" },
+      "speakerNotes": "This slide sets up the math. Avoid debating exact future rates; the method remains useful even when price sheets move."
+    },
+    {
+      "id": "token-meter",
+      "layout": "diagram",
+      "kicker": "Metering",
+      "title": "A single agent call has four cost surfaces",
+      "diagram": {
+        "mermaid": "flowchart TB\n  T[one agent call] --> FI[fresh input tokens]\n  T --> CI[cached input tokens]\n  T --> CW[cache write tokens]\n  T --> OUT[output tokens]\n  FI --> R[provider rate card]\n  CI --> R\n  CW --> R\n  OUT --> R\n  R --> USD[API-equivalent dollars]\n  USD --> GH[GitHub Copilot<br/>multiply by 100<br/>AI Credits]\n  USD --> API[OpenAI or Anthropic API<br/>bill directly]\n  USD --> ClaudePlan[Claude subscription<br/>compare with inferred<br/>plan credit bucket]",
+        "alt": "Fresh input, cached input, cache write, and output tokens flow through provider rate cards into dollars or credits.",
+        "caption": "Live render of the article's token accounting diagram."
+      },
+      "bullets": [
+        "Cached context is cheaper, but not always free.",
+        "Output is often the expensive side of the bill.",
+        "Credits are a wrapper over provider-specific token economics."
+      ],
+      "speakerNotes": "Point out that caching discipline is a product and prompt design issue. Stable prefixes and compact context are now economic controls."
+    },
+    {
+      "id": "openai-routing",
+      "layout": "table",
+      "kicker": "OpenAI",
+      "title": "Model routing is the OpenAI cost model",
+      "headers": ["Model", "Reference call", "Calls per $10", "Implication"],
+      "rows": [
+        ["GPT-5.5", "$0.160", "62", "Reserve for hard reasoning"],
+        ["GPT-5.4", "$0.080", "125", "Mid-tier agent work"],
+        ["GPT-5.3-Codex", "$0.063", "158", "Coding default candidate"],
+        ["GPT-5.4 mini", "$0.024", "416", "Cheap verifiable work"]
+      ],
+      "caption": "Reference call: 100K cached input + 10K fresh input + 2K output.",
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "OpenAI: utility pricing and model routing" },
+      "speakerNotes": "The point is not that one model always wins. The spread is large enough that routing policy matters more than the headline subscription."
+    },
+    {
+      "id": "codex-plans",
+      "layout": "bullets",
+      "kicker": "Codex plans",
+      "title": "Codex through ChatGPT is plan-window economics",
+      "lede": "Included usage and purchased credits are not the same economic product.",
+      "bullets": [
+        "Plus and Business expose five-hour local/cloud-task windows.",
+        "The public docs publish ranges, not stable monthly dollar quotas.",
+        "Purchased credits use a token-based Codex rate card.",
+        "Community dollar-equivalent conversions are useful but unofficial.",
+        "Fast mode improves latency but burns credits faster."
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "OpenAI Codex through ChatGPT plans" },
+      "speakerNotes": "Be careful here: distinguish validated plan shapes from inferred dollar-equivalent values. The slide intentionally avoids over-claiming."
+    },
+    {
+      "id": "copilot-credits",
+      "layout": "table",
+      "kicker": "GitHub Copilot",
+      "title": "AI Credits turn Copilot into a shared budget",
+      "headers": ["Plan", "Monthly credits", "Reference calls", "25-call sessions"],
+      "rows": [
+        ["Pro", "1,500", "238", "9"],
+        ["Pro+", "7,000", "1,111", "44"],
+        ["Max", "20,000", "3,174", "126"],
+        ["Business", "1,900 / seat", "301", "12"],
+        ["Enterprise", "3,900 / seat", "619", "24"]
+      ],
+      "caption": "Using GPT-5.3-Codex reference-call math from the article.",
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "GitHub Copilot" },
+      "speakerNotes": "Enterprise pooling helps because usage is uneven. But automated reviews, background agents, and CI workflows need guardrails."
+    },
+    {
+      "id": "claude-code",
+      "layout": "comparison",
+      "kicker": "Claude Code",
+      "title": "Claude Code trades wallet risk for window risk",
+      "columns": [
+        {
+          "heading": "Subscription",
+          "body": "Predictable spend with rolling limits.",
+          "bullets": ["Good monthly value", "Can interrupt refactors"]
+        },
+        {
+          "heading": "API billing",
+          "body": "No artificial session lockout.",
+          "bullets": ["Better automation path", "Costs spike in long loops"]
+        },
+        {
+          "heading": "Team / Enterprise",
+          "body": "More usage plus admin controls.",
+          "bullets": ["Useful governance", "Higher baseline seat cost"]
+        }
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "Claude Code" },
+      "speakerNotes": "This is a workflow choice. Claude Code is strong for terminal-native engineering, but you must manage context and session boundaries."
+    },
+    {
+      "id": "claude-cache",
+      "layout": "diagram",
+      "kicker": "Caching",
+      "title": "Claude's caching surprise changes repeated-context math",
+      "diagram": {
+        "mermaid": "flowchart LR\n  Context[100K repeated context] --> Cold[cold turn<br/>cache write]\n  Context --> Warm[warm turn<br/>cache read]\n  Cold --> SubCold[Claude plan<br/>100K input counts]\n  Cold --> ApiCold[API<br/>100K write at 1.25x]\n  Warm --> SubWarm[Claude plan<br/>cache read = 0 credits<br/>only new input + output]\n  Warm --> ApiWarm[API or Copilot meter<br/>100K cache read at 10%]\n  SubWarm --> Value[subscription value expands<br/>in repeated agent loops]\n  ApiWarm --> MeterAnxiety[long loops still draw down<br/>credits or dollars]",
+        "alt": "Cold cache counts a large context write, while warm cache counts mainly new input and output for subscription usage.",
+        "caption": "Live render of the cold-cache and warm-cache examples."
+      },
+      "bullets": [
+        "Cold turns pay for cache writes.",
+        "Warm subscription turns may avoid charging cache reads.",
+        "API-style meters still price repeated context reads."
+      ],
+      "speakerNotes": "Use this slide to explain why Claude subscriptions can feel dramatically cheaper for repeated-context sessions than API-style metering. Mark the underlying subscription figures as inferred, not official."
+    },
+    {
+      "id": "cheap-can-cost-more",
+      "layout": "statement",
+      "kicker": "Total cost",
+      "title": "The cheapest model can be the expensive choice",
+      "statement": "A cheap failed attempt can cost more than a strong first pass once retries, review time, and human cleanup enter the bill.",
+      "supports": [
+        "More iterations resend context and tool schemas.",
+        "Subtle code errors move cost into review and CI.",
+        "Senior-engineer cleanup dominates small token savings."
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "When the cheap model is the expensive choice" },
+      "speakerNotes": "The article's example is Sonnet at $0.30 vs Haiku at $0.18 plus 20 minutes of human cleanup. Token bill alone is misleading."
+    },
+    {
+      "id": "routing-loop",
+      "layout": "diagram",
+      "kicker": "Operating model",
+      "title": "Route by verification cost, not habit",
+      "diagram": {
+        "mermaid": "flowchart LR\n  Task[coding task] --> Verifiable{cheap to verify<br/>and cheap to retry?}\n  Verifiable -->|yes| Small[start with small model]\n  Verifiable -->|no| Strong[start with strong model]\n  Small --> Pass{passed in 1-2 tries?}\n  Pass -->|yes| Done[ship - cheapest path]\n  Pass -->|no| Escalate[escalate to stronger model<br/>log the escalation]\n  Escalate --> Strong\n  Strong --> Review[human review]\n  Review --> Done",
+        "alt": "Task verification decision routes easy work to small models and hard or risky work to stronger models.",
+        "caption": "Live render of the article's model-routing loop."
+      },
+      "bullets": [
+        "Start cheap only when verification is cheap.",
+        "Escalate after one or two failed attempts.",
+        "Log escalation reasons to tune policy."
+      ],
+      "speakerNotes": "This is the practical rule: minimum cost to a correct outcome, not minimum cost per call."
+    },
+    {
+      "id": "playbook",
+      "layout": "takeaways",
+      "kicker": "Playbook",
+      "title": "Five controls keep agentic coding costs sane",
+      "items": [
+        "Make prompts cache-friendly with stable prefixes.",
+        "Prune context aggressively before each retry.",
+        "Route models by task risk and verification cost.",
+        "Put budgets, alerts, and kill switches near the workflow.",
+        "Standardize agent operating procedures."
+      ],
+      "source": { "article": "ai-coding-assistant-pricing-comparison", "section": "A practical cost-control playbook" },
+      "speakerNotes": "Close the main talk here if time is short. The appendix can carry exact numbers; the durable message is operational discipline."
+    },
+    {
+      "id": "team-governance",
+      "layout": "bullets",
+      "kicker": "Governance",
+      "title": "Make cost visible without shaming developers",
+      "lede": "The goal is feedback loops, not guilt. Put cost signals where engineers already work.",
+      "bullets": [
+        "Track per-user, per-team, model-level, and CI-linked usage.",
+        "Use soft warnings before hard limits.",
+        "Attribute background agents and automated code review separately.",
+        "Create a named reason for every model escalation.",
+        "Review failed cheap attempts, not just expensive successful ones."
+      ],
+      "speakerNotes": "This expands the playbook for engineering leaders. The cultural framing matters: visibility should improve routing decisions, not punish experimentation."
+    },
+    {
+      "id": "closing",
+      "layout": "takeaways",
+      "kicker": "Conclusion",
+      "title": "AI coding is now priced like cloud computing",
+      "items": [
+        "Choose plans by real agent-session capacity.",
+        "Cache static context and avoid file dumps.",
+        "Use the cheapest model whose mistakes are affordable.",
+        "Measure human cleanup as part of total cost.",
+        "Treat prompt and workflow design as FinOps controls."
+      ],
+      "speakerNotes": "Final line from the article: AI coding used to be priced like a gym membership; now it is priced like cloud computing."
+    },
+    {
+      "id": "appendix-openai",
+      "layout": "table",
+      "appendix": true,
+      "kicker": "Appendix",
+      "title": "OpenAI reference-call assumptions",
+      "headers": ["Token bucket", "Amount", "Why it matters"],
+      "rows": [
+        ["Cached input", "100K", "Repeated repository context"],
+        ["Fresh input", "10K", "New prompt, logs, diffs"],
+        ["Output", "2K", "Plans, patches, explanations"],
+        ["Session", "25 calls", "A medium agent task"],
+        ["Budget", "$10", "Comparison denominator"]
+      ],
+      "caption": "Use this slide only when the audience wants the math behind the model table.",
+      "speakerNotes": "This is intentionally appendix material. Don't spend main-track time here unless the audience asks."
+    }
+  ]
+}
