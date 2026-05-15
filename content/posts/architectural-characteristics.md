@@ -12,4 +12,6 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Architectural Characteristics
+
 ![Architectural characteristics map](/assets/posts/architectural-characteristics/architectural-characteristics-map.png)

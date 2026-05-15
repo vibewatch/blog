@@ -12,6 +12,8 @@ feature_image: "/assets/posts/run-wasm-applications-from-kubernetes/hero.png"
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Run WASM applications from Kubernetes
+
 *   Interested in running WASM workloads from Kubernetes?
 *   Interested in enabling your Kubernetes cluster to support multiple container shims?
 *   Even better, interested in WASM with Dapr support?

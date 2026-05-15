@@ -12,6 +12,8 @@ feature_image: "/assets/posts/nginx-ingress-controller-debugging-print-http-raw-
 authors: ["Yingting Huang"]
 tags: ["Nginx", "Kubernetes", "Linux"]
 ---
+# Nginx Ingress Controller Debugging - Print Http Raw Header
+
 1.  kubectl exec YOUR\_NGINX\_INGRESS\_CONTROLLER\_POD -it -- cat /etc/nginx/template/nginx.tmpl > nginx.tmpl
     
 2.  Open nginx.tmpl, add below code block after `location {{ $path }} {`

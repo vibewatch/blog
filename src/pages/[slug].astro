@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getAllItems, getPostContext } from '../lib/content';
 import { absoluteUrl, config, formatDate, sitePath } from '../lib/site';
 import { slugify } from '../lib/slug';
+import { getSlideDeckByArticle } from '../lib/slides/load';
 
 export function getStaticPaths() {
   return getAllItems().map((item) => ({
@@ -48,6 +49,8 @@ const jsonLd = item.type === 'post'
       }
     ]
   : undefined;
+const slideDeck = isPage ? undefined : getSlideDeckByArticle(item.slug);
+const slideHref = slideDeck ? sitePath(`/slides/${slideDeck.slug}/`) : '';
 ---
 
 <BaseLayout
@@ -86,6 +89,11 @@ const jsonLd = item.type === 'post'
         <ul class="post-tags" aria-label="Tags">
           {item.tags.map((tag) => <li><a href={sitePath(`/tags/${slugify(tag)}/`)}>{tag}</a></li>)}
         </ul>
+      ) : null}
+      {slideDeck ? (
+        <p class="post-presentation">
+          <a href={slideHref}>Open the slide deck →</a>
+        </p>
       ) : null}
     </header>
 

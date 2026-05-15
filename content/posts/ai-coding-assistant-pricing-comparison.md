@@ -7,11 +7,12 @@ type: "post"
 status: "published"
 visibility: "public"
 featured: true
-excerpt: "A practical comparison of OpenAI Codex, GitHub Copilot, and Claude Code pricing through token budgets, AI credits, cache behavior, and real agent-session capacity."
+excerpt: "A practical comparison of OpenAI Codex, GitHub Copilot, Claude Code, and Chinese AI coding products through token budgets, AI credits, cache behavior, and real agent-session capacity."
 feature_image: ""
 authors: ["Yingting Huang"]
-tags: ["AI Coding", "GitHub Copilot", "Claude Code", "OpenAI", "Token Economy"]
+tags: ["AI Coding", "GitHub Copilot", "Claude Code", "OpenAI", "Chinese AI", "Token Economy"]
 ---
+# AI Coding Assistant Pricing in 2026: The End of the Flat-Fee Era
 
 AI coding assistants have crossed an economic boundary. Autocomplete and chat were cheap enough to bundle. Agents that read repositories, edit files, run commands, inspect logs, retry tests, and work for hours from one prompt are not.
 
@@ -33,17 +34,18 @@ The first generation of AI coding subscriptions hid inference cost. That worked 
 
 Each pass consumes input, output, tool schemas, system instructions, conversation history, and often repeated repository context. The pricing question is no longer only "which assistant is smartest?" It is "which assistant gives me the right model, cache behavior, and spending controls for this coding workflow?"
 
-## The three pricing philosophies
+## The pricing map: where each platform puts the guardrail
 
-The major coding platforms are all becoming usage-aware, but each places the guardrail in a different place.
+The major coding platforms are all becoming usage-aware, but each places the guardrail in a different place: raw tokens, plan windows, credits, rolling limits, wallets, action caps, or per-seat bundles.
 
 | Platform | Pricing philosophy | Best fit | Main risk |
 | :-- | :-- | :-- | :-- |
 | **OpenAI API + ChatGPT Codex** | Raw token utility billing, or ChatGPT plan windows with add-on credits | Teams building coding tools, internal dev agents, CI automation, and developers using Codex through ChatGPT plans | API costs scale directly; ChatGPT Codex plan value depends on model mix and hidden account limits |
 | **GitHub Copilot** | Subscription plus AI Credits / usage-based metering for premium and agentic work | Developers who want IDE-native workflows, GitHub integration, and enterprise pooling | Budget predictability declines as agent mode and code review usage grows |
 | **Claude Code** | CLI subscription windows or direct API billing | Terminal-native developers who want strong agentic workflows and repository manipulation | Rolling limits interrupt work, while API mode can become expensive quickly |
+| **Chinese AI coding products** | API token billing, usage wallets, weighted credits, action limits, or cloud ecosystem subscriptions | Cost-sensitive router stacks, domestic cloud users, and teams evaluating lower-cost long-context models | Meter opacity, ecosystem lock-in, registration/payment friction, and compliance uncertainty for international teams |
 
-OpenAI exposes both direct token billing and ChatGPT Codex plan limits. GitHub wraps premium usage in AI Credits. Anthropic uses rolling windows for subscriptions and direct token billing for API mode.
+OpenAI exposes both direct token billing and ChatGPT Codex plan limits. GitHub wraps premium usage in AI Credits. Anthropic uses rolling windows for subscriptions and direct token billing for API mode. Chinese AI coding products broaden the taxonomy: some sell raw APIs, while others hide token burn behind wallets, credits, turn counts, or enterprise seats.
 
 ```mermaid
 flowchart LR
@@ -52,15 +54,42 @@ flowchart LR
 	Loop --> CodexPlan[ChatGPT Codex<br/>plan windows + credits]
 	Loop --> Copilot[GitHub Copilot<br/>AI Credits bucket]
 	Loop --> Claude[Claude Code<br/>rolling plan windows]
+	Loop --> China[Chinese products<br/>API tokens - wallets - credits - seats]
 	OpenAI --> OCost[fresh input<br/>cached input<br/>output]
 	CodexPlan --> XCost[message/task limits<br/>then add-on credits]
 	Copilot --> CCost[token cost converted<br/>1 credit = 1 cent]
 	Claude --> ACost[plan credits<br/>session and weekly caps]
+	China --> ZCost[user-facing unit varies<br/>underlying tokens still burn]
 ```
+
+## Chinese AI coding products: billing units beyond tokens
+
+The Chinese AI coding market is a useful second lens because it exposes the same economics through more product shapes. The foundation models still consume tokens, but the user-facing meter is not always a raw token counter. Vendors abstract the cost into wallets, credits, action limits, per-seat subscriptions, or cloud ecosystem bundles.
+
+| Product pattern | Example products | User-facing measurement | Cost-model lesson |
+| :-- | :-- | :-- | :-- |
+| **API-first token billing** | DeepSeek, Moonshot Kimi | Input tokens, cached input, output tokens, often priced per 1M tokens | Best for router stacks and disciplined prompt caching; cost is transparent but belongs to the developer. |
+| **Token wallet subscription** | ByteDance Trae IDE | Monthly plan converts into a usage wallet; requests deduct value based on model and token burn | Predictable sticker price can still create taxi-meter anxiety when an agent loops. |
+| **Weighted credits** | Tencent CodeBuddy-style plans | Credits deducted by task complexity and model tier | Similar to GitHub Copilot AI Credits: easier to budget than tokens, but harder to audit precisely. |
+| **Action limits** | Tongyi Lingma free tier, Trae free tier | Agent turns, chat turns, or autocomplete counts | Friendly for entry users, but action counts hide context size and model mix. |
+| **Flat per-seat enterprise plans** | Tongyi Lingma enterprise, Tencent team plans | Fixed user/month seat price, often with governance or cloud integration | Enterprises buy budget predictability and admin controls, while the vendor manages token risk. |
+| **Output/value metrics** | Baidu's proposed Daily Active Agents lens | Active autonomous agents rather than token consumption | A future direction: measure delivered workflow value instead of compute input. |
+
+This confirms the larger pattern: tokens are the substrate, not always the product unit. A developer may see "$20 wallet", "1,000 credits", "50 agent turns", or "$32/user/month", but every agentic workflow still burns context, output, tool calls, and retries underneath.
+
+The extra question to ask is: **who owns variance risk?** API tokens and wallets push variance to the developer. Per-seat plans push more of it to the vendor. Credits sit in the middle: easier to budget than tokens, but opaque unless the platform exposes model-level and session-level usage. For a fair comparison, do not compare "1,000 credits" with "1,000 credits" across vendors. Compare expected cost per completed task after cache hit rate, model mix, retry count, and human cleanup.
+
+It also changes total cost of ownership. Chinese API-first providers such as DeepSeek and Kimi can be extremely attractive for a hybrid stack -- for example, an open-source IDE or router front end calling cheap long-context models directly. But proprietary Chinese IDEs and cloud products can add non-token friction: regional registration, payment rails, enterprise deployment requirements, and less familiar compliance posture for international teams. In practice, the low-cost path is often not "pick one Chinese IDE"; it is "decouple the interface from the model and route work to the cheapest reliable backend."
+
+That makes three practical due-diligence checks important for Chinese AI coding products:
+
+1. **Meter visibility:** Can developers see cost by model, task, session, and agent loop?
+2. **Exit path:** Can the IDE bring your own API key or route to another model, or is the low price tied to one ecosystem?
+3. **Operational friction:** Does registration, payment, data residency, or compliance make the cheap model expensive to adopt?
 
 ## How to translate a plan into tokens
 
-Three accounting models show up repeatedly.
+For the detailed OpenAI, Copilot, and Claude comparison below, three accounting models show up repeatedly. Chinese wallets, credits, and action caps can usually be mapped back to the same underlying token economics when enough usage data is exposed.
 
 For API billing, the basic formula is:
 
@@ -81,7 +110,9 @@ GitHub AI Credits = API-equivalent dollar cost * 100
 
 1 GitHub AI Credit equals $0.01 USD.<sup>[4](#ref-4)</sup>
 
-For Claude subscriptions, the public product pages do not expose a direct token allowance. The best analysis I found is ShellaC's reverse-engineering of Claude's usage bars and SSE usage fractions.<sup>[9](#ref-9)</sup> In that analysis, Claude plan usage is tracked by an internal credit-like unit:
+For Claude subscriptions, the public product pages do not expose a direct token allowance. The best analysis I found is ShellaC's reverse-engineering of Claude's usage bars and SSE usage fractions.<sup>[9](#ref-9)</sup> The method matters: ShellaC observed unrounded utilization floats in Claude's server-sent event responses, treated those values as `used / limit`, recovered the likely underlying fractions, took the least common multiple of denominators across samples to infer session and weekly limits, then validated token-to-credit formulas against observed usage changes. That makes the numbers useful, but unofficial.
+
+In that analysis, Claude plan usage is tracked by an internal credit-like unit:
 
 ```text
 Claude plan credits used = ceil(input_tokens * input_rate + output_tokens * output_rate)
@@ -219,6 +250,8 @@ Paid plans now include monthly GitHub AI Credits. Individual plans split that al
 | **Business** | $19/user | 1,900/user | N/A | Pooled at organization level | $19/user |
 | **Enterprise** | $39/user | 3,900/user | N/A | Pooled at organization level | $39/user |
 
+GitHub uses base credits first, then applies the flex allotment automatically. Base credits are fixed to the subscription price; flex is the variable part that can move as model pricing, new models, and efficiency change. Code completions and next edit suggestions remain unlimited on paid plans and do not consume AI Credits.<sup>[3](#ref-3)</sup>
+
 Not all Copilot activity has the same weight. Inline completion can stay bundled because it uses optimized paths. Agent mode, premium chat, code review, and cloud workspaces consume larger models and more context.
 
 Enterprise pooling helps because usage is uneven across developers. During the transition, existing Business and Enterprise customers receive promotional allowances of 3,000 and 7,000 credits per seat before returning to 1,900 and 3,900.<sup>[10](#ref-10)</sup> Pooling still needs governance: automated reviews, background agents, and CI-linked workflows can consume both AI Credits and GitHub Actions minutes.<sup>[4](#ref-4)</sup>
@@ -232,9 +265,13 @@ Now map that to tokens. Using GPT-5.3-Codex inside Copilot, the reference call c
 Total = $0.063 = 6.3 GitHub AI Credits
 ```
 
-That gives this rough budget:
+That gives this rough monthly capacity estimate. The formula is the same for every plan; only the included credit bucket changes:
 
-| Copilot allowance | Included usage | GPT-5.3-Codex reference calls | Approx. 25-call agent sessions |
+```text
+Estimated medium agent tasks = included AI Credits / (6.3 credits per call * 25 calls)
+```
+
+| Copilot allowance | Included usage | GPT-5.3-Codex reference calls | Estimated medium agent tasks/month |
 | :-- | --: | --: | --: |
 | **Pro** | $15 / 1,500 credits | 238 | 9 |
 | **Pro+** | $70 / 7,000 credits | 1,111 | 44 |
@@ -271,7 +308,7 @@ API billing removes those interruptions but moves the risk to your wallet. Long 
 | API billing | No artificial session lockout | Costs can spike during long agent loops |
 | Team / Enterprise plan | More usage, admin controls, compliance features | Higher baseline seat cost |
 
-Anthropic says limits depend on message length, attachments, conversation length, tool usage, model choice, and artifacts.<sup>[11](#ref-11)</sup> It does not publish a token-per-plan table. ShellaC's reverse-engineered numbers are therefore useful, but unofficial.
+Anthropic says limits depend on message length, attachments, conversation length, tool usage, model choice, and artifacts.<sup>[11](#ref-11)</sup> It does not publish a token-per-plan table. ShellaC's reverse-engineered numbers are therefore useful, but unofficial; they should be read as community measurement from Claude usage telemetry, not an Anthropic-published quota.
 
 | Claude plan | Price | Inferred 5-hour session credits | Inferred weekly credits | Monthly credits equivalent | Opus token equivalent | API-equivalent value |
 | :-- | --: | --: | --: | --: | :-- | --: |
@@ -425,7 +462,7 @@ Free and heavily subsidized coding intelligence is ending. The winning teams wil
 6. <a id="ref-6"></a>Manage costs effectively - Claude Code Docs, accessed May 14, 2026, [https://code.claude.com/docs/en/costs](https://code.claude.com/docs/en/costs)  
 7. <a id="ref-7"></a>The Hidden Cost Driver in Agentic Coding Sessions in 2026, accessed May 14, 2026, [https://www.vantage.sh/blog/agentic-coding-costs](https://www.vantage.sh/blog/agentic-coding-costs)  
 8. <a id="ref-8"></a>Improving token efficiency in GitHub Agentic Workflows, accessed May 14, 2026, [https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/](https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/)  
-9. <a id="ref-9"></a>suspiciously precise floats, or, how I got Claude's real limits, accessed May 15, 2026, [https://she-llac.com/claude-limits](https://she-llac.com/claude-limits)  
+9. <a id="ref-9"></a>suspiciously precise floats, or, how I got Claude's real limits, accessed May 15, 2026, [https://she-llac.com/claude-limits](https://she-llac.com/claude-limits). Community reverse-engineering of Claude plan limits from unrounded SSE usage fractions, usage bars, and observed token-to-credit changes; not an official Anthropic quota.  
 10. <a id="ref-10"></a>Usage-based billing for organizations and enterprises - GitHub Docs, accessed May 15, 2026, [https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises](https://docs.github.com/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises)  
 11. <a id="ref-11"></a>Usage limit best practices - Claude Help Center, accessed May 15, 2026, [https://support.claude.com/en/articles/9797557-usage-limit-best-practices](https://support.claude.com/en/articles/9797557-usage-limit-best-practices)  
 12. <a id="ref-12"></a>Models, usage, and limits in Claude Code - Claude Help Center, accessed May 15, 2026, [https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code](https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code)  

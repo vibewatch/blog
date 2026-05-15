@@ -18,6 +18,17 @@ if (mermaidBlocks.length > 0) {
 
   const fontStack = '"Mona Sans", "Noto Sans SC", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 
+  // Slide decks render the same Mermaid source into a 16:9 frame that fills
+  // the viewport, so scale text up in SVG user-units (which scale with the
+  // SVG itself) — that's the only way to make labels read well on a screen.
+  const isSlide = document.body.classList.contains('slide-body');
+  const baseFontSize = isSlide ? 20 : 14;
+  const edgeLabelSize = isSlide ? 17 : 12.5;
+  const clusterLabelSize = isSlide ? 15 : 11.5;
+  const flowchartPadding = isSlide ? 14 : 22;
+  const nodeSpacing = isSlide ? 48 : 62;
+  const rankSpacing = isSlide ? 56 : 72;
+
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'strict',
@@ -59,7 +70,7 @@ if (mermaidBlocks.length > 0) {
       git1: '#3a322a',
       git2: '#6f6a5e',
       git3: '#8b8678',
-      fontSize: '14px',
+      fontSize: `${baseFontSize}px`,
       fontFamily: fontStack
     },
     themeCSS: `
@@ -71,7 +82,7 @@ if (mermaidBlocks.length > 0) {
       }
       .cluster .nodeLabel, .cluster .label {
         font-weight: 700;
-        font-size: 11.5px;
+        font-size: ${clusterLabelSize}px;
         letter-spacing: 0.16em;
         text-transform: uppercase;
         color: #6f6a5e;
@@ -80,7 +91,7 @@ if (mermaidBlocks.length > 0) {
       .arrowheadPath, marker path { fill: #4a4137; stroke: none; }
       .edgeLabel {
         padding: 2px 6px;
-        font-size: 12.5px;
+        font-size: ${edgeLabelSize}px;
         font-weight: 500;
         color: #4a4137;
       }
@@ -99,9 +110,9 @@ if (mermaidBlocks.length > 0) {
     `,
     flowchart: {
       curve: 'monotoneX',
-      padding: 22,
-      nodeSpacing: 62,
-      rankSpacing: 72,
+      padding: flowchartPadding,
+      nodeSpacing,
+      rankSpacing,
       htmlLabels: true,
       useMaxWidth: true,
       diagramPadding: 12
@@ -244,7 +255,8 @@ function createMermaidDialog(): DialogController {
   };
 
   dialog.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
+    if (!(event.target instanceof Element)) return;
+    const target = event.target;
     const actionEl = target.closest<HTMLElement>('[data-action]');
     if (!actionEl) return;
     switch (actionEl.dataset.action) {

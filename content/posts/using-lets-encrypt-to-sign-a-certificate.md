@@ -12,6 +12,8 @@ feature_image: "/assets/posts/using-lets-encrypt-to-sign-a-certificate/hero.png"
 authors: ["Yingting Huang"]
 tags: ["Azure", "Linux", "SSL", "Certificate", "Certbot"]
 ---
+# Using Let's Encrypt to Sign a Certificate
+
 First of all, a private key is needed before generating a signing request. You can either use OpenSSL:
 
 ```bash

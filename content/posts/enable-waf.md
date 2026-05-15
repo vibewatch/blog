@@ -12,6 +12,8 @@ feature_image: "/assets/posts/enable-waf/hero.png"
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Enable WAF with Modsecurity from Ingress Nginx
+
 ## Export modsecurity.conf from ingress nginx controller
 
 POD\_NAME=$(kubectl get pods --namespace ingress-nginx -l "app.kubernetes.io/component=controller,app.kubernetes.io/name=ingress-nginx" -o jsonpath="{.items\[0\].metadata.name}")

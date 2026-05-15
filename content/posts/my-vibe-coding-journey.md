@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Vibe Coding", "GenAI", "Azure", "GitHub Copilot"]
 ---
+# My Vibe Coding Journey - Developing an AI-Powered English Learning Application
+
 I want to share my story about vibe coding. I started this project to support my son's English learning, and I also wanted to see whether I could rely on generative AI to complete a full project, including both client and server. My goal was twofold: to support his learning and challenge myself to build a robust, interactive web app.
 
 ### **Project Objectives**

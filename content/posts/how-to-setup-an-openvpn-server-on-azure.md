@@ -12,6 +12,8 @@ feature_image: "/assets/posts/how-to-setup-an-openvpn-server-on-azure/hero.png"
 authors: ["Yingting Huang"]
 tags: ["OpenVPN", "Azure"]
 ---
+# How to Set Up an OpenVPN Server on Azure
+
 In this article, I will provide detailed steps to set up an OpenVPN server in Azure.
 
 ## Prerequisites

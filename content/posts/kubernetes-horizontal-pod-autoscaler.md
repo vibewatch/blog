@@ -12,6 +12,8 @@ feature_image: "/assets/posts/kubernetes-horizontal-pod-autoscaler/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes"]
 ---
+# Kubernetes Horizontal Pod Autoscaler
+
 This post serves as a quickstart for Kubernetes Horizontal Pod Autoscaler testing. Here are the steps:
 
 ```bash

@@ -12,6 +12,8 @@ feature_image: "/assets/posts/podsecuritypolicy-explained-by-examples/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S", "PodSecurityPolicy"]
 ---
+# Pod Security Policy Explained by Examples
+
 > **Note (May 2026):** PodSecurityPolicy was deprecated in Kubernetes 1.21 and removed in Kubernetes 1.25. This article is useful for understanding historical PSP behavior, but new clusters should use Pod Security Admission, ValidatingAdmissionPolicy, OPA Gatekeeper, Kyverno, or another current policy mechanism instead.
 
 # 1 What Is Pod Security Policy?

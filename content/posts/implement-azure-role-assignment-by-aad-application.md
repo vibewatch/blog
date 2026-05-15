@@ -12,6 +12,8 @@ feature_image: "/assets/posts/implement-azure-role-assignment-by-aad-application
 authors: ["Yingting Huang"]
 tags: ["AAD"]
 ---
+# Implement Azure Role Assignment by AAD Application with Powershell Script
+
 The requirement come with ask "Having an application(first application) created in AAD and want to use first application to assign roles to a second application created in AAD"
 
 To achieve that goal, Azure active directory admin needs to grant below permission for first application's service principal.  

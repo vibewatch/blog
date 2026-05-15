@@ -12,6 +12,8 @@ feature_image: "/assets/posts/azure-active-active-solution/hero.png"
 authors: ["Yingting Huang"]
 tags: ["Azure", "High Availability"]
 ---
+# Azure Active-Active High-Availability Solutions
+
 This article is based on my recent work in this [repo](https://github.com/huangyingting/azure_poc). The completed deployment scripts are in the "Deploy" folder.
 
 ## Purpose

@@ -12,6 +12,8 @@ feature_image: "/assets/posts/kubernetes-services-and-iptables/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Kubernetes", "K8S", "Iptables"]
 ---
+# Kubernetes Services and iptables
+
 > **Note (May 2026):** This article analyzes kube-proxy iptables behavior from an older Kubernetes/kubenet environment. The fundamentals are still valuable, but current clusters may use IPVS, nftables backends, eBPF-based data planes, different cloud load-balancer behavior, or newer Service API details. Validate assumptions against the Kubernetes version and CNI used in your cluster.
 
 # 0 Prerequisites and Prework

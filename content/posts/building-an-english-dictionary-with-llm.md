@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Building an English Dictionary with an LLM
+
 In my [previous blog post](/my-vibe-coding-journey/), I mentioned the online dictionary feature in my English learning app. Today, I'll share the implementation details and how I overcame several challenges using large language models (LLMs).
 
 ## The Challenge

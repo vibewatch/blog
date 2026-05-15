@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# One Month of Vibe Coding with GitHub Copilot
+
 Today is the last day of October, and I just finished a one‑month challenge: using **GitHub Copilot** for vibe coding. Along the way, I also tried **Codex**, **GitHub Copilot CLI**, and **Spec Driven Development**.
 
 In this one month, I built **four apps**:

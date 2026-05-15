@@ -12,6 +12,8 @@ feature_image: "/assets/posts/azure-load-balancer-snat-behavior-explained/hero.j
 authors: ["Yingting Huang"]
 tags: ["Load Balancer", "Debugging", "Azure", "Linux"]
 ---
+# Azure Load Balancer SNAT behavior explained - annotations on TCP port reuse, ACKs with wrong sequence numbers, RSTs from 3-way handshakes, and SNAT port exhaustion
+
 _Notice_: This article was published a few years ago. Some information may no longer be correct, so please refer to the official Azure documentation for the latest guidance.
 
 ## 0 Summary

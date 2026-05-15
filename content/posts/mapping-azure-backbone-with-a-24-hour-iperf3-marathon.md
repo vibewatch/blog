@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Networking", "Azure", "Backbone", "Latency", "Packet Loss"]
 ---
+# Mapping Azure’s Backbone with a 24-Hour iperf3 Marathon
+
 ## Why I Ran This
 
 I wanted to quantify long-haul UDP performance across a hub in Azure West US (WUS) and three peer regions—Hong Kong (HK), Korea Central (KC), and UAE North (UAE). The goal: hold a 10 Mbps stream for a full day in both directions, capture loss/jitter, and visualize the drift so colleagues can compare regional health at a glance.

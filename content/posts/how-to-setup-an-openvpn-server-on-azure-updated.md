@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["Linux", "OpenVPN", "Azure"]
 ---
+# How to Set Up an OpenVPN Server on Azure (Updated)
+
 This is an updated version of my previous article [How to Set Up an OpenVPN Server on Azure](/how-to-setup-an-openvpn-server-on-azure/) to support configuring OpenVPN on Ubuntu 22.04, since many changes have happened in Easy-RSA.
 
 ## **Prerequisites**
