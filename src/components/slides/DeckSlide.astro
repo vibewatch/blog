@@ -1,5 +1,6 @@
 ---
 import type { Slide } from '../../lib/slides/schema';
+import { sitePath } from '../../lib/site';
 
 type Props = {
   slide: Slide;
@@ -92,6 +93,21 @@ const totalNumber = `${total}`.padStart(2, '0');
           <figure>
             <pre data-language="mermaid" aria-label={data.diagram.alt}>{data.diagram.mermaid}</pre>
             {data.diagram.caption ? <figcaption>{data.diagram.caption}</figcaption> : null}
+          </figure>
+          {Array.isArray(data.bullets) ? (
+            <ul class="slide-bullets slide-bullets--compact">
+              {data.bullets.map((item: string) => <li>{item}</li>)}
+            </ul>
+          ) : null}
+        </div>
+      ) : null}
+
+      {slide.layout === 'image' ? (
+        <div class="slide-image-card">
+          <h2>{slide.title}</h2>
+          <figure>
+            <img src={sitePath(data.image.src)} alt={data.image.alt} loading="lazy" decoding="async" />
+            {data.image.caption ? <figcaption>{data.image.caption}</figcaption> : null}
           </figure>
           {Array.isArray(data.bullets) ? (
             <ul class="slide-bullets slide-bullets--compact">

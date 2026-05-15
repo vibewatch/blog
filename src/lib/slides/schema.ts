@@ -5,6 +5,7 @@ export type SlideLayout =
   | 'bullets'
   | 'comparison'
   | 'diagram'
+  | 'image'
   | 'table'
   | 'code'
   | 'takeaways';
@@ -69,6 +70,16 @@ export type DiagramSlide = BaseSlide & {
   bullets?: string[];
 };
 
+export type ImageSlide = BaseSlide & {
+  layout: 'image';
+  image: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
+  bullets?: string[];
+};
+
 export type TableSlide = BaseSlide & {
   layout: 'table';
   headers: string[];
@@ -80,7 +91,6 @@ export type CodeSlide = BaseSlide & {
   layout: 'code';
   language?: string;
   code: string;
-  highlights?: number[];
 };
 
 export type TakeawaysSlide = BaseSlide & {
@@ -95,6 +105,7 @@ export type Slide =
   | BulletsSlide
   | ComparisonSlide
   | DiagramSlide
+  | ImageSlide
   | TableSlide
   | CodeSlide
   | TakeawaysSlide;
@@ -106,7 +117,6 @@ export type SlideDeck = {
   title: string;
   subtitle?: string;
   date?: string;
-  theme?: string;
   slides: Slide[];
 };
 
@@ -198,23 +208,6 @@ function validateSource(ctx: ValidationContext, source: unknown, path: string) {
   expectOptionalStringArray(ctx, source.refs, `${path}.refs`, { maxItems: 8, maxChars: 160 });
 }
 
-function validateHighlights(ctx: ValidationContext, highlights: unknown, path: string, lineCount: number) {
-  if (highlights === undefined) return;
-  if (!Array.isArray(highlights)) {
-    fail(ctx, path, 'expected an array of positive line numbers');
-    return;
-  }
-  highlights.forEach((line, index) => {
-    if (!Number.isInteger(line) || line < 1) {
-      fail(ctx, `${path}[${index}]`, 'expected a positive integer');
-      return;
-    }
-    if (lineCount > 0 && line > lineCount) {
-      fail(ctx, `${path}[${index}]`, `line ${line} exceeds code length (${lineCount})`);
-    }
-  });
-}
-
 function validateBaseSlide(ctx: ValidationContext, slide: Record<string, unknown>, path: string) {
   expectString(ctx, slide.id, `${path}.id`, 64);
   expectString(ctx, slide.title, `${path}.title`, SLIDE_LIMITS.titleChars);
@@ -296,6 +289,18 @@ function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
         expectStringArray(ctx, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
       }
       break;
+    case 'image':
+      if (!isRecord(slide.image)) {
+        fail(ctx, `${path}.image`, 'expected an image object');
+        break;
+      }
+      expectString(ctx, slide.image.src, `${path}.image.src`, 240);
+      expectString(ctx, slide.image.alt, `${path}.image.alt`, 180);
+      expectOptionalString(ctx, slide.image.caption, `${path}.image.caption`, 180);
+      if (slide.bullets !== undefined) {
+        expectStringArray(ctx, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
+      }
+      break;
     case 'table':
       expectStringArray(ctx, slide.headers, `${path}.headers`, { maxItems: SLIDE_LIMITS.tableColumns, maxChars: 48 });
       if (!Array.isArray(slide.rows) || slide.rows.length === 0) {
@@ -324,7 +329,6 @@ function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
         fail(ctx, `${path}.code`, `too many lines (${lineCount} > ${SLIDE_LIMITS.codeLines})`);
       }
       expectOptionalString(ctx, slide.language, `${path}.language`, 24);
-      validateHighlights(ctx, slide.highlights, `${path}.highlights`, lineCount);
       break;
     }
     case 'takeaways':
@@ -347,7 +351,6 @@ export function validateSlideDeck(input: unknown, label = 'deck'): SlideDeck {
   expectString(ctx, input.title, '.title', 140);
   expectOptionalString(ctx, input.subtitle, '.subtitle', 220);
   expectOptionalString(ctx, input.date, '.date', 32);
-  expectOptionalString(ctx, input.theme, '.theme', 48);
 
   if (!Array.isArray(input.slides) || input.slides.length === 0) {
     fail(ctx, '.slides', 'expected at least one slide');

@@ -4,6 +4,7 @@ import { join } from 'node:path';
 const root = process.cwd();
 const deckDir = join(root, 'content/slides');
 const postDir = join(root, 'content/posts');
+const staticDir = join(root, 'static');
 const limits = {
   titleChars: 92,
   subtitleChars: 180,
@@ -105,21 +106,17 @@ function validateSource(file, source, path) {
   expectOptionalStringArray(file, source.refs, `${path}.refs`, { maxItems: 8, maxChars: 160 });
 }
 
-function validateHighlights(file, highlights, path, lineCount) {
-  if (highlights === undefined) return;
-  if (!Array.isArray(highlights)) {
-    add(file, path, 'expected an array of positive line numbers');
+function validateImageSource(file, src, path) {
+  if (typeof src !== 'string') return;
+  if (/^https?:\/\//.test(src)) return;
+  if (!src.startsWith('/')) {
+    add(file, path, 'expected a root-relative path or absolute URL');
     return;
   }
-  highlights.forEach((line, index) => {
-    if (!Number.isInteger(line) || line < 1) {
-      add(file, `${path}[${index}]`, 'expected a positive integer');
-      return;
-    }
-    if (lineCount > 0 && line > lineCount) {
-      add(file, `${path}[${index}]`, `line ${line} exceeds code length (${lineCount})`);
-    }
-  });
+  const assetPath = join(staticDir, src.replace(/^\/+/, ''));
+  if (!existsSync(assetPath)) {
+    add(file, path, `image file not found at ${assetPath}`);
+  }
 }
 
 function expectUnique(seen, value, file, path, label) {
@@ -192,6 +189,17 @@ function validateSlide(file, slide, index, ids) {
       expectOptionalString(file, slide.diagram.caption, `${path}.diagram.caption`, 160);
       if (slide.bullets !== undefined) expectStringArray(file, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
       break;
+    case 'image':
+      if (!isRecord(slide.image)) {
+        add(file, `${path}.image`, 'expected an image object');
+        break;
+      }
+      expectString(file, slide.image.src, `${path}.image.src`, 240);
+      validateImageSource(file, slide.image.src, `${path}.image.src`);
+      expectString(file, slide.image.alt, `${path}.image.alt`, 180);
+      expectOptionalString(file, slide.image.caption, `${path}.image.caption`, 180);
+      if (slide.bullets !== undefined) expectStringArray(file, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
+      break;
     case 'table':
       expectStringArray(file, slide.headers, `${path}.headers`, { maxItems: limits.tableColumns, maxChars: 48 });
       if (!Array.isArray(slide.rows) || slide.rows.length === 0) {
@@ -218,7 +226,6 @@ function validateSlide(file, slide, index, ids) {
         if (lineCount > limits.codeLines) {
           add(file, `${path}.code`, `too many lines (${lineCount} > ${limits.codeLines})`);
         }
-        validateHighlights(file, slide.highlights, `${path}.highlights`, lineCount);
       }
       expectOptionalString(file, slide.language, `${path}.language`, 24);
       break;
@@ -241,7 +248,6 @@ function validateDeck(file, deck) {
   expectString(file, deck.title, '.title', 140);
   expectOptionalString(file, deck.subtitle, '.subtitle', 220);
   expectOptionalString(file, deck.date, '.date', 32);
-  expectOptionalString(file, deck.theme, '.theme', 48);
 
   if (!Array.isArray(deck.slides) || deck.slides.length === 0) {
     add(file, '.slides', 'expected at least one slide');

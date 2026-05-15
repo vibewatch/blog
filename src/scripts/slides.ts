@@ -6,9 +6,23 @@ const progress = document.querySelector<HTMLElement>('[data-slide-progress]');
 const notesPanel = document.querySelector<HTMLElement>('[data-slide-notes]');
 const notesText = document.querySelector<HTMLElement>('[data-slide-note-text]');
 const notesPayload = document.getElementById('slide-notes-data')?.textContent ?? '[]';
-const notes: string[] = JSON.parse(notesPayload);
+const notes = parseNotes(notesPayload);
 
 let current = Math.max(0, Math.min(slides.length - 1, initialIndex()));
+
+function parseNotes(payload: string): string[] {
+  try {
+    const parsed = JSON.parse(payload);
+    return Array.isArray(parsed) ? parsed.map(String) : [];
+  } catch (error) {
+    console.warn('Unable to parse slide notes payload.', error);
+    return [];
+  }
+}
+
+function isInteractiveTarget(target: EventTarget | null) {
+  return target instanceof Element && Boolean(target.closest('a, button, input, textarea, select, summary, [contenteditable="true"]'));
+}
 
 function initialIndex() {
   const hash = window.location.hash.replace(/^#/, '');
@@ -71,6 +85,7 @@ async function toggleFullscreen() {
 
 document.addEventListener('keydown', (event) => {
   if (event.altKey || event.ctrlKey || event.metaKey) return;
+  if (event.key !== 'Escape' && isInteractiveTarget(event.target)) return;
   switch (event.key) {
     case 'ArrowRight':
     case 'PageDown':
@@ -111,7 +126,8 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('click', (event) => {
-  const target = event.target as HTMLElement;
+  if (!(event.target instanceof Element)) return;
+  const target = event.target;
   const action = target.closest<HTMLElement>('[data-slide-action]')?.dataset.slideAction;
   if (action === 'next') next();
   if (action === 'prev') previous();

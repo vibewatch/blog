@@ -255,7 +255,8 @@ function createMermaidDialog(): DialogController {
   };
 
   dialog.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
+    if (!(event.target instanceof Element)) return;
+    const target = event.target;
     const actionEl = target.closest<HTMLElement>('[data-action]');
     if (!actionEl) return;
     switch (actionEl.dataset.action) {

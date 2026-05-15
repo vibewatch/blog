@@ -20,10 +20,6 @@ export function getSlideDecks(): SlideDeck[] {
   return cachedDecks;
 }
 
-export function getSlideDeck(slug: string): SlideDeck | undefined {
-  return getSlideDecks().find((deck) => deck.slug === slug);
-}
-
 export function getSlideDeckByArticle(articleSlug: string): SlideDeck | undefined {
   return getSlideDecks().find((deck) => deck.articleSlug === articleSlug);
 }

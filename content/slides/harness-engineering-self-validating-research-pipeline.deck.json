@@ -5,7 +5,6 @@
   "title": "Harness Engineering",
   "subtitle": "Shipping a self-validating research pipeline driven end-to-end by a coding agent — without a human babysitter and without an LLM at the rendering edge.",
   "date": "2026-05-08",
-  "theme": "quiet-broadsheet",
   "slides": [
     {
       "id": "title",
