@@ -1587,8 +1587,13 @@ a:focus-visible {
 .featured__lead .lede__headline {
   font-weight: 800;
   font-size: clamp(24px, 2.7vw, 38px);
-  line-height: 1.08;
+  line-height: 1.28;
   letter-spacing: var(--tracking-display-tight);
+}
+
+.featured__lead .lede__headline a {
+  background-position: 0 calc(100% - 0.08em);
+  padding-bottom: 0;
 }
 
 .featured__lead .lede__deck {
