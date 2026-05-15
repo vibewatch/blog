@@ -7,12 +7,6 @@ const blocks = document.querySelectorAll<HTMLPreElement>(
 );
 
 for (const pre of blocks) {
-  const language = pre.dataset.language || 'text';
-  const label = document.createElement('span');
-  label.className = 'code-label';
-  label.textContent = language;
-  pre.appendChild(label);
-
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'copy-btn';

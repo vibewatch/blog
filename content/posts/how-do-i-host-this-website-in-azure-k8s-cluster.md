@@ -524,7 +524,7 @@ Upgrading a cluster from aks-engine basically works in the following sequence.
 2.  Drain agent nodes one by one, delete each agent node, and deploy an agent node with the upgraded version.
 3.  During the upgrade, the cluster public IP address remains.
 
-The whole upgrade process basically won't interrupt the services running from the cluster, although there will be a short downtime window when pods are migrated from one node to another. For example, during the upgrade, I was still able to access my website [](/).
+The whole upgrade process basically won't interrupt the services running from the cluster, although there will be a short downtime window when pods are migrated from one node to another. For example, during the upgrade, I was still able to access [my website](/).
 
 # 4 Explore K8S concepts
 

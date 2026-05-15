@@ -34,12 +34,18 @@ if (form && queryInput && deskInput && tagInput && status && results) {
   tagInput.value = params.get('tag') ?? '';
 
   fetch(form.dataset.searchIndex || '/search-index.json')
-    .then((response) => response.json())
-    .then((payload: { items: SearchItem[] }) => {
-      index = payload.items;
+    .then((response) => {
+      if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+      return response.json();
+    })
+    .then((payload: { items?: unknown }) => {
+      if (!Array.isArray(payload.items)) throw new Error('Search index payload is invalid.');
+      index = payload.items as SearchItem[];
       render();
     })
     .catch(() => {
+      index = [];
+      results.replaceChildren();
       status.textContent = 'The search index could not be loaded.';
     });
 

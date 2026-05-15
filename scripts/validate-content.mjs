@@ -6,7 +6,53 @@ const contentDirs = ['content/posts', 'content/pages'];
 const errors = [];
 const warnings = [];
 const referencedAssets = new Set();
-const routes = new Set(['/archive/', '/search/', '/tags/', '/desk/', '/series/', '/feed.xml', '/sitemap.xml', '/about/']);
+const routes = new Set(['/', '/archive/', '/search/', '/tags/', '/desk/', '/series/', '/feed.xml', '/sitemap.xml', '/about/']);
+
+function slugify(value) {
+  return String(value ?? '')
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'section';
+}
+
+function parseList(value) {
+  const trimmed = String(value ?? '').trim();
+  if (!trimmed) return [];
+  if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+    return trimmed
+      .slice(1, -1)
+      .split(',')
+      .map((item) => item.trim().replace(/^['"]|['"]$/g, ''))
+      .filter(Boolean);
+  }
+  return [trimmed.replace(/^['"]|['"]$/g, '')].filter(Boolean);
+}
+
+function classifyDesk(slug, tags, title) {
+  const haystack = `${slug} ${title} ${tags.join(' ')}`.toLowerCase();
+
+  if (/kusto-detective|dspy|harness-engineering|react-agents|english-dictionary|copilot-cli/.test(haystack)) return 'casebook';
+  if (/articles-i-collected|business-architecture|architectural-characteristics|migration-checklist|advancements-in-ai|vibe.coding|agent-skills.*security|mcp.*security/.test(haystack)) return 'front';
+  if (/load.?balancer|snat|\bnsg\b|\bwaf\b|hub-spoke|openvpn|\bvpn\b|tunnel|backbone|iperf|macvlan|flannel-network|accelerated.?network|\bnic\b|active-active|persistent-ssh/.test(haystack)) return 'networks';
+  if (/kubernetes|\bk8s\b|wasm|keda|kafka|podsecurity|ingress|nginx|traefik|prometheus|monitoring|kubeadm|calico|ipvs|\baks\b|host this website|host-this-website|verbose-logging|hpa\b|horizontal-pod/.test(haystack)) return 'cloud-native';
+
+  return 'field';
+}
+
+function inferSeries(slug, title, data) {
+  const explicit = typeof data.series === 'string' ? data.series.trim() : '';
+  if (explicit) return slugify(explicit);
+
+  const kusto = slug.match(/^kusto-detective-agency-case-(\d+)$/);
+  if (kusto) return 'kusto-detective-agency';
+  if (/openvpn-server-on-azure/.test(slug)) return 'openvpn-on-azure';
+  if (/coding-agent|copilot|dspy|react-agents|vibe-coding|english-dictionary/.test(`${slug} ${title}`.toLowerCase())) return 'ai-coding-systems';
+
+  return '';
+}
 
 function readMarkdownFiles(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -62,7 +108,18 @@ const files = contentDirs.flatMap(readMarkdownFiles);
 for (const file of files) {
   const text = fs.readFileSync(file, 'utf8');
   const { data } = frontmatter(text, file);
-  routes.add(`/${data.slug || path.basename(file, '.md')}/`);
+  const slug = data.slug || path.basename(file, '.md');
+  const title = data.title || slug;
+  routes.add(`/${slug}/`);
+
+  if (file.startsWith(path.join('content', 'posts'))) {
+    const tags = parseList(data.tags);
+    for (const tag of tags) routes.add(`/tags/${slugify(tag)}/`);
+    routes.add(`/desk/${classifyDesk(slug, tags, title)}/`);
+
+    const series = inferSeries(slug, title, data);
+    if (series) routes.add(`/series/${series}/`);
+  }
 }
 
 for (const file of files) {
@@ -96,8 +153,18 @@ for (const file of files) {
     if (!/\balt=["'][^"']*["']/i.test(match[0])) warnings.push(`${file}: HTML image is missing alt text: ${src}`);
   }
 
-  for (const match of body.matchAll(/(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)) {
-    const href = match[1];
+  const ids = new Map();
+  for (const match of body.matchAll(/\bid=["']([^"']+)["']/gi)) {
+    ids.set(match[1], (ids.get(match[1]) ?? 0) + 1);
+  }
+  for (const [id, count] of ids) {
+    if (count > 1) warnings.push(`${file}: duplicate HTML id '${id}' appears ${count} times`);
+  }
+
+  for (const match of body.matchAll(/(?<!!)\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)) {
+    const label = match[1].trim();
+    const href = match[2];
+    if (!label) warnings.push(`${file}: link is missing visible text: ${href}`);
     if (!routeExists(href)) warnings.push(`${file}: internal link may not resolve: ${href}`);
   }
 }
