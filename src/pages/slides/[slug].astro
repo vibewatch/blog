@@ -14,7 +14,12 @@ export function getStaticPaths() {
 const { deck } = Astro.props;
 const canonical = `/slides/${deck.slug}/`;
 const articleHref = sitePath(`/${deck.articleSlug}/`);
-const notesPayload = JSON.stringify(deck.slides.map((slide) => slide.speakerNotes || '')).replace(/</g, '\\u003c');
+const notesPayload = JSON.stringify(deck.slides.map((slide) => slide.speakerNotes ?? ''))
+  .replace(/</g, '\\u003c')
+  .replace(/>/g, '\\u003e')
+  .replace(/&/g, '\\u0026')
+  .replace(/\u2028/g, '\\u2028')
+  .replace(/\u2029/g, '\\u2029');
 ---
 
 <SlideLayout deck={deck} canonical={canonical}>

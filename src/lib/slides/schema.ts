@@ -5,6 +5,7 @@ export type SlideLayout =
   | 'bullets'
   | 'comparison'
   | 'diagram'
+  | 'image'
   | 'table'
   | 'code'
   | 'takeaways';
@@ -69,6 +70,16 @@ export type DiagramSlide = BaseSlide & {
   bullets?: string[];
 };
 
+export type ImageSlide = BaseSlide & {
+  layout: 'image';
+  image: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
+  bullets?: string[];
+};
+
 export type TableSlide = BaseSlide & {
   layout: 'table';
   headers: string[];
@@ -80,7 +91,6 @@ export type CodeSlide = BaseSlide & {
   layout: 'code';
   language?: string;
   code: string;
-  highlights?: number[];
 };
 
 export type TakeawaysSlide = BaseSlide & {
@@ -95,6 +105,7 @@ export type Slide =
   | BulletsSlide
   | ComparisonSlide
   | DiagramSlide
+  | ImageSlide
   | TableSlide
   | CodeSlide
   | TakeawaysSlide;
@@ -106,7 +117,6 @@ export type SlideDeck = {
   title: string;
   subtitle?: string;
   date?: string;
-  theme?: string;
   slides: Slide[];
 };
 
@@ -178,6 +188,26 @@ function expectStringArray(
   value.forEach((item, index) => expectString(ctx, item, `${path}[${index}]`, options.maxChars));
 }
 
+function expectOptionalStringArray(
+  ctx: ValidationContext,
+  value: unknown,
+  path: string,
+  options: { maxItems?: number; maxChars?: number } = {}
+) {
+  if (value === undefined) return;
+  expectStringArray(ctx, value, path, options);
+}
+
+function validateSource(ctx: ValidationContext, source: unknown, path: string) {
+  if (!isRecord(source)) {
+    fail(ctx, path, 'expected a source object');
+    return;
+  }
+  expectOptionalString(ctx, source.article, `${path}.article`, 96);
+  expectOptionalString(ctx, source.section, `${path}.section`, 140);
+  expectOptionalStringArray(ctx, source.refs, `${path}.refs`, { maxItems: 8, maxChars: 160 });
+}
+
 function validateBaseSlide(ctx: ValidationContext, slide: Record<string, unknown>, path: string) {
   expectString(ctx, slide.id, `${path}.id`, 64);
   expectString(ctx, slide.title, `${path}.title`, SLIDE_LIMITS.titleChars);
@@ -186,6 +216,7 @@ function validateBaseSlide(ctx: ValidationContext, slide: Record<string, unknown
   if (slide.appendix !== undefined && typeof slide.appendix !== 'boolean') {
     fail(ctx, `${path}.appendix`, 'expected a boolean');
   }
+  if (slide.source !== undefined) validateSource(ctx, slide.source, `${path}.source`);
 }
 
 function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
@@ -258,6 +289,18 @@ function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
         expectStringArray(ctx, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
       }
       break;
+    case 'image':
+      if (!isRecord(slide.image)) {
+        fail(ctx, `${path}.image`, 'expected an image object');
+        break;
+      }
+      expectString(ctx, slide.image.src, `${path}.image.src`, 240);
+      expectString(ctx, slide.image.alt, `${path}.image.alt`, 180);
+      expectOptionalString(ctx, slide.image.caption, `${path}.image.caption`, 180);
+      if (slide.bullets !== undefined) {
+        expectStringArray(ctx, slide.bullets, `${path}.bullets`, { maxItems: 3, maxChars: 110 });
+      }
+      break;
     case 'table':
       expectStringArray(ctx, slide.headers, `${path}.headers`, { maxItems: SLIDE_LIMITS.tableColumns, maxChars: 48 });
       if (!Array.isArray(slide.rows) || slide.rows.length === 0) {
@@ -308,7 +351,6 @@ export function validateSlideDeck(input: unknown, label = 'deck'): SlideDeck {
   expectString(ctx, input.title, '.title', 140);
   expectOptionalString(ctx, input.subtitle, '.subtitle', 220);
   expectOptionalString(ctx, input.date, '.date', 32);
-  expectOptionalString(ctx, input.theme, '.theme', 48);
 
   if (!Array.isArray(input.slides) || input.slides.length === 0) {
     fail(ctx, '.slides', 'expected at least one slide');

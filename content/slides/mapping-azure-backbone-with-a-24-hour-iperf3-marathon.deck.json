@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "slug": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon",
+  "articleSlug": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon",
+  "title": "Mapping Azure's Backbone with iperf3",
+  "subtitle": "A 24-hour, 10 Mbps UDP marathon across West US, Hong Kong, Korea Central, and UAE North.",
+  "date": "2025-11-23",
+  "slides": [
+    {
+      "id": "title",
+      "layout": "title",
+      "kicker": "Azure backbone",
+      "title": "Mapping Azure's Backbone with iperf3",
+      "subtitle": "A repeatable 24-hour UDP test for long-haul bandwidth stability, jitter, and packet loss.",
+      "meta": "Yingting Huang · Nov 2025",
+      "speakerNotes": "Open with the motivation: this is not a speed-test contest. The stream is intentionally small at 10 Mbps so the test focuses on reliability over time rather than raw throughput. The useful output is a repeatable method for comparing regional health across Azure's private backbone. Mention that WUS is the hub and HK, Korea Central, and UAE North are spokes."
+    },
+    {
+      "id": "why-run-it",
+      "layout": "statement",
+      "kicker": "Why test",
+      "title": "Short checks miss long-haul drift",
+      "statement": "A tiny, steady UDP stream can reveal packet-loss and jitter patterns that quick spot checks never expose.",
+      "supports": [
+        "Each direction ran for 86,400 seconds at 10 Mbps.",
+        "Traffic stayed on Microsoft's backbone through global VNet peering.",
+        "The output is comparable data, not anecdotal network feel."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Why I Ran This" },
+      "speakerNotes": "Frame the experiment as operational observability for network paths. A single short iperf run may say the link is healthy, but a full day can reveal rare blips, asymmetric loss, and jitter bursts. The target rate is modest on purpose: if 10 Mbps cannot stay clean, the problem deserves attention before larger workloads arrive."
+    },
+    {
+      "id": "topology",
+      "layout": "diagram",
+      "kicker": "Topology",
+      "title": "One WUS hub, three long-haul spokes",
+      "diagram": {
+        "mermaid": "flowchart LR\n  WUS[(West US hub<br/>VM + VNet)]\n  HK[East Asia / HK<br/>spoke VM]\n  KC[Korea Central<br/>spoke VM]\n  UAE[UAE North<br/>spoke VM]\n  HK <-->|global VNet peering<br/>UDP 5201| WUS\n  KC <-->|global VNet peering<br/>UDP 5201| WUS\n  UAE <-->|global VNet peering<br/>UDP 5201| WUS",
+        "alt": "West US hub VNet is globally peered with Hong Kong, Korea Central, and UAE North spoke VNets for direct UDP iperf3 tests.",
+        "caption": "All paths use globally peered Azure VNets, avoiding public egress."
+      },
+      "bullets": [
+        "Standard_D2s_v5 VMs provided matching endpoints.",
+        "UDP/5201 was opened so iperf3 could run directly.",
+        "Every region pair was tested in both directions."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Test Topology & Naming" },
+      "speakerNotes": "Walk the audience through the shape before the numbers. West US is both the hub and one endpoint; each spoke VNet is globally peered to the hub VNet. Because traffic remains on the Microsoft backbone, the test is closer to measuring Azure inter-region behavior than measuring arbitrary Internet transit."
+    },
+    {
+      "id": "direction-names",
+      "layout": "bullets",
+      "kicker": "Naming",
+      "title": "The filename is the experiment contract",
+      "lede": "Each run is named by direction, bandwidth, duration, and timestamp so the pipeline can parse intent without extra metadata.",
+      "bullets": [
+        "HK-WUS means sender in East Asia, receiver in West US.",
+        "WUS-HK flips the direction while keeping the same region pair.",
+        "KC and UAE follow the same source-destination pattern.",
+        "Completed JSON files land in 24H/ with the direction prefix intact."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Test Topology & Naming" },
+      "speakerNotes": "The naming rule is small but important. It makes the raw artifact self-describing, which lets the Python processing script group directions and pairs without a sidecar inventory file. This is also what makes rerunning the experiment easy: drop new JSON captures into the same folder and regenerate the report."
+    },
+    {
+      "id": "driver-script",
+      "layout": "code",
+      "kicker": "Execution",
+      "title": "The test is one durable iperf3 stream",
+      "language": "bash",
+      "code": "#!/bin/bash\nSERVER=\"${1:-172.16.0.4}\"\nOUTPUT_DIR=\"./test_results\"\nTIMESTAMP=$(date +\"%Y%m%d_%H%M%S\")\nmkdir -p \"$OUTPUT_DIR\"\niperf3 -c \"$SERVER\" -u -b 10M -i 1 -t 86400 -J \\\n  > \"$OUTPUT_DIR/10M_24H_${TIMESTAMP}.json\"",
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Test Execution Scripts" },
+      "speakerNotes": "Keep this slide focused on the contract: UDP mode, 10 Mbps, one-second intervals, 86,400 seconds, JSON output. The script is intentionally boring; the value comes from running it consistently in both directions for each region pair. Point out that the JSON output is raw enough to support later analysis without depending on terminal logs."
+    },
+    {
+      "id": "processing-pipeline",
+      "layout": "diagram",
+      "kicker": "Processing",
+      "title": "Raw iperf JSON becomes comparable evidence",
+      "diagram": {
+        "mermaid": "flowchart LR\n  Json[24H/*.json] --> Parse[parse intervals<br/>+ end summary]\n  Parse --> Stats[compute stats:<br/>mean · std · loss · jitter]\n  Stats --> Pair[group by<br/>region pair]\n  Pair --> Plots[pair + direction<br/>PNG charts]\n  Stats --> Report[summary_report.md]",
+        "alt": "JSON files are parsed into interval arrays, summarized into metrics, grouped by region pair, and rendered into charts plus a Markdown report.",
+        "caption": "The analyzer turns per-second iperf output into repeatable charts and tables."
+      },
+      "bullets": [
+        "Intervals become time-series arrays for plotting.",
+        "The iperf end summary supplies loss and jitter.",
+        "Pair plots make direction-specific blips visible."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Processing Pipeline" },
+      "speakerNotes": "This is where the experiment becomes reusable. The processor extracts per-second bandwidth, computes summary statistics, groups both directions of a region pair, and writes both charts and Markdown. Emphasize that visualization is part of the test design, not a cosmetic afterthought."
+    },
+    {
+      "id": "processor-payoff",
+      "layout": "bullets",
+      "kicker": "Automation",
+      "title": "The processor makes every rerun cheap",
+      "lede": "Once the raw captures are in 24H/, one command regenerates the full comparison set.",
+      "bullets": [
+        "Parsing preserves per-second bandwidth, packet rate, loss, and jitter.",
+        "Pair grouping keeps inbound-to-WUS and outbound-from-WUS separated.",
+        "Zoomed y-axes reveal small variance around the 10 Mbps target.",
+        "Markdown and PNG outputs are ready for a blog, dashboard, or slide deck."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Processing Pipeline" },
+      "speakerNotes": "The key engineering lesson is not just to run iperf3; it is to make the post-processing deterministic. Without the script, every new test becomes a manual spreadsheet exercise. With it, the only human step is copying new JSON files into the expected folder and rerunning the processor."
+    },
+    {
+      "id": "key-results",
+      "layout": "table",
+      "kicker": "Results",
+      "title": "All six directions held the 10 Mbps target",
+      "headers": ["Direction", "Mean Mbps", "Loss %", "Lost pkts", "Jitter ms"],
+      "rows": [
+        ["HK→WUS", "10.0000", "0.000003", "2", "0.0051"],
+        ["WUS→HK", "10.0000", "0.000184", "143", "0.0059"],
+        ["KC→WUS", "10.0000", "0.000019", "15", "0.0066"],
+        ["WUS→KC", "10.0000", "0.000295", "230", "0.0045"],
+        ["UAE→WUS", "10.0000", "0.002094", "1,632", "0.0106"],
+        ["WUS→UAE", "10.0000", "0.000619", "482", "0.0102"]
+      ],
+      "caption": "10 Mbps UDP over 24 hours; totals are from the article's iperf3 summary table.",
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Key Results" },
+      "speakerNotes": "The headline is stability: every direction averaged exactly 10 Mbps to four decimals. The interesting story is in the loss and jitter columns. HK and KC are extremely clean. UAE is still operationally tiny in percentage terms, but it is visibly higher than the other two region pairs and deserves closer attention if this path carries sensitive UDP traffic."
+    },
+    {
+      "id": "loss-concentration",
+      "layout": "statement",
+      "kicker": "Signal",
+      "title": "The signal is loss concentration, not throughput",
+      "statement": "Throughput stayed flat; the useful difference was that UAE loss was tiny in absolute terms but much higher than HK and KC.",
+      "supports": [
+        "UAE→WUS lost 1,632 packets; WUS→UAE lost 482.",
+        "HK and KC stayed close to zero-loss behavior.",
+        "Jitter on UAE legs was roughly double the HK/KC range."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Key Results" },
+      "speakerNotes": "Avoid overstating the result. The UAE numbers are still small: the inbound leg is about 0.002% loss. The lesson is comparative, not alarmist. The same method gives a directional baseline, and the UAE pair is the one to keep watching or retest after route, region, or workload changes."
+    },
+    {
+      "id": "regional-readout",
+      "layout": "comparison",
+      "kicker": "Readout",
+      "title": "Three region pairs, three operational reads",
+      "columns": [
+        {
+          "heading": "HK ↔ WUS",
+          "body": "Clean and symmetric enough for a baseline path.",
+          "bullets": ["2 packets lost inbound", "143 packets lost outbound"]
+        },
+        {
+          "heading": "KC ↔ WUS",
+          "body": "Also clean, with very low loss in both directions.",
+          "bullets": ["15 packets lost inbound", "230 packets lost outbound"]
+        },
+        {
+          "heading": "UAE ↔ WUS",
+          "body": "Still stable, but the first path to investigate.",
+          "bullets": ["1,632 packets lost inbound", "Wider outbound min/max spread"]
+        }
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Takeaways" },
+      "speakerNotes": "This slide turns the table into an operator's readout. HK and KC are the baseline pairs: clean and predictable. UAE is not broken, but its relative loss and jitter are noticeably higher. That is enough to prioritize it for a follow-up run, a different time window, or a workload-specific check."
+    },
+    {
+      "id": "charts-payoff",
+      "layout": "bullets",
+      "kicker": "Visualization",
+      "title": "The plots make small failures visible",
+      "lede": "Pair charts stack both directions so tiny blips are not hidden by overlapping traces.",
+      "bullets": [
+        "Green lines represent traffic inbound to West US.",
+        "Blue lines represent traffic outbound from West US.",
+        "Separate panels avoid overlap and make direction-specific spikes obvious.",
+        "A zoomed y-axis shows drift around 10 Mbps instead of flattening it away."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Lessons Learned" },
+      "speakerNotes": "The article's images are the human-facing evidence. A single combined chart can make two healthy lines look identical and hide brief directional events. Stacked pair plots solve that by preserving visual comparability while keeping each direction readable. This is a design choice worth copying into other network reports."
+    },
+    {
+      "id": "hk-wus-chart",
+      "layout": "image",
+      "kicker": "Chart",
+      "title": "HK ↔ WUS stayed visually flat",
+      "image": {
+        "src": "/assets/posts/mapping-azure-backbone-with-a-24-hour-iperf3-marathon/pair-hk-wus-bandwidth.png",
+        "alt": "Stacked bandwidth charts for HK to WUS and WUS to HK over 24 hours, both staying near 10 Mbps with tiny loss.",
+        "caption": "Pair chart from the article: Hong Kong and West US."
+      },
+      "bullets": [
+        "Both directions stay tightly centered on 10 Mbps.",
+        "Packet loss is near-zero in the summary table.",
+        "This pair is the visual baseline for the deck."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Key Results" },
+      "speakerNotes": "Use this image as the clean baseline. The stacked panels keep each direction separate, so small changes would be easy to spot. HK to WUS lost only 2 packets in the summary, while WUS to HK lost 143 packets across the full day. Both are operationally tiny and visually stable."
+    },
+    {
+      "id": "kc-wus-chart",
+      "layout": "image",
+      "kicker": "Chart",
+      "title": "KC ↔ WUS looked similarly clean",
+      "image": {
+        "src": "/assets/posts/mapping-azure-backbone-with-a-24-hour-iperf3-marathon/pair-kc-wus-bandwidth.png",
+        "alt": "Stacked bandwidth charts for KC to WUS and WUS to KC over 24 hours, both holding near the 10 Mbps target.",
+        "caption": "Pair chart from the article: Korea Central and West US."
+      },
+      "bullets": [
+        "Mean throughput remains 10.0000 Mbps both ways.",
+        "Loss stays very low: 15 inbound and 230 outbound packets.",
+        "The chart reinforces symmetry across the pair."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Key Results" },
+      "speakerNotes": "This chart supports the second clean region pair. Korea Central behaves much like Hong Kong: very low loss, stable bandwidth, and no large visual drift around the target line. It is useful as corroborating evidence that the higher UAE loss is not just noise in the method."
+    },
+    {
+      "id": "uae-wus-chart",
+      "layout": "image",
+      "kicker": "Chart",
+      "title": "UAE ↔ WUS is the path to watch",
+      "image": {
+        "src": "/assets/posts/mapping-azure-backbone-with-a-24-hour-iperf3-marathon/pair-uae-wus-bandwidth.png",
+        "alt": "Stacked bandwidth charts for UAE to WUS and WUS to UAE over 24 hours, showing stable 10 Mbps throughput with higher relative loss.",
+        "caption": "Pair chart from the article: UAE North and West US."
+      },
+      "bullets": [
+        "Throughput still holds the 10 Mbps target.",
+        "Loss is higher than HK and KC in both directions.",
+        "The outbound leg has the widest min/max spread."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Key Results" },
+      "speakerNotes": "This is the visual evidence behind the 'watch UAE' conclusion. Do not call it broken: the absolute loss percentage remains small, and throughput holds steady. The point is relative behavior. Compared with HK and KC, UAE has the clearest signal for retesting, route review, or workload-specific monitoring."
+    },
+    {
+      "id": "reproduce-it",
+      "layout": "bullets",
+      "kicker": "Reproduce",
+      "title": "Reproducing the workflow is deliberately boring",
+      "lede": "Provision endpoints, run both directions, collect JSON, then regenerate diagrams and the report.",
+      "bullets": [
+        "Create iperf3 endpoints and open UDP/5201 in each region.",
+        "Run the 24-hour script once for every direction.",
+        "Collect JSON reports into the 24H/ folder.",
+        "Install Python dependencies: matplotlib and numpy.",
+        "Run process_24h.py to publish tables and PNGs."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Reproducing the Workflow" },
+      "speakerNotes": "This is the handoff slide for anyone who wants to copy the method. The steps are intentionally plain because repeatability matters more than cleverness. If the audience asks about cost or noise, remind them that this test uses a low 10 Mbps stream and standard VMs, so it is light enough to run as a periodic health check."
+    },
+    {
+      "id": "operating-model",
+      "layout": "statement",
+      "kicker": "Operating model",
+      "title": "Turn the marathon into a regression test",
+      "statement": "The real value is a repeatable baseline: rerun the same path after routing, region, or workload changes and compare the drift.",
+      "supports": [
+        "The artifacts are deterministic: JSON in, charts and Markdown out.",
+        "Direction labels make asymmetry visible without manual cleanup.",
+        "A future GitHub Action could publish the same report automatically."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Final Thoughts" },
+      "speakerNotes": "Close the main narrative by reframing the experiment as a reusable monitoring pattern. The first run creates the baseline. Later runs answer whether a path changed, whether a routing adjustment helped, or whether a workload migration altered packet behavior. The article hints at a companion dashboard or GitHub Action; this slide makes that the next natural step."
+    },
+    {
+      "id": "takeaways",
+      "layout": "takeaways",
+      "kicker": "Takeaways",
+      "title": "Five lessons from the 24-hour run",
+      "items": [
+        "Hold a small UDP stream long enough to expose rare loss and jitter events.",
+        "Name artifacts by direction so analysis can stay automatic.",
+        "Treat charts as part of the test, not a decorative afterthought.",
+        "Use relative differences carefully: UAE was higher-loss, not broken.",
+        "Keep the workflow rerunnable so every future change has a baseline."
+      ],
+      "source": { "article": "mapping-azure-backbone-with-a-24-hour-iperf3-marathon", "section": "Lessons Learned" },
+      "speakerNotes": "End with the operational pattern. The method is lightweight, evidence-backed, and portable: steady input, durable JSON, deterministic processing, and readable visuals. The main caution is interpretation. Small percentage loss can still be meaningful when it is concentrated on one path, but it should trigger focused follow-up rather than panic."
+    }
+  ]
+}
