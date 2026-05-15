@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTagGroups } from '../../lib/content';
+import { formatDate, sitePath } from '../../lib/site';
+
+export function getStaticPaths() {
+  return getTagGroups().map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tag }
+  }));
+}
+
+const { tag } = Astro.props;
+---
+
+<BaseLayout
+  title={`Topic: ${tag.name}`}
+  description={`${tag.posts.length} dispatches tagged ${tag.name}.`}
+  canonical={`/tags/${tag.slug}/`}
+>
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Topic</p>
+      <h2 class="section-head__title">{tag.name}</h2>
+      <span class="section-head__meta">{tag.posts.length} {tag.posts.length === 1 ? 'dispatch' : 'dispatches'}</span>
+    </header>
+
+    <ol class="discovery-list" role="list">
+      {tag.posts.map((post) => (
+        <li class="discovery-row">
+          <a href={sitePath(`/${post.slug}/`)}>
+            <span class="discovery-row__id">{post.desk?.sectionId ?? '—'}</span>
+            <span class="discovery-row__body">
+              <strong>{post.title}</strong>
+              {post.excerpt ? <span>{post.excerpt}</span> : null}
+            </span>
+            <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>

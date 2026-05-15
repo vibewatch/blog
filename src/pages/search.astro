@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getDeskGroups, getTagGroups } from '../lib/content';
+import { sitePath } from '../lib/site';
+
+const desks = getDeskGroups();
+const tags = getTagGroups();
+---
+
+<BaseLayout
+  title="Search"
+  description="Search every dispatch by title, excerpt, desk, tag, series, and section headings."
+  canonical="/search/"
+>
+  <section class="container section--tight discovery-page search-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Research desk</p>
+      <h2 class="section-head__title">Search the archive</h2>
+      <span class="section-head__meta">Titles, tags, desks, series, and headings</span>
+    </header>
+
+    <form class="search-panel" role="search" data-search-form data-search-index={sitePath('/search-index.json')}>
+      <label class="search-panel__query">
+        <span>Search terms</span>
+        <input type="search" name="q" autocomplete="off" placeholder="Try Kubernetes, Azure Load Balancer, Copilot..." data-search-query />
+      </label>
+      <label>
+        <span>Desk</span>
+        <select name="desk" data-search-desk>
+          <option value="">All desks</option>
+          {desks.map((group) => <option value={group.slug}>{group.desk.name}</option>)}
+        </select>
+      </label>
+      <label>
+        <span>Tag</span>
+        <select name="tag" data-search-tag>
+          <option value="">All tags</option>
+          {tags.map((tag) => <option value={tag.slug}>{tag.name}</option>)}
+        </select>
+      </label>
+    </form>
+
+    <p class="search-status" data-search-status>Loading the index...</p>
+    <ol class="search-results" data-search-results role="list"></ol>
+  </section>
+
+  <script>
+    import '../scripts/search';
+  </script>
+</BaseLayout>

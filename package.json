@@ -14,7 +14,8 @@
   },
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
-    "build": "astro build",
+    "content:validate": "node scripts/validate-content.mjs",
+    "build": "npm run content:validate && astro build",
     "preview": "astro preview --host 0.0.0.0",
     "serve": "python3 -m http.server 8080 --directory public"
   }

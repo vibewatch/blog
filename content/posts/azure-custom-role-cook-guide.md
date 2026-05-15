@@ -30,7 +30,7 @@ Take web role customization for example
 
 1.  When you examine the resource of IP restriction rule (refer to screen shot below), you will see this setting is actually under "type": "Microsoft.Web/sites/config"
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-1.png)
+![Azure portal export template view showing the IP restriction configuration resource type under Microsoft.Web/sites/config](/assets/posts/azure-custom-role-cook-guide/custom-role-1.png)
 
 2. If you search "Microsoft.Web/sites/config" from article [Azure resource provider operations](https://docs.microsoft.com/en-us/azure/role-based-access-control/resource-provider-operations), you will see it has below operations, so the best choice to prevent user from editing this setting is not giving them write and delete permission
 
@@ -38,15 +38,15 @@ Take web role customization for example
 
 3. Now we can start from clone a role and customize it, from subscription->Access control->Roles, find Website Contributor, right click it and choose Clone
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-2.png)
+![Azure portal Access control Roles page with Website Contributor selected for cloning](/assets/posts/azure-custom-role-cook-guide/custom-role-2.png)
 
 4. Follow the wizard and add below two operations to NotAction group
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-3.png)
+![Azure custom role wizard showing Microsoft.Web sites config write and delete operations added to NotActions](/assets/posts/azure-custom-role-cook-guide/custom-role-3.png)
 
 5. From Assignable scopes, please make sure the scope is targeted to your subscription.
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-4.png)
+![Azure custom role wizard Assignable scopes step targeting the subscription scope](/assets/posts/azure-custom-role-cook-guide/custom-role-4.png)
 
 6. Once the customized role is created, you can assign it to user/group which you want to restrict access.
 
@@ -54,8 +54,8 @@ If there is no any existing role, for example, if we want to achieve "Disable th
 
 1. Subscription-> Access control->Roles, Add custom role
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-5.png)
+![Azure portal Roles page showing the Add custom role action](/assets/posts/azure-custom-role-cook-guide/custom-role-5.png)
 
 2. From Permissions, add below operations to Action group, make sure scope still targets to subscription and assign the customized role to user/group.
 
-![](/assets/posts/azure-custom-role-cook-guide/custom-role-6.png)
+![Azure custom role wizard Permissions step showing operations added to the Actions group](/assets/posts/azure-custom-role-cook-guide/custom-role-6.png)

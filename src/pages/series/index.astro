@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSeriesGroups } from '../../lib/content';
+import { sitePath } from '../../lib/site';
+
+const seriesGroups = getSeriesGroups();
+---
+
+<BaseLayout title="Series" description="Collected article series and running investigations." canonical="/series/">
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Collections</p>
+      <h2 class="section-head__title">Series</h2>
+      <span class="section-head__meta">{seriesGroups.length} running collections</span>
+    </header>
+
+    <div class="series-grid">
+      {seriesGroups.map((series) => (
+        <a class="series-card" href={sitePath(`/series/${series.slug}/`)}>
+          <span class="series-card__count">{series.posts.length}</span>
+          <span class="series-card__body">
+            <strong>{series.name}</strong>
+            <span>{series.posts[0]?.title}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

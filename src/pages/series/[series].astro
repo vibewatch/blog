@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSeriesGroups } from '../../lib/content';
+import { formatDate, sitePath } from '../../lib/site';
+
+export function getStaticPaths() {
+  return getSeriesGroups().map((series) => ({
+    params: { series: series.slug },
+    props: { series }
+  }));
+}
+
+const { series } = Astro.props;
+---
+
+<BaseLayout
+  title={`Series: ${series.name}`}
+  description={`${series.posts.length} dispatches in the ${series.name} series.`}
+  canonical={`/series/${series.slug}/`}
+>
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Series</p>
+      <h2 class="section-head__title">{series.name}</h2>
+      <span class="section-head__meta">{series.posts.length} {series.posts.length === 1 ? 'part' : 'parts'}</span>
+    </header>
+
+    <ol class="series-list" role="list">
+      {series.posts.map((post, index) => (
+        <li class="series-row">
+          <a href={sitePath(`/${post.slug}/`)}>
+            <span class="series-row__number">{post.series?.order ? String(post.series.order).padStart(2, '0') : String(index + 1).padStart(2, '0')}</span>
+            <span class="series-row__body">
+              <strong>{post.title}</strong>
+              {post.excerpt ? <span>{post.excerpt}</span> : null}
+            </span>
+            <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>

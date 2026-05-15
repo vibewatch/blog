@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTagGroups } from '../../lib/content';
+import { sitePath } from '../../lib/site';
+
+const tags = getTagGroups();
+---
+
+<BaseLayout title="Topics" description="Every public topic tag in the archive." canonical="/tags/">
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Subject index</p>
+      <h2 class="section-head__title">Topics</h2>
+      <span class="section-head__meta">{tags.length} tags across the archive</span>
+    </header>
+
+    <div class="topic-grid">
+      {tags.map((tag) => (
+        <a class="topic-card" href={sitePath(`/tags/${tag.slug}/`)}>
+          <span class="topic-card__count">{tag.posts.length}</span>
+          <span class="topic-card__name">{tag.name}</span>
+          <span class="topic-card__sample">Latest: {tag.posts[0]?.title}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
