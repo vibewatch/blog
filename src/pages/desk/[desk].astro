@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDeskGroups } from '../../lib/content';
+import { formatDate, sitePath } from '../../lib/site';
+
+export function getStaticPaths() {
+  return getDeskGroups().map((desk) => ({
+    params: { desk: desk.slug },
+    props: { desk }
+  }));
+}
+
+const { desk } = Astro.props;
+---
+
+<BaseLayout
+  title={`${desk.desk.name} Desk`}
+  description={desk.desk.tagline}
+  canonical={`/desk/${desk.slug}/`}
+>
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked desk-heading">
+      <p class="section-head__eyebrow">Desk {desk.desk.letter}</p>
+      <h2 class="section-head__title">{desk.desk.name}</h2>
+      <span class="section-head__meta">{desk.posts.length} {desk.posts.length === 1 ? 'dispatch' : 'dispatches'}</span>
+      <p class="section-head__deck">{desk.desk.tagline}</p>
+    </header>
+
+    <ol class="discovery-list" role="list">
+      {desk.posts.map((post) => (
+        <li class="discovery-row">
+          <a href={sitePath(`/${post.slug}/`)}>
+            <span class="discovery-row__id">{post.desk?.sectionId ?? '—'}</span>
+            <span class="discovery-row__body">
+              <strong>{post.title}</strong>
+              {post.excerpt ? <span>{post.excerpt}</span> : null}
+            </span>
+            <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>

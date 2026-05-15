@@ -1,25 +1,34 @@
 ---
 import { config, sitePath } from '../lib/site';
-import { getPosts } from '../lib/content';
+import { getDeskGroups, getPosts, getSeriesGroups, getTagGroups } from '../lib/content';
 
 const navLinks = [
   { href: '/', label: 'Front Page' },
+  { href: '/search/', label: 'Search' },
+  { href: '/tags/', label: 'Topics' },
+  { href: '/desk/', label: 'Desks' },
+  { href: '/series/', label: 'Series' },
   { href: '/archive/', label: 'Index' },
   { href: '/about/', label: 'Colophon' },
   { href: '/feed.xml', label: 'RSS' },
 ];
 
 const dispatchCount = getPosts().length;
+const deskCount = getDeskGroups().length;
+const topicCount = getTagGroups().length;
+const seriesCount = getSeriesGroups().length;
 ---
 
 <header class="masthead">
   <div class="container">
-    <p class="masthead__folio" aria-hidden="true">
-      <span>Est. MMXVIII</span>
+    <p class="masthead__folio" aria-label={`${dispatchCount} dispatches, ${deskCount} desks, ${topicCount} topics, ${seriesCount} series`}>
+      <span>{dispatchCount} Dispatches</span>
       <span class="masthead__folio-sep">·</span>
-      <span>No. {dispatchCount}</span>
-      <span class="masthead__folio-sep">·</span>
-      <span>Cloud · Kubernetes · AI · DevOps</span>
+      <span>{deskCount} Desks</span>
+      <span class="masthead__folio-sep masthead__folio-optional">·</span>
+      <span class="masthead__folio-optional">{topicCount} Topics</span>
+      <span class="masthead__folio-sep masthead__folio-optional">·</span>
+      <span class="masthead__folio-optional">{seriesCount} Series</span>
     </p>
     <a class="masthead__nameplate" href={sitePath('/')}>{config.title}</a>
     {config.description ? <p class="masthead__motto">“{config.description}”</p> : null}

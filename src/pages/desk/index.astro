@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getDeskGroups } from '../../lib/content';
+import { sitePath } from '../../lib/site';
+
+const desks = getDeskGroups();
+---
+
+<BaseLayout title="Desks" description="Browse the archive by editorial desk." canonical="/desk/">
+  <section class="container section--tight discovery-page">
+    <header class="section-head section-head--stacked">
+      <p class="section-head__eyebrow">Editorial map</p>
+      <h2 class="section-head__title">Desks</h2>
+      <span class="section-head__meta">Five ways through the archive</span>
+    </header>
+
+    <div class="desk-grid">
+      {desks.map((group) => (
+        <a class="desk-card" href={sitePath(`/desk/${group.slug}/`)}>
+          <span class="desk-card__letter">{group.desk.letter}</span>
+          <span class="desk-card__body">
+            <strong>{group.desk.name}</strong>
+            <span>{group.desk.tagline}</span>
+            <em>{group.posts.length} {group.posts.length === 1 ? 'dispatch' : 'dispatches'}</em>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

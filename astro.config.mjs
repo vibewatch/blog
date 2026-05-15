@@ -27,11 +27,41 @@ function prefixRootLinks() {
   };
 }
 
+function slugify(value) {
+  return String(value ?? '')
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'section';
+}
+
 function nodeText(node) {
   if (!node || typeof node !== 'object') return '';
   if (node.type === 'text') return node.value ?? '';
-  if (!Array.isArray(node.children)) return '';
-  return node.children.map(nodeText).join('');
+  if (Array.isArray(node.children)) return node.children.map(nodeText).join('');
+  return '';
+}
+
+function addHeadingIds() {
+  return (tree) => {
+    const counts = new Map();
+    const visit = (node) => {
+      if (!node || typeof node !== 'object') return;
+      if (node.type === 'element' && /h[23]/.test(node.tagName)) {
+        const base = slugify(nodeText(node));
+        const seen = counts.get(base) ?? 0;
+        counts.set(base, seen + 1);
+        node.properties = node.properties ?? {};
+        node.properties.id = seen === 0 ? base : `${base}-${seen + 1}`;
+      }
+      if (Array.isArray(node.children)) {
+        for (const child of node.children) visit(child);
+      }
+    };
+    visit(tree);
+  };
 }
 
 function normalizeHeadingText(value) {
@@ -125,6 +155,6 @@ export default defineConfig({
       theme: 'min-light',
       wrap: true
     },
-    rehypePlugins: [removeLeadingTitleHeading, wrapImagesInFigure, prefixRootLinks]
+    rehypePlugins: [removeLeadingTitleHeading, addHeadingIds, wrapImagesInFigure, prefixRootLinks]
   }
 });

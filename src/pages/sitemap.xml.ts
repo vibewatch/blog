@@ -1,15 +1,19 @@
-import { getAllItems } from '../lib/content';
+import { getAllItems, getDeskGroups, getSeriesGroups, getTagGroups } from '../lib/content';
 import { absoluteUrl, escapeXml } from '../lib/site';
 
 export async function GET() {
+  const staticUrls = ['/', '/archive/', '/search/', '/tags/', '/desk/', '/series/'];
   const urls = [
-    '/',
-    ...getAllItems().map((item) => `/${item.slug}/`)
+    ...staticUrls.map((url) => ({ url })),
+    ...getAllItems().map((item) => ({ url: `/${item.slug}/`, lastmod: item.date.toISOString() })),
+    ...getTagGroups().map((tag) => ({ url: `/tags/${tag.slug}/`, lastmod: tag.posts[0]?.date.toISOString() })),
+    ...getDeskGroups().map((desk) => ({ url: `/desk/${desk.slug}/`, lastmod: desk.posts[0]?.date.toISOString() })),
+    ...getSeriesGroups().map((series) => ({ url: `/series/${series.slug}/`, lastmod: series.posts.at(-1)?.date.toISOString() }))
   ];
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((url) => `  <url><loc>${escapeXml(absoluteUrl(url))}</loc></url>`).join('\n')}
+${urls.map((entry) => `  <url><loc>${escapeXml(absoluteUrl(entry.url))}</loc>${entry.lastmod ? `<lastmod>${escapeXml(entry.lastmod)}</lastmod>` : ''}</url>`).join('\n')}
 </urlset>
 `;
 
