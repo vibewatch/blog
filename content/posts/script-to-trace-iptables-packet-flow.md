@@ -12,6 +12,8 @@ feature_image: "/assets/posts/script-to-trace-iptables-packet-flow/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Linux", "Iptables"]
 ---
+# Script to Trace Iptables Packet Flow
+
 I wrote a simple script to trace packet flow for inbound traffic against a TCP/UDP port. The script can be found at [iptables-trace](https://github.com/huangyingting/devops/blob/master/ts-scripts/iptables-trace.sh).
 
 Below is a copy of the script.

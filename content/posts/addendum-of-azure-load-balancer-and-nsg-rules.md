@@ -12,6 +12,8 @@ feature_image: "/assets/posts/addendum-of-azure-load-balancer-and-nsg-rules/hero
 authors: ["Yingting Huang"]
 tags: ["Load Balancer", "Azure"]
 ---
+# Addendum of Azure Load Balancer and NSG Rules
+
 ## 1 AllowAzureLoadBalancerInBound NSG Rule
 
 When an IaaS VM gets deployed in Azure, a default NSG rule named AllowAzureLoadBalancerInBound is created.

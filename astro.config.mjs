@@ -27,6 +27,43 @@ function prefixRootLinks() {
   };
 }
 
+function nodeText(node) {
+  if (!node || typeof node !== 'object') return '';
+  if (node.type === 'text') return node.value ?? '';
+  if (!Array.isArray(node.children)) return '';
+  return node.children.map(nodeText).join('');
+}
+
+function normalizeHeadingText(value) {
+  return String(value).replace(/\s+/g, ' ').trim();
+}
+
+function frontmatterTitle(file) {
+  const dataTitle = file?.data?.astro?.frontmatter?.title ?? file?.data?.frontmatter?.title;
+  if (dataTitle) return String(dataTitle);
+
+  const raw = typeof file?.value === 'string' ? file.value : '';
+  const frontmatter = raw.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? '';
+  const title = frontmatter.match(/^title:\s*(?:"([^"]*)"|'([^']*)'|(.+))\s*$/m);
+  return title ? String(title[1] ?? title[2] ?? title[3]).trim() : '';
+}
+
+function removeLeadingTitleHeading() {
+  return (tree, file) => {
+    const children = Array.isArray(tree.children) ? tree.children : [];
+    const firstContentIndex = children.findIndex(
+      (child) => !(child.type === 'text' && /^\s*$/.test(child.value ?? ''))
+    );
+    const firstContent = children[firstContentIndex];
+    if (!firstContent || firstContent.type !== 'element' || firstContent.tagName !== 'h1') return;
+
+    const title = normalizeHeadingText(frontmatterTitle(file));
+    if (!title || normalizeHeadingText(nodeText(firstContent)) !== title) return;
+
+    children.splice(firstContentIndex, 1);
+  };
+}
+
 // Wrap solo `<p><img></p>` patterns in `<figure><img><figcaption>{alt}</figcaption></figure>`
 // so prose images participate in the FIG. counter and get a real caption.
 function wrapImagesInFigure() {
@@ -88,6 +125,6 @@ export default defineConfig({
       theme: 'min-light',
       wrap: true
     },
-    rehypePlugins: [wrapImagesInFigure, prefixRootLinks]
+    rehypePlugins: [removeLeadingTitleHeading, wrapImagesInFigure, prefixRootLinks]
   }
 });

@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Deploy Kafka without ZooKeeper on Kubernetes
+
 Most of the work is based on [https://github.com/bitnami/charts/issues/13624](https://github.com/bitnami/charts/issues/13624). This article is for documentation purposes only, and it uses the community Kafka Helm chart from Bitnami.
 
 First, we need a `values.yaml` file with the content below. For testing purposes, set `replicaCount` to 1; it can be adjusted to 3, 5, and so on.

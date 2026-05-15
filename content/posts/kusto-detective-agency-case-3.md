@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Kusto Detective Agency Case 3
+
 ## Bank robbery
 
 We have a situation, rookie.  

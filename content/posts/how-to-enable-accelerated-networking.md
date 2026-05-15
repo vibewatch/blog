@@ -12,6 +12,8 @@ feature_image: "/assets/posts/how-to-enable-accelerated-networking/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Azure", "Linux", "Acceleratd Networking", "CLI"]
 ---
+# How to Enable Accelerated Networking for Existing Linux VM
+
 Unfortunately, Azure only supports accelerated networking for newly created Linux VM, refer to [Create a Linux virtual machine with Accelerated Networking](https://docs.microsoft.com/en-us/azure/virtual-network/create-vm-accelerated-networking-cli)
 
 > Accelerated networking can only be enabled for a new NIC. It cannot be enabled for an existing NIC.

@@ -12,6 +12,8 @@ feature_image: "/assets/posts/azure-hub-spoke-hub-hub-setup/hero.jpg"
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Azure Hub-Spoke, Hub-Hub Setup
+
 Thsoe setups are servered as architecture reference for network design in Azure.
 
 # A simple hub spoke setup with NVA

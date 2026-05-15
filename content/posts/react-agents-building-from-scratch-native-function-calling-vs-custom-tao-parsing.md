@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# ReAct Agents: Building From Scratch - Native Function Calling vs. Custom TAO Parsing
+
 ## Introduction
 
 In this article, I'll walk you through two different ways to implement ReAct agents without relying on any existing frameworks:

@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Kusto Detective Agency Case 5
+
 ## **El Puente - Big heist**  
 
 Hello. It's going to happen soon: a big heist. You can stop it if you are quick enough. Find the exact place and time it’s going to happen.  

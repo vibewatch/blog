@@ -12,6 +12,8 @@ feature_image: "/assets/posts/ubuntu-generate-core-dump-on-fly/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Linux", "Coredump"]
 ---
+# Ubuntu Generate Core Dump On Fly
+
 systemctl disable apport.service
 
 /etc/security/limits.conf

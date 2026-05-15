@@ -12,6 +12,8 @@ feature_image: "/assets/posts/flannel-networking-demystify/hero.jpeg"
 authors: ["Yingting Huang"]
 tags: ["Flannel", "VXLAN", "Linux", "K8S", "Kubernetes", "Accelerated Networking"]
 ---
+# Flannel Networking Demystified
+
 > **Note (May 2026):** This article explains Flannel behavior using an older kubeadm/Docker-based lab environment. The core VXLAN and host-gw concepts are still useful, but Kubernetes CNI installation methods, Flannel manifests, container runtimes, and cloud-provider networking defaults may differ in current clusters.
 
 In my previous article [Deploy a Ubuntu-Based Flannel K8S Cluster in Azure with an ARM Template and Kubeadm](/deploy-a-ubuntu-based-flannel-k8s-cluster-in-azure-with-arm-template-and-kubeadm/), I provided an Azure ARM template to deploy a Flannel networking K8S cluster on Azure. But how does Flannel networking work? In this article, we will discuss its internals, especially its `VXLAN`, `udp`, and `host-gw` modes.

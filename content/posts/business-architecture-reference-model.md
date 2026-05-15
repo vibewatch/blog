@@ -12,4 +12,6 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: []
 ---
+# Business Architecture Reference Model
+
 ![Business architecture reference model](/assets/posts/business-architecture-reference-model/business-architecture-reference-model.jpg)

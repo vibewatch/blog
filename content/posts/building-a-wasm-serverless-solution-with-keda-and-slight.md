@@ -12,6 +12,8 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["WASM", "WebAssembly", "KEDA", "Kubernetes", "Serverless"]
 ---
+# Building a WASM Serverless Solution with KEDA HTTP Add-on and Slight Containerd Shim
+
 ## Introduction
 
 In this article, we will explore how to use KEDA, the KEDA HTTP add-on, and Slight Containerd Shim to build a WASM serverless solution. The solution provides scale-to/from-zero support, reduced cold-start time, and cloud integration capabilities such as Azure Blob, App Configuration, Service Bus, and more. The diagram below shows how it works.

@@ -12,6 +12,8 @@ feature_image: "/assets/posts/azure-unable-to-resize-vms-to-b-series-vms/hero.jp
 authors: ["Yingting Huang"]
 tags: ["Azure", "Powershell", "VM"]
 ---
+# Azure - Unable to Resize VM(s) to B-Series VM(s)
+
 If the VM(s) are deployed using the Resource Manager (ARM) deployment model and we need to change to a size which requires different hardware then we can resize VMs by first stopping the VM.
 
 In our case, we are not able to resize a live VM to B-series VM, we stopped(deallocated) VM from azure portal, then afterwords, we are able to resize it now.
