@@ -178,6 +178,43 @@ function expectStringArray(
   value.forEach((item, index) => expectString(ctx, item, `${path}[${index}]`, options.maxChars));
 }
 
+function expectOptionalStringArray(
+  ctx: ValidationContext,
+  value: unknown,
+  path: string,
+  options: { maxItems?: number; maxChars?: number } = {}
+) {
+  if (value === undefined) return;
+  expectStringArray(ctx, value, path, options);
+}
+
+function validateSource(ctx: ValidationContext, source: unknown, path: string) {
+  if (!isRecord(source)) {
+    fail(ctx, path, 'expected a source object');
+    return;
+  }
+  expectOptionalString(ctx, source.article, `${path}.article`, 96);
+  expectOptionalString(ctx, source.section, `${path}.section`, 140);
+  expectOptionalStringArray(ctx, source.refs, `${path}.refs`, { maxItems: 8, maxChars: 160 });
+}
+
+function validateHighlights(ctx: ValidationContext, highlights: unknown, path: string, lineCount: number) {
+  if (highlights === undefined) return;
+  if (!Array.isArray(highlights)) {
+    fail(ctx, path, 'expected an array of positive line numbers');
+    return;
+  }
+  highlights.forEach((line, index) => {
+    if (!Number.isInteger(line) || line < 1) {
+      fail(ctx, `${path}[${index}]`, 'expected a positive integer');
+      return;
+    }
+    if (lineCount > 0 && line > lineCount) {
+      fail(ctx, `${path}[${index}]`, `line ${line} exceeds code length (${lineCount})`);
+    }
+  });
+}
+
 function validateBaseSlide(ctx: ValidationContext, slide: Record<string, unknown>, path: string) {
   expectString(ctx, slide.id, `${path}.id`, 64);
   expectString(ctx, slide.title, `${path}.title`, SLIDE_LIMITS.titleChars);
@@ -186,6 +223,7 @@ function validateBaseSlide(ctx: ValidationContext, slide: Record<string, unknown
   if (slide.appendix !== undefined && typeof slide.appendix !== 'boolean') {
     fail(ctx, `${path}.appendix`, 'expected a boolean');
   }
+  if (slide.source !== undefined) validateSource(ctx, slide.source, `${path}.source`);
 }
 
 function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
@@ -286,6 +324,7 @@ function validateSlide(ctx: ValidationContext, slide: unknown, index: number) {
         fail(ctx, `${path}.code`, `too many lines (${lineCount} > ${SLIDE_LIMITS.codeLines})`);
       }
       expectOptionalString(ctx, slide.language, `${path}.language`, 24);
+      validateHighlights(ctx, slide.highlights, `${path}.highlights`, lineCount);
       break;
     }
     case 'takeaways':

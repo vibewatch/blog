@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const deckDir = join(root, 'content/slides');
+const postDir = join(root, 'content/posts');
 const limits = {
   titleChars: 92,
   subtitleChars: 180,
@@ -19,6 +20,31 @@ const limits = {
 
 const errors = [];
 let slideCount = 0;
+
+function deckSlugFromFile(file) {
+  return file.replace(/\.deck\.json$/, '');
+}
+
+function postSlugFromFile(file) {
+  return file.replace(/\.md$/, '');
+}
+
+function publicPostSlug(file) {
+  const fallback = postSlugFromFile(file);
+  const body = readFileSync(join(postDir, file), 'utf8');
+  const frontmatter = body.match(/^---\s*([\s\S]*?)\s*---/)?.[1] ?? '';
+  const slug = frontmatter.match(/^slug:\s*(?:"([^"]+)"|'([^']+)'|([^\n#]+))/m);
+  return String(slug?.[1] ?? slug?.[2] ?? slug?.[3] ?? fallback).trim();
+}
+
+function loadArticleSlugs() {
+  if (!existsSync(postDir)) return new Set();
+  return new Set(
+    readdirSync(postDir)
+      .filter((file) => file.endsWith('.md'))
+      .map((file) => publicPostSlug(file))
+  );
+}
 
 function textLength(value) {
   return String(value ?? '').replace(/\s+/g, ' ').trim().length;
@@ -64,6 +90,46 @@ function expectStringArray(file, value, path, { maxItems, maxChars } = {}) {
   value.forEach((item, index) => expectString(file, item, `${path}[${index}]`, maxChars));
 }
 
+function expectOptionalStringArray(file, value, path, options = {}) {
+  if (value === undefined) return;
+  expectStringArray(file, value, path, options);
+}
+
+function validateSource(file, source, path) {
+  if (!isRecord(source)) {
+    add(file, path, 'expected a source object');
+    return;
+  }
+  expectOptionalString(file, source.article, `${path}.article`, 96);
+  expectOptionalString(file, source.section, `${path}.section`, 140);
+  expectOptionalStringArray(file, source.refs, `${path}.refs`, { maxItems: 8, maxChars: 160 });
+}
+
+function validateHighlights(file, highlights, path, lineCount) {
+  if (highlights === undefined) return;
+  if (!Array.isArray(highlights)) {
+    add(file, path, 'expected an array of positive line numbers');
+    return;
+  }
+  highlights.forEach((line, index) => {
+    if (!Number.isInteger(line) || line < 1) {
+      add(file, `${path}[${index}]`, 'expected a positive integer');
+      return;
+    }
+    if (lineCount > 0 && line > lineCount) {
+      add(file, `${path}[${index}]`, `line ${line} exceeds code length (${lineCount})`);
+    }
+  });
+}
+
+function expectUnique(seen, value, file, path, label) {
+  if (seen.has(value)) {
+    add(file, path, `${label} duplicates ${seen.get(value)}`);
+    return;
+  }
+  seen.set(value, file);
+}
+
 function validateSlide(file, slide, index, ids) {
   const path = `.slides[${index}]`;
   if (!isRecord(slide)) {
@@ -78,6 +144,10 @@ function validateSlide(file, slide, index, ids) {
   expectString(file, slide.title, `${path}.title`, limits.titleChars);
   expectOptionalString(file, slide.kicker, `${path}.kicker`, 60);
   expectOptionalString(file, slide.speakerNotes, `${path}.speakerNotes`, 1400);
+  if (slide.appendix !== undefined && typeof slide.appendix !== 'boolean') {
+    add(file, `${path}.appendix`, 'expected a boolean');
+  }
+  if (slide.source !== undefined) validateSource(file, slide.source, `${path}.source`);
 
   switch (slide.layout) {
     case 'title':
@@ -143,9 +213,14 @@ function validateSlide(file, slide, index, ids) {
       break;
     case 'code':
       expectString(file, slide.code, `${path}.code`, 1800);
-      if (typeof slide.code === 'string' && slide.code.split('\n').length > limits.codeLines) {
-        add(file, `${path}.code`, `too many lines (${slide.code.split('\n').length} > ${limits.codeLines})`);
+      if (typeof slide.code === 'string') {
+        const lineCount = slide.code.split('\n').length;
+        if (lineCount > limits.codeLines) {
+          add(file, `${path}.code`, `too many lines (${lineCount} > ${limits.codeLines})`);
+        }
+        validateHighlights(file, slide.highlights, `${path}.highlights`, lineCount);
       }
+      expectOptionalString(file, slide.language, `${path}.language`, 24);
       break;
     case 'takeaways':
       expectStringArray(file, slide.items, `${path}.items`, { maxItems: limits.takeaways, maxChars: 130 });
@@ -165,6 +240,8 @@ function validateDeck(file, deck) {
   expectString(file, deck.articleSlug, '.articleSlug', 96);
   expectString(file, deck.title, '.title', 140);
   expectOptionalString(file, deck.subtitle, '.subtitle', 220);
+  expectOptionalString(file, deck.date, '.date', 32);
+  expectOptionalString(file, deck.theme, '.theme', 48);
 
   if (!Array.isArray(deck.slides) || deck.slides.length === 0) {
     add(file, '.slides', 'expected at least one slide');
@@ -175,21 +252,51 @@ function validateDeck(file, deck) {
   deck.slides.forEach((slide, index) => validateSlide(file, slide, index, ids));
 }
 
+function validateDeckCollection(records) {
+  const articleSlugs = loadArticleSlugs();
+  const deckSlugs = new Map();
+  const sourceArticles = new Map();
+
+  records.forEach(({ file, deck }) => {
+    if (!isRecord(deck)) return;
+
+    if (typeof deck.slug === 'string') {
+      const expected = deckSlugFromFile(file);
+      if (deck.slug !== expected) {
+        add(file, '.slug', `expected to match filename slug "${expected}"`);
+      }
+      expectUnique(deckSlugs, deck.slug, file, '.slug', `deck slug "${deck.slug}"`);
+    }
+
+    if (typeof deck.articleSlug === 'string') {
+      if (!articleSlugs.has(deck.articleSlug)) {
+        add(file, '.articleSlug', `article "${deck.articleSlug}" was not found in content/posts frontmatter slugs`);
+      }
+      expectUnique(sourceArticles, deck.articleSlug, file, '.articleSlug', `articleSlug "${deck.articleSlug}"`);
+    }
+  });
+}
+
 if (!existsSync(deckDir)) {
   console.log('No slide decks found.');
   process.exit(0);
 }
 
 const files = readdirSync(deckDir).filter((file) => file.endsWith('.deck.json')).sort();
+const records = [];
 
 for (const file of files) {
   const fullPath = join(deckDir, file);
   try {
-    validateDeck(file, JSON.parse(readFileSync(fullPath, 'utf8')));
+    const deck = JSON.parse(readFileSync(fullPath, 'utf8'));
+    validateDeck(file, deck);
+    records.push({ file, deck });
   } catch (error) {
     add(file, '', error instanceof Error ? error.message : String(error));
   }
 }
+
+validateDeckCollection(records);
 
 if (errors.length > 0) {
   console.error(`Slide validation failed with ${errors.length} issue(s):`);

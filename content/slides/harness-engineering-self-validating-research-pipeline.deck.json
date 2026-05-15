@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "slug": "harness-engineering-self-validating-research-pipeline",
+  "articleSlug": "harness-engineering-self-validating-research-pipeline",
+  "title": "Harness Engineering",
+  "subtitle": "Shipping a self-validating research pipeline driven end-to-end by a coding agent — without a human babysitter and without an LLM at the rendering edge.",
+  "date": "2026-05-08",
+  "theme": "quiet-broadsheet",
+  "slides": [
+    {
+      "id": "title",
+      "layout": "title",
+      "kicker": "Harness engineering",
+      "title": "Shipping a self-validating research pipeline",
+      "subtitle": "How a coding agent produces structured, evidence-backed company research at scale — and why the website never calls an LLM.",
+      "meta": "Yingting Huang · May 2026",
+      "speakerNotes": "Frame the talk: this is not a story about prompting. It is about the deterministic code surrounding the agent — the harness — that turns a fuzzy executor into a reliable production system. The reference site, startup.genisisiq.com, is a structured library of diligence reports. Every claim resolves to a quoted excerpt and a canonical URL."
+    },
+    {
+      "id": "scoreboard",
+      "layout": "statement",
+      "kicker": "What it buys you",
+      "title": "What harness engineering buys you",
+      "statement": "Roughly 9,500 lines of harness — scripts, schemas, internal docs — produced 46 complete reports, 9,400 cited sources, and 14,400 atomic claims. Fully automated. Fully reproducible.",
+      "supports": [
+        "Every claim resolves to a quoted excerpt and a canonical URL.",
+        "The agent writes the content; the website never calls an LLM.",
+        "Static Astro build over typed YAML — no SSR, no inference at runtime."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "What the site is" },
+      "speakerNotes": "This is the headline ratio. Invest in the well, and the agent does the digging. The point is not that the agent is impressive — it is that the harness makes the agent's mistakes legible and its corrections cheap, so the same model can keep producing usable artifacts run after run."
+    },
+    {
+      "id": "mental-model",
+      "layout": "section",
+      "kicker": "Mental model",
+      "title": "Don't ask the agent to write a report",
+      "statement": "Ask it to run a pipeline. That distinction does most of the work."
+    },
+    {
+      "id": "pipeline",
+      "layout": "diagram",
+      "kicker": "Pipeline",
+      "title": "Eight chapters, one tight loop",
+      "diagram": {
+        "mermaid": "flowchart TB\n  Input[user input] --> Ctx[load runtime context]\n  Ctx --> Run[create report run]\n  Run --> Loop{for each<br/>of 8 chapters}\n  Loop --> Gather[gather sources]\n  Gather --> Draft[draft chapter YAML]\n  Draft --> Gate[chapter gate]\n  Gate -->|fail| Draft\n  Gate -->|pass| Loop\n  Loop --> Final[finalize:<br/>meta · ledger ·<br/>cross-chapter]\n  Final --> Out[YAML artifacts]\n  Out --> Site[Astro static build]",
+        "alt": "User input flows through context loading, an eight-chapter draft-and-gate loop, finalization, and a static Astro build.",
+        "caption": "Live render of the article's pipeline diagram."
+      },
+      "bullets": [
+        "Every step is bound to a specific command, schema, and failure mode.",
+        "The instruction surface is under a hundred lines; policy lives in config.",
+        "The agent never has to remember the rules — it re-reads them every loop."
+      ],
+      "speakerNotes": "Each chapter is its own gated subprocess. The agent gathers sources, drafts the chapter as YAML, and runs the chapter gate. Failures bounce back into draft until they pass. Finalization is its own deterministic step that writes the meta, ledger, and cross-chapter artifacts."
+    },
+    {
+      "id": "yaml-world-model",
+      "layout": "section",
+      "kicker": "World model",
+      "title": "YAML is the world model",
+      "statement": "Every report is a typed YAML dataset, not a markdown document."
+    },
+    {
+      "id": "yaml-payoff",
+      "layout": "bullets",
+      "kicker": "Why typed YAML",
+      "title": "Why typed YAML pays off",
+      "lede": "A schema defines the envelope, ID grammar, controlled vocabularies, figure contracts, and a shared regex for inline claim refs.",
+      "bullets": [
+        "The agent cannot bullshit silently — every enum miss fails the gate with a one-line fix.",
+        "The renderer needs no defensive layer: figure shapes are guaranteed valid at validation time.",
+        "All 46 reports are isomorphic, so sector indexes and 'top-rated' rollups are trivial.",
+        "A CI step replays every historical report through the current schema — no quiet corruption."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "YAML as the world model" },
+      "speakerNotes": "The schema covers about two dozen controlled vocabularies — source type, stance, claim type, figure type, recommendation, callout type. Every figure type has a renderer contract: a timeline must have items; a DAG must have nodes and edges. The renderer does not guard against shape errors because the gate guarantees them."
+    },
+    {
+      "id": "workflow-config",
+      "layout": "section",
+      "kicker": "Constitution",
+      "title": "Workflow is configuration, not prompt",
+      "statement": "One config file is the agent's brief, the validator's rulebook, and the policy layer — all at once."
+    },
+    {
+      "id": "config-owns",
+      "layout": "bullets",
+      "kicker": "What the config owns",
+      "title": "What that single config file owns",
+      "lede": "Edit one line; the next agent loop sees the new rule. Markdown the agent reads contains zero policy.",
+      "bullets": [
+        "Chapter briefs: descriptions, planned tables and figures, evidence strategy, quality bar.",
+        "Per-chapter and per-report gates: minimum sources, distinct domains, paywall caps.",
+        "Agent policies: research rules, hard rules, retry policy, treatment of volatile facts.",
+        "The agent reads the projection of these rules — there is no second copy to drift against."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "Workflow as configuration, not prompt" },
+      "speakerNotes": "This eliminates the classic three-way drift where the docs say one thing, the config says another, and the agent invents a third. Want one filing-type source in financials? Edit a single line; everything downstream picks it up automatically on the next run."
+    },
+    {
+      "id": "url-fetcher",
+      "layout": "section",
+      "kicker": "Tool design",
+      "title": "Why I rewrote the URL fetcher",
+      "statement": "Off-the-shelf 'fetch a URL' tools handle blogs. They don't handle SEC filings, paywalled news, anti-bot shields, or PDFs."
+    },
+    {
+      "id": "fetch-tool",
+      "layout": "bullets",
+      "kicker": "Fetch tool",
+      "title": "One default command, a few escape hatches",
+      "lede": "An agent's attention is a token budget. Every parallel path is a chance to choose wrong.",
+      "bullets": [
+        "Browser fingerprint rotation across TLS / HTTP-2 identity profiles, picked per host.",
+        "Per-host fast-paths plus reader-proxy and Wayback Machine fallbacks when origins refuse.",
+        "First-class PDF handling: magic-byte detect, pipe through extractor, return clean text.",
+        "Boilerplate stripping by default; a flag for product and pricing pages where chrome is the content.",
+        "Disk cache with TTL and structured JSON output, not a blob to re-parse."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "Why I rewrote the URL fetcher" },
+      "speakerNotes": "The dominant failure mode for naive fetchers is silent: 200 OK with a cookie-consent interstitial as the body. The agent treats the interstitial as evidence. The replacement tool always returns typed fields like status, finalUrl, contentType, extractionMode, and truncated, so the agent can branch on shape rather than re-parsing prose."
+    },
+    {
+      "id": "well",
+      "layout": "section",
+      "kicker": "Harness",
+      "title": "Putting the agent in a well",
+      "statement": "An LLM is a strong but easily-distracted executor. Surround it with deterministic code that makes its mistakes legible and its corrections cheap."
+    },
+    {
+      "id": "validator-loop",
+      "layout": "diagram",
+      "kicker": "Feedback channel",
+      "title": "The chapter gate is the agent's CI",
+      "diagram": {
+        "mermaid": "flowchart LR\n  Draft[chapter draft] --> Check[chapter gate]\n  Check --> Fail{pass?}\n  Fail -->|no| Out[structured output:<br/>failures · warnings ·<br/>cascade-suppressed ·<br/>retry order]\n  Out --> Fix[agent fixes top<br/>of retry order]\n  Fix --> Draft\n  Fail -->|yes| Next[next chapter]",
+        "alt": "Chapter draft enters the gate; failure produces a structured retry order the agent fixes top-down before re-drafting.",
+        "caption": "Live render of the harness's draft-and-gate loop."
+      },
+      "bullets": [
+        "The validator returns structured entries, not prose.",
+        "The agent switches on a stable enum, never NLP-parses a message.",
+        "Failures are sorted upstream-first so fixes don't re-break what just resolved."
+      ],
+      "speakerNotes": "Compare this to the typical 'here is some markdown, please fix it' loop. The agent here behaves like a junior engineer reading a CI report: fix the top item, re-run, see what's left."
+    },
+    {
+      "id": "four-levers",
+      "layout": "bullets",
+      "kicker": "Four levers",
+      "title": "Four levers turn the loop into CI",
+      "bullets": [
+        "Stable failure dimensions — ~50 enums like tableShape or claimRefMissing. No NLP-parsing.",
+        "One-line fixes per dimension, back-filled with specifics: 'add 2 more sources, one primary-tier'.",
+        "Cascade suppression: mark root causes; hide derivative failures until they retest automatically.",
+        "Retry precedence: upstream causes first, then corroboration, depth, and references."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "Harness engineering: putting the agent in a well" },
+      "speakerNotes": "Each dimension owns its own short, executable suggestion. Many are templated and back-fill specifics from the failure context. The instructions don't carry a duplicated 'how to fix a table' — the validator owns that knowledge, and the agent reads what the validator emits."
+    },
+    {
+      "id": "small-additions",
+      "layout": "bullets",
+      "kicker": "High leverage",
+      "title": "Smaller, high-leverage additions",
+      "bullets": [
+        "Object-level aggregation: 'table T102 has 2 problems' beats two free-floating entries.",
+        "Global hints when a dimension fires on three or more objects — fix the pattern, not the symptom.",
+        "Acknowledged warnings: dismiss with a written justification instead of inventing content.",
+        "Multiple output formats: text for humans, grep-friendly for shells, JSON for programs.",
+        "Fail-safe retry budget: each retry must strictly reduce the failure count or stop."
+      ],
+      "source": { "article": "harness-engineering-self-validating-research-pipeline", "section": "Harness engineering: putting the agent in a well" },
+      "speakerNotes": "The retry budget invariant is the unsung hero. It kills the 'fix one, break one' oscillation without any clever heuristics. Either the failure count goes down each round, or the loop stops and surfaces the regression for human attention."
+    },
+    {
+      "id": "boring-website",
+      "layout": "section",
+      "kicker": "Render edge",
+      "title": "The website is intentionally boring",
+      "statement": "Static HTML, no database, no SSR, no runtime LLM. The semantic content is decided at build time."
+    },
+    {
+      "id": "render-pipeline",
+      "layout": "diagram",
+      "kicker": "Render pipeline",
+      "title": "Renderer and validator share their contracts",
+      "diagram": {
+        "mermaid": "flowchart LR\n  YAML[YAML reports] --> Loader[Astro content loader]\n  Loader --> Pages[run pages · sectors ·<br/>top-rated · search]\n  Pages --> Renderers[diligence renderer ·<br/>figure renderer ·<br/>table renderer]\n  Contracts[shared figure<br/>contracts] --> Renderers\n  Contracts --> Validator[chapter gate]\n  Renderers --> HTML[static HTML +<br/>print stylesheet]",
+        "alt": "YAML reports flow through an Astro loader and renderers that share figure contracts with the chapter gate, producing static HTML.",
+        "caption": "Live render of the site's intentionally boring pipeline."
+      },
+      "bullets": [
+        "The renderer contract file is also imported by the validator — they cannot drift.",
+        "Inline claim refs share their regex with the validator; one toggle hides every reference.",
+        "Native window.print() plus CSS Paged Media gives clean A4 PDFs without Puppeteer."
+      ],
+      "speakerNotes": "Adding a new figure type is a single-location change: define its contract once, and both the renderer and the gate learn about it simultaneously. The print pipeline is worth a moment — page numbers, repeating headers, no broken tables, all from CSS Paged Media."
+    },
+    {
+      "id": "takeaways",
+      "layout": "takeaways",
+      "kicker": "Takeaways",
+      "title": "Three sentences to take away",
+      "items": [
+        "YAML is the world model, not a rendering format. Every bug has a single home.",
+        "Workflow is configuration, not prompt. The agent reads a projection — never the rules.",
+        "The validator is the agent's feedback channel: stable dimensions, one-line fixes, cascade suppression, retry precedence.",
+        "9,500 lines of harness, 46 reports, 14,400 cited claims. Invest in the well; the agent does the digging."
+      ],
+      "speakerNotes": "Close on the ratio. The agent is the labor; the harness is the capital. The interesting engineering question of this era is not 'which model' but 'what surrounds the model'."
+    }
+  ]
+}
