@@ -60,7 +60,7 @@ SpecialPrimeNumberCandidates
 
 The URL is https://aka.ms/99999517
 
-Visiting this URL you will get below hints
+Visiting this URL gives you the following hints:
 
 Well done, my friend. It's time to meet. Let's go for a virtual sTREEt tour... Across the Big Apple city, there is a special place with Turkish Hazelnut and four Schubert Chokecherries within 66-meters radius area. Go 'out' and look for me there, near the smallest American Linden tree (within the same area). Find me and the bottom line: my key message to you. Cheers, El Puente.
 
@@ -147,7 +147,7 @@ Hint is here
 print Message=Decrypt(@"20INznpGzmkmK2NlZ0JILtO4OoYhOoYUB0OrOoTl5mJ3KgXrB0[8LTSSXUYhzUY8vmkyKUYevUYrDgYNK07yaf7soC3kKgMlOtHkLt[kZEclBtkyOoYwvtJGK2YevUY[v65iLtkeLEOhvtNlBtpizoY[v65yLdOkLEOhvtNlDn5lB07lOtJIDmllzmJ4vf7soCpiLdYIK0[eK27soleqO6keDpYp2CeH5d\F\fN6aQT6aQL[aQcUaQc[aQ57aQ5[aQDG", "ASHES to ASHES")
 ```
 
-### Final message from EI Puente
+### Final message from El Puente
 
 "Message": Impressive, you got it right! Something BIG is going to happen...Keep the next hint close to you, it will help you. We will be in touch soon.El Puente.  
 wytaPUJM!PS:2,7,17,29,42,49,58,59,63  

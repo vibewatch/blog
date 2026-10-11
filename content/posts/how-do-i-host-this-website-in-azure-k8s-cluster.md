@@ -91,7 +91,7 @@ Note: you can use `az account list-locations` to get a complete list of location
 
 This website is based on [Ghost](https://ghost.org/), the professional publishing platform. To publish this website to the internet, we also need a public IP address as well as an SSL certificate. So I am going to deploy and use the following applications in the K8S cluster.
 
-*   cert-manager (to request a SSL certificate)
+*   cert-manager (to request an SSL certificate)
 *   nginx-ingress controller (expose website to internet)
 *   kubeapps (web based helm UI)
 *   ghost (my website)
@@ -459,7 +459,7 @@ Once the deployment is finished, open a browser and access **GHOST\_URL**/. It s
 
 As we use the nginx-ingress controller, by default it only allows uploading files up to 1MB. If the uploaded image size exceeds 1MB, Ghost will report "The image you uploaded was larger than the maximum file size your server allows." Luckily, nginx ingress provides [annotations](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md) for specific ingress objects to customize their behavior. We can use the "nginx.ingress.kubernetes.io/proxy-body-size" annotation to control nginx behavior.
 
-So I followed below steps modified ingress object
+I followed the steps below to modify the Ingress object:
 
 ### 2.5.1 List ingress object
 
@@ -549,7 +549,7 @@ Then, from a browser, visit the URL below, and the Kubernetes dashboard should b
 
 ## 4.2 Services
 
-There are 3 types of services, ClusterIP, NodePort and LoadBalancer. For example
+The three Service types used here are ClusterIP, NodePort, and LoadBalancer. ExternalName is another type, but it is not used in this example.
 
 ```bash
 kubectl get svc --all-namespaces
@@ -568,9 +568,9 @@ kube-system   tiller-deploy                          ClusterIP      10.0.202.135
 
 When accessing a Service, the traffic flow will be:
 
-1.  ClusterIP: <ClusterIP>:<Port> -> <Pod IP>:<Port IP>
-2.  NodePort: <NodeIP>:<NodePort> -> <Pod IP>:<Port IP>
-3.  LoadBalancer:<LBIP>:<LBPort> -> <Pod IP>:<Port IP>
+1.  ClusterIP: `<ClusterIP>:<Port> -> <Pod IP>:<TargetPort>`
+2.  NodePort: `<NodeIP>:<NodePort> -> <Pod IP>:<TargetPort>`
+3.  LoadBalancer: `<LBIP>:<LBPort> -> <Pod IP>:<TargetPort>`
 
 Specifically, LoadBalancer exposes the Service externally using a cloud provider’s load balancer. In Azure, if you check the setting of the load balancer's public IP, you will see it is using "Floating IP". When "Floating IP" is enabled, Azure will directly send packets to the agent node without modifying their SrcIP and DestIP.
 ![floating-ip](/assets/posts/how-do-i-host-this-website-in-azure-k8s-cluster/floating-ip.jpg)  

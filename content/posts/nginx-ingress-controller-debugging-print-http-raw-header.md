@@ -1,5 +1,5 @@
 ---
-title: "Nginx Ingress Controller Debugging - Print Http Raw Header"
+title: "Nginx Ingress Controller Debugging - Print Raw HTTP Headers"
 slug: "nginx-ingress-controller-debugging-print-http-raw-header"
 date: "2019-09-23 08:36:05"
 updated: "2019-09-23 08:36:48"
@@ -12,11 +12,13 @@ feature_image: "/assets/posts/nginx-ingress-controller-debugging-print-http-raw-
 authors: ["Yingting Huang"]
 tags: ["Nginx", "Kubernetes", "Linux"]
 ---
-# Nginx Ingress Controller Debugging - Print Http Raw Header
+# Nginx Ingress Controller Debugging - Print Raw HTTP Headers
+
+Use this temporary debugging configuration only in a controlled environment: raw headers can contain cookies and authorization tokens. Remove it after collecting the required diagnostics.
 
 1.  kubectl exec YOUR\_NGINX\_INGRESS\_CONTROLLER\_POD -it -- cat /etc/nginx/template/nginx.tmpl > nginx.tmpl
     
-2.  Open nginx.tmpl, add below code block after `location {{ $path }} {`
+2.  Open nginx.tmpl and add the following code block after `location {{ $path }} {`:
     
 
 ```lua

@@ -1,5 +1,5 @@
 ---
-title: "Cheap Visual Studio Code(VSCode) Online Solution"
+title: "Cheap Visual Studio Code (VS Code) Online Solution"
 slug: "cheap-visual-studio-code-vscode-online-solution"
 date: "2019-11-05 03:36:31"
 updated: "2019-11-05 06:21:18"
@@ -12,7 +12,7 @@ feature_image: ""
 authors: ["Yingting Huang"]
 tags: ["VSCode", "Debugging", "Kubernetes"]
 ---
-# Cheap Visual Studio Code(VSCode) Online Solution
+# Cheap Visual Studio Code (VS Code) Online Solution
 
 Microsoft just released [Visual Studio Code Online](https://visualstudio.microsoft.com/services/visual-studio-online/) preview.
 
@@ -27,6 +27,7 @@ I published the Dockerfile and Kubernetes deployment files in my [repository](ht
 
 I also captured some screenshots to demonstrate what you can do from the online service.
 
-1.  Online editing of big git repository  
+1.  Online editing of a large Git repository
     ![Linux-VSCode](/assets/posts/cheap-visual-studio-code-vscode-online-solution/linux-vscode.jpg)
-2.  Debugging python code![Python-Debug-VSCode](/assets/posts/cheap-visual-studio-code-vscode-online-solution/python-debug-vscode.jpg)
+2.  Debugging Python code
+    ![Python-Debug-VSCode](/assets/posts/cheap-visual-studio-code-vscode-online-solution/python-debug-vscode.jpg)

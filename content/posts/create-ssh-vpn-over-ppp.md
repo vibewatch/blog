@@ -14,17 +14,26 @@ tags: []
 ---
 # Create SSH VPN over PPP
 
-sudo vi /lib/systemd/system/pppd.service
+This example runs PPP over an SSH connection. Install `ppp` on both hosts and configure key-based SSH access to the remote host before starting the service. Replace the remote IP address with your own.
 
-\[Unit\]  
-Description=PPP over Serial link  
+Create `/etc/systemd/system/pppd.service` with the following content:
+
+```ini
+[Unit]
+Description=PPP over SSH
 After=network.target
 
-\[Service\]  
-ExecStart=/usr/sbin/pppd nodetach noauth silent nodeflate pty "/usr/bin/ssh root@<your\_remote\_server\_ip> /usr/sbin/pppd nodetach notty noauth" ipparam vpn 172.18.8.1:172.18.8.2  
+[Service]
+ExecStart=/usr/sbin/pppd nodetach noauth silent nodeflate pty "/usr/bin/ssh root@<your_remote_server_ip> /usr/sbin/pppd nodetach notty noauth" ipparam vpn 172.18.8.1:172.18.8.2
 Restart=on-failure
 
-\[Install\]  
+[Install]
 WantedBy=multi-user.target
+```
 
-sudo systemctl reload pppd
+Reload systemd's unit definitions, then enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now pppd
+```

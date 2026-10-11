@@ -36,7 +36,7 @@ There are several motivations for organizations to run large language models pri
 
 Deploying large language models for inference is compute-intensive, requiring high-end GPUs and specialized hardware that can be very expensive to provision on cloud platforms. For example, an 80GB Nvidia A100 GPU on Azure can generate approximately 60 completion tokens per second when running a 13 billion parameter model like Vicuna. If we calculate the monthly cost of running just a single A100 virtual machine in Azure's East US region, it comes out to $2,680. This one GPU could generate around 157 million tokens per month.
 
-In contrast, conversational services like ChatGPT offered through Azure OpenAI are much more cost-effective. At Azure OpenAI ChatGPT's rate of $0.0015 per token, those 157 million tokens would only cost $236.52. Additionally, ChatGPT provides a smoother conversational experience compared to a basic 13B parameter model.
+In contrast, at the historical rate of $0.0015 per 1,000 tokens used in this comparison, 157 million tokens would cost about $235.50. Actual Azure OpenAI costs depend on the model, separate input/output rates, and current pricing; this is an illustrative calculation, not a current quote. Additionally, ChatGPT provides a smoother conversational experience compared to a basic 13B parameter model.
 
 Beyond raw compute costs, the development, infrastructure, and maintenance required to build and deploy production-grade private language models at scale poses further operational challenges.
 
@@ -45,13 +45,13 @@ Beyond raw compute costs, the development, infrastructure, and maintenance requi
 This proof-of-concept leverages Azure Kubernetes Service (AKS), quantization, and batch inference to enable a cost-optimized private deployment of large language models while maintaining scalability and fault tolerance.  
 Key techniques:
 
-*   AKS enables the use of spot instances and GPUs through configurable node pools. Spot instances significantly reduce compute costs compared to on-demand instance pricing. To handle potential node evictions, the AKS cluster autoscaler component monitors pod resource requirements and calculates the capacity needed for scheduled GPU workloads. It then automatically adjusts node counts to match workload demands. Assuming a 5% eviction rate, two GPU workload replicas (each replica on a separate node) would have at least a 99.75% chance of staying available to serve requests. This allows the cluster to leverage cost savings from spot instances while maintaining available capacity.
-*   Quantization is a technique to decrease model size and compute requirements for large language models (LLMs). It works by converting the high-precision floating point values used to represent weights and activations into lower-precision fixed-point representations that require less memory. This weight sharing through lower numeric precision allows for substantial reductions in model size and faster inference times. Some well-known quantization methods for LLMs include [GGML](https://github.com/ggerganov/ggml) and [GPT-Q](https://arxiv.org/abs/2210.17323).
+*   AKS enables the use of spot instances and GPUs through configurable node pools. Spot instances significantly reduce compute costs compared to on-demand instance pricing. To handle potential node evictions, the AKS cluster autoscaler component monitors pod resource requirements and calculates the capacity needed for scheduled GPU workloads. It then automatically adjusts node counts to match workload demands. If each of two replicas has an independent 5% probability of eviction over the same interval, the probability that at least one remains is `1 - 0.05² = 99.75%`. This simplified calculation is not an availability guarantee: evictions can be correlated, and replacement GPU capacity may be unavailable.
+*   Quantization reduces the memory required by large language models by representing weights, and sometimes activations, at lower numeric precision. It can also accelerate inference when supported by the hardware and runtime, though accuracy and speed must be measured for the chosen model. [GGML](https://github.com/ggerganov/ggml) supports quantized inference, while [GPTQ](https://arxiv.org/abs/2210.17323) is a weight-quantization method.
 *   Batching groups multiple inference requests into a single batch call instead of handling them individually. This improves utilization for sporadic workloads. Batching is particularly beneficial for compute-intensive LLMs that can take several seconds per request. [vLLM](https://github.com/vllm-project/vllm) and [text-generation-inference](https://github.com/huggingface/text-generation-inference) are two common batch inference frameworks for LLMs. In the next section, we will leverage vLLM to demonstrate the advantages of batching in our proof-of-concept deployment.
 
 ![Architecture Design](https://raw.githubusercontent.com/huangyingting/llm-inference/main/docs/images/LLM-AKS.svg)
 
-By integrating these optimization methods, significant speedup can be achieved without sacrificing model accuracy. This results in faster inference latency and higher throughput for LLMs, enabling cost-effective and scalable private deployment.
+By integrating these optimization methods, higher throughput and lower costs can be achieved. Measure model quality and request latency as well: quantization can affect accuracy, and batching can trade latency for throughput.
 
 ## Proof-of-concept deployment and considerations
 
@@ -59,7 +59,7 @@ Before starting, ensure you have the following prerequisites:
 
 *   An existing AKS cluster. If you need to create one, you can use the [Azure CLI](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli), [Azure PowerShell](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-powershell), or the [Azure portal](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal).
 *   The `aks-preview` extension installed and the `GPUDedicatedVHDPreview` feature registered. Follow these [instructions](https://docs.microsoft.com/en-us/azure/aks/gpu-cluster#enable-the-gpu-dedicated-vhd-preview-feature) to set them up.
-*   A container image for LLM inference. For this PoC, we will use [vLLM](https://github.com/vllm-project/vllm) and [this image](ghcr.io/huangyingting/llm-inference-vllm:main) built from [this Dockerfile](https://github.com/huangyingting/llm-inference/vllm/Dockerfile)
+*   A container image for LLM inference. For this PoC, we will use [vLLM](https://github.com/vllm-project/vllm) and the image `ghcr.io/huangyingting/llm-inference-vllm:main`, built from [this Dockerfile](https://github.com/huangyingting/llm-inference/blob/main/vllm/Dockerfile).
 
 **NOTE**: For production use, it is recommended to build your own custom image. This provides full control over dependencies and compatibility between the GPU accelerated application and GPU driver on the nodes. Refer to the [CUDA Compatibility and Upgrades](https://docs.nvidia.com/deploy/cuda-compatibility/index.html).
 
@@ -78,7 +78,7 @@ export VM_SIZE=Standard_NC4as_T4_v3
 
 ### Add a GPU spot node pool
 
-Now we can add a spot node pool for GPU nodes to an existing AKS cluster. The following command creates a new node pool named `gpunp` with one node of size `Standard_NC4as_T4_v3`. The node pool will be configured with GPU taints and cluster autoscaler. The GPU taints ensure that only GPU workloads are scheduled on the node pool. The cluster autoscaler automatically adjusts the number of nodes in the node pool based on workload demands. The node pool will also be configured with spot instances to reduce compute costs. The spot-max-price is set to -1 to ensure that the node pool will not be evicted due to price changes. The min-count and max-count are set to 1 to ensure that the node pool always has at least one node available for scheduling.
+Now we can add a spot node pool for GPU nodes to an existing AKS cluster. The following command creates a new node pool named `gpunp` with one node of size `Standard_NC4as_T4_v3`. The node pool will be configured with GPU taints and cluster autoscaler. The GPU taints restrict scheduling to pods with matching tolerations. The cluster autoscaler automatically adjusts the number of nodes in the node pool based on workload demands. The node pool will also be configured with spot instances to reduce compute costs. Setting spot-max-price to -1 avoids price-based eviction, but capacity-based eviction is still possible. The min-count is 1 and max-count is 2, allowing the autoscaler to request a second node for the two-replica deployment; neither setting guarantees spot capacity.
 
 ```shell
 az aks nodepool add \
@@ -99,7 +99,7 @@ az aks nodepool add \
 
 ### Deploy LLM inference service
 
-With the AKS GPU node pool provisioned, we can now deploy the LLM inference service. Using vLLM as an example, the deployment manifests are located [here](https://github.com/huangyingting/llm-inference/vllm/manifests/). There are two manifest options, each using a different storage backend for storing the model files:
+With the AKS GPU node pool provisioned, we can now deploy the LLM inference service. Using vLLM as an example, the deployment manifests are located [here](https://github.com/huangyingting/llm-inference/tree/main/vllm/manifests/). There are two manifest options, each using a different storage backend for storing the model files:
 
 The `vllm-azure-disk.yaml` manifest deploys a `StatefulSet` with 2 replicas and a Service for the LLM inference service. The StatefulSet is configured with pod anti-affinity to ensure the replicas are scheduled on different nodes. It also has tolerations to schedule the replicas on the GPU spot node pool. The Service exposes the LLM inference service on the AKS cluster using a ClusterIP. Each StatefulSet replica mounts a 16GB Azure Disk PersistentVolumeClaim for storing the model files.
 
@@ -107,18 +107,16 @@ The `vllm-azure-files.yaml` manifest deploys a `Deployment` with 2 replicas and 
 
 AKS supports shared disks using block volumes. However, multi-node read/write is not supported on common filesystems like ext4 or xfs - only cluster filesystems allow this. Therefore, shared disks cannot be used for storing model files that need to be accessed from multiple nodes.
 
-AKS taints GPU spot nodes using `nvidia.com/gpu:NoSchedule`, `sku=gpu:NoSchedule` and `kubernetes.azure.com/scalesetpriority=spot:NoSchedule`. To schedule GPU workloads on these nodes, pods need tolerations added to their spec. Creating a namespace with following tolerations ensures all pods within it can be placed on the tainted GPU spot nodes.
+GPU spot nodes in this example have the taints `nvidia.com/gpu:NoSchedule`, `sku=gpu:NoSchedule`, and `kubernetes.azure.com/scalesetpriority=spot:NoSchedule`. To schedule GPU workloads on these nodes, add matching tolerations to the pod specification in each manifest. Create the namespace first:
 
 ```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: llm
-  annotations:
-    scheduler.alpha.kubernetes.io/defaultTolerations: '[{"Key": "kubernetes.azure.com/scalesetpriority", "Operator": "Equal", "Value": "spot", "Effect": "NoSchedule"}, {"Key": "sku", "Operator": "Equal", "Value": "gpu", "Effect": "NoSchedule"}]'
 ```
 
-With the default tolerations set on the `llm` namespace, any pods created within it will automatically have the required tolerations to schedule on GPU spot instance nodes. This gives a straightforward way to deploy GPU workloads leveraging cost-efficient spot instances.
+Apply this namespace definition before deploying the manifests. Namespace annotations do not automatically add tolerations in a standard AKS cluster; the legacy `defaultTolerations` annotation requires a specific admission controller. Keep tolerations in the pod templates and request the GPU resources the model needs.
 
 To begin the deployment by using `StatefulSet`, execute this command:
 
@@ -163,10 +161,12 @@ Events:
   Normal   Pulling                 4s                     kubelet                  Pulling image "ghcr.io/huangyingting/llm-inference-vllm:main"
 ```
 
-We can simulate a node eviction to trigger scaling by the cluster autoscaler. This is done by running the following command, which will evict a node and cause the autoscaler to scale up the node pool:
+We can simulate a spot-node eviction to test the recovery behavior. Retrieve the cluster's node resource group and list its scale sets, then replace `<VMSS_NAME>` with the GPU spot pool's scale set name. Recovery still depends on replacement capacity being available.
 
 ```shell
-az vmss simulate-eviction --resource-group MC_$RESOURCE_GROUP_NAME_$CLUSTER_NAME_$REGION --name $NODE_POOL --instance-id 0
+NODE_RESOURCE_GROUP=$(az aks show --resource-group "$RESOURCE_GROUP_NAME" --name "$CLUSTER_NAME" --query nodeResourceGroup --output tsv)
+az vmss list --resource-group "$NODE_RESOURCE_GROUP" --query "[].name" --output tsv
+az vmss simulate-eviction --resource-group "$NODE_RESOURCE_GROUP" --name "<VMSS_NAME>" --instance-id 0
 ```
 
 ### Test LLM inference

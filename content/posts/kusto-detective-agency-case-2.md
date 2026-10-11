@@ -56,6 +56,8 @@ Votes
 
 ## Case 2 - Solution
 
+The query groups votes by candidate, IP address, and one-second interval, then excludes groups with multiple votes. This is the filtering rule used for this puzzle, not a general fraud-detection rule: real voters can share public IP addresses.
+
 ```kql
 Votes
 | summarize Count = count() by vote, bin(Timestamp, 1s), via_ip

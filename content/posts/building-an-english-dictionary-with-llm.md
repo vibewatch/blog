@@ -78,7 +78,7 @@ Here is the final result for my online dictionary:
 
 This approach provided several advantages:
 
-1.  **Completeness**: It now covers ~80,000 commonly used English words
+1.  **Coverage**: It now contains ~80,000 English word entries from the reference list
 2.  **One-time cost**: No ongoing API fees
 3.  **No rate limits**: The dictionary is stored locally in my app
 4.  **Control**: I could format the definitions exactly as needed for my UI
@@ -94,7 +94,7 @@ To maintain high quality standards for my English dictionary, I implemented a po
 5.  Filtering out words that don't appear in the Common-Words.txt reference list (using case-insensitive matching)
 6.  Consolidating any duplicate words to ensure each entry is unique
 
-This cleaning process ensures the dictionary remains error-free and optimally structured for reliable performance.
+This cleaning process removes structural problems and keeps the dictionary consistently organized. It does not verify the accuracy of generated definitions; ambiguous words, uncommon senses, and usage examples still need review against trusted dictionary sources. Removing hyphenated entries is an app-specific choice, not a rule about valid English words.
 
 ## Conclusion
 

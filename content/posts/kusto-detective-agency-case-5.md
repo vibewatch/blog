@@ -44,7 +44,7 @@ _Anyway, what do you have to lose? Look on an illustrated past, fast forward N d
 
 **Date**: \[\] **Longitude**: \[\] **Latitude**: \[\]
 
-## Solution 5 - Solution
+## Case 5 - Solution
 
 ```kql
 let Joined = ChatLogs
@@ -77,7 +77,7 @@ Users
 | project User, Ip
 ```
 
-**Now we have 4 user's ips to sneak in**
+**Now we have the four users' IP addresses to investigate in the challenge:**
 
 u8819ece9b0 [https://sneakinto.z13.web.core.windows.net/119.10.30.154](https://sneakinto.z13.web.core.windows.net/119.10.30.154)  
 uab8088061c [https://sneakinto.z13.web.core.windows.net/194.243.69.176](https://sneakinto.z13.web.core.windows.net/194.243.69.176)  
@@ -90,7 +90,7 @@ The image below has date info
 
 ![Project X message](/assets/posts/kusto-detective-agency-case-5/project-x-message.png)
 
-The txt below has further hint, **the key is case 4's answer**
+The text file below contains another hint; **the key is Case 4's answer**.
 
 [https://sneakinto.z13.web.core.windows.net/194.243.69.176/utils.txt](https://sneakinto.z13.web.core.windows.net/194.243.69.176/utils.txt)
 
@@ -153,7 +153,7 @@ https://bing.com?q=uncomfortable+%2Belephant+%2Bescapes+%2Bcircus+%2Bbreaks+%2Be
 
 [https://www.bridgemanimages.com/en/meaulle/an-uncomfortable-elephant-the-pachyderm-escapes-from-a-circus-menagerie-breaks-everything-in-the/nomedium/asset/5980623](https://www.bridgemanimages.com/en/meaulle/an-uncomfortable-elephant-the-pachyderm-escapes-from-a-circus-menagerie-breaks-everything-in-the/nomedium/asset/5980623)
 
-The last piece is picture project x's taken day and geo location, which can be retrieved from this this picture
+The last pieces are the date and geographic location of the Project X photo, which can be retrieved from this picture:
 
 [https://sneakinto.z13.web.core.windows.net/146.49.19.37/image3.jpg](https://sneakinto.z13.web.core.windows.net/146.49.19.37/image3.jpg)
 

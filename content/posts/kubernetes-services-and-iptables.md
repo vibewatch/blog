@@ -32,13 +32,13 @@ This post will not cover pod-to-pod communication, as it is out of scope. Pod-to
 > all nodes can communicate with all containers (and vice-versa) without NAT  
 > the IP that a container sees itself as is the same IP that others see it as
 
-Kubernetes has three kinds of Service types, as described in [Publishing services - service types](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
+This article covers three Kubernetes Service types described in [Publishing services - service types](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 *   ClusterIP
 *   NodePort
 *   LoadBalancer
 
-In the following sections, we will discuss each Service one by one.
+In the following sections, we will discuss each Service one by one. The fourth type, `ExternalName`, returns a DNS CNAME record and is outside this article's iptables-focused scope.
 
 # 1 Environment
 
@@ -280,7 +280,7 @@ Name:	redis.default.svc.cluster.local
 Address: 10.0.19.85
 ```
 
-The ClusterIP Service's IP is accessible from external networks as well as from the Pod network. The magic behind it is that kube-proxy will create chains and rules in iptables. For example, below are all iptables chains and rules for Service "redis" (adjusted for readability).
+The ClusterIP Service's IP is normally accessible within the cluster, not directly from external networks. External access requires additional routing or exposure through a NodePort, LoadBalancer, or proxy. In this lab's iptables mode, kube-proxy creates the following chains and rules for Service "redis" (adjusted for readability).
 
 ```bash
 -A KUBE-SERVICES ! -s 10.244.0.0/16 -d 10.0.19.85/32 -p tcp -m comment --comment "default/redis: cluster IP" -m tcp --dport 6379 -j KUBE-MARK-MASQ
@@ -534,7 +534,7 @@ hyperkube 4397 root    6u  IPv4 21849875      0t0  TCP 10.240.0.5:6379 (LISTEN)
 
 ## 3.5 ClusterIP without any endpoints(redis-none)
 
-A ClusterIP Service is always associated with backend pods. It uses a "**selector**" to select backend pods. If backend pods are found based on the **selector**, Kubernetes will create an endpoint object to map to Pod IP:Port. Otherwise, that Service will not have any endpoints.
+A selector-based ClusterIP Service uses its **selector** to find backend pods. Kubernetes creates an endpoint object mapping to Pod IP:Port when matching pods are available; otherwise, the Service has no endpoints. Services without selectors can also use manually managed endpoints, but that is not the case in this example.
 
 For example, if we deploy a ClusterIP service by `kubectl apply -f redis-clusterip-none.yaml` with **selector** "app: redis-none"
 
@@ -1346,7 +1346,7 @@ It is similar to NodePort without any endpoints. The iptables chains and rules a
 
 Wrap it up,
 
-*   There are three types of Service in Kubernetes: ClusterIP, NodePort, and LoadBalancer.
+*   This article covers ClusterIP, NodePort, and LoadBalancer. ExternalName is a fourth Service type that uses DNS rather than these iptables rules.
 *   LoadBalancer Service implicitly includes NodePort and ClusterIP Service.
 *   NodePort Service implicitly includes ClusterIP Service.
 *   Kubernetes injects custom chains into the iptables NAT table to implement its Service mode. Pod network to Service will use DNAT, external network to Service will use SNAT and DNAT, and a Pod connecting to a Service IP it serves will use hairpin NAT.

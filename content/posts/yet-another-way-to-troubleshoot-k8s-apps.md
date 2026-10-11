@@ -31,7 +31,7 @@ With nsenter, you can access the container's namespace and use commands availabl
 
 To use nsenter, we need to get the process ID of the application running in the container. Here are the steps.
 
-## 1.List containers and container IDs
+## 1. List containers and container IDs
 
 Running the command below from the K8S master node (Linux) will output all containers and their corresponding Docker IDs. Since a Pod can have one or more containers, some Pods will have multiple container names and Docker IDs in the output.
 

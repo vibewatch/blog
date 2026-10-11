@@ -16,10 +16,10 @@ tags: ["Load Balancer", "Azure"]
 
 ## 1 AllowAzureLoadBalancerInBound NSG Rule
 
-When an IaaS VM gets deployed in Azure, a default NSG rule named AllowAzureLoadBalancerInBound is created.
+Every Azure network security group (NSG) includes a default rule named AllowAzureLoadBalancerInBound.
 ![Allow Azure Load Balancer inbound NSG rule](/assets/posts/addendum-of-azure-load-balancer-and-nsg-rules/allow-azure-load-balancer-inbound.jpg)
 
-You might wonder what this NSG rule means. Basically, this rule allows the "Azure Load Balancer Health Probe". When an Azure Load Balancer is created, it probes the backend to detect whether the backend service is healthy. The probe packet is sent from the source address "AzureLoadBalancer", and the IP address of "AzureLoadBalancer" is always **168.63.129.16**.
+You might wonder what this NSG rule means. It allows Azure Load Balancer health probes, not application traffic. The load balancer probes the backend to detect whether the backend service is healthy. For IPv4 probes, the source IP is **168.63.129.16**, represented by the `AzureLoadBalancer` service tag.
 
 Refer to [Network security](https://docs.microsoft.com/en-us/azure/virtual-network/security-overview#azure-platform-considerations)
 

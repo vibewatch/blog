@@ -43,7 +43,7 @@ kube-flannel-ds-rk2k2                             1/1       Running   3         
 ...
 ```
 
-Currently Flannel networking supports three backends
+This lab examines three Flannel backends:
 
 *   VXLAN
 *   UDP
@@ -60,7 +60,7 @@ To illustrate how Flannel networking works, we deployed a two-node Flannel K8S c
 
 ### 2.1 Flannel Networking Space
 
-By default, flannel will have a 10.244.X.0/24 subnet allocated to each node, K8S Pod will use IP address from subnet's address space.
+With this lab's configuration, Flannel allocates a 10.244.X.0/24 subnet to each node. Kubernetes Pods use IP addresses from that node's subnet.
 
 ### 2.2 Veth Pair
 
@@ -92,7 +92,7 @@ veth822966d6 Link encap:Ethernet  HWaddr 8a:fa:7b:db:62:3e
 
 ### 2.3 Cni0 Bridge
 
-Interface vethxxxxxxxx is connected to interface cni0, cni0 is a Linux network bridge device, all veth devices will connect to this bridge, so all containers in same node can communicate with each other. cni0 has ip address 10.244.X.1,
+The host-side veth interfaces connect to cni0, a Linux network bridge, so containers on the same node can communicate with each other. In this lab, cni0 has IP address 10.244.X.1.
 
 To check cni0 details, run `ip -d link show cni0`
 
@@ -128,7 +128,7 @@ veth822966d6	 1 PVID Egress Untagged
 
 ### 2.4 VXLAN Device
 
-When the VXLAN backend is being used by Flannel, a VXLAN device whose name is flannel.<vni> will be created. <vni> stands for VXLAN Network Identifier. By default, Flannel sets VNI to 1, which means the default device name is flannel.1. `ip -d link show flannel.1` will show details about this VXLAN device.
+When Flannel uses the VXLAN backend, it creates a device named `flannel.<vni>`, where `<vni>` stands for VXLAN Network Identifier. By default, Flannel sets VNI to 1, so the default device name is flannel.1. `ip -d link show flannel.1` shows details about this VXLAN device.
 
 ```bash
 4: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN mode DEFAULT group default 
@@ -263,7 +263,7 @@ default         10.244.1.1      0.0.0.0         UG    0      0        0 eth0
 10.244.1.0      *               255.255.255.0   U     0      0        0 eth0
 ```
 
-Here comes the question, who has the IP address 10.244.1.1, the answer is "cni0".If we run `ifconfig -a` from node k8snode-342zzth442uje-1, we can see cni0 has the IP address 10.244.1.1.
+Which interface has IP address 10.244.1.1? The answer is cni0. If we run `ifconfig -a` on node k8snode-342zzth442uje-1, we can see that address assigned to cni0.
 
 ```bash
 cni0      Link encap:Ethernet  HWaddr 0a:58:0a:f4:01:01  
@@ -356,7 +356,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
 76:34:2f:c5:51:ec > 8e:d0:f8:0a:41:19, ethertype IPv4 (0x0800), length 98: 10.244.0.5 > 10.244.1.5: ICMP echo reply, id 3584, seq 400, length 64
 ```
 
-Fullly expanded ICMP request packet captured from eth0
+Fully expanded ICMP request packet captured from eth0
 
 ```bash
 Frame 7: 148 bytes on wire (1184 bits), 148 bytes captured (1184 bits)
@@ -463,7 +463,7 @@ Internet Control Message Protocol
     Data (56 bytes)
 ```
 
-Fullly expanded ICMP reply packet captured from eth0
+Fully expanded ICMP reply packet captured from eth0
 
 ```bash
 Frame 8: 148 bytes on wire (1184 bits), 148 bytes captured (1184 bits)
@@ -603,7 +603,7 @@ kubectl get configmaps kube-flannel-cfg -n=kube-system -o yaml > flannel-cfg.yml
     }
 ```
 
-*   Apply new configruation to K8S
+*   Apply the new configuration to Kubernetes
 
 ```bash
 kubectl apply -f flannel-cfg.yml
@@ -613,7 +613,7 @@ kubectl apply -f flannel-cfg.yml
 
 ### 4.2 Understand How Flannel UDP Mode Works
 
-If we run `ipconfig -a` from K8S node, we could see there is no flannel.1 device anymore, instead we have a new device `flannel0` created.
+If we run `ifconfig -a` on a Kubernetes node, flannel.1 is no longer present; a new device named `flannel0` has been created instead.
 
 ```bash
 cni0      Link encap:Ethernet  HWaddr 0a:58:0a:f4:01:01  
@@ -654,7 +654,7 @@ flannel0  Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
 ...
 ```
 
-Flannel0 is a TUN device created by our flanneld daemon process, TUN device provides packet reception and transmission for user space programs. It can be seen as a simple Point-to-Point or Ethernet device, which, instead of receiving packets from physical media, receives them from user space program and instead of sending packets via physical media writes them to the user space program. Which means in UDP mode, `flanneld` is the user space program that will wrap the packet send it over to eth0 device/unwrap the packet received from the eth0. Run `ip -d link show flannel0` to get the detailed infromation of `flannel0`.
+Flannel0 is a TUN device created by the `flanneld` daemon. A TUN device exchanges IP packets with a user-space program rather than a physical network interface. In UDP mode, `flanneld` encapsulates outbound packets in UDP for transmission through eth0 and decapsulates incoming packets. Run `ip -d link show flannel0` for detailed information about the device.
 
 ```bash
 4: flannel0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1472 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 500

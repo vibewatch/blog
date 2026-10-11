@@ -16,11 +16,13 @@ tags: ["OpenVPN", "Azure"]
 
 In this article, I will provide detailed steps to set up an OpenVPN server in Azure.
 
+This guide uses Ubuntu 16.04 and older Easy-RSA tooling. For the Ubuntu 22.04 version, see [the updated guide](/how-to-setup-an-openvpn-server-on-azure-updated/).
+
 ## Prerequisites
 
 *   An Ubuntu 16.04 VM deployed in Azure with at least one NIC that has a public IP address enabled.
 *   A user with sudo privileges on the Ubuntu 16.04 VM.
-*   The VM private IP address does not overlap with subnet 172.16.0.0/24.
+*   The VPN subnet 172.16.0.0/24 does not overlap with the server's VNet or any client network that must remain reachable.
 
 ## Step 1: Install OpenVPN & Easy-RSA
 

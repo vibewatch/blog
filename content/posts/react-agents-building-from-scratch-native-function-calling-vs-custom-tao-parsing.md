@@ -67,7 +67,7 @@ When using native function calling, the process feels almost magical:
 3.  The model decides when and how to use these tools, while formatting the parameters correctly
 4.  The code executes the functions and feeds the results back to the model
 
-The beauty of this approach is that most of the heavy lifting is handled by the LLM. The model determines which function to call and formats the arguments appropriately, so no manual parsing is required from the developer!
+The beauty of this approach is that the model selects a function and returns structured arguments, so you do not need to parse action labels from free-form text. Your application must still validate those arguments, authorize the operation, and handle tool errors before returning the result to the model.
 
 ### A Practical Example
 
@@ -127,7 +127,7 @@ After building both implementations, here's my practical advice:
 *   You're working with the latest commercial models
 *   You need to move quickly and minimize custom code
 *   Your tools have complex parameter structures
-*   You want built-in parameter validation
+*   You want schema-constrained arguments with less custom parsing
 
 **Choose the Custom TAO Parser when:**
 

@@ -1,5 +1,5 @@
 ---
-title: "Ubuntu Generate Core Dump On Fly"
+title: "Ubuntu: Generate a Core Dump"
 slug: "ubuntu-generate-core-dump-on-fly"
 date: "2019-10-13 00:42:30"
 updated: "2019-10-15 05:28:32"
@@ -12,7 +12,9 @@ feature_image: "/assets/posts/ubuntu-generate-core-dump-on-fly/hero.jpg"
 authors: ["Yingting Huang"]
 tags: ["Linux", "Coredump"]
 ---
-# Ubuntu Generate Core Dump On Fly
+# Ubuntu: Generate a Core Dump
+
+This example generates a core dump when a test process aborts; it does not capture a running process. Run the configuration commands with root privileges and start a new login session after changing `/etc/security/limits.conf`.
 
 systemctl disable apport.service
 
@@ -28,15 +30,21 @@ chmod a+rwx /cores
 
 sysctl -p
 
-```cpp
+Save the following test program as `t.c`:
+
+```c
+#include <stdlib.h>
+
 int main() {
-    int *p;
-    return *p;
+    abort();
 }
 ```
 
-gcc -o t t.c  
-.\\t
+```bash
+gcc -o t t.c
+./t
+```
 
-Coredump will be generated at /cores  
+A core dump will be generated in `/cores` if core dumps are enabled for the process, for example:
+
 core.t.1219.u01.1570927314

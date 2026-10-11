@@ -39,7 +39,7 @@ As shown in the diagram above, each VM will have two network interfaces: eth0 is
 
 Before creating these VMs, we need to create two virtual switches in Hyper-V. One is for management, eth0's network (with internet connectivity for downloading/installing Docker, SSH access, etc.). The other is for `Macvlan`, eth1's network.
 
-From Powershell window, add two virtual switches
+From a PowerShell window, add two virtual switches:
 
 ```powershell
 # eth0
@@ -76,9 +76,9 @@ After VMs are created, we will add second 'Network Adapter' to them. Before that
 
 Hyper-V virtual switch works in either Access mode or Trunk mode, the default mode is Access mode.
 
-**Trunk Mode**, virtual switch will listen to all the network traffic and forward the traffic to all the ports. In other words, network packets are sent to all the virtual machines connected to it. Which means the virtual switch receives all network packets and forwards them to all the virtual machines connected to it.
+**Trunk Mode** allows a virtual network adapter to carry traffic for multiple permitted VLAN IDs. It does not broadcast all traffic to every VM; the virtual switch still forwards frames according to their destination MAC address and VLAN.
 
-**Access Mode**, virtual switch receives network packets in which it first checks the VLAN ID tagged in the network packet. If the VLAN ID tagged in the network packet matches the one configured on the virtual switch, then the network packet is accepted by the virtual switch. Any incoming network packet that is not tagged with the same VLAN ID will be discarded by the virtual switch.
+**Access Mode** associates a virtual network adapter with a single VLAN. The guest normally sends and receives untagged frames, while the virtual switch handles the VLAN association.
 
 Since `Macvlan` is implemented in the guest OS, the Hyper-V virtual switch needs to forward VLAN traffic to the guest OS. This also means we need to configure trunk mode for the second network adapter connected to the "VLAN" virtual switch. Follow the steps below to add a network adapter to each VM and configure them in trunk mode.
 
@@ -294,7 +294,7 @@ lo        Link encap:Local Loopback
 
 **Note: eth1, eth1.10 and eth1.20's `HWaddr`, they are all same**
 
-From node0, create 2 `Macvla`n netowrks, each `Macvlan` will have 2 containers running under that VLAN, VLAN eth1.10's IP range is 192.168.2.0/24 and VLAN eth1.20's IP range is 192.169.2.0/24
+From node0, create two `Macvlan` networks, each with two containers. The IP range for eth1.10 is 192.168.2.0/24, and the range for eth1.20 is 192.169.2.0/24.
 
 ```bash
 # First Macvlan network on VLAN eth1.10
@@ -309,7 +309,9 @@ docker run --net=macvlan20 -itd --name macvlan20_1 busybox
 docker run --net=macvlan20 -itd --name macvlan20_2 busybox
 ```
 
-From node1, create 2 `Macvla`n netowrks, each `Macvlan` will have 2 containers running under that VLAN, VLAN eth1.10's IP range is 192.168.3.0/24 and VLAN eth1.20's IP range is 192.169.3.0/24
+From node1, create two `Macvlan` networks, each with two containers. The IP range for eth1.10 is 192.168.3.0/24, and the range for eth1.20 is 192.169.3.0/24.
+
+The 192.169.x.x ranges are reproduced from this isolated lab; they are not RFC 1918 private addresses. Use non-overlapping private ranges in your own environment.
 
 ```bash
 # First Macvlan network on VLAN eth1.10
@@ -372,7 +374,7 @@ lo        Link encap:Local Loopback
           RX bytes:24080 (23.5 KiB)  TX bytes:24080 (23.5 KiB)
 ```
 
-**Note the HWaddr 02:42:C0:A8:02:01, it is a different MAC address than the attached interface eth1.10. This is becasuse in `Macvlan`, each container's interface will have its own MAC address.**
+**Note the HWaddr 02:42:C0:A8:02:01: it is different from the MAC address of the parent interface eth1.10. This is because each container's `Macvlan` interface has its own MAC address.**
 
 Run `route -n` to list routing information, the default gateway is 192.168.2.0
 
@@ -384,7 +386,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 192.168.0.0     0.0.0.0         255.255.0.0     U     0      0        0 eth0
 ```
 
-Notice ping container macvlan10\_2 (IP address 192.168.2.2) in same VM works, also ping container macvlan10\_4(IP address 192.169.3.2) in different VM also works, this is because those containers are in the same VLAN 10.
+Pinging container macvlan10\_2 (192.168.2.2) on the same VM works. Pinging container macvlan10\_4 (192.168.3.2) on the other VM also works because both containers are in VLAN 10.
 
 ```bash
 / # ping 192.168.2.2
@@ -406,7 +408,7 @@ PING 192.168.3.2 (192.168.3.2): 56 data bytes
 round-trip min/avg/max = 0.320/0.364/0.440 ms
 ```
 
-When ping 192.169.3.2, An ARP request is broadcasted to all hosts on same VLAN.
+When pinging 192.168.3.2, an ARP request is broadcast to all hosts on the same VLAN.
 
 If we capture a network trace from node1's eth1 interface
 
@@ -414,7 +416,7 @@ If we capture a network trace from node1's eth1 interface
 tcpdump -i eth1 -n -e
 ```
 
-We could see and ARP request sent from node0's eth1 to ask MAC address of 192.168.3.2, this packet is broadcasted to all interfaces in same VLAN, that's reason why node1's eth1 interface can receive it.
+We can see an ARP request sent through node0's eth1 to ask for the MAC address of 192.168.3.2. This packet is broadcast within the VLAN, which is why node1's eth1 interface receives it.
 
 ```bash
 20:22:41.028839 02:42:c0:a8:02:01 > ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100), length 46: vlan 10, p 0, ethertype ARP, Request who-has 192.168.3.2 tell 192.168.2.1, length 28

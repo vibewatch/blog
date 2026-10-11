@@ -14,13 +14,15 @@ tags: ["Azure", "Powershell", "VM"]
 ---
 # Azure - Unable to Resize VM(s) to B-Series VM(s)
 
-If the VM(s) are deployed using the Resource Manager (ARM) deployment model and we need to change to a size which requires different hardware then we can resize VMs by first stopping the VM.
+If VMs are deployed using the Resource Manager (ARM) deployment model and the new size requires different hardware, first stop and deallocate the VMs before resizing them.
 
-In our case, we are not able to resize a live VM to B-series VM, we stopped(deallocated) VM from azure portal, then afterwords, we are able to resize it now.
+In our case, we could not resize a running VM to a B-series VM. After stopping and deallocating it from the Azure portal, we were able to resize it.
+
+Deallocation interrupts the workload and does not guarantee that the requested size has capacity in the region. Plan for downtime and check size availability first.
 
 Refer to [Resize virtual machines](https://azure.microsoft.com/en-us/blog/resize-virtual-machines/)
 
-Finally, if need to get details about why could not resize VM, run below powershell script to print out errors
+Finally, to find out why a resize failed, run the following PowerShell script to display the errors. This historical example uses the AzureRM module; current scripts should use the corresponding Az cmdlets.
 
 ```powershell
 $ResourceGroupName = "YOUR_RESOURCE_GROUP" 

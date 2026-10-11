@@ -22,7 +22,7 @@ I wanted to quantify long-haul UDP performance across a hub in Azure West US (WU
 
 ## Test Topology & Naming
 
-Before testing, I provisioned one Standard\_D2s\_v5 VM in West US to act as the hub and receiver, plus one matching VM in each spoke region (HK, KC, UAE). Each spoke VNet is globally peered back to the West US hub VNet, so traffic stays on the Microsoft backbone without public egress. I installed `iperf3` on every VM and opened UDP/5201 in each NSG so the hub and spokes could reach each other directly.
+Before testing, I provisioned one Standard\_D2s\_v5 VM in West US to act as the hub and receiver, plus one matching VM in each spoke region (HK, KC, UAE). Each spoke VNet is globally peered back to the West US hub VNet, so traffic stays on the Microsoft backbone without public egress. I installed `iperf3` on every VM and allowed TCP/5201 for the control connection and UDP/5201 for test traffic in each NSG, restricted to the test peers' private addresses.
 
 <table><thead><tr><th>Direction code</th><th>Description</th></tr></thead><tbody><tr><td><code>HK-WUS</code></td><td>Sender in Azure East Asia → Receiver in West US</td></tr><tr><td><code>WUS-HK</code></td><td>Reverse traffic (West US → East Asia)</td></tr><tr><td><code>KC</code> / <code>UAE</code></td><td>Korea Central and UAE North following the same pattern</td></tr></tbody></table>
 
@@ -390,14 +390,14 @@ The script does the heavy lifting:
 **Takeaways**
 
 *   📬 _Deliverability_: Every flow held the target 10 Mbps for the full day; deviations stayed within ±0.1%.
-*   🧵 _Loss Concentration_: The UAE legs exhibited 0.002–0.0006% loss (still tiny, yet two orders of magnitude higher than HK/KC), indicating a good focus area for route tuning.
+*   🧵 _Loss Concentration_: The UAE legs exhibited 0.0006–0.002% loss (still tiny, yet two orders of magnitude higher than HK/KC), indicating a good focus area for route tuning.
 *   ⚖️ _Symmetry_: HK↔WUS and KC↔WUS remained closely matched; the outbound deltas hovered near zero.
 
 ---
 
 ## Reproducing the Workflow
 
-1.  **Provision iperf3 endpoints** (UDP mode, port 5201) in each Azure region.
+1.  **Provision iperf3 endpoints** in each Azure region, allowing TCP/5201 for control and UDP/5201 for the UDP test traffic.
     
 2.  **Run each direction** of `run_iperf_24h.sh`, supplying the peer IP. The script logs JSON data at 1-second intervals for 86,400 seconds.
     

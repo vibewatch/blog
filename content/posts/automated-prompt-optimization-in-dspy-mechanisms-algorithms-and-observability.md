@@ -20,6 +20,8 @@ The advent of powerful Large Language Models (LLMs) has revolutionized natural l
 
 This report provides a detailed exploration of how DSPy tunes prompts. It delves into the core concepts underpinning DSPy's optimization capabilities, examines prominent optimization algorithms with illustrative code, and discusses methods for observing and understanding the tuning process through traces and logs. The objective is to offer a comprehensive understanding of DSPy's automated prompt engineering mechanisms, empowering developers and researchers to build more robust and performant LLM applications.
 
+**Version note:** The code examples are conceptual and include older DSPy APIs such as `dspy.OpenAI`. Check the installed DSPy and MLflow versions before running them; current DSPy examples generally configure models through `dspy.LM`.
+
 ## **2\. Core Concepts: Signatures, Modules, and the Compilation Process**
 
 DSPy's ability to automate prompt optimization is rooted in its foundational abstractions: Signatures, Modules, and a compilation process driven by Optimizers (formerly Teleprompters).6
@@ -62,6 +64,8 @@ DSPy introduces a "compilation" step where an Optimizer (historically called a T
 5.  The output is a "compiled" program with optimized prompts that are expected to perform better on the specified metric.2
 
 This compilation process transforms prompt engineering from manual tuning into an automated, data-driven optimization problem. The ability of optimizers to generate and refine both instructions and few-shot examples is central to DSPy's power. This systematic approach often yields prompts that outperform manually crafted ones, not necessarily due to greater creativity, but because they can explore a wider range of options and directly optimize for the target metric.3
+
+Keep a held-out test set separate from the data used to select prompts. A higher optimization score alone does not show that the compiled program generalizes to new inputs.
 
 The modularity of this system—signatures defining tasks, modules implementing strategies, and optimizers tuning these strategies—allows for flexible and powerful construction of self-improving LLM pipelines. This is analogous to how neural network architectures are built from layers and trained with optimizers in traditional deep learning.3
 
@@ -407,13 +411,13 @@ Capturing Compilation Traces:
 
 By default, mlflow.dspy.autolog() does not log the potentially thousands of LM calls that occur during an optimizer's compile phase, due to the high verbosity. To capture these crucial details of the optimization process itself, one must explicitly enable it:
 
-mlflow.dspy.autolog(log\_traces\_from\_compile=True).27
+`mlflow.dspy.autolog(log_traces_from_compile=True)` (reference 27).
 
 This setting is vital for in-depth analysis of how optimizers like MIPROv2 or BootstrapFewShot arrive at their optimized prompts.
 
 Interpreting MLflow Traces from Compilation:
 
-When log\_traces\_from\_compile=True is active, the MLflow UI will display a hierarchical set of traces for the compilation run. This allows a detailed reconstruction of the optimizer's search process. Key information visible typically includes:
+When `log_traces_from_compile=True` is active, the MLflow UI will display a hierarchical set of traces for the compilation run. This allows a detailed reconstruction of the optimizer's search process. Key information visible typically includes:
 
 *   ****Overall Optimizer Run:**** A top-level span representing the entire `compile` call, with attributes like optimizer type, configuration parameters (e.g., `MIPROv2`'s `auto` mode, number of trials), total duration, and the final best metric score achieved by the compiled program.
 *   ****Optimizer Trials/Candidates:**** Nested spans for each trial or candidate program evaluated by the optimizer. These spans would show:

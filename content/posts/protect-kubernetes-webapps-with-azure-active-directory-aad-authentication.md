@@ -16,7 +16,7 @@ tags: ["AAD", "Kubernetes", "AzureAD", "Azure"]
 
 > **Note (May 2026):** This article uses older Kubernetes `extensions/v1beta1` Ingress resources and the historical `oauth2_proxy` naming/image ecosystem. Modern clusters should use `networking.k8s.io/v1` Ingress and review current oauth2-proxy, Microsoft Entra ID (formerly Azure AD), cert-manager, and ingress-nginx configuration guidance before applying the manifests.
 
-Adding authentication to webapps sometimes is a challenging task, requires knowledge and coding for user registration, login and authentication. Specially if you are a kubernetes cluster admin, you need to take extremely care of publishing your website/web service to internet since any malicious users can access the frontend and potentially gain backend access, this article will present a simple and easy approach for kubernetes admin to protect internet facing webapps without any extra developments by using [oauth2\_proxy](https://github.com/bitly/oauth2_proxy).
+Adding authentication to web apps can be challenging, requiring code for user registration, login, and access control. Kubernetes administrators need to take particular care when publishing websites or web services to the internet, where an exposed frontend may provide a path to backend resources. This article presents a simple approach to protecting internet-facing web apps with [oauth2\_proxy](https://github.com/bitly/oauth2_proxy), without implementing authentication in each application.
 
 oauth2\_proxy is
 
@@ -160,7 +160,8 @@ spec:
     secretName: <YOUR_WEBAPPS>-tls
 ```
 
-Run `kubectl apply -f ingress.yaml` to publish website/service to internet. Now, if user visit the webapps, it will rediret user to AAD authentiation page,  
+Run `kubectl apply -f ingress.yaml` to publish the website or service. When a user visits the web app, they will be redirected to the AAD authentication page.
+
 ![Sign-In](/assets/posts/protect-kubernetes-webapps-with-azure-active-directory-aad-authentication/sign-in.jpg)  
 If user has permission to access webapps, after inputting username/password, user should be redirected to webapps page, otherwise a sign-in error will pop up  
 ![Sign-In-Failed](/assets/posts/protect-kubernetes-webapps-with-azure-active-directory-aad-authentication/sign-in-failed.jpg)
@@ -171,5 +172,5 @@ What happens from backend is
 
 1.  When user access https://<YOUR\_WEBAPPS>, As `nginx.ingress.kubernetes.io/auth-url` is configured in nginx, nginx will check if the user is already authenticated, if not, nginx will redirect this request to the URL `https://$host/oauth2/start?rd=$escaped_request_uri` in our case is https://<YOUR\_WEBAPPS>/oauth2/start?rd=$<YOUR\_WEBAPPS>
 2.  As /oauth2 is mapped to oauth2\_proxy service, so oauth2\_proxy will receive this request and it will send an authentication request to AAD and redirect you to AAD authentication login page
-3.  If the authentication is successed and the user is allowed to access the application, oauth2\_proxy will redirect user to web page. Other it will just show the error.
+3.  If authentication succeeds and the user is allowed to access the application, oauth2\_proxy redirects them to the web page. Otherwise, it displays an error.
 4.  Further HTTP requests will pass to `nginx.ingress.kubernetes.io/auth-url`, as it is already authenticated, so user will access web pages directly no need to authenticate again.

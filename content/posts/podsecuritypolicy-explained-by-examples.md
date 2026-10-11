@@ -24,7 +24,7 @@ tags: ["Kubernetes", "K8S", "PodSecurityPolicy"]
 
 > PodSecurityPolicies are enforced by enabling the admission controller
 
-It can be enabled by adding `--enable-admission-plugins=PodSecurityPolicy,...` to the kube-apiserver configuration file, for example /etc/kubernetes/manifest/kube-apiserver.yaml.
+In Kubernetes versions that support it, add `--enable-admission-plugins=PodSecurityPolicy,...` to the kube-apiserver configuration file, for example `/etc/kubernetes/manifests/kube-apiserver.yaml`.
 
 # 3 What Happens After Enabling the Pod Security Policy Admission Controller
 
@@ -203,7 +203,7 @@ subjects:
 
 So if a policy is created without any (Cluster)Role bindings, the policy will not be enforced on anybody, **but why do I say it could be 'Yes'?**
 
-Remember, in the YAML sample above, to associate a policy with a role, we need to use `use` in 'verbs' and set 'resources' to `podsecuritypolicy` in 'apiGroups'.
+Remember, in the YAML sample above, authorizing a role to use a policy requires `use` in `verbs`, `podsecuritypolicies` in `resources`, and `policy` in `apiGroups`.
 
 ```yaml
 - apiGroups:

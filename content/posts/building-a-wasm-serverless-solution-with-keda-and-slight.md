@@ -20,7 +20,7 @@ In this article, we will explore how to use KEDA, the KEDA HTTP add-on, and Slig
 
 ![WASM serverless architecture](/assets/posts/building-a-wasm-serverless-solution-with-keda-and-slight/wasm-serverless-architecture.png)
 
-*   Incoming HTTP requests are routed through Nginx Ingress Controller to the KEDA HTTP interceptor. The interceptor keeps track of the number of pending HTTP requests: requests that it has forwarded but the app has not returned yet.
+*   Incoming HTTP requests are routed through Nginx Ingress Controller to the KEDA HTTP interceptor. The interceptor tracks pending requests, including requests waiting for the app to start and requests awaiting a response.
 *   The KEDA HTTP add-on operator runs inside the Kubernetes cluster, watches for HTTPScaledObject resources, and creates a ScaledObject for the Deployment specified in the HTTPScaledObject resource.
 *   ScaledObject points to the interceptor as the KEDA external scaler and uses gRPC to get the size of the pending queue. Based on this queue size, it reports scaling metrics to KEDA. As the queue size increases, the scaler instructs KEDA to scale up as appropriate.
 *   KEDA manages 0<->1 scaling and leverages HPA for 1 <-> n scaling.
@@ -235,7 +235,7 @@ NAME          READY   UP-TO-DATE   AVAILABLE   AGE
 rust-slight   1/1     1            1           2s
 ```
 
-*   Application itself supports redis read, write and delete, here are some sample commands that you can play with
+*   The application supports Redis reads, writes, and deletes. Here are some sample commands to try:
 
 ```bash
 # Write

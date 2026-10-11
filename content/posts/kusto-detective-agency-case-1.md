@@ -51,6 +51,8 @@ PS: Don't hesitate to reach out for help and use _Hints_ if you're feeling in tr
 
 ## Case 1 - Solution
 
+Compare each shelf's measured weight with the total weight of books whose RFID tags are still attached. An unexplained difference of at least 1,764 grams identifies a shelf that could hold the missing book.
+
 ```kql
 let x = Books
 | where book_title == "De Revolutionibus Magnis Data"

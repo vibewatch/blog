@@ -300,12 +300,12 @@ Claude Code feels less like an IDE feature and more like a terminal-native engin
 
 Anthropic uses rolling usage windows instead of a simple monthly token bucket. That keeps spend predictable, but it can interrupt a refactor when the window is exhausted.<sup>[5](#ref-5)</sup>
 
-API billing removes those interruptions but moves the risk to your wallet. Long debugging loops can repeatedly resend large context windows unless you compact and prune.
+API billing avoids subscription-window lockouts but moves the spending risk to your wallet; API rate limits and account spending limits still apply. Long debugging loops can repeatedly resend large context windows unless you compact and prune.
 
 | Claude Code path | Benefit | Tradeoff |
 | :-- | :-- | :-- |
 | Subscription plan | Predictable monthly spend and built-in limits | Rolling windows can interrupt deep work |
-| API billing | No artificial session lockout | Costs can spike during long agent loops |
+| API billing | No subscription-window lockout | API rate limits still apply, and costs can spike during long agent loops |
 | Team / Enterprise plan | More usage, admin controls, compliance features | Higher baseline seat cost |
 
 Anthropic says limits depend on message length, attachments, conversation length, tool usage, model choice, and artifacts.<sup>[11](#ref-11)</sup> It does not publish a token-per-plan table. ShellaC's reverse-engineered numbers are therefore useful, but unofficial; they should be read as community measurement from Claude usage telemetry, not an Anthropic-published quota.

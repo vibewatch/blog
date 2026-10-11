@@ -42,6 +42,8 @@ kubectl delete pod -l component=kube-proxy -n kube-system
 
 ## Delete namespace in terminating state
 
+Inspect the namespace's conditions and resolve failed cleanup first. Removing finalizers bypasses cleanup and can leave orphaned resources; use this only as a last resort after confirming what remains.
+
 1.  kubectl get namespace <your\_namespace> -o json > tmp.json
 2.  Open tmp.json and remove any lines from finalizers. Just save it!
 3.  kubectl proxy

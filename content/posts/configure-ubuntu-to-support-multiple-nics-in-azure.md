@@ -16,7 +16,7 @@ tags: ["Azure", "Linux", "Network", "Ubuntu"]
 
 By default, in Linux, if multiple NICs are in the same subnet, all traffic will route through the default NIC, which is usually eth0. If multiple NICs are added, and you need to route traffic back through the NIC that received it, you need to create a routing table for that NIC. Refer to [How to create a Linux virtual machine in Azure with multiple network interface cards](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/multiple-nics).
 
-However, newer Ubuntu releases do not use `/etc/sysconfig/network-scripts` anymore. Here are the steps for Ubuntu:
+The `/etc/sysconfig/network-scripts` path used in older RHEL/CentOS guidance does not apply to Ubuntu. The example below uses Ubuntu's older ifupdown configuration; newer installations commonly use Netplan. Replace the interface name, subnet, private IP, and gateway with your VM's values, and use the equivalent policy-routing configuration for your network manager.
 
 ```bash
 sudo -i

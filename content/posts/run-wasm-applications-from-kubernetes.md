@@ -238,9 +238,9 @@ version: v0.1.0
 
 This [repo](https://github.com/huangyingting/wasm) also provides a few sample applications for running WASM applications from a Kubernetes cluster.
 
-*   dotnet-spin, a simple WASM http echo server written on c# language
-*   go-spin, a simple WASM http echo server written on golang language
-*   rust-wasmedge, a simple WASM http echo server written on rust language
+*   dotnet-spin, a simple WASM HTTP echo server written in C#
+*   go-spin, a simple WASM HTTP echo server written in Go
+*   rust-wasmedge, a simple WASM HTTP echo server written in Rust
 
 ### Build and deploy
 

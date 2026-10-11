@@ -20,7 +20,7 @@ This is an updated version of my previous article [How to Set Up an OpenVPN Serv
 
 *   An Ubuntu 22.04 VM deployed in Azure with at least one NIC that has a public IP address enabled.
 *   A user with sudo privileges on the Ubuntu 22.04 VM.
-*   The VM private IP address does not overlap with subnet 172.16.0.0/24.
+*   The VPN subnet 172.16.0.0/24 does not overlap with the server's VNet or any client network that must remain reachable.
 *   An NSG rule is added to the VM to allow UDP destination port 32768.
 
 ## **Install OpenVPN & Easy-RSA**
@@ -268,8 +268,8 @@ The client should have an OpenVPN connection established, and it should redirect
 If you happen to use a cloud provider and your OpenVPN client is close to one of cloud provider's regions, you could use your cloud provider's network to bridge VPN connection between OpenVPN client and OpenVPN server, the benefits are
 
 *   Reliable VPN connectivity, cloud provider usually provides dedicated internet link cross border
-*   Leverage the cloud provider's global network to accelerate VPN connectivity. Some cloud providers provide [hot potato routing](https://en.wikipedia.org/wiki/Hot-potato_and_cold-potato_routing) by default, such as Azure or GCP. That means VPN traffic usually takes optimal paths.
-*   Even you are using sovereign cloud, internet quality between your sovereign cloud provider and VPN server, is still better than your home network
+*   Leverage the cloud provider's global network where its routing provides a better path. Routing behavior varies by provider and service; compare latency, packet loss, and cost before assuming that the relay improves connectivity.
+*   Even when using a sovereign cloud, the path to the VPN server may be better than your home network, but this depends on the regions and connectivity involved.
 
 Here is a simple solution that uses iptables to bounce traffic from your local cloud data center to the remote VPN server.
 

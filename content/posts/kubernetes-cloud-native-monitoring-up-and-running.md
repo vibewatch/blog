@@ -242,7 +242,7 @@ To enable sending alerts to MSTeams, we can
 
 2.  Run `helm upgrade prom --namespace prom stable/prometheus-operator -f prometheus_values.yaml` to update the settings
 3.  Clone prometheus-msteams with `https://github.com/bzon/prometheus-msteams.git`
-4.  From MSTeams, correct a webhook for a channel, then open values.yaml, set alertmanager to webhook URL
+4.  In Microsoft Teams, create a webhook for a channel. Then open values.yaml and set alertmanager to the webhook URL.
 
 ```yaml
 connectors:

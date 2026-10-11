@@ -283,7 +283,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-If we run `kubectl get pod --all-namespace` at this stage, we will find `coredns-xxxxxxxxxx-xxxxx` pod is in 'Pending' status, this is because we don't have network add-ons, we will install Calico as network add-ons, from bash
+If we run `kubectl get pods --all-namespaces` at this stage, the `coredns-xxxxxxxxxx-xxxxx` pod is in 'Pending' status because the network add-on is not installed yet. Install it from bash:
 
 ```bash
 curl \
@@ -367,7 +367,7 @@ That means in Azure, multiple zones kubernetes cluster needs to use 'Standard Lo
 
 For example, if we run `helm install --name ni stable/nginx-ingress --set controller.replicaCount=3` to install nginx-ingress controller, we should see a standard load balancer created from Azure as well  
 ![Standard Load Balancer with availability zones](/assets/posts/k8s-in-multiple-zones-on-azure-with-calico-and-ipvs/standard-load-balancer-zones.jpg)  
-And 3 Pods in that ReplicaSet each of them will be scheduled to a seperated node
+In this lab, the three Pods in that ReplicaSet were each scheduled to a separate node.
 
 ```bash
 kubectl get pod -o wide
