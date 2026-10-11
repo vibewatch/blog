@@ -62,6 +62,11 @@ Shared colors, spacing, typography, and radii live in
 [`src/styles/tokens.css`](src/styles/tokens.css). Responsive navigation, the
 homepage introduction and image-led article cards, discovery pages, and article
 reading styles live in [`src/styles/global.css`](src/styles/global.css).
+Index grids share a continuous card surface with thin internal dividers;
+compact thumbnails, spacing, and page headers keep the focus on article text.
+Article contents use Astro's rendered heading metadata (including exact anchor
+IDs), with nested subsections in a native expandable panel. The panel starts
+closed, works without JavaScript, and uses two columns on larger screens.
 Navigation remains accessible without JavaScript, includes current-section
 indicators and a skip link, and reflows on small screens. Motion respects
 `prefers-reduced-motion`; print styles remove navigation and reading controls.

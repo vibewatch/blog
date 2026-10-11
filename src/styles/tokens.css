@@ -51,13 +51,13 @@
   --space-md: 18px;
   --space-lg: 24px;
   --space-xl: 32px;
-  --space-xxl: 48px;
+  --space-xxl: 28px;
 
   /* Layout */
   --container: 1200px;
   --reading: 760px;
   --reading-wide: 1040px;
-  --gutter: 32px;
+  --gutter: 24px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -65,7 +65,7 @@
 
 @media (max-width: 760px) {
   :root {
-    --gutter: 20px;
-    --space-xxl: 36px;
+    --gutter: 16px;
+    --space-xxl: 24px;
   }
 }

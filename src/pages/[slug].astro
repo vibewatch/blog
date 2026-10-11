@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getAllItems, getPostContext } from '../lib/content';
+import { getAllItems, getPostContext, type Heading } from '../lib/content';
 import { absoluteUrl, config, formatDate, sitePath } from '../lib/site';
 import { slugify } from '../lib/slug';
 import { getSlideDeckByArticle } from '../lib/slides/load';
@@ -22,6 +22,15 @@ const deskName = isPage ? 'Page' : item.desk?.desk.name ?? 'Dispatch';
 const sectionId = isPage ? '' : item.desk?.sectionId ?? '';
 const postContext = isPage ? undefined : getPostContext(item.slug);
 const showToc = item.type === 'post' && item.headings.length >= 2;
+const tocGroups: Array<{ heading: Heading; children: Heading[] }> = [];
+for (const heading of item.headings) {
+  const parent = tocGroups[tocGroups.length - 1];
+  if (heading.depth === 3 && parent?.heading.depth === 2) {
+    parent.children.push(heading);
+  } else {
+    tocGroups.push({ heading, children: [] });
+  }
+}
 const articleUrl = absoluteUrl(canonical);
 const jsonLd = item.type === 'post'
   ? [
@@ -98,23 +107,32 @@ const slideHref = slideDeck ? sitePath(`/slides/${slideDeck.slug}/`) : '';
     </header>
 
     {item.featureImage ? (
-      <figure class="reading-wide" style="margin: 0 auto var(--space-xxl);">
+      <figure class="post-hero reading-wide">
         <img class="feature-image" src={sitePath(item.featureImage)} alt="" loading="lazy" decoding="async" />
         <figcaption class="feature-image-caption">{item.title}</figcaption>
       </figure>
     ) : null}
 
     {showToc ? (
-      <nav class="post-toc reading" aria-label="Table of contents" data-toc>
-        <p class="post-toc__label">In this dispatch</p>
-        <ol>
-          {item.headings.map((heading) => (
-            <li class:list={[heading.depth === 3 ? 'is-subsection' : null]}>
-              <a href={`#${heading.slug}`}>{heading.text}</a>
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <details class="post-toc reading">
+        <summary class="post-toc__label">In this dispatch <span>{item.headings.length} sections</span></summary>
+        <nav aria-label="Table of contents" data-toc>
+          <ol class="post-toc__list">
+            {tocGroups.map(({ heading, children }) => (
+              <li>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+                {children.length ? (
+                  <ol>
+                    {children.map((child) => (
+                      <li><a href={`#${child.slug}`}>{child.text}</a></li>
+                    ))}
+                  </ol>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </details>
     ) : null}
 
     <div class:list={['article', `article--${item.type}`, `article--${item.slug}`]}>

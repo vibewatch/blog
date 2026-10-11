@@ -1,11 +1,13 @@
 import { buildAssignments, desks, type DeskAssignment, type DeskKey } from './desks';
-import { slugify, uniqueSlug } from './slug';
+import { slugify } from './slug';
+import type { MarkdownHeading } from 'astro';
 
 type MarkdownModule = {
   frontmatter: Record<string, any>;
   default: any;
   rawContent?: () => string;
   compiledContent?: () => string;
+  getHeadings: () => MarkdownHeading[];
 };
 
 export type BlogItem = {
@@ -98,16 +100,9 @@ function plainText(module: MarkdownModule) {
 }
 
 function extractHeadings(module: MarkdownModule): Heading[] {
-  const raw = moduleText(module).replace(/```[\s\S]*?```/g, '');
-  const counts = new Map<string, number>();
-  return [...raw.matchAll(/^(#{2,3})\s+(.+)$/gm)].map((match) => {
-    const text = stripMarkdown(match[2]);
-    return {
-      depth: match[1].length as 2 | 3,
-      text,
-      slug: uniqueSlug(text, counts)
-    };
-  });
+  return module.getHeadings().filter(
+    (heading): heading is Heading => heading.depth === 2 || heading.depth === 3
+  );
 }
 
 function inferSeries(slug: string, title: string, data: Record<string, any>): SeriesInfo | undefined {
