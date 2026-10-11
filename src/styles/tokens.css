@@ -1,9 +1,6 @@
 /*
- * Design tokens — Quiet Broadsheet
- *
- * A newspaper editorial system: warm newsprint cream canvas, warm near-black
- * ink, sans-led typography, a single restrained "op-ed wine" accent used
- * only on category eyebrows and active links.
+ * Design tokens — Open Field
+ * Neutral surfaces, graphite typography, and a restrained Azure-blue accent.
  */
 
 @font-face {
@@ -17,20 +14,21 @@
 :root {
   color-scheme: light;
 
-  /* Paper & ink */
-  --color-canvas: #f3eee2;          /* warm newsprint */
-  --color-canvas-deep: #ece6d5;     /* slightly deeper paper for inset blocks */
-  --color-canvas-soft: #f7f3e9;     /* lifted paper (cards / quotes) */
-  --color-ink: #3a322a;             /* primary text — softened from pure dark */
-  --color-body: #4a4137;            /* running body — ~70% ink density on cream */
-  --color-muted: #6f6a5e;           /* meta / folio */
-  --color-muted-soft: #8b8678;
-  --color-hairline: #c8c1b1;        /* standard rule */
-  --color-hairline-ink: #1a1714;    /* heavy rule (masthead) — kept full ink */
-
-  /* Single editorial accent — used scarcely */
-  --color-accent: #7a1f1f;          /* op-ed wine */
-  --color-accent-soft: #b15151;
+  --color-canvas: #f7f8fa;
+  --color-canvas-deep: #edf1f6;
+  --color-canvas-soft: #ffffff;
+  --color-ink: #182332;
+  --color-body: #3e4c5e;
+  --color-muted: #627084;
+  --color-muted-soft: #738197;
+  --color-hairline: #dce2ea;
+  --color-hairline-ink: #aab7c8;
+  --color-accent: #245bd6;
+  --color-accent-soft: #6088e0;
+  --color-accent-tint: #eaf0fd;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 
   /* Type families
    * Display + UI + Body: Mona Sans from github.blog, bundled locally.
@@ -41,10 +39,9 @@
   --font-ui: "Mona Sans", "Noto Sans SC", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "Monaspace Neon", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
-  /* Bizidea display rhythm */
-  --tracking-display-tight: -0.022em;
-  --tracking-body: -0.005em;
-  --fs-display: clamp(2.25rem, 3.6vw + 1rem, 3.5rem);
+  --tracking-display-tight: -0.045em;
+  --tracking-body: 0;
+  --fs-display: clamp(2.75rem, 5.6vw, 5rem);
 
   /* Spacing — editorial rhythm */
   --space-xxs: 4px;
@@ -57,9 +54,9 @@
   --space-xxl: 48px;
 
   /* Layout */
-  --container: 1320px;
-  --reading: 880px;      /* article body — generous measure */
-  --reading-wide: 1120px; /* media / diagrams bleed */
+  --container: 1200px;
+  --reading: 760px;
+  --reading-wide: 1040px;
   --gutter: 32px;
 
   /* Motion */

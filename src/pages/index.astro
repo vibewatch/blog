@@ -19,7 +19,35 @@ const briefGroups = postsByDesk()
 ---
 
 <BaseLayout title={config.title} description={config.description} canonical="/">
+  <section class="container journal-intro" aria-labelledby="journal-title">
+    <div class="journal-intro__body">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Ideas, systems &amp; field notes</p>
+      <h1 id="journal-title">Cloud thinking.<br /><span>Grounded in practice.</span></h1>
+      <p class="journal-intro__deck">Exploring Azure, cloud-native systems, and the tools shaping how we build. Independent perspectives, from the architecture to the workbench.</p>
+      <div class="journal-intro__actions">
+        <a class="button button--primary" href="#latest">Explore the journal <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href={sitePath('/about/')}>Meet the author <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <aside class="journal-intro__note" aria-label="About the journal">
+      <svg class="journal-intro__diagram" viewBox="0 0 280 160" fill="none" aria-hidden="true">
+        <path d="M20 80h240M140 10v140" stroke="currentColor" stroke-opacity=".15" stroke-dasharray="3 6" />
+        <ellipse cx="140" cy="80" rx="102" ry="43" stroke="currentColor" stroke-opacity=".3" transform="rotate(-25 140 80)" />
+        <ellipse cx="140" cy="80" rx="102" ry="43" stroke="currentColor" stroke-opacity=".3" transform="rotate(25 140 80)" />
+        <rect x="116" y="56" width="48" height="48" rx="14" fill="currentColor" />
+        <path d="m129 80 8 8 15-16" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="49" cy="61" r="5" fill="currentColor" /><circle cx="227" cy="105" r="5" fill="currentColor" /><circle cx="184" cy="27" r="4" fill="currentColor" fill-opacity=".5" />
+      </svg>
+      <p class="journal-intro__note-title">Built on curiosity.<br />Backed by experience.</p>
+      <p>Notes from real systems, shared on the open web.</p>
+      <div class="journal-intro__stats"><span><strong>{posts.length}</strong> articles</span><span><strong>{briefGroups.length}</strong> editorial desks</span></div>
+    </aside>
+  </section>
   <section class="container section--tight featured">
+    <header class="section-head" id="latest">
+      <h2 class="section-head__title">Latest in the journal</h2>
+      <a class="text-link" href={sitePath('/archive/')}>All articles <span aria-hidden="true">→</span></a>
+    </header>
     {lead && (
       <div class="featured__lead">
         <Lede post={lead} />
@@ -28,6 +56,7 @@ const briefGroups = postsByDesk()
 
     <div class="featured__body">
       <div class="featured__stories">
+        <h2 class="feed-heading">More to explore</h2>
         <div class="stories">
           {aboveTheFold.map((post) => <Story post={post} />)}
         </div>
@@ -35,16 +64,16 @@ const briefGroups = postsByDesk()
 
       <aside class="featured__brief brief" aria-label="In Brief">
         <header class="brief__head">
-          <p class="brief__eyebrow">In Brief</p>
-          <p class="brief__deck">Recent dispatches, by desk.</p>
+          <h2 class="brief__eyebrow">From the desks</h2>
+          <p class="brief__deck">Find your next deep dive.</p>
         </header>
         <div class="brief__groups">
           {briefGroups.map((g) => (
             <section class="brief__group">
-              <p class="brief__desk">
+              <a class="brief__desk" href={sitePath(`/desk/${g.desk.key}/`)}>
                 <span class="brief__letter">{g.desk.letter}</span>
                 <span class="brief__name">{g.desk.name}</span>
-              </p>
+              </a>
               <ul class="brief__list">
                 {g.posts.map((p) => (
                   <li class="brief__item">
@@ -65,7 +94,7 @@ const briefGroups = postsByDesk()
     </div>
 
     <p class="section-foot">
-      <a href={sitePath('/archive/')}>Read the full index of {posts.length} dispatches →</a>
+      <a class="button button--secondary" href={sitePath('/archive/')}>Explore all {posts.length} articles <span aria-hidden="true">→</span></a>
     </p>
   </section>
 </BaseLayout>

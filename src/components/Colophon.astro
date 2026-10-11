@@ -5,20 +5,22 @@ const year = new Date().getUTCFullYear();
 ---
 
 <footer class="colophon">
-  <div class="container">
-    <hr class="rule rule--thin-thick" style="max-width: 240px; margin: 0 auto var(--space-lg);" />
-    <a class="colophon__nameplate" href={sitePath('/')}>{config.title}</a>
-    <p class="colophon__line">Edited &amp; written by <strong style="color: var(--color-ink); font-weight: 500;">{config.author}</strong></p>
-    <p class="colophon__line">© {year} · All rights reserved · Published quietly, on the open web</p>
+  <div class="container colophon__inner">
+    <div class="colophon__identity">
+      <a class="colophon__nameplate" href={sitePath('/')}>{config.title}</a>
+      <p class="colophon__line">Independent writing by <strong>{config.author}</strong>.</p>
+      <p class="colophon__line">Cloud architecture. Practical engineering. Open curiosity.</p>
+    </div>
     <nav class="colophon__links" aria-label="Colophon">
-      <a href={sitePath('/')}>Front Page</a>
+      <a href={sitePath('/')}>Journal</a>
       <a href={sitePath('/search/')}>Search</a>
       <a href={sitePath('/tags/')}>Topics</a>
       <a href={sitePath('/desk/')}>Desks</a>
       <a href={sitePath('/series/')}>Series</a>
-      <a href={sitePath('/archive/')}>Index</a>
-      <a href={sitePath('/about/')}>Colophon</a>
+      <a href={sitePath('/archive/')}>Archive</a>
+      <a href={sitePath('/about/')}>About</a>
       <a href={sitePath('/feed.xml')}>RSS</a>
     </nav>
+    <div class="colophon__bottom"><span>© {year} {config.author}</span><span>Published on the open web.</span></div>
   </div>
 </footer>

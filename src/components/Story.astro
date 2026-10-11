@@ -5,20 +5,26 @@ import { formatDate, sitePath } from '../lib/site';
 type Props = { post: BlogItem };
 const { post } = Astro.props;
 const href = sitePath(`/${post.slug}/`);
-const author = post.authors[0];
 const deskName = post.desk?.desk.name ?? 'Dispatch';
 const sectionId = post.desk?.sectionId ?? '';
 ---
 
 <article class="story">
-  <p class="story__category">
-    <span class="story__desk">{deskName}</span>
-    {sectionId ? <span class="story__section">{sectionId}</span> : null}
-  </p>
-  <h3 class="story__headline"><a href={href}>{post.title}</a></h3>
-  {post.excerpt ? <p class="story__excerpt">{post.excerpt}</p> : null}
-  <p class="story__byline">
-    {author ? <>By <strong>{author}</strong> · </> : null}
-    <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
-  </p>
+  {post.featureImage ? (
+    <a class="story__media" href={href} aria-hidden="true" tabindex="-1">
+      <img src={sitePath(post.featureImage)} alt="" loading="lazy" decoding="async" />
+    </a>
+  ) : null}
+  <div class="story__body">
+    <p class="story__category">
+      <span class="story__desk">{deskName}</span>
+      {sectionId ? <span class="story__section">{sectionId}</span> : null}
+    </p>
+    <h3 class="story__headline"><a href={href}>{post.title}</a></h3>
+    {post.excerpt ? <p class="story__excerpt">{post.excerpt}</p> : null}
+    <p class="story__byline">
+      <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+      <span> · {post.readingTime} min read</span>
+    </p>
+  </div>
 </article>

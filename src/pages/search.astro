@@ -15,7 +15,7 @@ const tags = getTagGroups();
   <section class="container section--tight discovery-page search-page">
     <header class="section-head section-head--stacked">
       <p class="section-head__eyebrow">Research desk</p>
-      <h2 class="section-head__title">Search the archive</h2>
+      <h1 class="section-head__title">Search the archive</h1>
       <span class="section-head__meta">Titles, tags, desks, series, and headings</span>
     </header>
 
@@ -40,7 +40,7 @@ const tags = getTagGroups();
       </label>
     </form>
 
-    <p class="search-status" data-search-status>Loading the index...</p>
+    <p class="search-status" data-search-status role="status" aria-live="polite">Loading the index...</p>
     <ol class="search-results" data-search-results role="list"></ol>
   </section>
 

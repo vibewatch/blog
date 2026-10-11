@@ -47,7 +47,7 @@ const enableGa = Boolean(gaId) && import.meta.env.PROD;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f3eee2" />
+    <meta name="theme-color" content="#f7f8fa" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={absoluteUrl(canonical)} />
@@ -77,8 +77,9 @@ const enableGa = Boolean(gaId) && import.meta.env.PROD;
     )}
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <Masthead />
-    <main>
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
     <Colophon />

@@ -21,7 +21,7 @@ const { tag } = Astro.props;
   <section class="container section--tight discovery-page">
     <header class="section-head section-head--stacked">
       <p class="section-head__eyebrow">Topic</p>
-      <h2 class="section-head__title">{tag.name}</h2>
+      <h1 class="section-head__title">{tag.name}</h1>
       <span class="section-head__meta">{tag.posts.length} {tag.posts.length === 1 ? 'dispatch' : 'dispatches'}</span>
     </header>
 

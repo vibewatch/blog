@@ -49,8 +49,22 @@ public/       Build output (served by GitHub Pages)
 site.config.json             Site title, description, baseUrl, author
 astro.config.mjs             Astro config (reads site.config.json)
 .github/workflows/pages.yml  Build + deploy workflow
-DESIGN.md                    Design tokens / style notes
 ```
+
+## Visual system
+
+The UI uses an **Open Field** editorial style: neutral off-white surfaces,
+graphite text, restrained Azure-blue accents, and locally bundled Mona Sans
+with Monaspace Neon for code. Display typography uses larger sizes and tighter
+tracking; article text uses a narrower reading measure and generous line height.
+
+Shared colors, spacing, typography, and radii live in
+[`src/styles/tokens.css`](src/styles/tokens.css). Responsive navigation, the
+homepage introduction and image-led article cards, discovery pages, and article
+reading styles live in [`src/styles/global.css`](src/styles/global.css).
+Navigation remains accessible without JavaScript, includes current-section
+indicators and a skip link, and reflows on small screens. Motion respects
+`prefers-reduced-motion`; print styles remove navigation and reading controls.
 
 ## Development
 

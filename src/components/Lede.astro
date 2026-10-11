@@ -16,20 +16,21 @@ const sectionId = post.desk?.sectionId ?? '';
       <span class="lede__desk">{deskName}</span>
       {sectionId ? <span class="lede__section">{sectionId}</span> : null}
     </p>
-    <h1 class="lede__headline"><a href={href}>{post.title}</a></h1>
+    <h3 class="lede__headline"><a href={href}>{post.title}</a></h3>
     {post.excerpt ? <p class="lede__deck">{post.excerpt}</p> : null}
     <p class="lede__byline">
       {author ? <>By <strong>{author}</strong> · </> : null}
       <time datetime={post.date.toISOString()}>{formatDate(post.date)}</time>
+      <span> · {post.readingTime} min read</span>
     </p>
+    <a class="text-link lede__read" href={href}>Read the article <span aria-hidden="true">↗</span></a>
   </div>
 
   {post.featureImage ? (
-    <figure class="lede__media-wrap" style="margin: 0;">
+    <figure class="lede__media-wrap">
       <a class="lede__media" href={href} aria-hidden="true" tabindex="-1">
-        <img src={sitePath(post.featureImage)} alt="" loading="eager" decoding="async" />
+        <img src={sitePath(post.featureImage)} alt="" loading="eager" fetchpriority="high" decoding="async" />
       </a>
-      <figcaption class="lede__caption">{post.title}</figcaption>
     </figure>
   ) : null}
 </article>

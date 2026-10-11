@@ -24,14 +24,14 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 ---
 
 <BaseLayout
-  title="The Index"
+  title="Archive"
   description="A complete index of every dispatch, by desk and date."
   canonical="/archive/"
 >
   <section class="container section--tight">
     <header class="section-head">
-      <h2 class="section-head__title">The Index</h2>
-      <span class="section-head__meta">{posts.length} dispatches in print</span>
+      <h1 class="section-head__title">The archive</h1>
+      <span class="section-head__meta">{posts.length} articles, collected over time</span>
     </header>
     {years.map((year) => {
       const yearPosts = byYear.get(year)!;

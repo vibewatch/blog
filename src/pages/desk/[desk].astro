@@ -21,7 +21,7 @@ const { desk } = Astro.props;
   <section class="container section--tight discovery-page">
     <header class="section-head section-head--stacked desk-heading">
       <p class="section-head__eyebrow">Desk {desk.desk.letter}</p>
-      <h2 class="section-head__title">{desk.desk.name}</h2>
+      <h1 class="section-head__title">{desk.desk.name}</h1>
       <span class="section-head__meta">{desk.posts.length} {desk.posts.length === 1 ? 'dispatch' : 'dispatches'}</span>
       <p class="section-head__deck">{desk.desk.tagline}</p>
     </header>
