@@ -190,6 +190,17 @@ Aggregating across all 28 models by programming language reveals why language ch
 | **Code: C++** | 29.96 | 16.50 | 501 | `claude-haiku-5.5` (`55.61`) | `claude-haiku-5.5` (`11.20s`) | `claude-opus-5` (`29.39s`) |
 | **Code: Rust** | 45.95 | **25.83** | **1,105** | **`claude-haiku-5.5` (`91.11`)** | `claude-haiku-5.5` (`13.56s`) | `gemini-3.8-flash` (`51.36s`) |
 
+### Which Hosted Model Should You Use for Each Programming Language?
+
+Because token density and completion behavior vary sharply across ecosystems, the matrix points to clear per-language model choices rather than a single one-size-fits-all default:
+
+- **Python:** Use **`gpt-5.6-terra`** (`58.29 tok/s`, `13.55s`) or **`claude-sonnet-5.5`** (`56.19 tok/s`, `13.22s`) when you want complete, idiomatic implementations at top throughput, or **`claude-haiku-5.5`** (`10.19s`) and **`mai-code-1.1-flash`** (`11.15s`) for the fastest sub-12-second turnaround.
+- **JavaScript / TypeScript:** Pick **`claude-haiku-5.5`** (`62.96 tok/s`, `11.31s`) or **`gpt-5.4-mini`** (`56.27 tok/s`, `11.37s`) for rapid front-end and Node.js iteration, with **`gpt-5.6-terra`** (`11.04s`) and **`claude-sonnet-5.5`** (`48.95 tok/s`, `13.18s`) as strong alternatives.
+- **Go:** Stick to **`claude-haiku-5.5`** (`54.52 tok/s`, `11.54s`) or **`gpt-5.4-mini`** (`51.15 tok/s`, `11.59s`) — the only two models that break `50 tok/s` and finish under `12` seconds in Go — or **`gpt-5.6-luna`** (`43.57 tok/s`, `13.52s`); avoid `gemini-3.8-flash`, which stalls to `34.35s` (`16.01 tok/s`).
+- **Java:** Choose **`claude-haiku-5.5`** (`73.75 tok/s`, `11.13s`), **`mai-code-1.1-flash`** (`66.68 tok/s`, `13.81s`), or **`claude-sonnet-5.5`** (`63.70 tok/s`, `13.28s`), all of which stream through Java's heavy class and type scaffolding at `63–74 tok/s` without wall-clock drag.
+- **C++:** Prefer **`claude-haiku-5.5`** (`55.61 tok/s`, `11.20s`), **`claude-sonnet-5.5`** (`53.24 tok/s`, `13.49s`), **`claude-opus-5.5`** (`53.20 tok/s`, `17.76s`), or **`gpt-5.4-mini`** (`49.07 tok/s`, `11.25s`), and avoid `gpt-5.3-codex`, `gpt-5.4`, `gpt-5.5`, and `gpt-5.6-luna` on terse C++ prompts where they emitted truncated `27–37` token responses.
+- **Rust:** Default to **`claude-haiku-5.5`** (`91.11 tok/s`, `13.56s`), **`gpt-5.6-terra`** (`74.55 tok/s`, `14.49s`), or **`claude-sonnet-5.5`** (`68.06 tok/s`, `16.60s`); Rust's `1,105`-token average output punishes slower or overly verbose models like `gemini-3.8-flash` (`51.36s`), `claude-opus-5` (`48.67s`), and `claude-opus-5.5` (`36.27s`).
+
 Three structural anomalies stand out across the matrix:
 
 ### Anomaly 1: The Java vs. Go/JS Token-Density Illusion (`16.4s` for Both, `50.6` vs. `31.4 tok/s`)
