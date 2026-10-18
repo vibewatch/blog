@@ -1,0 +1,563 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 890" width="1120" height="890" role="img" aria-label="Three-panel decomposition of Unit Token Rate, Context Volume, and Per-Task Credit Breakdown across 28 models">
+  <style>
+    .bg { fill: #f7f8fa; }
+    .panel { fill: #ffffff; stroke: #dce2ea; stroke-width: 1; }
+    .panel-tint { fill: #edf1f6; stroke: #dce2ea; stroke-width: 1; }
+    .kicker { font: 700 11px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #245bd6; letter-spacing: 0.12em; text-transform: uppercase; }
+    .title { font: 700 21px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.03em; }
+    .subtitle { font: 400 12.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #526074; }
+    .axis-title { font: 600 11.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.01em; }
+    .axis-tick { font: 500 10px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .grid { stroke: #e6ebf2; stroke-width: 1; }
+    .grid-strong { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4 4; }
+    .iso-line { fill: none; stroke: #94a3b8; stroke-width: 1.25; stroke-dasharray: 5 5; opacity: 0.75; }
+    .iso-label { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #475569; }
+    .model-lbl { font: 600 10.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #182332; }
+    .model-sub { font: 500 9px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .badge { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .footnote { font: 400 10.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #627084; }
+  </style>
+  <rect width="1120" height="890" rx="16" class="bg" />
+  <text x="28" y="34" class="kicker">Compute &amp; Context Anatomy · Unit Rate × Multi-Turn Tool Loops = 8-Task Spend</text>
+  <text x="28" y="58" class="title">Why Agentic Over-Polishing Multiplies Context Volume from 0.8M to 21.5M Tokens</text>
+  <text x="28" y="78" class="subtitle">Models sorted by total 8-task AI credits (auto at 9.1 cr to claude-opus-5 at 1,475 cr). Panel B shows total tokens + visual view() calls; Panel C stacks credits by task.</text>
+  <rect x="28" y="92" width="11" height="11" rx="2" fill="#7c3aed" />
+  <text x="43" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">3D Scene</text>
+  <rect x="156" y="92" width="11" height="11" rx="2" fill="#245bd6" />
+  <text x="171" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">SVG Diagram</text>
+  <rect x="284" y="92" width="11" height="11" rx="2" fill="#d97706" />
+  <text x="299" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">PPTX Deck</text>
+  <rect x="412" y="92" width="11" height="11" rx="2" fill="#0d9488" />
+  <text x="427" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">Design Doc</text>
+  <rect x="540" y="92" width="11" height="11" rx="2" fill="#059669" />
+  <text x="555" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">KPI Dashboard</text>
+  <rect x="668" y="92" width="11" height="11" rx="2" fill="#e11d48" />
+  <text x="683" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">Landing UI</text>
+  <rect x="796" y="92" width="11" height="11" rx="2" fill="#f59e0b" />
+  <text x="811" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">Breakout Game</text>
+  <rect x="924" y="92" width="11" height="11" rx="2" fill="#0284c7" />
+  <text x="939" y="101.5" class="subtitle" style="font-size:10.8px;font-weight:600;fill:#1e293b">MP4 Video</text>
+  <rect x="22" y="114" width="1076" height="740" rx="10" class="panel" />
+  <text x="30" y="134" class="axis-title">Q-Rank / Model</text>
+  <text x="210" y="134" class="axis-title">A. Effective Rate (cr / 100k tok)</text>
+  <text x="455" y="134" class="axis-title">B. 8-Task Token Volume (√-scale) &amp; Tools</text>
+  <text x="745" y="134" class="axis-title">C. Total 8-Task AI Credits Stack (1 cr = $0.01)</text>
+  <line x1="210.0" y1="142" x2="210.0" y2="834" class="grid" />
+  <text x="210.0" y="848" text-anchor="middle" class="axis-tick">0</text>
+  <line x1="267.1" y1="142" x2="267.1" y2="834" class="grid" />
+  <text x="267.1" y="848" text-anchor="middle" class="axis-tick">10</text>
+  <line x1="324.3" y1="142" x2="324.3" y2="834" class="grid" />
+  <text x="324.3" y="848" text-anchor="middle" class="axis-tick">20</text>
+  <line x1="381.4" y1="142" x2="381.4" y2="834" class="grid" />
+  <text x="381.4" y="848" text-anchor="middle" class="axis-tick">30</text>
+  <line x1="455.0" y1="142" x2="455.0" y2="834" class="grid" />
+  <text x="455.0" y="848" text-anchor="middle" class="axis-tick">0</text>
+  <line x1="519.8" y1="142" x2="519.8" y2="834" class="grid" />
+  <text x="519.8" y="848" text-anchor="middle" class="axis-tick">2M</text>
+  <line x1="567.3" y1="142" x2="567.3" y2="834" class="grid" />
+  <text x="567.3" y="848" text-anchor="middle" class="axis-tick">6M</text>
+  <line x1="613.8" y1="142" x2="613.8" y2="834" class="grid" />
+  <text x="613.8" y="848" text-anchor="middle" class="axis-tick">12M</text>
+  <line x1="665.1" y1="142" x2="665.1" y2="834" class="grid" />
+  <text x="665.1" y="848" text-anchor="middle" class="axis-tick">21M</text>
+  <line x1="745.0" y1="142" x2="745.0" y2="834" class="grid" />
+  <text x="745.0" y="848" text-anchor="middle" class="axis-tick">0</text>
+  <line x1="800.0" y1="142" x2="800.0" y2="834" class="grid" />
+  <text x="800.0" y="848" text-anchor="middle" class="axis-tick">300cr</text>
+  <line x1="855.0" y1="142" x2="855.0" y2="834" class="grid" />
+  <text x="855.0" y="848" text-anchor="middle" class="axis-tick">600cr</text>
+  <line x1="910.0" y1="142" x2="910.0" y2="834" class="grid" />
+  <text x="910.0" y="848" text-anchor="middle" class="axis-tick">900cr</text>
+  <line x1="965.0" y1="142" x2="965.0" y2="834" class="grid" />
+  <text x="965.0" y="848" text-anchor="middle" class="axis-tick">1200cr</text>
+  <line x1="1020.0" y1="142" x2="1020.0" y2="834" class="grid" />
+  <text x="1020.0" y="848" text-anchor="middle" class="axis-tick">1500cr</text>
+  <rect x="28" y="150.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="160.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#11·87</text>
+  <text x="74" y="161.0" class="model-lbl" style="font-size:10px">auto</text>
+  <line x1="210" y1="157.5" x2="211.8" y2="157.5" stroke="#475569" stroke-width="2.2" />
+  <circle cx="211.8" cy="157.5" r="3.6" fill="#475569" />
+  <text x="217.8" y="161.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">0.31</text>
+  <rect x="455" y="151.5" width="77.8" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="537.8" y="161.0" class="axis-tick" style="font-size:8.8px;fill:#334155">2.88M <tspan fill="#64748b">(96t/18v)</tspan></text>
+  <rect x="745.00" y="151.5" width="0.29" height="12" fill="#7c3aed" />
+  <rect x="745.29" y="151.5" width="0.23" height="12" fill="#245bd6" />
+  <rect x="745.52" y="151.5" width="0.25" height="12" fill="#d97706" />
+  <rect x="745.77" y="151.5" width="0.16" height="12" fill="#0d9488" />
+  <rect x="746.08" y="151.5" width="0.26" height="12" fill="#e11d48" />
+  <rect x="746.34" y="151.5" width="0.18" height="12" fill="#f59e0b" />
+  <text x="751.7" y="161.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">9cr <tspan fill="#64748b" style="font-weight:400">($0.09)</tspan></text>
+  <rect x="24" y="170.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="174.5" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="185.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#18·85</text>
+  <text x="74" y="185.5" class="model-lbl" style="font-size:10px">gpt-6-luna</text>
+  <line x1="210" y1="182.0" x2="212.1" y2="182.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="212.1" cy="182.0" r="3.6" fill="#245bd6" />
+  <text x="218.1" y="185.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">0.37</text>
+  <rect x="455" y="176.0" width="76.4" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="536.4" y="185.5" class="axis-tick" style="font-size:8.8px;fill:#334155">2.78M <tspan fill="#64748b">(89t/18v)</tspan></text>
+  <rect x="745.00" y="176.0" width="0.31" height="12" fill="#7c3aed" />
+  <rect x="745.31" y="176.0" width="0.20" height="12" fill="#245bd6" />
+  <rect x="745.52" y="176.0" width="0.31" height="12" fill="#d97706" />
+  <rect x="745.95" y="176.0" width="0.20" height="12" fill="#059669" />
+  <rect x="746.15" y="176.0" width="0.26" height="12" fill="#e11d48" />
+  <rect x="746.41" y="176.0" width="0.18" height="12" fill="#f59e0b" />
+  <rect x="746.59" y="176.0" width="0.29" height="12" fill="#0284c7" />
+  <text x="751.9" y="185.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">10cr <tspan fill="#64748b" style="font-weight:400">($0.10)</tspan></text>
+  <rect x="28" y="199.0" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="209.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#21·84</text>
+  <text x="74" y="210.0" class="model-lbl" style="font-size:10px">gpt-5.6-luna</text>
+  <line x1="210" y1="206.5" x2="213.7" y2="206.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="213.7" cy="206.5" r="3.6" fill="#245bd6" />
+  <text x="219.7" y="210.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">0.64</text>
+  <rect x="455" y="200.5" width="69.5" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="529.5" y="210.0" class="axis-tick" style="font-size:8.8px;fill:#334155">2.30M <tspan fill="#64748b">(87t/13v)</tspan></text>
+  <rect x="745.00" y="200.5" width="0.30" height="12" fill="#7c3aed" />
+  <rect x="745.30" y="200.5" width="0.46" height="12" fill="#245bd6" />
+  <rect x="745.76" y="200.5" width="0.47" height="12" fill="#d97706" />
+  <rect x="746.24" y="200.5" width="0.18" height="12" fill="#0d9488" />
+  <rect x="746.42" y="200.5" width="0.28" height="12" fill="#059669" />
+  <rect x="746.69" y="200.5" width="0.52" height="12" fill="#e11d48" />
+  <rect x="747.21" y="200.5" width="0.21" height="12" fill="#f59e0b" />
+  <rect x="747.42" y="200.5" width="0.29" height="12" fill="#0284c7" />
+  <text x="752.7" y="210.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">15cr <tspan fill="#64748b" style="font-weight:400">($0.15)</tspan></text>
+  <rect x="24" y="219.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="223.5" width="40" height="15" rx="3" fill="#ffe4e6" />
+  <text x="48" y="234.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#be123c">#28·65</text>
+  <text x="74" y="234.5" class="model-lbl" style="font-size:10px">gpt-5-mini</text>
+  <line x1="210" y1="231.0" x2="224.0" y2="231.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="224.0" cy="231.0" r="3.6" fill="#245bd6" />
+  <text x="230.0" y="234.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">2.45</text>
+  <rect x="455" y="225.0" width="40.5" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="500.5" y="234.5" class="axis-tick" style="font-size:8.8px;fill:#334155">0.78M <tspan fill="#64748b">(22t/2v)</tspan></text>
+  <rect x="745.00" y="225.0" width="0.57" height="12" fill="#7c3aed" />
+  <rect x="745.57" y="225.0" width="0.36" height="12" fill="#245bd6" />
+  <rect x="745.93" y="225.0" width="0.27" height="12" fill="#d97706" />
+  <rect x="746.20" y="225.0" width="0.30" height="12" fill="#0d9488" />
+  <rect x="746.50" y="225.0" width="0.60" height="12" fill="#059669" />
+  <rect x="747.10" y="225.0" width="0.42" height="12" fill="#e11d48" />
+  <rect x="747.53" y="225.0" width="0.31" height="12" fill="#f59e0b" />
+  <rect x="747.84" y="225.0" width="0.67" height="12" fill="#0284c7" />
+  <text x="753.5" y="234.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">19cr <tspan fill="#64748b" style="font-weight:400">($0.19)</tspan></text>
+  <rect x="28" y="248.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="258.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#12·87</text>
+  <text x="74" y="259.0" class="model-lbl" style="font-size:10px">claude-haiku-5.5</text>
+  <line x1="210" y1="255.5" x2="211.9" y2="255.5" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="211.9" cy="255.5" r="3.6" fill="#d97706" />
+  <text x="217.9" y="259.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">0.33</text>
+  <rect x="455" y="249.5" width="121.6" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="581.6" y="259.0" class="axis-tick" style="font-size:8.8px;fill:#334155">7.04M <tspan fill="#64748b">(127t/17v)</tspan></text>
+  <rect x="745.00" y="249.5" width="1.08" height="12" fill="#7c3aed" />
+  <rect x="746.08" y="249.5" width="0.53" height="12" fill="#245bd6" />
+  <rect x="746.61" y="249.5" width="0.44" height="12" fill="#d97706" />
+  <rect x="747.05" y="249.5" width="0.17" height="12" fill="#0d9488" />
+  <rect x="747.22" y="249.5" width="0.39" height="12" fill="#059669" />
+  <rect x="747.60" y="249.5" width="0.50" height="12" fill="#e11d48" />
+  <rect x="748.10" y="249.5" width="0.64" height="12" fill="#f59e0b" />
+  <rect x="748.75" y="249.5" width="0.52" height="12" fill="#0284c7" />
+  <text x="754.3" y="259.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">23cr <tspan fill="#64748b" style="font-weight:400">($0.23)</tspan></text>
+  <rect x="24" y="268.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="272.5" width="40" height="15" rx="3" fill="#ffe4e6" />
+  <text x="48" y="283.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#be123c">#25·78</text>
+  <text x="74" y="283.5" class="model-lbl" style="font-size:10px">mai-code-1.1-flash</text>
+  <line x1="210" y1="280.0" x2="215.2" y2="280.0" stroke="#059669" stroke-width="2.2" />
+  <circle cx="215.2" cy="280.0" r="3.6" fill="#059669" />
+  <text x="221.2" y="283.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">0.91</text>
+  <rect x="455" y="274.0" width="88.1" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="548.1" y="283.5" class="axis-tick" style="font-size:8.8px;fill:#334155">3.69M <tspan fill="#64748b">(95t/13v)</tspan></text>
+  <rect x="745.00" y="274.0" width="0.63" height="12" fill="#7c3aed" />
+  <rect x="745.63" y="274.0" width="0.52" height="12" fill="#245bd6" />
+  <rect x="746.15" y="274.0" width="1.43" height="12" fill="#d97706" />
+  <rect x="747.57" y="274.0" width="0.45" height="12" fill="#0d9488" />
+  <rect x="748.03" y="274.0" width="1.02" height="12" fill="#059669" />
+  <rect x="749.05" y="274.0" width="1.19" height="12" fill="#e11d48" />
+  <rect x="750.24" y="274.0" width="0.42" height="12" fill="#f59e0b" />
+  <rect x="750.65" y="274.0" width="0.52" height="12" fill="#0284c7" />
+  <text x="756.2" y="283.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">34cr <tspan fill="#64748b" style="font-weight:400">($0.34)</tspan></text>
+  <rect x="28" y="297.0" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="307.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#23·81</text>
+  <text x="74" y="308.0" class="model-lbl" style="font-size:10px">gpt-5.4-mini</text>
+  <line x1="210" y1="304.5" x2="225.6" y2="304.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="225.6" cy="304.5" r="3.6" fill="#245bd6" />
+  <text x="231.6" y="308.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">2.72</text>
+  <rect x="455" y="298.5" width="95.5" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="555.5" y="308.0" class="axis-tick" style="font-size:8.8px;fill:#334155">4.34M <tspan fill="#64748b">(126t/28v)</tspan></text>
+  <rect x="745.00" y="298.5" width="2.11" height="12" fill="#7c3aed" />
+  <rect x="747.11" y="298.5" width="2.14" height="12" fill="#245bd6" />
+  <rect x="749.25" y="298.5" width="7.77" height="12" fill="#d97706" />
+  <rect x="757.02" y="298.5" width="0.64" height="12" fill="#0d9488" />
+  <rect x="757.66" y="298.5" width="2.47" height="12" fill="#059669" />
+  <rect x="760.14" y="298.5" width="2.66" height="12" fill="#e11d48" />
+  <rect x="762.80" y="298.5" width="1.76" height="12" fill="#f59e0b" />
+  <rect x="764.56" y="298.5" width="2.13" height="12" fill="#0284c7" />
+  <text x="771.7" y="308.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">118cr <tspan fill="#64748b" style="font-weight:400">($1.18)</tspan></text>
+  <rect x="24" y="317.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="321.5" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="332.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#24·81</text>
+  <text x="74" y="332.5" class="model-lbl" style="font-size:10px">gpt-5.3-codex</text>
+  <line x1="210" y1="329.0" x2="265.7" y2="329.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="265.7" cy="329.0" r="3.6" fill="#245bd6" />
+  <text x="271.7" y="332.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">9.74</text>
+  <rect x="455" y="323.0" width="55.0" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="515.0" y="332.5" class="axis-tick" style="font-size:8.8px;fill:#334155">1.44M <tspan fill="#64748b">(49t/0v)</tspan></text>
+  <rect x="745.00" y="323.0" width="3.91" height="12" fill="#7c3aed" />
+  <rect x="748.91" y="323.0" width="2.80" height="12" fill="#245bd6" />
+  <rect x="751.70" y="323.0" width="2.30" height="12" fill="#d97706" />
+  <rect x="754.00" y="323.0" width="2.29" height="12" fill="#0d9488" />
+  <rect x="756.29" y="323.0" width="3.17" height="12" fill="#059669" />
+  <rect x="759.46" y="323.0" width="5.30" height="12" fill="#e11d48" />
+  <rect x="764.76" y="323.0" width="3.55" height="12" fill="#f59e0b" />
+  <rect x="768.31" y="323.0" width="2.44" height="12" fill="#0284c7" />
+  <text x="775.7" y="332.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">140cr <tspan fill="#64748b" style="font-weight:400">($1.40)</tspan></text>
+  <rect x="28" y="346.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="356.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#5·89</text>
+  <text x="74" y="357.0" class="model-lbl" style="font-size:10px">gpt-6.1-sol</text>
+  <line x1="210" y1="353.5" x2="247.9" y2="353.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="247.9" cy="353.5" r="3.6" fill="#245bd6" />
+  <text x="253.9" y="357.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">6.64</text>
+  <rect x="455" y="347.5" width="66.7" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="526.7" y="357.0" class="axis-tick" style="font-size:8.8px;fill:#334155">2.12M <tspan fill="#64748b">(68t/14v)</tspan></text>
+  <rect x="745.00" y="347.5" width="3.47" height="12" fill="#7c3aed" />
+  <rect x="748.47" y="347.5" width="2.19" height="12" fill="#245bd6" />
+  <rect x="750.66" y="347.5" width="3.85" height="12" fill="#d97706" />
+  <rect x="754.52" y="347.5" width="2.11" height="12" fill="#0d9488" />
+  <rect x="756.62" y="347.5" width="3.03" height="12" fill="#059669" />
+  <rect x="759.66" y="347.5" width="6.16" height="12" fill="#e11d48" />
+  <rect x="765.82" y="347.5" width="3.20" height="12" fill="#f59e0b" />
+  <rect x="769.02" y="347.5" width="1.75" height="12" fill="#0284c7" />
+  <text x="775.8" y="357.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">141cr <tspan fill="#64748b" style="font-weight:400">($1.41)</tspan></text>
+  <rect x="24" y="366.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="370.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="381.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#14·86</text>
+  <text x="74" y="381.5" class="model-lbl" style="font-size:10px">gpt-5.6-terra</text>
+  <line x1="210" y1="378.0" x2="246.4" y2="378.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="246.4" cy="378.0" r="3.6" fill="#245bd6" />
+  <text x="252.4" y="381.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">6.38</text>
+  <rect x="455" y="372.0" width="69.0" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="529.0" y="381.5" class="axis-tick" style="font-size:8.8px;fill:#334155">2.27M <tspan fill="#64748b">(87t/11v)</tspan></text>
+  <rect x="745.00" y="372.0" width="3.62" height="12" fill="#7c3aed" />
+  <rect x="748.62" y="372.0" width="3.20" height="12" fill="#245bd6" />
+  <rect x="751.82" y="372.0" width="3.18" height="12" fill="#d97706" />
+  <rect x="755.00" y="372.0" width="1.82" height="12" fill="#0d9488" />
+  <rect x="756.82" y="372.0" width="5.10" height="12" fill="#059669" />
+  <rect x="761.92" y="372.0" width="3.87" height="12" fill="#e11d48" />
+  <rect x="765.79" y="372.0" width="3.65" height="12" fill="#f59e0b" />
+  <rect x="769.43" y="372.0" width="2.07" height="12" fill="#0284c7" />
+  <text x="776.5" y="381.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">145cr <tspan fill="#64748b" style="font-weight:400">($1.45)</tspan></text>
+  <rect x="28" y="395.0" width="40" height="15" rx="3" fill="#ffe4e6" />
+  <text x="48" y="405.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#be123c">#27·71</text>
+  <text x="74" y="406.0" class="model-lbl" style="font-size:10px">claude-haiku-4.5</text>
+  <line x1="210" y1="402.5" x2="225.9" y2="402.5" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="225.9" cy="402.5" r="3.6" fill="#d97706" />
+  <text x="231.9" y="406.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">2.77</text>
+  <rect x="455" y="396.5" width="109.1" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="569.1" y="406.0" class="axis-tick" style="font-size:8.8px;fill:#334155">5.66M <tspan fill="#64748b">(138t/21v)</tspan></text>
+  <rect x="745.00" y="396.5" width="3.19" height="12" fill="#7c3aed" />
+  <rect x="748.19" y="396.5" width="2.07" height="12" fill="#245bd6" />
+  <rect x="750.27" y="396.5" width="3.40" height="12" fill="#d97706" />
+  <rect x="753.66" y="396.5" width="1.87" height="12" fill="#0d9488" />
+  <rect x="755.54" y="396.5" width="3.21" height="12" fill="#059669" />
+  <rect x="758.74" y="396.5" width="8.54" height="12" fill="#e11d48" />
+  <rect x="767.28" y="396.5" width="4.44" height="12" fill="#f59e0b" />
+  <rect x="771.72" y="396.5" width="2.08" height="12" fill="#0284c7" />
+  <text x="778.8" y="406.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">157cr <tspan fill="#64748b" style="font-weight:400">($1.57)</tspan></text>
+  <rect x="24" y="415.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="419.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="430.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#8·89</text>
+  <text x="74" y="430.5" class="model-lbl" style="font-size:10px">claude-sonnet-5.5</text>
+  <line x1="210" y1="427.0" x2="242.7" y2="427.0" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="242.7" cy="427.0" r="3.6" fill="#d97706" />
+  <text x="248.7" y="430.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">5.73</text>
+  <rect x="455" y="421.0" width="76.9" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="536.9" y="430.5" class="axis-tick" style="font-size:8.8px;fill:#334155">2.81M <tspan fill="#64748b">(73t/26v)</tspan></text>
+  <rect x="745.00" y="421.0" width="5.71" height="12" fill="#7c3aed" />
+  <rect x="750.71" y="421.0" width="4.63" height="12" fill="#245bd6" />
+  <rect x="755.33" y="421.0" width="2.80" height="12" fill="#d97706" />
+  <rect x="758.13" y="421.0" width="3.48" height="12" fill="#0d9488" />
+  <rect x="761.61" y="421.0" width="2.91" height="12" fill="#059669" />
+  <rect x="764.52" y="421.0" width="5.34" height="12" fill="#e11d48" />
+  <rect x="769.86" y="421.0" width="2.81" height="12" fill="#f59e0b" />
+  <rect x="772.67" y="421.0" width="1.88" height="12" fill="#0284c7" />
+  <text x="779.6" y="430.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">161cr <tspan fill="#64748b" style="font-weight:400">($1.61)</tspan></text>
+  <rect x="28" y="444.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="454.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#3·90</text>
+  <text x="74" y="455.0" class="model-lbl" style="font-size:10px">gpt-6-sol</text>
+  <line x1="210" y1="451.5" x2="245.6" y2="451.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="245.6" cy="451.5" r="3.6" fill="#245bd6" />
+  <text x="251.6" y="455.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">6.23</text>
+  <rect x="455" y="445.5" width="83.9" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="543.9" y="455.0" class="axis-tick" style="font-size:8.8px;fill:#334155">3.35M <tspan fill="#64748b">(102t/18v)</tspan></text>
+  <rect x="745.00" y="445.5" width="7.92" height="12" fill="#7c3aed" />
+  <rect x="752.92" y="445.5" width="3.59" height="12" fill="#245bd6" />
+  <rect x="756.51" y="445.5" width="6.72" height="12" fill="#d97706" />
+  <rect x="763.23" y="445.5" width="2.85" height="12" fill="#0d9488" />
+  <rect x="766.08" y="445.5" width="3.96" height="12" fill="#059669" />
+  <rect x="770.04" y="445.5" width="6.60" height="12" fill="#e11d48" />
+  <rect x="776.64" y="445.5" width="3.66" height="12" fill="#f59e0b" />
+  <rect x="780.30" y="445.5" width="3.00" height="12" fill="#0284c7" />
+  <text x="788.3" y="455.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">209cr <tspan fill="#64748b" style="font-weight:400">($2.09)</tspan></text>
+  <rect x="24" y="464.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="468.5" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="479.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#19·85</text>
+  <text x="74" y="479.5" class="model-lbl" style="font-size:10px">grok-4.5</text>
+  <line x1="210" y1="476.0" x2="259.4" y2="476.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="259.4" cy="476.0" r="3.6" fill="#7c3aed" />
+  <text x="265.4" y="479.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">8.64</text>
+  <rect x="455" y="470.0" width="86.5" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="546.5" y="479.5" class="axis-tick" style="font-size:8.8px;fill:#334155">3.56M <tspan fill="#64748b">(139t/35v)</tspan></text>
+  <rect x="745.00" y="470.0" width="11.70" height="12" fill="#7c3aed" />
+  <rect x="756.70" y="470.0" width="13.74" height="12" fill="#245bd6" />
+  <rect x="770.44" y="470.0" width="6.14" height="12" fill="#d97706" />
+  <rect x="776.58" y="470.0" width="2.44" height="12" fill="#0d9488" />
+  <rect x="779.03" y="470.0" width="4.71" height="12" fill="#059669" />
+  <rect x="783.73" y="470.0" width="6.21" height="12" fill="#e11d48" />
+  <rect x="789.94" y="470.0" width="7.31" height="12" fill="#f59e0b" />
+  <rect x="797.25" y="470.0" width="4.18" height="12" fill="#0284c7" />
+  <text x="806.4" y="479.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">308cr <tspan fill="#64748b" style="font-weight:400">($3.08)</tspan></text>
+  <rect x="28" y="493.0" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="503.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#16·86</text>
+  <text x="74" y="504.0" class="model-lbl" style="font-size:10px">gemini-3.7-flash</text>
+  <line x1="210" y1="500.5" x2="224.0" y2="500.5" stroke="#0d9488" stroke-width="2.2" />
+  <circle cx="224.0" cy="500.5" r="3.6" fill="#0d9488" />
+  <text x="230.0" y="504.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">2.46</text>
+  <rect x="455" y="494.5" width="176.5" height="12" rx="2" fill="#e11d48" opacity="0.72" />
+  <text x="636.5" y="504.0" class="axis-tick" style="font-size:8.8px;fill:#334155">14.82M <tspan fill="#64748b">(206t/61v)</tspan></text>
+  <rect x="745.00" y="494.5" width="28.56" height="12" fill="#7c3aed" />
+  <rect x="773.56" y="494.5" width="6.39" height="12" fill="#245bd6" />
+  <rect x="779.96" y="494.5" width="8.34" height="12" fill="#d97706" />
+  <rect x="788.30" y="494.5" width="3.09" height="12" fill="#0d9488" />
+  <rect x="791.39" y="494.5" width="8.58" height="12" fill="#059669" />
+  <rect x="799.96" y="494.5" width="5.15" height="12" fill="#e11d48" />
+  <rect x="805.11" y="494.5" width="2.23" height="12" fill="#f59e0b" />
+  <rect x="807.34" y="494.5" width="4.39" height="12" fill="#0284c7" />
+  <text x="816.7" y="504.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">364cr <tspan fill="#64748b" style="font-weight:400">($3.64)</tspan></text>
+  <rect x="24" y="513.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="517.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="528.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#4·90</text>
+  <text x="74" y="528.5" class="model-lbl" style="font-size:10px">gpt-5.6-sol</text>
+  <line x1="210" y1="525.0" x2="303.4" y2="525.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="303.4" cy="525.0" r="3.6" fill="#245bd6" />
+  <text x="309.4" y="528.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">16.34</text>
+  <rect x="455" y="519.0" width="68.9" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="528.9" y="528.5" class="axis-tick" style="font-size:8.8px;fill:#334155">2.26M <tspan fill="#64748b">(81t/14v)</tspan></text>
+  <rect x="745.00" y="519.0" width="6.50" height="12" fill="#7c3aed" />
+  <rect x="751.50" y="519.0" width="7.79" height="12" fill="#245bd6" />
+  <rect x="759.29" y="519.0" width="9.01" height="12" fill="#d97706" />
+  <rect x="768.30" y="519.0" width="6.40" height="12" fill="#0d9488" />
+  <rect x="774.70" y="519.0" width="5.86" height="12" fill="#059669" />
+  <rect x="780.56" y="519.0" width="16.38" height="12" fill="#e11d48" />
+  <rect x="796.94" y="519.0" width="10.58" height="12" fill="#f59e0b" />
+  <rect x="807.52" y="519.0" width="5.16" height="12" fill="#0284c7" />
+  <text x="817.7" y="528.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">369cr <tspan fill="#64748b" style="font-weight:400">($3.69)</tspan></text>
+  <rect x="28" y="542.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="552.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#13·87</text>
+  <text x="74" y="553.0" class="model-lbl" style="font-size:10px">gemini-3.8-flash</text>
+  <line x1="210" y1="549.5" x2="220.0" y2="549.5" stroke="#0d9488" stroke-width="2.2" />
+  <circle cx="220.0" cy="549.5" r="3.6" fill="#0d9488" />
+  <text x="226.0" y="553.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">1.74</text>
+  <rect x="455" y="543.5" width="212.6" height="12" rx="2" fill="#e11d48" opacity="0.72" />
+  <text x="672.6" y="553.0" class="axis-tick" style="font-size:8.8px;fill:#334155">21.51M <tspan fill="#64748b">(338t/84v)</tspan></text>
+  <rect x="745.00" y="543.5" width="21.19" height="12" fill="#7c3aed" />
+  <rect x="766.19" y="543.5" width="7.42" height="12" fill="#245bd6" />
+  <rect x="773.61" y="543.5" width="7.08" height="12" fill="#d97706" />
+  <rect x="780.69" y="543.5" width="7.65" height="12" fill="#0d9488" />
+  <rect x="788.34" y="543.5" width="5.79" height="12" fill="#059669" />
+  <rect x="794.13" y="543.5" width="6.02" height="12" fill="#e11d48" />
+  <rect x="800.14" y="543.5" width="5.70" height="12" fill="#f59e0b" />
+  <rect x="805.85" y="543.5" width="7.90" height="12" fill="#0284c7" />
+  <text x="818.8" y="553.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">375cr <tspan fill="#64748b" style="font-weight:400">($3.75)</tspan></text>
+  <rect x="24" y="562.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="566.5" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="577.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#22·82</text>
+  <text x="74" y="577.5" class="model-lbl" style="font-size:10px">gpt-5.4</text>
+  <line x1="210" y1="574.0" x2="257.7" y2="574.0" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="257.7" cy="574.0" r="3.6" fill="#245bd6" />
+  <text x="263.7" y="577.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">8.34</text>
+  <rect x="455" y="568.0" width="99.6" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="559.6" y="577.5" class="axis-tick" style="font-size:8.8px;fill:#334155">4.73M <tspan fill="#64748b">(137t/15v)</tspan></text>
+  <rect x="745.00" y="568.0" width="7.26" height="12" fill="#7c3aed" />
+  <rect x="752.26" y="568.0" width="5.84" height="12" fill="#245bd6" />
+  <rect x="758.10" y="568.0" width="8.16" height="12" fill="#d97706" />
+  <rect x="766.26" y="568.0" width="2.80" height="12" fill="#0d9488" />
+  <rect x="769.06" y="568.0" width="17.74" height="12" fill="#059669" />
+  <rect x="786.80" y="568.0" width="11.54" height="12" fill="#e11d48" />
+  <rect x="798.34" y="568.0" width="13.62" height="12" fill="#f59e0b" />
+  <rect x="811.96" y="568.0" width="5.32" height="12" fill="#0284c7" />
+  <text x="822.3" y="577.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">394cr <tspan fill="#64748b" style="font-weight:400">($3.94)</tspan></text>
+  <rect x="28" y="591.0" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="601.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#20·84</text>
+  <text x="74" y="602.0" class="model-lbl" style="font-size:10px">claude-sonnet-5</text>
+  <line x1="210" y1="598.5" x2="236.0" y2="598.5" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="236.0" cy="598.5" r="3.6" fill="#d97706" />
+  <text x="242.0" y="602.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">4.56</text>
+  <rect x="455" y="592.5" width="142.6" height="12" rx="2" fill="#e11d48" opacity="0.72" />
+  <text x="602.6" y="602.0" class="axis-tick" style="font-size:8.8px;fill:#334155">9.68M <tspan fill="#64748b">(168t/44v)</tspan></text>
+  <rect x="745.00" y="592.5" width="16.03" height="12" fill="#7c3aed" />
+  <rect x="761.03" y="592.5" width="25.74" height="12" fill="#245bd6" />
+  <rect x="786.77" y="592.5" width="13.96" height="12" fill="#d97706" />
+  <rect x="800.73" y="592.5" width="5.07" height="12" fill="#0d9488" />
+  <rect x="805.79" y="592.5" width="4.63" height="12" fill="#059669" />
+  <rect x="810.42" y="592.5" width="5.88" height="12" fill="#e11d48" />
+  <rect x="816.30" y="592.5" width="4.91" height="12" fill="#f59e0b" />
+  <rect x="821.20" y="592.5" width="4.64" height="12" fill="#0284c7" />
+  <text x="830.8" y="602.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">441cr <tspan fill="#64748b" style="font-weight:400">($4.41)</tspan></text>
+  <rect x="24" y="611.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="615.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="626.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#6·89</text>
+  <text x="74" y="626.5" class="model-lbl" style="font-size:10px">gemini-4-argon</text>
+  <line x1="210" y1="623.0" x2="249.7" y2="623.0" stroke="#0d9488" stroke-width="2.2" />
+  <circle cx="249.7" cy="623.0" r="3.6" fill="#0d9488" />
+  <text x="255.7" y="626.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">6.94</text>
+  <rect x="455" y="617.0" width="118.1" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="578.1" y="626.5" class="axis-tick" style="font-size:8.8px;fill:#334155">6.64M <tspan fill="#64748b">(201t/55v)</tspan></text>
+  <rect x="745.00" y="617.0" width="17.65" height="12" fill="#7c3aed" />
+  <rect x="762.65" y="617.0" width="6.57" height="12" fill="#245bd6" />
+  <rect x="769.22" y="617.0" width="15.87" height="12" fill="#d97706" />
+  <rect x="785.09" y="617.0" width="10.37" height="12" fill="#0d9488" />
+  <rect x="795.46" y="617.0" width="12.20" height="12" fill="#059669" />
+  <rect x="807.66" y="617.0" width="10.09" height="12" fill="#e11d48" />
+  <rect x="817.75" y="617.0" width="6.03" height="12" fill="#f59e0b" />
+  <rect x="823.79" y="617.0" width="5.67" height="12" fill="#0284c7" />
+  <text x="834.5" y="626.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">461cr <tspan fill="#64748b" style="font-weight:400">($4.61)</tspan></text>
+  <rect x="28" y="640.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="650.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#9·88</text>
+  <text x="74" y="651.0" class="model-lbl" style="font-size:10px">grok-4.6</text>
+  <line x1="210" y1="647.5" x2="258.2" y2="647.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="258.2" cy="647.5" r="3.6" fill="#7c3aed" />
+  <text x="264.2" y="651.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">8.43</text>
+  <rect x="455" y="641.5" width="109.3" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="569.3" y="651.0" class="axis-tick" style="font-size:8.8px;fill:#334155">5.68M <tspan fill="#64748b">(206t/57v)</tspan></text>
+  <rect x="745.00" y="641.5" width="15.20" height="12" fill="#7c3aed" />
+  <rect x="760.20" y="641.5" width="7.54" height="12" fill="#245bd6" />
+  <rect x="767.74" y="641.5" width="20.78" height="12" fill="#d97706" />
+  <rect x="788.53" y="641.5" width="2.56" height="12" fill="#0d9488" />
+  <rect x="791.08" y="641.5" width="13.27" height="12" fill="#059669" />
+  <rect x="804.35" y="641.5" width="6.26" height="12" fill="#e11d48" />
+  <rect x="810.61" y="641.5" width="17.02" height="12" fill="#f59e0b" />
+  <rect x="827.63" y="641.5" width="5.17" height="12" fill="#0284c7" />
+  <text x="837.8" y="651.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">479cr <tspan fill="#64748b" style="font-weight:400">($4.79)</tspan></text>
+  <rect x="24" y="660.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="664.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="675.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#1·90</text>
+  <text x="74" y="675.5" class="model-lbl" style="font-size:10px">claude-opus-5.5</text>
+  <line x1="210" y1="672.0" x2="281.1" y2="672.0" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="281.1" cy="672.0" r="3.6" fill="#d97706" />
+  <text x="287.1" y="675.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">12.45</text>
+  <rect x="455" y="666.0" width="94.2" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="554.2" y="675.5" class="axis-tick" style="font-size:8.8px;fill:#334155">4.22M <tspan fill="#64748b">(93t/34v)</tspan></text>
+  <rect x="745.00" y="666.0" width="11.69" height="12" fill="#7c3aed" />
+  <rect x="756.69" y="666.0" width="7.68" height="12" fill="#245bd6" />
+  <rect x="764.37" y="666.0" width="10.10" height="12" fill="#d97706" />
+  <rect x="774.47" y="666.0" width="11.10" height="12" fill="#0d9488" />
+  <rect x="785.57" y="666.0" width="9.68" height="12" fill="#059669" />
+  <rect x="795.26" y="666.0" width="29.95" height="12" fill="#e11d48" />
+  <rect x="825.20" y="666.0" width="11.09" height="12" fill="#f59e0b" />
+  <rect x="836.29" y="666.0" width="5.11" height="12" fill="#0284c7" />
+  <text x="846.4" y="675.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">526cr <tspan fill="#64748b" style="font-weight:400">($5.26)</tspan></text>
+  <rect x="28" y="689.0" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="699.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#17·85</text>
+  <text x="74" y="700.0" class="model-lbl" style="font-size:10px">gpt-5.5</text>
+  <line x1="210" y1="696.5" x2="322.7" y2="696.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="322.7" cy="696.5" r="3.6" fill="#245bd6" />
+  <text x="328.7" y="700.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">19.72</text>
+  <rect x="455" y="690.5" width="75.1" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="535.1" y="700.0" class="axis-tick" style="font-size:8.8px;fill:#334155">2.68M <tspan fill="#64748b">(87t/13v)</tspan></text>
+  <rect x="745.00" y="690.5" width="9.64" height="12" fill="#7c3aed" />
+  <rect x="754.64" y="690.5" width="11.99" height="12" fill="#245bd6" />
+  <rect x="766.63" y="690.5" width="13.71" height="12" fill="#d97706" />
+  <rect x="780.34" y="690.5" width="4.98" height="12" fill="#0d9488" />
+  <rect x="785.32" y="690.5" width="16.14" height="12" fill="#059669" />
+  <rect x="801.46" y="690.5" width="18.15" height="12" fill="#e11d48" />
+  <rect x="819.61" y="690.5" width="14.92" height="12" fill="#f59e0b" />
+  <rect x="834.53" y="690.5" width="7.51" height="12" fill="#0284c7" />
+  <text x="847.0" y="700.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">529cr <tspan fill="#64748b" style="font-weight:400">($5.29)</tspan></text>
+  <rect x="24" y="709.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="713.5" width="40" height="15" rx="3" fill="#dbeafe" />
+  <text x="48" y="724.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#1e40af">#15·86</text>
+  <text x="74" y="724.5" class="model-lbl" style="font-size:10px">claude-opus-4.8</text>
+  <line x1="210" y1="721.0" x2="284.7" y2="721.0" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="284.7" cy="721.0" r="3.6" fill="#d97706" />
+  <text x="290.7" y="724.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">13.06</text>
+  <rect x="455" y="715.0" width="109.3" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="569.3" y="724.5" class="axis-tick" style="font-size:8.8px;fill:#334155">5.69M <tspan fill="#64748b">(107t/29v)</tspan></text>
+  <rect x="745.00" y="715.0" width="27.35" height="12" fill="#7c3aed" />
+  <rect x="772.35" y="715.0" width="19.14" height="12" fill="#245bd6" />
+  <rect x="791.49" y="715.0" width="13.11" height="12" fill="#d97706" />
+  <rect x="804.60" y="715.0" width="8.36" height="12" fill="#0d9488" />
+  <rect x="812.96" y="715.0" width="23.95" height="12" fill="#059669" />
+  <rect x="836.91" y="715.0" width="23.11" height="12" fill="#e11d48" />
+  <rect x="860.03" y="715.0" width="11.37" height="12" fill="#f59e0b" />
+  <rect x="871.39" y="715.0" width="9.84" height="12" fill="#0284c7" />
+  <text x="886.2" y="724.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">743cr <tspan fill="#64748b" style="font-weight:400">($7.43)</tspan></text>
+  <rect x="28" y="738.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="748.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#2·90</text>
+  <text x="74" y="749.0" class="model-lbl" style="font-size:10px">gpt-6-astra</text>
+  <line x1="210" y1="745.5" x2="400.2" y2="745.5" stroke="#245bd6" stroke-width="2.2" />
+  <circle cx="400.2" cy="745.5" r="3.6" fill="#245bd6" />
+  <text x="406.2" y="749.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">33.29</text>
+  <rect x="455" y="739.5" width="79.7" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="539.7" y="749.0" class="axis-tick" style="font-size:8.8px;fill:#334155">3.02M <tspan fill="#64748b">(94t/26v)</tspan></text>
+  <rect x="745.00" y="739.5" width="37.10" height="12" fill="#7c3aed" />
+  <rect x="782.10" y="739.5" width="13.24" height="12" fill="#245bd6" />
+  <rect x="795.34" y="739.5" width="26.45" height="12" fill="#d97706" />
+  <rect x="821.79" y="739.5" width="12.22" height="12" fill="#0d9488" />
+  <rect x="834.01" y="739.5" width="27.27" height="12" fill="#059669" />
+  <rect x="861.27" y="739.5" width="30.24" height="12" fill="#e11d48" />
+  <rect x="891.52" y="739.5" width="28.01" height="12" fill="#f59e0b" />
+  <rect x="919.52" y="739.5" width="9.99" height="12" fill="#0284c7" />
+  <text x="934.5" y="749.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">1006cr <tspan fill="#64748b" style="font-weight:400">($10.06)</tspan></text>
+  <rect x="24" y="758.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="762.5" width="40" height="15" rx="3" fill="#ffe4e6" />
+  <text x="48" y="773.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#be123c">#26·77</text>
+  <text x="74" y="773.5" class="model-lbl" style="font-size:10px">grok-4.7</text>
+  <line x1="210" y1="770.0" x2="259.3" y2="770.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="259.3" cy="770.0" r="3.6" fill="#7c3aed" />
+  <text x="265.3" y="773.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">8.63</text>
+  <rect x="455" y="764.0" width="164.2" height="12" rx="2" fill="#e11d48" opacity="0.72" />
+  <text x="624.2" y="773.5" class="axis-tick" style="font-size:8.8px;fill:#334155">12.83M <tspan fill="#64748b">(273t/78v)</tspan></text>
+  <rect x="745.00" y="764.0" width="31.99" height="12" fill="#7c3aed" />
+  <rect x="776.99" y="764.0" width="6.11" height="12" fill="#245bd6" />
+  <rect x="783.09" y="764.0" width="44.51" height="12" fill="#d97706" />
+  <rect x="827.60" y="764.0" width="9.84" height="12" fill="#0d9488" />
+  <rect x="837.44" y="764.0" width="36.67" height="12" fill="#059669" />
+  <rect x="874.11" y="764.0" width="22.94" height="12" fill="#e11d48" />
+  <rect x="897.05" y="764.0" width="22.16" height="12" fill="#f59e0b" />
+  <rect x="919.21" y="764.0" width="28.68" height="12" fill="#0284c7" />
+  <text x="952.9" y="773.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">1107cr <tspan fill="#64748b" style="font-weight:400">($11.07)</tspan></text>
+  <rect x="28" y="787.0" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="797.5" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#10·88</text>
+  <text x="74" y="798.0" class="model-lbl" style="font-size:10px">claude-fable-5</text>
+  <line x1="210" y1="794.5" x2="388.2" y2="794.5" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="388.2" cy="794.5" r="3.6" fill="#d97706" />
+  <text x="394.2" y="798.0" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">31.19</text>
+  <rect x="455" y="788.5" width="90.3" height="12" rx="2" fill="#0d9488" opacity="0.72" />
+  <text x="550.3" y="798.0" class="axis-tick" style="font-size:8.8px;fill:#334155">3.88M <tspan fill="#64748b">(97t/31v)</tspan></text>
+  <rect x="745.00" y="788.5" width="35.96" height="12" fill="#7c3aed" />
+  <rect x="780.96" y="788.5" width="24.28" height="12" fill="#245bd6" />
+  <rect x="805.24" y="788.5" width="20.88" height="12" fill="#d97706" />
+  <rect x="826.13" y="788.5" width="14.61" height="12" fill="#0d9488" />
+  <rect x="840.73" y="788.5" width="22.66" height="12" fill="#059669" />
+  <rect x="863.40" y="788.5" width="55.06" height="12" fill="#e11d48" />
+  <rect x="918.46" y="788.5" width="36.48" height="12" fill="#f59e0b" />
+  <rect x="954.93" y="788.5" width="12.18" height="12" fill="#0284c7" />
+  <text x="972.1" y="798.0" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">1212cr <tspan fill="#64748b" style="font-weight:400">($12.12)</tspan></text>
+  <rect x="24" y="807.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <rect x="28" y="811.5" width="40" height="15" rx="3" fill="#d1fae5" />
+  <text x="48" y="822.0" text-anchor="middle" class="badge" style="font-size:8.5px;fill:#065f46">#7·89</text>
+  <text x="74" y="822.5" class="model-lbl" style="font-size:10px">claude-opus-5</text>
+  <line x1="210" y1="819.0" x2="288.9" y2="819.0" stroke="#d97706" stroke-width="2.2" />
+  <circle cx="288.9" cy="819.0" r="3.6" fill="#d97706" />
+  <text x="294.9" y="822.5" class="axis-tick" style="font-size:9px;font-weight:600;fill:#1e293b">13.81</text>
+  <rect x="455" y="813.0" width="149.8" height="12" rx="2" fill="#e11d48" opacity="0.72" />
+  <text x="609.8" y="822.5" class="axis-tick" style="font-size:8.8px;fill:#334155">10.68M <tspan fill="#64748b">(150t/28v)</tspan></text>
+  <rect x="745.00" y="813.0" width="28.40" height="12" fill="#7c3aed" />
+  <rect x="773.40" y="813.0" width="54.37" height="12" fill="#245bd6" />
+  <rect x="827.77" y="813.0" width="34.92" height="12" fill="#d97706" />
+  <rect x="862.69" y="813.0" width="56.40" height="12" fill="#0d9488" />
+  <rect x="919.09" y="813.0" width="23.83" height="12" fill="#059669" />
+  <rect x="942.92" y="813.0" width="34.66" height="12" fill="#e11d48" />
+  <rect x="977.58" y="813.0" width="23.08" height="12" fill="#f59e0b" />
+  <rect x="1000.66" y="813.0" width="14.76" height="12" fill="#0284c7" />
+  <text x="1020.4" y="822.5" class="axis-tick" style="font-size:9px;font-weight:700;fill:#182332">1475cr <tspan fill="#64748b" style="font-weight:400">($14.75)</tspan></text>
+  <text x="28" y="874" class="footnote">Note: (Nt/Mv) in Panel B shows total tool calls (t) and visual view() calls (v) across 8 tasks. Red bars highlight models exceeding 9M cumulative input+output tokens.</text>
+</svg>

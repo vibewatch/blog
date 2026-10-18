@@ -1,0 +1,257 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 860" width="1120" height="860" role="img" aria-label="Dual-judge calibration slopegraph and severity gap analysis between claude-opus-5.5 and gpt-5.5">
+  <style>
+    .bg { fill: #f7f8fa; }
+    .panel { fill: #ffffff; stroke: #dce2ea; stroke-width: 1; }
+    .panel-tint { fill: #edf1f6; stroke: #dce2ea; stroke-width: 1; }
+    .kicker { font: 700 11px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #245bd6; letter-spacing: 0.12em; text-transform: uppercase; }
+    .title { font: 700 21px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.03em; }
+    .subtitle { font: 400 12.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #526074; }
+    .axis-title { font: 600 11.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.01em; }
+    .axis-tick { font: 500 10px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .grid { stroke: #e6ebf2; stroke-width: 1; }
+    .grid-strong { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4 4; }
+    .iso-line { fill: none; stroke: #94a3b8; stroke-width: 1.25; stroke-dasharray: 5 5; opacity: 0.75; }
+    .iso-label { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #475569; }
+    .model-lbl { font: 600 10.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #182332; }
+    .model-sub { font: 500 9px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .badge { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .footnote { font: 400 10.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #627084; }
+  </style>
+  <rect width="1120" height="860" rx="16" class="bg" />
+  <text x="28" y="34" class="kicker">Dual-Judge Calibration Audit · claude-opus-5.5 Judge vs. gpt-5.5 Judge Across 223 Deliverables</text>
+  <text x="28" y="58" class="title">How Averaging Two Judges Cancels a 14.7-Point Severity Gap and a 4.1-Point Family Preference</text>
+  <text x="28" y="78" class="subtitle">Left: Rank &amp; score shift when graded solely by Opus 5.5 vs. solely by GPT-5.5. Right: Judge severity gap by creative task and relative self-family tilt.</text>
+  <rect x="24" y="108" width="620" height="712" rx="10" class="panel" />
+  <text x="36" y="130" class="axis-title">Opus-Only Rank &amp; Score</text>
+  <text x="334" y="130" text-anchor="middle" class="axis-title" fill="#627084">Judge Shift</text>
+  <text x="632" y="130" text-anchor="end" class="axis-title">GPT-Only Rank &amp; Score</text>
+  <line x1="235" y1="140" x2="235" y2="806" stroke="#dce2ea" stroke-width="1.5" />
+  <line x1="435" y1="140" x2="435" y2="806" stroke="#dce2ea" stroke-width="1.5" />
+  <path d="M235,412.0 C315,412.0 355,340.0 435,340.0" fill="none" stroke="#245bd6" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="412.0" r="3.2" fill="#245bd6" />
+  <circle cx="435" cy="340.0" r="3.2" fill="#245bd6" />
+  <text x="227" y="415.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#12 auto <tspan fill="#64748b">(83.1)</tspan></text>
+  <text x="443" y="343.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 9 auto <tspan fill="#64748b">(91.8)</tspan></text>
+  <path d="M235,340.0 C315,340.0 355,412.0 435,412.0" fill="none" stroke="#d97706" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="340.0" r="3.2" fill="#d97706" />
+  <circle cx="435" cy="412.0" r="3.2" fill="#d97706" />
+  <text x="227" y="343.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 9 claude-fable-5 <tspan fill="#64748b">(85.3)</tspan></text>
+  <text x="443" y="415.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#12 claude-fable-5 <tspan fill="#64748b">(90.8)</tspan></text>
+  <path d="M235,772.0 C315,772.0 355,772.0 435,772.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="772.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="772.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="775.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#27 claude-haiku-4.5 <tspan fill="#64748b">(64.4)</tspan></text>
+  <text x="443" y="775.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#27 claude-haiku-4.5 <tspan fill="#64748b">(78.2)</tspan></text>
+  <path d="M235,388.0 C315,388.0 355,484.0 435,484.0" fill="none" stroke="#d97706" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="388.0" r="3.2" fill="#d97706" />
+  <circle cx="435" cy="484.0" r="3.2" fill="#d97706" />
+  <text x="227" y="391.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#11 claude-haiku-5.5 <tspan fill="#64748b">(83.8)</tspan></text>
+  <text x="443" y="487.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#15 claude-haiku-5.5 <tspan fill="#64748b">(90.5)</tspan></text>
+  <path d="M235,460.0 C315,460.0 355,580.0 435,580.0" fill="none" stroke="#d97706" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="460.0" r="3.2" fill="#d97706" />
+  <circle cx="435" cy="580.0" r="3.2" fill="#d97706" />
+  <text x="227" y="463.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#14 claude-opus-4.8 <tspan fill="#64748b">(82.2)</tspan></text>
+  <text x="443" y="583.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#19 claude-opus-4.8 <tspan fill="#64748b">(89.0)</tspan></text>
+  <path d="M235,244.0 C315,244.0 355,292.0 435,292.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="244.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="292.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="247.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 5 claude-opus-5 <tspan fill="#64748b">(86.3)</tspan></text>
+  <text x="443" y="295.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 7 claude-opus-5 <tspan fill="#64748b">(92.3)</tspan></text>
+  <path d="M235,148.0 C315,148.0 355,244.0 435,244.0" fill="none" stroke="#d97706" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="148.0" r="3.2" fill="#d97706" />
+  <circle cx="435" cy="244.0" r="3.2" fill="#d97706" />
+  <text x="227" y="151.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 1 claude-opus-5.5 <tspan fill="#64748b">(88.0)</tspan></text>
+  <text x="443" y="247.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 5 claude-opus-5.5 <tspan fill="#64748b">(92.7)</tspan></text>
+  <path d="M235,604.0 C315,604.0 355,604.0 435,604.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="604.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="604.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="607.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#20 claude-sonnet-5 <tspan fill="#64748b">(79.0)</tspan></text>
+  <text x="443" y="607.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#20 claude-sonnet-5 <tspan fill="#64748b">(88.4)</tspan></text>
+  <path d="M235,196.0 C315,196.0 355,364.0 435,364.0" fill="none" stroke="#d97706" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="196.0" r="3.2" fill="#d97706" />
+  <circle cx="435" cy="364.0" r="3.2" fill="#d97706" />
+  <text x="227" y="199.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 3 claude-sonnet-5.5 <tspan fill="#64748b">(86.5)</tspan></text>
+  <text x="443" y="367.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#10 claude-sonnet-5.5 <tspan fill="#64748b">(91.1)</tspan></text>
+  <path d="M235,508.0 C315,508.0 355,508.0 435,508.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="508.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="508.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="511.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#16 gemini-3.7-flash <tspan fill="#64748b">(80.9)</tspan></text>
+  <text x="443" y="511.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#16 gemini-3.7-flash <tspan fill="#64748b">(90.3)</tspan></text>
+  <path d="M235,436.0 C315,436.0 355,436.0 435,436.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="436.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="436.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="439.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#13 gemini-3.8-flash <tspan fill="#64748b">(82.3)</tspan></text>
+  <text x="443" y="439.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#13 gemini-3.8-flash <tspan fill="#64748b">(90.7)</tspan></text>
+  <path d="M235,268.0 C315,268.0 355,268.0 435,268.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="268.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="268.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="271.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 6 gemini-4-argon <tspan fill="#64748b">(86.0)</tspan></text>
+  <text x="443" y="271.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 6 gemini-4-argon <tspan fill="#64748b">(92.6)</tspan></text>
+  <path d="M235,796.0 C315,796.0 355,796.0 435,796.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="796.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="796.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="799.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#28 gpt-5-mini <tspan fill="#64748b">(59.0)</tspan></text>
+  <text x="443" y="799.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#28 gpt-5-mini <tspan fill="#64748b">(71.5)</tspan></text>
+  <path d="M235,700.0 C315,700.0 355,700.0 435,700.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="700.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="700.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="703.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#24 gpt-5.3-codex <tspan fill="#64748b">(74.8)</tspan></text>
+  <text x="443" y="703.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#24 gpt-5.3-codex <tspan fill="#64748b">(87.0)</tspan></text>
+  <path d="M235,652.0 C315,652.0 355,676.0 435,676.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="652.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="676.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="655.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#22 gpt-5.4 <tspan fill="#64748b">(76.3)</tspan></text>
+  <text x="443" y="679.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#23 gpt-5.4 <tspan fill="#64748b">(87.1)</tspan></text>
+  <path d="M235,676.0 C315,676.0 355,652.0 435,652.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="676.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="652.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="679.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#23 gpt-5.4-mini <tspan fill="#64748b">(75.1)</tspan></text>
+  <text x="443" y="655.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#22 gpt-5.4-mini <tspan fill="#64748b">(87.5)</tspan></text>
+  <path d="M235,532.0 C315,532.0 355,460.0 435,460.0" fill="none" stroke="#245bd6" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="532.0" r="3.2" fill="#245bd6" />
+  <circle cx="435" cy="460.0" r="3.2" fill="#245bd6" />
+  <text x="227" y="535.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#17 gpt-5.5 <tspan fill="#64748b">(80.3)</tspan></text>
+  <text x="443" y="463.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#14 gpt-5.5 <tspan fill="#64748b">(90.6)</tspan></text>
+  <path d="M235,628.0 C315,628.0 355,628.0 435,628.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="628.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="628.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="631.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#21 gpt-5.6-luna <tspan fill="#64748b">(79.0)</tspan></text>
+  <text x="443" y="631.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#21 gpt-5.6-luna <tspan fill="#64748b">(88.3)</tspan></text>
+  <path d="M235,292.0 C315,292.0 355,172.0 435,172.0" fill="none" stroke="#245bd6" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="292.0" r="3.2" fill="#245bd6" />
+  <circle cx="435" cy="172.0" r="3.2" fill="#245bd6" />
+  <text x="227" y="295.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 7 gpt-5.6-sol <tspan fill="#64748b">(85.8)</tspan></text>
+  <text x="443" y="175.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 2 gpt-5.6-sol <tspan fill="#64748b">(93.3)</tspan></text>
+  <path d="M235,484.0 C315,484.0 355,388.0 435,388.0" fill="none" stroke="#245bd6" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="484.0" r="3.2" fill="#245bd6" />
+  <circle cx="435" cy="388.0" r="3.2" fill="#245bd6" />
+  <text x="227" y="487.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#15 gpt-5.6-terra <tspan fill="#64748b">(81.3)</tspan></text>
+  <text x="443" y="391.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#11 gpt-5.6-terra <tspan fill="#64748b">(91.0)</tspan></text>
+  <path d="M235,172.0 C315,172.0 355,196.0 435,196.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="172.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="196.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="175.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 2 gpt-6-astra <tspan fill="#64748b">(87.3)</tspan></text>
+  <text x="443" y="199.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 3 gpt-6-astra <tspan fill="#64748b">(93.2)</tspan></text>
+  <path d="M235,580.0 C315,580.0 355,532.0 435,532.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="580.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="532.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="583.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#19 gpt-6-luna <tspan fill="#64748b">(79.1)</tspan></text>
+  <text x="443" y="535.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#17 gpt-6-luna <tspan fill="#64748b">(90.2)</tspan></text>
+  <path d="M235,220.0 C315,220.0 355,220.0 435,220.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="220.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="220.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="223.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 4 gpt-6-sol <tspan fill="#64748b">(86.5)</tspan></text>
+  <text x="443" y="223.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 4 gpt-6-sol <tspan fill="#64748b">(93.1)</tspan></text>
+  <path d="M235,316.0 C315,316.0 355,148.0 435,148.0" fill="none" stroke="#245bd6" stroke-width="2.3" opacity="0.85" />
+  <circle cx="235" cy="316.0" r="3.2" fill="#245bd6" />
+  <circle cx="435" cy="148.0" r="3.2" fill="#245bd6" />
+  <text x="227" y="319.5" text-anchor="end" class="model-lbl" style="font-size:9.3px"># 8 gpt-6.1-sol <tspan fill="#64748b">(85.5)</tspan></text>
+  <text x="443" y="151.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 1 gpt-6.1-sol <tspan fill="#64748b">(93.4)</tspan></text>
+  <path d="M235,556.0 C315,556.0 355,556.0 435,556.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="556.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="556.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="559.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#18 grok-4.5 <tspan fill="#64748b">(80.2)</tspan></text>
+  <text x="443" y="559.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#18 grok-4.5 <tspan fill="#64748b">(89.1)</tspan></text>
+  <path d="M235,364.0 C315,364.0 355,316.0 435,316.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="364.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="316.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="367.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#10 grok-4.6 <tspan fill="#64748b">(84.4)</tspan></text>
+  <text x="443" y="319.5" text-anchor="start" class="model-lbl" style="font-size:9.3px"># 8 grok-4.6 <tspan fill="#64748b">(92.2)</tspan></text>
+  <path d="M235,724.0 C315,724.0 355,748.0 435,748.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="724.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="748.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="727.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#25 grok-4.7 <tspan fill="#64748b">(73.4)</tspan></text>
+  <text x="443" y="751.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#26 grok-4.7 <tspan fill="#64748b">(80.2)</tspan></text>
+  <path d="M235,748.0 C315,748.0 355,724.0 435,724.0" fill="none" stroke="#94a3b8" stroke-width="1.5" opacity="0.55" />
+  <circle cx="235" cy="748.0" r="3.2" fill="#94a3b8" />
+  <circle cx="435" cy="724.0" r="3.2" fill="#94a3b8" />
+  <text x="227" y="751.5" text-anchor="end" class="model-lbl" style="font-size:9.3px">#26 mai-code-1.1-flash <tspan fill="#64748b">(70.0)</tspan></text>
+  <text x="443" y="727.5" text-anchor="start" class="model-lbl" style="font-size:9.3px">#25 mai-code-1.1-flash <tspan fill="#64748b">(85.0)</tspan></text>
+  <rect x="664" y="108" width="432" height="362" rx="10" class="panel" />
+  <text x="682" y="132" class="axis-title">A. Judge Score by Task: Opus 5.5 (Amber) vs. GPT-5.5 (Blue)</text>
+  <text x="682" y="148" class="model-sub">Opus is 14.7 pts harsher overall — widest on SVG Diagram (-22.1) &amp; 3D (-20.6)</text>
+  <line x1="802.2" y1="162" x2="802.2" y2="440" class="grid" />
+  <text x="802.2" y="455" text-anchor="middle" class="axis-tick">55</text>
+  <line x1="856.7" y1="162" x2="856.7" y2="440" class="grid" />
+  <text x="856.7" y="455" text-anchor="middle" class="axis-tick">65</text>
+  <line x1="911.1" y1="162" x2="911.1" y2="440" class="grid" />
+  <text x="911.1" y="455" text-anchor="middle" class="axis-tick">75</text>
+  <line x1="965.6" y1="162" x2="965.6" y2="440" class="grid" />
+  <text x="965.6" y="455" text-anchor="middle" class="axis-tick">85</text>
+  <line x1="1020.0" y1="162" x2="1020.0" y2="440" class="grid" />
+  <text x="1020.0" y="455" text-anchor="middle" class="axis-tick">95</text>
+  <text x="767" y="182" text-anchor="end" class="model-lbl" style="font-size:9.8px">SVG Diagram</text>
+  <line x1="827.9" y1="178" x2="948.4" y2="178" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="827.9" cy="178" r="4.5" fill="#d97706" />
+  <circle cx="948.4" cy="178" r="4.5" fill="#245bd6" />
+  <text x="955.4" y="181.5" class="badge" style="font-size:8.8px;fill:#be123c">-22.1 pts</text>
+  <text x="821.9" y="181.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">59.7</text>
+  <text x="767" y="215" text-anchor="end" class="model-lbl" style="font-size:9.8px">3D Scene</text>
+  <line x1="832.2" y1="211" x2="944.2" y2="211" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="832.2" cy="211" r="4.5" fill="#d97706" />
+  <circle cx="944.2" cy="211" r="4.5" fill="#245bd6" />
+  <text x="951.2" y="214.5" class="badge" style="font-size:8.8px;fill:#be123c">-20.6 pts</text>
+  <text x="826.2" y="214.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">60.5</text>
+  <text x="767" y="248" text-anchor="end" class="model-lbl" style="font-size:9.8px">KPI Dashboard</text>
+  <line x1="883.4" y1="244" x2="965.1" y2="244" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="883.4" cy="244" r="4.5" fill="#d97706" />
+  <circle cx="965.1" cy="244" r="4.5" fill="#245bd6" />
+  <text x="972.1" y="247.5" class="badge" style="font-size:8.8px;fill:#be123c">-15.0 pts</text>
+  <text x="877.4" y="247.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">69.9</text>
+  <text x="767" y="281" text-anchor="end" class="model-lbl" style="font-size:9.8px">Breakout Game</text>
+  <line x1="887.3" y1="277" x2="966.5" y2="277" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="887.3" cy="277" r="4.5" fill="#d97706" />
+  <circle cx="966.5" cy="277" r="4.5" fill="#245bd6" />
+  <text x="973.5" y="280.5" class="badge" style="font-size:8.8px;fill:#be123c">-14.6 pts</text>
+  <text x="881.3" y="280.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">70.6</text>
+  <text x="767" y="314" text-anchor="end" class="model-lbl" style="font-size:9.8px">Design Doc</text>
+  <line x1="892.8" y1="310" x2="971.4" y2="310" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="892.8" cy="310" r="4.5" fill="#d97706" />
+  <circle cx="971.4" cy="310" r="4.5" fill="#245bd6" />
+  <text x="978.4" y="313.5" class="badge" style="font-size:8.8px;fill:#be123c">-14.4 pts</text>
+  <text x="886.8" y="313.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">71.6</text>
+  <text x="767" y="347" text-anchor="end" class="model-lbl" style="font-size:9.8px">PPTX Deck</text>
+  <line x1="872.2" y1="343" x2="947.1" y2="343" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="872.2" cy="343" r="4.5" fill="#d97706" />
+  <circle cx="947.1" cy="343" r="4.5" fill="#245bd6" />
+  <text x="954.1" y="346.5" class="badge" style="font-size:8.8px;fill:#be123c">-13.8 pts</text>
+  <text x="866.2" y="346.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">67.9</text>
+  <text x="767" y="380" text-anchor="end" class="model-lbl" style="font-size:9.8px">MP4 Video</text>
+  <line x1="922.8" y1="376" x2="970.9" y2="376" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="922.8" cy="376" r="4.5" fill="#d97706" />
+  <circle cx="970.9" cy="376" r="4.5" fill="#245bd6" />
+  <text x="977.9" y="379.5" class="badge" style="font-size:8.8px;fill:#be123c">-8.8 pts</text>
+  <text x="916.8" y="379.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">77.1</text>
+  <text x="767" y="413" text-anchor="end" class="model-lbl" style="font-size:9.8px">Landing UI</text>
+  <line x1="900.2" y1="409" x2="946.5" y2="409" stroke="#64748b" stroke-width="2.5" />
+  <circle cx="900.2" cy="409" r="4.5" fill="#d97706" />
+  <circle cx="946.5" cy="409" r="4.5" fill="#245bd6" />
+  <text x="953.5" y="412.5" class="badge" style="font-size:8.8px;fill:#be123c">-8.5 pts</text>
+  <text x="894.2" y="412.5" text-anchor="end" class="model-sub" style="font-size:8.5px;fill:#92400e">73.0</text>
+  <rect x="664" y="488" width="432" height="332" rx="10" class="panel" />
+  <text x="682" y="512" class="axis-title">B. Judge Gap by Model Family (Opus Score − GPT Score)</text>
+  <text x="682" y="528" class="model-sub">Opus is -12.0 pts on Claude vs. -16.2 on GPT (+4.1 pt self-family tilt)</text>
+  <line x1="908.8" y1="545" x2="908.8" y2="755" stroke="#182332" stroke-width="1.3" stroke-dasharray="4 3" />
+  <text x="908.8" y="772" text-anchor="middle" class="badge" style="font-size:8.8px;fill:#182332">Mean Gap: -14.7 pts</text>
+  <text x="782" y="572" text-anchor="end" class="model-lbl" style="font-size:9.3px">Anthropic Claude (8)</text>
+  <rect x="932.5" y="562" width="107.5" height="14" rx="3" fill="#d97706" opacity="0.78" />
+  <text x="926.5" y="572.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-12.0 <tspan fill="#64748b" style="font-weight:400">(+2.7 vs avg)</tspan></text>
+  <text x="782" y="605" text-anchor="end" class="model-lbl" style="font-size:9.3px">Google Gemini (3)</text>
+  <rect x="918.7" y="595" width="121.3" height="14" rx="3" fill="#0d9488" opacity="0.78" />
+  <text x="912.7" y="605.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-13.6 <tspan fill="#64748b" style="font-weight:400">(+1.1 vs avg)</tspan></text>
+  <text x="782" y="638" text-anchor="end" class="model-lbl" style="font-size:9.3px">xAI Grok (3)</text>
+  <rect x="918.3" y="628" width="121.7" height="14" rx="3" fill="#7c3aed" opacity="0.78" />
+  <text x="912.3" y="638.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-13.6 <tspan fill="#64748b" style="font-weight:400">(+1.1 vs avg)</tspan></text>
+  <text x="782" y="671" text-anchor="end" class="model-lbl" style="font-size:9.3px">Auto Router (1)</text>
+  <rect x="910.5" y="661" width="129.5" height="14" rx="3" fill="#475569" opacity="0.78" />
+  <text x="904.5" y="671.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-14.5 <tspan fill="#64748b" style="font-weight:400">(+0.2 vs avg)</tspan></text>
+  <text x="782" y="704" text-anchor="end" class="model-lbl" style="font-size:9.3px">OpenAI GPT (12)</text>
+  <rect x="895.8" y="694" width="144.2" height="14" rx="3" fill="#245bd6" opacity="0.78" />
+  <text x="889.8" y="704.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-16.1 <tspan fill="#64748b" style="font-weight:400">(-1.5 vs avg)</tspan></text>
+  <text x="782" y="737" text-anchor="end" class="model-lbl" style="font-size:9.3px">Microsoft MAI (1)</text>
+  <rect x="817.3" y="727" width="222.7" height="14" rx="3" fill="#059669" opacity="0.78" />
+  <text x="811.3" y="737.5" text-anchor="end" class="axis-tick" style="font-size:8.8px;font-weight:700;fill:#182332">-24.9 <tspan fill="#64748b" style="font-weight:400">(-10.2 vs avg)</tspan></text>
+  <rect x="682" y="782" width="396" height="26" rx="5" fill="#ecfdf5" stroke="#a7f3d0" />
+  <text x="880" y="799" text-anchor="middle" class="badge" style="font-size:9.2px;fill:#065f46">★ Key Insight: 50/50 Dual-Judge Average Neutralizes Family Tilt (±2.0 pts)</text>
+  <text x="28" y="842" class="footnote">Note: Left slopegraph compares Q_Opus = 0.4×Auto + 0.6×Judge_Opus against Q_GPT = 0.4×Auto + 0.6×Judge_GPT. Amber curves shift up under Opus; blue curves shift up under GPT.</text>
+</svg>

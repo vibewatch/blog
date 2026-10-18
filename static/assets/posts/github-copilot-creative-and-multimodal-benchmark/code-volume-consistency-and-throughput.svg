@@ -1,0 +1,319 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 810" width="100%" height="100%" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif">
+<defs>
+  <linearGradient id="bg9" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0b1120"/>
+    <stop offset="100%" stop-color="#0f172a"/>
+  </linearGradient>
+</defs>
+<rect width="1260" height="810" rx="16" fill="url(#bg9)" stroke="#1e293b" stroke-width="2"/>
+<text x="32" y="40" fill="#f8fafc" font-size="19.5" font-weight="800">Task Consistency Floor (Min–Max), Deliverable Code Volume vs. Quality &amp; Token Streaming Speed</text>
+<text x="32" y="63" fill="#94a3b8" font-size="12.5">Why worst-task floor separates reliable production models from spiky specialists, and why writing 7,000+ lines or streaming at 200 tok/s does not guarantee fast wins</text>
+<rect x="28" y="84" width="610" height="694" rx="12" fill="#111827" stroke="#1f2937" stroke-width="1.5"/>
+<text x="44" y="110" fill="#f1f5f9" font-size="14.5" font-weight="700">A. 8-Task Quality Consistency Floor (Min → Mean → Max)</text>
+<text x="44" y="128" fill="#94a3b8" font-size="11">Green = worst task ≥ 86.2 (zero weak spots across all 8 formats) · Wide bars = task volatility</text>
+<line x1="217.1" y1="152" x2="217.1" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="217.1" y="147" text-anchor="middle" fill="#64748b" font-size="10">60</text>
+<line x1="303.4" y1="152" x2="303.4" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="303.4" y="147" text-anchor="middle" fill="#64748b" font-size="10">70</text>
+<line x1="389.6" y1="152" x2="389.6" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="389.6" y="147" text-anchor="middle" fill="#64748b" font-size="10">80</text>
+<line x1="432.8" y1="152" x2="432.8" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="432.8" y="147" text-anchor="middle" fill="#64748b" font-size="10">85</text>
+<line x1="475.9" y1="152" x2="475.9" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="475.9" y="147" text-anchor="middle" fill="#64748b" font-size="10">90</text>
+<line x1="519.0" y1="152" x2="519.0" y2="759.1999999999999" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="519.0" y="147" text-anchor="middle" fill="#64748b" font-size="10">95</text>
+<line x1="443.1" y1="152" x2="443.1" y2="759.1999999999999" stroke="#10b981" stroke-width="1.2" stroke-dasharray="4,3"/>
+<text x="166" y="171.0" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">claude-opus-5.5</text>
+<line x1="443.1" y1="167.0" x2="497.4" y2="167.0" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="443.1" cy="167.0" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="497.4" cy="167.0" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="479.0" cy="167.0" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="171.0" fill="#94a3b8" font-size="10">86.2–92.5 (SD 1.9)</text>
+<text x="166" y="192.4" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">gpt-6-astra</text>
+<line x1="467.2" y1="188.4" x2="490.5" y2="188.4" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="467.2" cy="188.4" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="490.5" cy="188.4" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="478.2" cy="188.4" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="192.4" fill="#94a3b8" font-size="10">89.0–91.7 (SD 1.0)</text>
+<text x="166" y="213.8" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">gpt-6-sol</text>
+<line x1="464.7" y1="209.8" x2="494.9" y2="209.8" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="464.7" cy="209.8" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="494.9" cy="209.8" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="474.2" cy="209.8" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="213.8" fill="#94a3b8" font-size="10">88.7–92.2 (SD 1.2)</text>
+<text x="166" y="235.2" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">gpt-5.6-sol</text>
+<line x1="445.7" y1="231.2" x2="497.4" y2="231.2" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="445.7" cy="231.2" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="497.4" cy="231.2" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="472.1" cy="231.2" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="235.2" fill="#94a3b8" font-size="10">86.5–92.5 (SD 1.8)</text>
+<text x="166" y="256.6" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">gpt-6.1-sol</text>
+<line x1="447.4" y1="252.6" x2="484.5" y2="252.6" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="447.4" cy="252.6" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="484.5" cy="252.6" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="471.0" cy="252.6" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="256.6" fill="#94a3b8" font-size="10">86.7–91.0 (SD 1.4)</text>
+<text x="166" y="278.0" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gemini-4-argon</text>
+<line x1="430.2" y1="274.0" x2="504.3" y2="274.0" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="430.2" cy="274.0" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="504.3" cy="274.0" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="469.8" cy="274.0" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="278.0" fill="#94a3b8" font-size="10">84.7–93.3 (SD 2.9)</text>
+<text x="166" y="299.4" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-opus-5</text>
+<line x1="417.2" y1="295.4" x2="490.5" y2="295.4" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="417.2" cy="295.4" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="490.5" cy="295.4" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="469.5" cy="295.4" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="299.4" fill="#94a3b8" font-size="10">83.2–91.7 (SD 2.9)</text>
+<text x="166" y="320.79999999999995" text-anchor="end" fill="#10b981" font-size="10.8" font-weight="700">claude-sonnet-5.5</text>
+<line x1="445.7" y1="316.79999999999995" x2="478.5" y2="316.79999999999995" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="445.7" cy="316.79999999999995" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="478.5" cy="316.79999999999995" r="3.2" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+<circle cx="465.4" cy="316.79999999999995" r="4.5" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="320.79999999999995" fill="#94a3b8" font-size="10">86.5–90.3 (SD 1.3)</text>
+<text x="166" y="342.2" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">grok-4.6</text>
+<line x1="437.9" y1="338.2" x2="484.5" y2="338.2" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="437.9" cy="338.2" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="484.5" cy="338.2" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="461.1" cy="338.2" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="342.2" fill="#94a3b8" font-size="10">85.6–91.0 (SD 1.9)</text>
+<text x="166" y="363.6" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-fable-5</text>
+<line x1="437.9" y1="359.6" x2="474.1" y2="359.6" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="437.9" cy="359.6" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="474.1" cy="359.6" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="459.3" cy="359.6" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="363.6" fill="#94a3b8" font-size="10">85.6–89.8 (SD 1.4)</text>
+<text x="166" y="385.0" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">auto</text>
+<line x1="417.2" y1="381.0" x2="484.5" y2="381.0" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="417.2" cy="381.0" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="484.5" cy="381.0" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="453.7" cy="381.0" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="385.0" fill="#94a3b8" font-size="10">83.2–91.0 (SD 2.5)</text>
+<text x="166" y="406.4" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-haiku-5.5</text>
+<line x1="396.5" y1="402.4" x2="497.4" y2="402.4" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="396.5" cy="402.4" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="497.4" cy="402.4" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="451.0" cy="402.4" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="406.4" fill="#94a3b8" font-size="10">80.8–92.5 (SD 3.8)</text>
+<text x="166" y="427.79999999999995" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gemini-3.8-flash</text>
+<line x1="426.7" y1="423.79999999999995" x2="497.4" y2="423.79999999999995" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="426.7" cy="423.79999999999995" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="497.4" cy="423.79999999999995" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="445.9" cy="423.79999999999995" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="427.79999999999995" fill="#94a3b8" font-size="10">84.3–92.5 (SD 2.6)</text>
+<text x="166" y="449.2" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.6-terra</text>
+<line x1="393.9" y1="445.2" x2="490.5" y2="445.2" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="393.9" cy="445.2" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="490.5" cy="445.2" r="3.2" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+<circle cx="442.8" cy="445.2" r="4.5" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="449.2" fill="#94a3b8" font-size="10">80.5–91.7 (SD 3.7)</text>
+<text x="166" y="470.59999999999997" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-opus-4.8</text>
+<line x1="375.8" y1="466.59999999999997" x2="458.6" y2="466.59999999999997" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="375.8" cy="466.59999999999997" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="458.6" cy="466.59999999999997" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="438.1" cy="466.59999999999997" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="470.59999999999997" fill="#94a3b8" font-size="10">78.4–88.0 (SD 2.8)</text>
+<text x="166" y="492.0" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gemini-3.7-flash</text>
+<line x1="412.9" y1="488.0" x2="471.6" y2="488.0" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="412.9" cy="488.0" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="471.6" cy="488.0" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="437.5" cy="488.0" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="492.0" fill="#94a3b8" font-size="10">82.7–89.5 (SD 2.5)</text>
+<text x="166" y="513.4" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.5</text>
+<line x1="368.1" y1="509.4" x2="478.5" y2="509.4" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="368.1" cy="509.4" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="478.5" cy="509.4" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="436.8" cy="509.4" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="513.4" fill="#94a3b8" font-size="10">77.5–90.3 (SD 4.6)</text>
+<text x="166" y="534.8" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-6-luna</text>
+<line x1="387.0" y1="530.8" x2="453.5" y2="530.8" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="387.0" cy="530.8" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="453.5" cy="530.8" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="429.8" cy="530.8" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="534.8" fill="#94a3b8" font-size="10">79.7–87.4 (SD 2.5)</text>
+<text x="166" y="556.2" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">grok-4.5</text>
+<line x1="400.0" y1="552.2" x2="490.5" y2="552.2" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="400.0" cy="552.2" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="490.5" cy="552.2" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="429.7" cy="552.2" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="556.2" fill="#94a3b8" font-size="10">81.2–91.7 (SD 3.5)</text>
+<text x="166" y="577.5999999999999" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-sonnet-5</text>
+<line x1="375.0" y1="573.5999999999999" x2="458.6" y2="573.5999999999999" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="375.0" cy="573.5999999999999" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="458.6" cy="573.5999999999999" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="421.9" cy="573.5999999999999" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="577.5999999999999" fill="#94a3b8" font-size="10">78.3–88.0 (SD 3.5)</text>
+<text x="166" y="599.0" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.6-luna</text>
+<line x1="361.2" y1="595.0" x2="471.6" y2="595.0" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="361.2" cy="595.0" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="471.6" cy="595.0" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="420.7" cy="595.0" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="599.0" fill="#94a3b8" font-size="10">76.7–89.5 (SD 4.0)</text>
+<text x="166" y="620.4" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.4</text>
+<line x1="323.2" y1="616.4" x2="464.7" y2="616.4" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="323.2" cy="616.4" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="464.7" cy="616.4" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="404.6" cy="616.4" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="620.4" fill="#94a3b8" font-size="10">72.3–88.7 (SD 4.5)</text>
+<text x="166" y="641.8" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.4-mini</text>
+<line x1="342.2" y1="637.8" x2="452.6" y2="637.8" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="342.2" cy="637.8" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="452.6" cy="637.8" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="400.6" cy="637.8" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="641.8" fill="#94a3b8" font-size="10">74.5–87.3 (SD 4.5)</text>
+<text x="166" y="663.2" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5.3-codex</text>
+<line x1="323.2" y1="659.2" x2="464.7" y2="659.2" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="323.2" cy="659.2" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="464.7" cy="659.2" r="3.2" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+<circle cx="397.3" cy="659.2" r="4.5" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="663.2" fill="#94a3b8" font-size="10">72.3–88.7 (SD 5.9)</text>
+<text x="166" y="684.5999999999999" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">mai-code-1.1-flash</text>
+<line x1="297.3" y1="680.5999999999999" x2="445.7" y2="680.5999999999999" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="297.3" cy="680.5999999999999" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="445.7" cy="680.5999999999999" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="368.1" cy="680.5999999999999" r="4.5" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="684.5999999999999" fill="#94a3b8" font-size="10">69.3–86.5 (SD 5.5)</text>
+<text x="166" y="706.0" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">grok-4.7</text>
+<line x1="174.0" y1="702.0" x2="504.3" y2="702.0" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="174.0" cy="702.0" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="504.3" cy="702.0" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="361.8" cy="702.0" r="4.5" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="706.0" fill="#94a3b8" font-size="10">0.0–93.3 (SD 29.7)</text>
+<text x="166" y="727.4" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">claude-haiku-4.5</text>
+<line x1="236.1" y1="723.4" x2="406.9" y2="723.4" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="236.1" cy="723.4" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="406.9" cy="723.4" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="314.6" cy="723.4" r="4.5" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="727.4" fill="#94a3b8" font-size="10">62.2–82.0 (SD 5.8)</text>
+<text x="166" y="748.8" text-anchor="end" fill="#cbd5e1" font-size="10.8" font-weight="500">gpt-5-mini</text>
+<line x1="174.0" y1="744.8" x2="426.7" y2="744.8" stroke="#f43f5e" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+<circle cx="174.0" cy="744.8" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="426.7" cy="744.8" r="3.2" fill="#0f172a" stroke="#f43f5e" stroke-width="2"/>
+<circle cx="262.2" cy="744.8" r="4.5" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="527" y="748.8" fill="#94a3b8" font-size="10">40.2–84.3 (SD 12.3)</text>
+<rect x="654" y="84" width="578" height="338" rx="12" fill="#111827" stroke="#1f2937" stroke-width="1.5"/>
+<text x="670" y="110" fill="#f1f5f9" font-size="14.5" font-weight="700">B. Does Writing More Code Mean Higher Visual Quality?</text>
+<text x="670" y="128" fill="#94a3b8" font-size="11">Total lines of deliverable code written across the 6 text/code tasks vs. Mean Dual-Judge Score</text>
+<rect x="704" y="148" width="506" height="232" fill="#0b1120" stroke="#1e293b"/>
+<rect x="774.3" y="156.7" width="101.9" height="52.2" rx="8" fill="#10b981" fill-opacity="0.09" stroke="#10b981" stroke-dasharray="4,3"/>
+<text x="825.2" y="151.7" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">Lean &amp; High-Polish Zone (1.6k–2.9k lines)</text>
+<line x1="739.1" y1="148" x2="739.1" y2="380" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="739.1" y="395" text-anchor="middle" fill="#64748b" font-size="10">1,000 lines</text>
+<line x1="844.6" y1="148" x2="844.6" y2="380" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="844.6" y="395" text-anchor="middle" fill="#64748b" font-size="10">2,500 lines</text>
+<line x1="950.0" y1="148" x2="950.0" y2="380" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="950.0" y="395" text-anchor="middle" fill="#64748b" font-size="10">4,000 lines</text>
+<line x1="1055.4" y1="148" x2="1055.4" y2="380" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="1055.4" y="395" text-anchor="middle" fill="#64748b" font-size="10">5,500 lines</text>
+<line x1="1160.8" y1="148" x2="1160.8" y2="380" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="1160.8" y="395" text-anchor="middle" fill="#64748b" font-size="10">7,000 lines</text>
+<line x1="704" y1="351.0" x2="1210" y2="351.0" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="355.0" text-anchor="end" fill="#64748b" font-size="10">55</text>
+<line x1="704" y1="293.0" x2="1210" y2="293.0" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="297.0" text-anchor="end" fill="#64748b" font-size="10">65</text>
+<line x1="704" y1="235.0" x2="1210" y2="235.0" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="239.0" text-anchor="end" fill="#64748b" font-size="10">75</text>
+<line x1="704" y1="177.0" x2="1210" y2="177.0" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="181.0" text-anchor="end" fill="#64748b" font-size="10">85</text>
+<circle cx="853.7" cy="179.5" r="4.8" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="861.7" y="172.5" text-anchor="start" fill="#10b981" font-size="9.8" font-weight="700">claude-opus-5.5 (2,630)</text>
+<circle cx="812.4" cy="176.7" r="4.8" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="804.4" y="169.7" text-anchor="end" fill="#10b981" font-size="9.8" font-weight="700">gpt-6-astra (2,043)</text>
+<circle cx="817.5" cy="188.5" r="4.8" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="825.5" y="191.5" text-anchor="start" fill="#38bdf8" font-size="9.8" font-weight="700">gpt-6-sol (2,115)</text>
+<circle cx="872.0" cy="190.8" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="793.7" cy="188.7" r="4.8" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="785.7" y="192.7" text-anchor="end" fill="#38bdf8" font-size="9.8" font-weight="700">gpt-6.1-sol (1,776)</text>
+<circle cx="1170.4" cy="185.7" r="4.8" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1162.4" y="178.7" text-anchor="end" fill="#f59e0b" font-size="9.8" font-weight="700">gemini-4-argon (7,136)</text>
+<circle cx="931.3" cy="186.4" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="782.2" cy="198.4" r="4.8" fill="#34d399" stroke="#0b1120" stroke-width="1.2"/>
+<text x="774.2" y="211.4" text-anchor="end" fill="#34d399" font-size="9.8" font-weight="700">claude-sonnet-5.5 (1,613)</text>
+<circle cx="867.8" cy="199.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="840.8" cy="205.3" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="825.6" cy="208.2" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="871.2" cy="206.9" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1105.8" cy="220.3" r="4.8" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1097.8" y="213.3" text-anchor="end" fill="#f43f5e" font-size="9.8" font-weight="700">gemini-3.8-flash (6,218)</text>
+<circle cx="738.3" cy="220.4" r="4.8" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="746.3" y="232.4" text-anchor="start" fill="#38bdf8" font-size="9.8" font-weight="700">gpt-5.6-terra (988)</text>
+<circle cx="858.0" cy="229.0" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1177.4" cy="226.2" r="4.8" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1169.4" y="240.2" text-anchor="end" fill="#f43f5e" font-size="9.8" font-weight="700">gemini-3.7-flash (7,236)</text>
+<circle cx="910.3" cy="226.8" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="844.6" cy="230.9" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1018.6" cy="228.6" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="885.9" cy="243.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="734.4" cy="244.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="992.6" cy="255.7" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="937.2" cy="263.3" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="897.3" cy="267.4" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="920.7" cy="303.9" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1031.4" cy="196.5" r="4.8" fill="#a855f7" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1023.4" y="200.5" text-anchor="end" fill="#a855f7" font-size="9.8" font-weight="700">grok-4.7 (5,159)</text>
+<circle cx="904.6" cy="359.0" r="4.8" fill="#94a3b8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="912.6" y="363.0" text-anchor="start" fill="#94a3b8" font-size="9.8" font-weight="700">claude-haiku-4.5 (3,354)</text>
+<circle cx="785.7" cy="353.1" r="4.8" fill="#94a3b8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="793.7" y="357.1" text-anchor="start" fill="#94a3b8" font-size="9.8" font-weight="700">gpt-5-mini (1,663)</text>
+<rect x="654" y="438" width="578" height="342" rx="12" fill="#111827" stroke="#1f2937" stroke-width="1.5"/>
+<text x="670" y="464" fill="#f1f5f9" font-size="14.5" font-weight="700">C. Why Fast Token Streaming (tok/s) ≠ Fast Task Completion</text>
+<text x="670" y="482" fill="#94a3b8" font-size="11">Output speed (tok/s) vs. 8-task wall time · Low turn counts (61–85 turns) beat raw 200 tok/s streaming</text>
+<rect x="704" y="502" width="506" height="236" fill="#0b1120" stroke="#1e293b"/>
+<line x1="732.9" y1="502" x2="732.9" y2="738" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="732.9" y="753" text-anchor="middle" fill="#64748b" font-size="10">50 tok/s</text>
+<line x1="877.5" y1="502" x2="877.5" y2="738" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="877.5" y="753" text-anchor="middle" fill="#64748b" font-size="10">100 tok/s</text>
+<line x1="1022.1" y1="502" x2="1022.1" y2="738" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="1022.1" y="753" text-anchor="middle" fill="#64748b" font-size="10">150 tok/s</text>
+<line x1="1166.6" y1="502" x2="1166.6" y2="738" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="1166.6" y="753" text-anchor="middle" fill="#64748b" font-size="10">200 tok/s</text>
+<line x1="704" y1="720.2" x2="1210" y2="720.2" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="724.2" text-anchor="end" fill="#64748b" font-size="10">10m</text>
+<line x1="704" y1="665.0" x2="1210" y2="665.0" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="669.0" text-anchor="end" fill="#64748b" font-size="10">20m</text>
+<line x1="704" y1="609.9" x2="1210" y2="609.9" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="613.9" text-anchor="end" fill="#64748b" font-size="10">40m</text>
+<line x1="704" y1="554.7" x2="1210" y2="554.7" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="558.7" text-anchor="end" fill="#64748b" font-size="10">80m</text>
+<line x1="704" y1="510.1" x2="1210" y2="510.1" stroke="#1e293b" stroke-dasharray="3,3"/>
+<text x="698" y="514.1" text-anchor="end" fill="#64748b" font-size="10">140m</text>
+<circle cx="890.2" cy="617.6" r="4.8" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="882.2" y="612.6" text-anchor="end" fill="#38bdf8" font-size="9.8" font-weight="700">claude-opus-5.5: 104 tok/s (36.3m)</text>
+<circle cx="739.8" cy="613.4" r="4.8" fill="#a855f7" stroke="#0b1120" stroke-width="1.2"/>
+<text x="747.8" y="625.4" text-anchor="start" fill="#a855f7" font-size="9.8" font-weight="700">gpt-6-astra: 52 tok/s (38.3m)</text>
+<circle cx="913.4" cy="656.9" r="4.8" fill="#38bdf8" stroke="#0b1120" stroke-width="1.2"/>
+<text x="921.4" y="651.9" text-anchor="start" fill="#38bdf8" font-size="9.8" font-weight="700">gpt-6-sol: 112 tok/s (22.2m)</text>
+<circle cx="854.1" cy="654.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="749.1" cy="639.6" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="778.3" cy="562.2" r="4.8" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="786.3" y="555.2" text-anchor="start" fill="#f43f5e" font-size="9.8" font-weight="700">gemini-4-argon: 66 tok/s · 8.8s TTFT (72.7m)</text>
+<circle cx="818.0" cy="549.2" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="974.8" cy="677.4" r="4.8" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="966.8" y="670.4" text-anchor="end" fill="#10b981" font-size="9.8" font-weight="700">claude-sonnet-5.5: 134 tok/s · 61 turns (17.1m ★)</text>
+<circle cx="756.2" cy="561.9" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="817.1" cy="624.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="929.2" cy="653.3" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1171.2" cy="602.6" r="4.8" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1163.2" y="594.6" text-anchor="end" fill="#f59e0b" font-size="9.8" font-weight="700">claude-haiku-5.5: 202 tok/s · 121 turns (43.8m)</text>
+<circle cx="876.5" cy="570.0" r="4.8" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="884.5" y="574.0" text-anchor="start" fill="#f43f5e" font-size="9.8" font-weight="700">gemini-3.8-flash: 100 tok/s · 334 turns (66.0m)</text>
+<circle cx="907.3" cy="699.8" r="4.8" fill="#10b981" stroke="#0b1120" stroke-width="1.2"/>
+<text x="899.3" y="711.8" text-anchor="end" fill="#10b981" font-size="9.8" font-weight="700">gpt-5.6-terra: 110 tok/s · 2.2s TTFT (12.9m ★)</text>
+<circle cx="807.3" cy="615.7" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="955.2" cy="579.4" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="870.5" cy="651.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="947.2" cy="668.1" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="759.2" cy="592.9" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="870.3" cy="601.1" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="905.8" cy="650.2" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="841.7" cy="611.1" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="991.7" cy="619.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="956.6" cy="687.6" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="1140.8" cy="601.9" r="4.8" fill="#f59e0b" stroke="#0b1120" stroke-width="1.2"/>
+<text x="1132.8" y="614.9" text-anchor="end" fill="#f59e0b" font-size="9.8" font-weight="700">mai-code-1.1-flash: 191 tok/s · +20m zombie wait</text>
+<circle cx="802.5" cy="508.0" r="4.8" fill="#f43f5e" stroke="#0b1120" stroke-width="1.2"/>
+<text x="810.5" y="512.0" text-anchor="start" fill="#f43f5e" font-size="9.8" font-weight="700">grok-4.7: 74 tok/s · 143.7m</text>
+<circle cx="877.7" cy="633.5" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+<circle cx="964.9" cy="722.8" r="3.2" fill="#64748b" stroke="#0b1120" stroke-width="1.2"/>
+</svg>

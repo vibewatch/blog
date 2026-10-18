@@ -1,0 +1,935 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 940" width="1120" height="940" role="img" aria-label="28 by 8 Multimodal Fingerprint Matrix across all 224 creative benchmark runs">
+  <style>
+    .bg { fill: #f7f8fa; }
+    .panel { fill: #ffffff; stroke: #dce2ea; stroke-width: 1; }
+    .panel-tint { fill: #edf1f6; stroke: #dce2ea; stroke-width: 1; }
+    .kicker { font: 700 11px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #245bd6; letter-spacing: 0.12em; text-transform: uppercase; }
+    .title { font: 700 21px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.03em; }
+    .subtitle { font: 400 12.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #526074; }
+    .axis-title { font: 600 11.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.01em; }
+    .axis-tick { font: 500 10px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .grid { stroke: #e6ebf2; stroke-width: 1; }
+    .grid-strong { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4 4; }
+    .iso-line { fill: none; stroke: #94a3b8; stroke-width: 1.25; stroke-dasharray: 5 5; opacity: 0.75; }
+    .iso-label { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #475569; }
+    .model-lbl { font: 600 10.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #182332; }
+    .model-sub { font: 500 9px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .badge { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .footnote { font: 400 10.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #627084; }
+  </style>
+  <rect width="1120" height="940" rx="16" class="bg" />
+  <text x="24" y="34" class="kicker">Complete 224-Run Multimodal Matrix · Quality Score, AI Credits, Wall Time &amp; Anomalies</text>
+  <text x="24" y="58" class="title">Multimodal Fingerprint Matrix: All 28 Models Across All 8 Creative Engineering Tasks</text>
+  <text x="24" y="78" class="subtitle">Models ordered by 8-task mean quality; tasks ordered from hardest (3D Scene, med 83.2) to easiest (MP4 Video, med 89.5). Cells show Quality and (credits · time).</text>
+  <text x="24" y="102" class="model-sub" style="font-weight:700;fill:#182332">Cell Quality:</text>
+  <rect x="104" y="91" width="54" height="14" rx="3" fill="#ffe4e6" />
+  <text x="131" y="101" text-anchor="middle" class="model-sub" style="fill:#be123c;font-weight:700">0 / FAIL</text>
+  <rect x="170" y="91" width="54" height="14" rx="3" fill="#fef2f2" />
+  <text x="197" y="101" text-anchor="middle" class="model-sub" style="fill:#b91c1c;font-weight:700">40–72</text>
+  <rect x="228" y="91" width="54" height="14" rx="3" fill="#f1f5f9" />
+  <text x="255" y="101" text-anchor="middle" class="model-sub" style="fill:#475569;font-weight:700">72–80</text>
+  <rect x="286" y="91" width="54" height="14" rx="3" fill="#e0f2fe" />
+  <text x="313" y="101" text-anchor="middle" class="model-sub" style="fill:#0369a1;font-weight:700">80–85</text>
+  <rect x="344" y="91" width="54" height="14" rx="3" fill="#bae6fd" />
+  <text x="371" y="101" text-anchor="middle" class="model-sub" style="fill:#075985;font-weight:700">85–89</text>
+  <rect x="402" y="91" width="54" height="14" rx="3" fill="#6ee7b7" />
+  <text x="429" y="101" text-anchor="middle" class="model-sub" style="fill:#064e3b;font-weight:700">89–91.5</text>
+  <rect x="468" y="91" width="54" height="14" rx="3" fill="#10b981" />
+  <text x="495" y="101" text-anchor="middle" class="model-sub" style="fill:#ffffff;font-weight:700">91.5–93.3★</text>
+  <text x="536" y="101" class="model-sub" style="fill:#b91c1c;font-weight:700">⏱ = 20–25m Timeout (6 cells)</text>
+  <text x="705" y="101" class="model-sub" style="fill:#334155">° = Auto &lt;100% (39) · ★ Peak: gemini-4-argon &amp; grok-4.7 Video (93.3)</text>
+  <rect x="18" y="112" width="1084" height="790" rx="10" class="panel" />
+  <text x="28" y="148" class="axis-title" style="font-size:11px"># / Model (by Mean Q)</text>
+  <text x="28" y="164" class="model-sub">Family · Auto% · Timeouts</text>
+  <rect x="202" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="248.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">3D Scene</text>
+  <text x="248.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#7c3aed">Med 83.2</text>
+  <text x="248.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">Three.js</text>
+  <rect x="298" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="344.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">SVG Diagram</text>
+  <text x="344.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#245bd6">Med 85.0</text>
+  <text x="344.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">16-Comp</text>
+  <rect x="394" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="440.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">PPTX Deck</text>
+  <text x="440.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#d97706">Med 85.6</text>
+  <text x="440.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">8-10 Slides</text>
+  <rect x="490" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="536.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">Design Doc</text>
+  <text x="536.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#0d9488">Med 86.5</text>
+  <text x="536.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">Rate Limiter</text>
+  <rect x="586" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="632.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">KPI Dashboard</text>
+  <text x="632.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#059669">Med 86.6</text>
+  <text x="632.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">24m CSV</text>
+  <rect x="682" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="728.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">Landing UI</text>
+  <text x="728.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#e11d48">Med 87.7</text>
+  <text x="728.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">Aurora App</text>
+  <rect x="778" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="824.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">Breakout Game</text>
+  <text x="824.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#f59e0b">Med 87.7</text>
+  <text x="824.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">HTML5+Audio</text>
+  <rect x="874" y="118" width="92" height="52" rx="6" fill="#edf1f6" stroke="#dce2ea" />
+  <text x="920.0" y="133" text-anchor="middle" class="axis-title" style="font-size:10.5px">MP4 Video</text>
+  <text x="920.0" y="148" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#0284c7">Med 89.5</text>
+  <text x="920.0" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">H.264+AAC</text>
+  <rect x="970" y="118" width="126" height="52" rx="6" fill="#eff6ff" stroke="#bfdbfe" />
+  <text x="1033" y="134" text-anchor="middle" class="axis-title" style="font-size:10.5px;fill:#1e3a8a">8-Task Total</text>
+  <text x="1033" y="149" text-anchor="middle" class="badge" style="font-size:9.5px;fill:#245bd6">Mean Q · Spend</text>
+  <text x="1033" y="162" text-anchor="middle" class="model-sub" style="font-size:8.5px">Wall Time · Tools</text>
+  <circle cx="30" cy="188.5" r="3.8" fill="#d97706" />
+  <text x="39" y="187.5" class="model-lbl" style="font-size:9.8px"> 1. claude-opus-5.5</text>
+  <text x="39" y="197.5" class="model-sub" style="font-size:8.2px">Auto 99% · 34v/93t</text>
+  <rect x="202.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="248.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.2°</text>
+  <text x="248.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">63.8c · 10.2m</text>
+  <rect x="298.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="344.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="344.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">41.9c · 143s</text>
+  <rect x="394.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="440.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="440.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">55.1c · 186s</text>
+  <rect x="490.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="536.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.2</text>
+  <text x="536.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">60.5c · 212s</text>
+  <rect x="586.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="632.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="632.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">52.8c · 146s</text>
+  <rect x="682.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="728.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">163c · 9.3m</text>
+  <rect x="778.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="824.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="824.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">60.5c · 237s</text>
+  <rect x="874.5" y="177.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="920.0" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">27.9c · 80s</text>
+  <rect x="971" y="177.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="187.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">90.4 <tspan style="font-weight:500;fill:#245bd6">($5.26)</tspan></text>
+  <text x="1033" y="197.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">36.3m · 526cr</text>
+  <rect x="20" y="201.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="214.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="213.0" class="model-lbl" style="font-size:9.8px"> 2. gpt-6-astra</text>
+  <text x="39" y="223.0" class="model-sub" style="font-size:8.2px">Auto 98% · 26v/94t</text>
+  <rect x="202.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="248.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.2</text>
+  <text x="248.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">202c · 9.4m</text>
+  <rect x="298.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="344.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="344.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">72.2c · 157s</text>
+  <rect x="394.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="440.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="440.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">144c · 278s</text>
+  <rect x="490.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5°</text>
+  <text x="536.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">66.6c · 200s</text>
+  <rect x="586.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="632.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.0°</text>
+  <text x="632.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">149c · 256s</text>
+  <rect x="682.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="728.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">165c · 6.0m</text>
+  <rect x="778.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="824.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">153c · 5.5m</text>
+  <rect x="874.5" y="203.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="920.0" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">54.5c · 150s</text>
+  <rect x="971" y="203.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="213.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">90.3 <tspan style="font-weight:500;fill:#245bd6">($10.06)</tspan></text>
+  <text x="1033" y="222.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">38.3m · 1006cr</text>
+  <circle cx="30" cy="239.5" r="3.8" fill="#245bd6" />
+  <text x="39" y="238.5" class="model-lbl" style="font-size:9.8px"> 3. gpt-6-sol</text>
+  <text x="39" y="248.5" class="model-sub" style="font-size:8.2px">Auto 100% · 18v/102t</text>
+  <rect x="202.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="248.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.2</text>
+  <text x="248.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">43.2c · 6.5m</text>
+  <rect x="298.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="344.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="344.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">19.6c · 110s</text>
+  <rect x="394.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="440.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">36.6c · 217s</text>
+  <rect x="490.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="536.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.2</text>
+  <text x="536.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">15.6c · 113s</text>
+  <rect x="586.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="632.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">21.6c · 104s</text>
+  <rect x="682.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.4</text>
+  <text x="728.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">36.0c · 170s</text>
+  <rect x="778.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="824.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">20.0c · 114s</text>
+  <rect x="874.5" y="228.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="920.0" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">16.3c · 109s</text>
+  <rect x="971" y="228.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="238.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">89.8 <tspan style="font-weight:500;fill:#245bd6">($2.09)</tspan></text>
+  <text x="1033" y="248.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">22.2m · 209cr</text>
+  <rect x="20" y="252.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="265.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="264.0" class="model-lbl" style="font-size:9.8px"> 4. gpt-5.6-sol</text>
+  <text x="39" y="274.0" class="model-sub" style="font-size:8.2px">Auto 100% · 14v/81t</text>
+  <rect x="202.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="248.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.6</text>
+  <text x="248.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">35.5c · 106s</text>
+  <rect x="298.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="344.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">42.5c · 145s</text>
+  <rect x="394.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="440.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">49.1c · 155s</text>
+  <rect x="490.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.4</text>
+  <text x="536.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">34.9c · 120s</text>
+  <rect x="586.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="632.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="632.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">32.0c · 86s</text>
+  <rect x="682.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.6</text>
+  <text x="728.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">89.3c · 6.0m</text>
+  <rect x="778.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="824.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="824.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">57.7c · 5.2m</text>
+  <rect x="874.5" y="254.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="920.0" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">28.1c · 86s</text>
+  <rect x="971" y="254.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="264.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">89.6 <tspan style="font-weight:500;fill:#245bd6">($3.69)</tspan></text>
+  <text x="1033" y="273.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">22.8m · 369cr</text>
+  <circle cx="30" cy="290.5" r="3.8" fill="#245bd6" />
+  <text x="39" y="289.5" class="model-lbl" style="font-size:9.8px"> 5. gpt-6.1-sol</text>
+  <text x="39" y="299.5" class="model-sub" style="font-size:8.2px">Auto 99% · 14v/68t</text>
+  <rect x="202.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="248.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.2</text>
+  <text x="248.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">18.9c · 222s</text>
+  <rect x="298.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="344.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">12.0c · 129s</text>
+  <rect x="394.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="440.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="440.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">21.0c · 248s</text>
+  <rect x="490.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="536.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.5c · 177s</text>
+  <rect x="586.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.7°</text>
+  <text x="632.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">16.6c · 177s</text>
+  <rect x="682.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="728.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">33.6c · 6.2m</text>
+  <rect x="778.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="824.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.5c · 202s</text>
+  <rect x="874.5" y="279.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="920.0" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">9.5c · 122s</text>
+  <rect x="971" y="279.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="289.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">89.4 <tspan style="font-weight:500;fill:#245bd6">($1.41)</tspan></text>
+  <text x="1033" y="299.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">27.5m · 141cr</text>
+  <rect x="20" y="303.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="316.0" r="3.8" fill="#0d9488" />
+  <text x="39" y="315.0" class="model-lbl" style="font-size:9.8px"> 6. gemini-4-argon</text>
+  <text x="39" y="325.0" class="model-sub" style="font-size:8.2px">Auto 98% · 55v/201t</text>
+  <rect x="202.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="248.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="248.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">96.3c · 19.2m</text>
+  <rect x="298.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="344.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="344.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">35.9c · 5.1m</text>
+  <rect x="394.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.4°</text>
+  <text x="440.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">86.5c · 12.1m</text>
+  <rect x="490.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.7°</text>
+  <text x="536.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">56.6c · 8.0m</text>
+  <rect x="586.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="632.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="632.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">66.5c · 11.3m</text>
+  <rect x="682.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="728.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">55.1c · 7.5m</text>
+  <rect x="778.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="824.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">32.9c · 294s</text>
+  <rect x="874.5" y="305.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">93.3</text>
+  <text x="920.0" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">30.9c · 272s</text>
+  <rect x="971" y="305.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="315.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">89.3 <tspan style="font-weight:500;fill:#245bd6">($4.61)</tspan></text>
+  <text x="1033" y="324.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">72.7m · 461cr</text>
+  <circle cx="30" cy="341.5" r="3.8" fill="#d97706" />
+  <text x="39" y="340.5" class="model-lbl" style="font-size:9.8px"> 7. claude-opus-5</text>
+  <text x="39" y="350.5" class="model-sub" style="font-size:8.2px">Auto 98% · 28v/150t · 1⏱</text>
+  <rect x="202.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.2°</text>
+  <text x="248.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">155c · 11.6m</text>
+  <rect x="298.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="344.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="344.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">297c · 15.5m</text>
+  <rect x="394.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6°</text>
+  <text x="440.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">190c · 8.1m</text>
+  <rect x="490.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="536.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">308c · 12.0m</text>
+  <rect x="586.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="632.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="632.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">130c · 6.7m</text>
+  <rect x="682.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.4</text>
+  <text x="728.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">189c · 8.1m</text>
+  <rect x="778.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#10b981" stroke="#e11d48" stroke-width="1.2" />
+  <text x="824.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7⏱</text>
+  <text x="824.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">126c · 20.0m</text>
+  <rect x="874.5" y="330.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="920.0" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">80.5c · 221s</text>
+  <rect x="971" y="330.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="340.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">89.3 <tspan style="font-weight:500;fill:#245bd6">($14.75)</tspan></text>
+  <text x="1033" y="350.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">85.6m · 1475cr</text>
+  <rect x="20" y="354.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="367.0" r="3.8" fill="#d97706" />
+  <text x="39" y="366.0" class="model-lbl" style="font-size:9.8px"> 8. claude-sonnet-5.5</text>
+  <text x="39" y="376.0" class="model-sub" style="font-size:8.2px">Auto 100% · 26v/73t</text>
+  <rect x="202.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="248.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.4</text>
+  <text x="248.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">31.1c · 6.2m</text>
+  <rect x="298.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="344.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">25.2c · 125s</text>
+  <rect x="394.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="440.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">15.3c · 76s</text>
+  <rect x="490.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="536.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">19.0c · 108s</text>
+  <rect x="586.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="632.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">15.9c · 65s</text>
+  <rect x="682.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.6</text>
+  <text x="728.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">29.1c · 152s</text>
+  <rect x="778.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="824.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">15.3c · 71s</text>
+  <rect x="874.5" y="356.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="920.0" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">10.3c · 58s</text>
+  <rect x="971" y="356.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="366.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">88.8 <tspan style="font-weight:500;fill:#245bd6">($1.61)</tspan></text>
+  <text x="1033" y="375.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">17.1m · 161cr</text>
+  <circle cx="30" cy="392.5" r="3.8" fill="#7c3aed" />
+  <text x="39" y="391.5" class="model-lbl" style="font-size:9.8px"> 9. grok-4.6</text>
+  <text x="39" y="401.5" class="model-sub" style="font-size:8.2px">Auto 99% · 57v/206t</text>
+  <rect x="202.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="248.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.2</text>
+  <text x="248.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">82.9c · 19.0m</text>
+  <rect x="298.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="344.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="344.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">41.1c · 7.5m</text>
+  <rect x="394.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6°</text>
+  <text x="440.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">113c · 10.6m</text>
+  <rect x="490.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="536.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">13.9c · 160s</text>
+  <rect x="586.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="632.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="632.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">72.4c · 6.3m</text>
+  <rect x="682.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.2</text>
+  <text x="728.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">34.1c · 6.2m</text>
+  <rect x="778.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="824.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">92.8c · 17.7m</text>
+  <rect x="874.5" y="381.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="920.0" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">28.2c · 184s</text>
+  <rect x="971" y="381.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="391.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">88.3 <tspan style="font-weight:500;fill:#245bd6">($4.79)</tspan></text>
+  <text x="1033" y="401.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">73.1m · 479cr</text>
+  <rect x="20" y="405.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="418.0" r="3.8" fill="#d97706" />
+  <text x="39" y="417.0" class="model-lbl" style="font-size:9.8px">10. claude-fable-5</text>
+  <text x="39" y="427.0" class="model-sub" style="font-size:8.2px">Auto 100% · 31v/97t</text>
+  <rect x="202.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="248.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6</text>
+  <text x="248.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">196c · 241s</text>
+  <rect x="298.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="344.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">132c · 222s</text>
+  <rect x="394.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="440.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="440.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">114c · 149s</text>
+  <rect x="490.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="536.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">79.7c · 148s</text>
+  <rect x="586.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="632.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">124c · 142s</text>
+  <rect x="682.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="728.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">300c · 6.9m</text>
+  <rect x="778.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="824.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">199c · 10.1m</text>
+  <rect x="874.5" y="407.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="920.0" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">66.4c · 76s</text>
+  <rect x="971" y="407.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="417.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">88.1 <tspan style="font-weight:500;fill:#245bd6">($12.12)</tspan></text>
+  <text x="1033" y="426.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">33.3m · 1212cr</text>
+  <circle cx="30" cy="443.5" r="3.8" fill="#475569" />
+  <text x="39" y="442.5" class="model-lbl" style="font-size:9.8px">11. auto</text>
+  <text x="39" y="452.5" class="model-sub" style="font-size:8.2px">Auto 99% · 18v/96t</text>
+  <rect x="202.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.2</text>
+  <text x="248.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.6c · 250s</text>
+  <rect x="298.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="344.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.2c · 5.1m</text>
+  <rect x="394.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="440.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.4c · 192s</text>
+  <rect x="490.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="536.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">0.9c · 105s</text>
+  <rect x="586.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.2°</text>
+  <text x="632.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">0.8c · 86s</text>
+  <rect x="682.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="728.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.4c · 136s</text>
+  <rect x="778.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="824.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.0c · 212s</text>
+  <rect x="874.5" y="432.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="920.0" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">0.8c · 102s</text>
+  <rect x="971" y="432.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="442.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">87.4 <tspan style="font-weight:500;fill:#245bd6">($0.09)</tspan></text>
+  <text x="1033" y="452.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">23.2m · 9cr</text>
+  <rect x="20" y="456.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="469.0" r="3.8" fill="#d97706" />
+  <text x="39" y="468.0" class="model-lbl" style="font-size:9.8px">12. claude-haiku-5.5</text>
+  <text x="39" y="478.0" class="model-sub" style="font-size:8.2px">Auto 98% · 17v/127t</text>
+  <rect x="202.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">80.8°</text>
+  <text x="248.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">5.9c · 19.6m</text>
+  <rect x="298.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="344.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.9c · 202s</text>
+  <rect x="394.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.7</text>
+  <text x="440.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.4c · 162s</text>
+  <rect x="490.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.5°</text>
+  <text x="536.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">0.9c · 64s</text>
+  <rect x="586.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="632.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="632.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">2.1c · 132s</text>
+  <rect x="682.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.4</text>
+  <text x="728.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.7c · 5.4m</text>
+  <rect x="778.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">91.0</text>
+  <text x="824.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.5c · 6.8m</text>
+  <rect x="874.5" y="458.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="920.0" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.8c · 164s</text>
+  <rect x="971" y="458.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="468.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">87.1 <tspan style="font-weight:500;fill:#245bd6">($0.23)</tspan></text>
+  <text x="1033" y="477.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">43.8m · 23cr</text>
+  <circle cx="30" cy="494.5" r="3.8" fill="#0d9488" />
+  <text x="39" y="493.5" class="model-lbl" style="font-size:9.8px">13. gemini-3.8-flash</text>
+  <text x="39" y="503.5" class="model-sub" style="font-size:8.2px">Auto 100% · 84v/338t · 1⏱</text>
+  <rect x="202.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" stroke="#e11d48" stroke-width="1.2" />
+  <text x="248.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0⏱</text>
+  <text x="248.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">116c · 20.0m</text>
+  <rect x="298.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="344.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">40.5c · 9.4m</text>
+  <rect x="394.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.3</text>
+  <text x="440.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">38.6c · 7.3m</text>
+  <rect x="490.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6</text>
+  <text x="536.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">41.7c · 6.2m</text>
+  <rect x="586.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="632.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">31.6c · 262s</text>
+  <rect x="682.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.8</text>
+  <text x="728.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">32.8c · 275s</text>
+  <rect x="778.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="824.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.3</text>
+  <text x="824.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">31.1c · 6.2m</text>
+  <rect x="874.5" y="483.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="920.0" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">43.1c · 7.9m</text>
+  <rect x="971" y="483.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="493.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">86.5 <tspan style="font-weight:500;fill:#245bd6">($3.75)</tspan></text>
+  <text x="1033" y="503.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">66.0m · 375cr</text>
+  <rect x="20" y="507.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="520.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="519.0" class="model-lbl" style="font-size:9.8px">14. gpt-5.6-terra</text>
+  <text x="39" y="529.0" class="model-sub" style="font-size:8.2px">Auto 99% · 11v/87t</text>
+  <rect x="202.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="248.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">19.8c · 125s</text>
+  <rect x="298.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="344.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">80.5</text>
+  <text x="344.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.4c · 84s</text>
+  <rect x="394.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.7</text>
+  <text x="440.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.4c · 92s</text>
+  <rect x="490.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="536.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.6</text>
+  <text x="536.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">9.9c · 68s</text>
+  <rect x="586.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="632.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.5°</text>
+  <text x="632.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">27.8c · 117s</text>
+  <rect x="682.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.4</text>
+  <text x="728.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">21.1c · 108s</text>
+  <rect x="778.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="824.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">19.9c · 124s</text>
+  <rect x="874.5" y="509.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="920.0" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">11.3c · 58s</text>
+  <rect x="971" y="509.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">86.2 <tspan style="font-weight:500;fill:#245bd6">($1.45)</tspan></text>
+  <text x="1033" y="528.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">12.9m · 145cr</text>
+  <circle cx="30" cy="545.5" r="3.8" fill="#d97706" />
+  <text x="39" y="544.5" class="model-lbl" style="font-size:9.8px">15. claude-opus-4.8</text>
+  <text x="39" y="554.5" class="model-sub" style="font-size:8.2px">Auto 100% · 29v/107t</text>
+  <rect x="202.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="248.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">78.4</text>
+  <text x="248.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">149c · 6.2m</text>
+  <rect x="298.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="344.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">104c · 292s</text>
+  <rect x="394.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="440.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">71.5c · 182s</text>
+  <rect x="490.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.8</text>
+  <text x="536.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">45.6c · 168s</text>
+  <rect x="586.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="632.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">131c · 5.5m</text>
+  <rect x="682.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="728.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">126c · 8.0m</text>
+  <rect x="778.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="824.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">62.0c · 230s</text>
+  <rect x="874.5" y="534.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="920.0" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">53.7c · 176s</text>
+  <rect x="971" y="534.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="544.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">85.6 <tspan style="font-weight:500;fill:#245bd6">($7.43)</tspan></text>
+  <text x="1033" y="554.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">37.2m · 743cr</text>
+  <rect x="20" y="558.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="571.0" r="3.8" fill="#0d9488" />
+  <text x="39" y="570.0" class="model-lbl" style="font-size:9.8px">16. gemini-3.7-flash</text>
+  <text x="39" y="580.0" class="model-sub" style="font-size:8.2px">Auto 99% · 61v/206t · 1⏱</text>
+  <rect x="202.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" stroke="#e11d48" stroke-width="1.2" />
+  <text x="248.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.8⏱</text>
+  <text x="248.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">156c · 20.0m</text>
+  <rect x="298.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="344.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="344.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">34.9c · 7.1m</text>
+  <rect x="394.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.7</text>
+  <text x="440.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">45.5c · 6.9m</text>
+  <rect x="490.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="536.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">16.8c · 174s</text>
+  <rect x="586.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.2°</text>
+  <text x="632.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">46.8c · 7.2m</text>
+  <rect x="682.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.4</text>
+  <text x="728.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">28.1c · 6.7m</text>
+  <rect x="778.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="824.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.7</text>
+  <text x="824.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">12.2c · 174s</text>
+  <rect x="874.5" y="560.0" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="920.0" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">23.9c · 299s</text>
+  <rect x="971" y="560.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="570.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">85.5 <tspan style="font-weight:500;fill:#245bd6">($3.64)</tspan></text>
+  <text x="1033" y="579.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">58.6m · 364cr</text>
+  <circle cx="30" cy="596.5" r="3.8" fill="#245bd6" />
+  <text x="39" y="595.5" class="model-lbl" style="font-size:9.8px">17. gpt-5.5</text>
+  <text x="39" y="605.5" class="model-sub" style="font-size:8.2px">Auto 99% · 13v/87t</text>
+  <rect x="202.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="248.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">79.0°</text>
+  <text x="248.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">52.6c · 125s</text>
+  <rect x="298.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">77.5</text>
+  <text x="344.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">65.4c · 166s</text>
+  <rect x="394.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.3</text>
+  <text x="440.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">74.8c · 177s</text>
+  <rect x="490.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="536.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.8</text>
+  <text x="536.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">27.2c · 86s</text>
+  <rect x="586.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.7</text>
+  <text x="632.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">88.0c · 190s</text>
+  <rect x="682.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="728.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.2</text>
+  <text x="728.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">99.0c · 285s</text>
+  <rect x="778.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="824.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">90.3</text>
+  <text x="824.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">81.4c · 274s</text>
+  <rect x="874.5" y="585.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="920.0" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">41.0c · 118s</text>
+  <rect x="971" y="585.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="595.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">85.5 <tspan style="font-weight:500;fill:#245bd6">($5.29)</tspan></text>
+  <text x="1033" y="605.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">23.7m · 529cr</text>
+  <rect x="20" y="609.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="622.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="621.0" class="model-lbl" style="font-size:9.8px">18. gpt-6-luna</text>
+  <text x="39" y="631.0" class="model-sub" style="font-size:8.2px">Auto 98% · 18v/89t</text>
+  <rect x="202.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.2</text>
+  <text x="248.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.7c · 253s</text>
+  <rect x="298.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">79.7</text>
+  <text x="344.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.1c · 107s</text>
+  <rect x="394.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="440.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.7c · 170s</text>
+  <rect x="490.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.3°</text>
+  <text x="536.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">0.7c · 77s</text>
+  <rect x="586.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.2°</text>
+  <text x="632.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.1c · 97s</text>
+  <rect x="682.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.4</text>
+  <text x="728.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.4c · 135s</text>
+  <rect x="778.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="824.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.0c · 148s</text>
+  <rect x="874.5" y="611.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="920.0" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.7</text>
+  <text x="920.0" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.6c · 169s</text>
+  <rect x="971" y="611.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="621.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">84.7 <tspan style="font-weight:500;fill:#245bd6">($0.10)</tspan></text>
+  <text x="1033" y="630.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">19.3m · 10cr</text>
+  <circle cx="30" cy="647.5" r="3.8" fill="#7c3aed" />
+  <text x="39" y="646.5" class="model-lbl" style="font-size:9.8px">19. grok-4.5</text>
+  <text x="39" y="656.5" class="model-sub" style="font-size:8.2px">Auto 97% · 35v/139t</text>
+  <rect x="202.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="248.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">63.8c · 9.9m</text>
+  <rect x="298.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="344.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">81.3</text>
+  <text x="344.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">74.9c · 10.7m</text>
+  <rect x="394.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">81.2°</text>
+  <text x="440.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">33.5c · 5.2m</text>
+  <rect x="490.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6</text>
+  <text x="536.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">13.3c · 182s</text>
+  <rect x="586.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="632.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.5</text>
+  <text x="632.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">25.7c · 192s</text>
+  <rect x="682.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="728.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">33.9c · 7.5m</text>
+  <rect x="778.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="824.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">81.5°</text>
+  <text x="824.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">39.8c · 7.3m</text>
+  <rect x="874.5" y="636.5" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="920.0" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">22.8c · 162s</text>
+  <rect x="971" y="636.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="646.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">84.7 <tspan style="font-weight:500;fill:#245bd6">($3.08)</tspan></text>
+  <text x="1033" y="656.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">49.5m · 308cr</text>
+  <rect x="20" y="660.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="673.0" r="3.8" fill="#d97706" />
+  <text x="39" y="672.0" class="model-lbl" style="font-size:9.8px">20. claude-sonnet-5</text>
+  <text x="39" y="682.0" class="model-sub" style="font-size:8.2px">Auto 99% · 44v/168t</text>
+  <rect x="202.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">80.2</text>
+  <text x="248.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">87.4c · 9.9m</text>
+  <rect x="298.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">78.3</text>
+  <text x="344.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">140c · 12.0m</text>
+  <rect x="394.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="440.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">80.4°</text>
+  <text x="440.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">76.1c · 5.3m</text>
+  <rect x="490.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="536.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.2</text>
+  <text x="536.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">27.6c · 185s</text>
+  <rect x="586.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="632.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">25.2c · 122s</text>
+  <rect x="682.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="728.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.8</text>
+  <text x="728.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">32.1c · 219s</text>
+  <rect x="778.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="824.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">26.8c · 6.6m</text>
+  <rect x="874.5" y="662.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.0</text>
+  <text x="920.0" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">25.3c · 128s</text>
+  <rect x="971" y="662.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="672.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">83.7 <tspan style="font-weight:500;fill:#245bd6">($4.41)</tspan></text>
+  <text x="1033" y="681.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">44.6m · 441cr</text>
+  <circle cx="30" cy="698.5" r="3.8" fill="#245bd6" />
+  <text x="39" y="697.5" class="model-lbl" style="font-size:9.8px">21. gpt-5.6-luna</text>
+  <text x="39" y="707.5" class="model-sub" style="font-size:8.2px">Auto 99% · 13v/87t</text>
+  <rect x="202.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="248.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">77.8</text>
+  <text x="248.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.7c · 11.6m</text>
+  <rect x="298.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">76.7</text>
+  <text x="344.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.5c · 204s</text>
+  <rect x="394.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="440.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="440.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.6c · 110s</text>
+  <rect x="490.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.7°</text>
+  <text x="536.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.0c · 55s</text>
+  <rect x="586.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.7</text>
+  <text x="632.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.5c · 66s</text>
+  <rect x="682.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="728.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="728.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.8c · 179s</text>
+  <rect x="778.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.0</text>
+  <text x="824.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.1c · 59s</text>
+  <rect x="874.5" y="687.5" width="91" height="22.5" rx="3.5" fill="#6ee7b7" />
+  <text x="920.0" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#064e3b;font-weight:700">89.5</text>
+  <text x="920.0" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.6c · 79s</text>
+  <rect x="971" y="687.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="697.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">83.6 <tspan style="font-weight:500;fill:#245bd6">($0.15)</tspan></text>
+  <text x="1033" y="707.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">24.1m · 15cr</text>
+  <rect x="20" y="711.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="724.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="723.0" class="model-lbl" style="font-size:9.8px">22. gpt-5.4</text>
+  <text x="39" y="733.0" class="model-sub" style="font-size:8.2px">Auto 97% · 15v/137t</text>
+  <rect x="202.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="248.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">80.8°</text>
+  <text x="248.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">39.6c · 232s</text>
+  <rect x="298.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">72.3</text>
+  <text x="344.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">31.8c · 150s</text>
+  <rect x="394.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="440.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">78.3</text>
+  <text x="440.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">44.5c · 253s</text>
+  <rect x="490.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.1°</text>
+  <text x="536.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">15.3c · 97s</text>
+  <rect x="586.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="632.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.0°</text>
+  <text x="632.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">96.8c · 5.5m</text>
+  <rect x="682.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="728.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.2</text>
+  <text x="728.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">63.0c · 10.3m</text>
+  <rect x="778.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="824.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">74.3c · 8.3m</text>
+  <rect x="874.5" y="713.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="920.0" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">83.5</text>
+  <text x="920.0" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">29.0c · 185s</text>
+  <rect x="971" y="713.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="723.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">81.7 <tspan style="font-weight:500;fill:#245bd6">($3.94)</tspan></text>
+  <text x="1033" y="732.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">39.4m · 394cr</text>
+  <circle cx="30" cy="749.5" r="3.8" fill="#245bd6" />
+  <text x="39" y="748.5" class="model-lbl" style="font-size:9.8px">23. gpt-5.4-mini</text>
+  <text x="39" y="758.5" class="model-sub" style="font-size:8.2px">Auto 98% · 28v/126t</text>
+  <rect x="202.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="248.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">77.8</text>
+  <text x="248.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.5c · 13.0m</text>
+  <rect x="298.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">74.5</text>
+  <text x="344.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.7c · 282s</text>
+  <rect x="394.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="440.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">76.6°</text>
+  <text x="440.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">42.4c · 5.2m</text>
+  <rect x="490.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="536.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">79.9°</text>
+  <text x="536.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.5c · 53s</text>
+  <rect x="586.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="632.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.0</text>
+  <text x="632.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">13.5c · 185s</text>
+  <rect x="682.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">85.6</text>
+  <text x="728.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">14.5c · 251s</text>
+  <rect x="778.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="824.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">9.6c · 126s</text>
+  <rect x="874.5" y="738.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">87.3</text>
+  <text x="920.0" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.6c · 141s</text>
+  <rect x="971" y="738.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="748.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">81.3 <tspan style="font-weight:500;fill:#245bd6">($1.18)</tspan></text>
+  <text x="1033" y="758.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">35.5m · 118cr</text>
+  <rect x="20" y="762.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="775.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="774.0" class="model-lbl" style="font-size:9.8px">24. gpt-5.3-codex</text>
+  <text x="39" y="784.0" class="model-sub" style="font-size:8.2px">Auto 98% · 0v/49t</text>
+  <rect x="202.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="248.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">74.8°</text>
+  <text x="248.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">21.3c · 149s</text>
+  <rect x="298.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="344.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">72.3</text>
+  <text x="344.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">15.3c · 69s</text>
+  <rect x="394.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="440.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">75.2°</text>
+  <text x="440.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">12.5c · 68s</text>
+  <rect x="490.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="536.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="536.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">12.5c · 69s</text>
+  <rect x="586.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="632.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">79.0</text>
+  <text x="632.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.3c · 78s</text>
+  <rect x="682.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="728.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.2</text>
+  <text x="728.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">28.9c · 240s</text>
+  <rect x="778.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="824.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="824.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">19.4c · 151s</text>
+  <rect x="874.5" y="764.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.7</text>
+  <text x="920.0" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">13.3c · 79s</text>
+  <rect x="971" y="764.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="774.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">80.9 <tspan style="font-weight:500;fill:#245bd6">($1.40)</tspan></text>
+  <text x="1033" y="783.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">15.1m · 140cr</text>
+  <circle cx="30" cy="800.5" r="3.8" fill="#059669" />
+  <text x="39" y="799.5" class="model-lbl" style="font-size:9.8px">25. mai-code-1.1-flash</text>
+  <text x="39" y="809.5" class="model-sub" style="font-size:8.2px">Auto 99% · 13v/95t</text>
+  <rect x="202.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="248.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">71.2°</text>
+  <text x="248.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.4c · 13.3m</text>
+  <rect x="298.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="344.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">69.3</text>
+  <text x="344.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.8c · 127s</text>
+  <rect x="394.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="440.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">76.0</text>
+  <text x="440.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">7.8c · 214s</text>
+  <rect x="490.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="536.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">79.0</text>
+  <text x="536.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.5c · 76s</text>
+  <rect x="586.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="632.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">75.3</text>
+  <text x="632.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">5.6c · 165s</text>
+  <rect x="682.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="728.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4</text>
+  <text x="728.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">6.5c · 16.2m</text>
+  <rect x="778.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="824.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">78.3</text>
+  <text x="824.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.3c · 138s</text>
+  <rect x="874.5" y="789.5" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="920.0" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">86.5</text>
+  <text x="920.0" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.8c · 164s</text>
+  <rect x="971" y="789.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="799.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">77.5 <tspan style="font-weight:500;fill:#245bd6">($0.34)</tspan></text>
+  <text x="1033" y="809.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">44.2m · 34cr</text>
+  <rect x="20" y="813.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="826.0" r="3.8" fill="#7c3aed" />
+  <text x="39" y="825.0" class="model-lbl" style="font-size:9.8px">26. grok-4.7</text>
+  <text x="39" y="835.0" class="model-sub" style="font-size:8.2px">Auto 85% · 78v/273t · 3⏱</text>
+  <rect x="202.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" stroke="#e11d48" stroke-width="1.2" />
+  <text x="248.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">72.5°⏱</text>
+  <text x="248.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">174c · 20.0m</text>
+  <rect x="298.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#ffe4e6" stroke="#e11d48" stroke-width="1.2" />
+  <text x="344.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#be123c;font-weight:700">FAIL (0)</text>
+  <text x="344.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">33.3c · 20.0m</text>
+  <rect x="394.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="440.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">92.5</text>
+  <text x="440.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">243c · 20.3m</text>
+  <rect x="490.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="536.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.6</text>
+  <text x="536.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">53.7c · 7.1m</text>
+  <rect x="586.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#bae6fd" />
+  <text x="632.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#075985;font-weight:700">88.2°</text>
+  <text x="632.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">200c · 16.3m</text>
+  <rect x="682.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" stroke="#e11d48" stroke-width="1.2" />
+  <text x="728.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.4⏱</text>
+  <text x="728.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">125c · 20.0m</text>
+  <rect x="778.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="824.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">91.7</text>
+  <text x="824.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">121c · 18.6m</text>
+  <rect x="874.5" y="815.0" width="91" height="22.5" rx="3.5" fill="#10b981" />
+  <text x="920.0" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#ffffff;font-weight:700">93.3</text>
+  <text x="920.0" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#e2e8f0">156c · 21.4m</text>
+  <rect x="971" y="815.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="825.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">76.8 <tspan style="font-weight:500;fill:#245bd6">($11.07)</tspan></text>
+  <text x="1033" y="834.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">143.7m · 1107cr</text>
+  <circle cx="30" cy="851.5" r="3.8" fill="#d97706" />
+  <text x="39" y="850.5" class="model-lbl" style="font-size:9.8px">27. claude-haiku-4.5</text>
+  <text x="39" y="860.5" class="model-sub" style="font-size:8.2px">Auto 98% · 21v/138t</text>
+  <rect x="202.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="248.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">62.2</text>
+  <text x="248.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.4c · 281s</text>
+  <rect x="298.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="344.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">65.1°</text>
+  <text x="344.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.3c · 102s</text>
+  <rect x="394.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="440.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">73.7</text>
+  <text x="440.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">18.5c · 211s</text>
+  <rect x="490.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="536.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">68.5°</text>
+  <text x="536.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">10.2c · 108s</text>
+  <rect x="586.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="632.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">72.3</text>
+  <text x="632.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">17.5c · 172s</text>
+  <rect x="682.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="728.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">75.4</text>
+  <text x="728.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">46.6c · 8.3m</text>
+  <rect x="778.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="824.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">71.2°</text>
+  <text x="824.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">24.2c · 284s</text>
+  <rect x="874.5" y="840.5" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="920.0" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">82.0</text>
+  <text x="920.0" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">11.4c · 129s</text>
+  <rect x="971" y="840.5" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="850.5" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">71.3 <tspan style="font-weight:500;fill:#245bd6">($1.57)</tspan></text>
+  <text x="1033" y="860.2" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">29.7m · 157cr</text>
+  <rect x="20" y="864.5" width="1080" height="25.5" fill="#f8fafc" />
+  <circle cx="30" cy="877.0" r="3.8" fill="#245bd6" />
+  <text x="39" y="876.0" class="model-lbl" style="font-size:9.8px">28. gpt-5-mini</text>
+  <text x="39" y="886.0" class="model-sub" style="font-size:8.2px">Auto 81% · 2v/22t</text>
+  <rect x="202.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="248.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">59.3°</text>
+  <text x="248.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.1c · 129s</text>
+  <rect x="298.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="344.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">67.4°</text>
+  <text x="344.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.0c · 39s</text>
+  <rect x="394.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="440.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">71.5</text>
+  <text x="440.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.5c · 50s</text>
+  <rect x="490.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="536.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">64.5°</text>
+  <text x="536.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.6c · 52s</text>
+  <rect x="586.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="632.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#475569;font-weight:600">75.3</text>
+  <text x="632.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.3c · 94s</text>
+  <rect x="682.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="728.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">59.3°</text>
+  <text x="728.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">2.3c · 63s</text>
+  <rect x="778.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#fef2f2" />
+  <text x="824.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#b91c1c;font-weight:600">40.2°</text>
+  <text x="824.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">1.7c · 56s</text>
+  <rect x="874.5" y="866.0" width="91" height="22.5" rx="3.5" fill="#e0f2fe" />
+  <text x="920.0" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;fill:#0369a1;font-weight:600">84.3</text>
+  <text x="920.0" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#64748b">3.7c · 99s</text>
+  <rect x="971" y="866.0" width="124" height="22.5" rx="3.5" fill="#f1f5f9" />
+  <text x="1033" y="876.0" text-anchor="middle" class="axis-tick" style="font-size:9.5px;font-weight:700;fill:#182332">65.2 <tspan style="font-weight:500;fill:#245bd6">($0.19)</tspan></text>
+  <text x="1033" y="885.7" text-anchor="middle" class="model-sub" style="font-size:8px;fill:#475569">9.7m · 19cr</text>
+  <text x="24" y="922" class="footnote">Note: ° marks cells where automated checks scored &lt;100%. ⏱ marks cells hitting the 20m (1200s) or 25m timeout. View/tool counts (v/t) track visual self-checks vs. total tool calls.</text>
+</svg>

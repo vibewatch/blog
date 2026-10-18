@@ -1,0 +1,299 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 780" width="1120" height="780" role="img" aria-label="Concurrency-adjusted effective cost trajectories and $60/hour human waiting cost stack across the 14 frontier models">
+  <style>
+    .bg { fill: #f7f8fa; }
+    .panel { fill: #ffffff; stroke: #dce2ea; stroke-width: 1; }
+    .panel-tint { fill: #edf1f6; stroke: #dce2ea; stroke-width: 1; }
+    .kicker { font: 700 11px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #245bd6; letter-spacing: 0.12em; text-transform: uppercase; }
+    .title { font: 700 21px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.03em; }
+    .subtitle { font: 400 12.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #526074; }
+    .axis-title { font: 600 11.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.01em; }
+    .axis-tick { font: 500 10px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .grid { stroke: #e6ebf2; stroke-width: 1; }
+    .model-lbl { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #182332; }
+    .model-sub { font: 500 9px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .badge { font: 600 9.5px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .footnote { font: 400 10.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #627084; }
+  </style>
+  <rect width="1120" height="780" rx="16" class="bg" />
+  <text x="28" y="34" class="kicker">Total Effective Cost = AI Credits ($0.01/cr) + Engineer Waiting Time ($60/hr ÷ k Concurrent Tasks)</text>
+  <text x="28" y="58" class="title">Adding Human Waiting Time ($60/h ÷ k) to the 14 Frontier Creative Models (Q ≥ 86.2)</text>
+  <text x="28" y="78" class="subtitle">Left: Effective cost rank among the Top-14 quality tier across concurrency k. Right: Compute ($) + Waiting Time ($) stack at k=1 ($60/h).</text>
+  <rect x="28" y="92" width="13" height="11" rx="2" fill="#d97706" />
+  <text x="46" y="102" class="subtitle" style="font-size:11px;font-weight:600;fill:#92400e">AI Credits Compute Cost ($)</text>
+  <rect x="230" y="92" width="13" height="11" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="248" y="102" class="subtitle" style="font-size:11px;font-weight:600;fill:#1d4ed8">Engineer Waiting Cost at $60/h ($1.00 / min)</text>
+  <rect x="530" y="92" width="14" height="11" rx="2" fill="#fef3c7" stroke="#d97706" />
+  <text x="549" y="102" class="subtitle" style="font-size:11px;font-weight:600;fill:#b45309">Exact Crossover k* = 4.00 ($15/h): claude-sonnet-5.5 ($5.89) = auto ($5.89)</text>
+  <rect x="24" y="114" width="600" height="600" rx="10" class="panel" />
+  <rect x="230" y="156" width="44" height="536" rx="4" fill="#fef3c7" opacity="0.65" />
+  <line x1="72" y1="158" x2="72" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="72" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = ∞</text>
+  <text x="72" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$0/h (Credits)</text>
+  <line x1="162" y1="158" x2="162" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="162" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = 6</text>
+  <text x="162" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$10/h ($60÷6)</text>
+  <line x1="252" y1="158" x2="252" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="252" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = 4</text>
+  <text x="252" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$15/h (Break-Even)</text>
+  <line x1="342" y1="158" x2="342" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="342" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = 3</text>
+  <text x="342" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$20/h ($60÷3)</text>
+  <line x1="432" y1="158" x2="432" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="432" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = 2</text>
+  <text x="432" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$30/h ($60÷2)</text>
+  <line x1="522" y1="158" x2="522" y2="690" stroke="#dce2ea" stroke-width="1.5" />
+  <text x="522" y="136" text-anchor="middle" class="axis-title" style="font-size:10.5px">k = 1</text>
+  <text x="522" y="150" text-anchor="middle" class="model-sub" style="font-size:8.5px">$60/h (1 Task)</text>
+  <path d="M72,174.0 C117.0,174.0 117.0,212.0 162,212.0 C207.0,212.0 207.0,212.0 252,212.0 C297.0,212.0 297.0,250.0 342,250.0 C387.0,250.0 387.0,250.0 432,250.0 C477.0,250.0 477.0,250.0 522,250.0" fill="none" stroke="#475569" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="72" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$0.09</text>
+  <rect x="141" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="162" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$3.96</text>
+  <rect x="231" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="252" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.89</text>
+  <rect x="321" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="342" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.82</text>
+  <rect x="411" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="432" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$11.7</text>
+  <rect x="501" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#475569" stroke-width="1.4" />
+  <text x="522" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$23.3</text>
+  <path d="M72,630.0 C117.0,630.0 117.0,630.0 162,630.0 C207.0,630.0 207.0,554.0 252,554.0 C297.0,554.0 297.0,516.0 342,516.0 C387.0,516.0 387.0,478.0 432,478.0 C477.0,478.0 477.0,478.0 522,478.0" fill="none" stroke="#d97706" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="72" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$12.1</text>
+  <rect x="141" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="162" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$17.7</text>
+  <rect x="231" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="252" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$20.4</text>
+  <rect x="321" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="342" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$23.2</text>
+  <rect x="411" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="432" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$28.7</text>
+  <rect x="501" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="522" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$45.4</text>
+  <path d="M72,212.0 C117.0,212.0 117.0,402.0 162,402.0 C207.0,402.0 207.0,402.0 252,402.0 C297.0,402.0 297.0,402.0 342,402.0 C387.0,402.0 387.0,402.0 432,402.0 C477.0,402.0 477.0,440.0 522,440.0" fill="none" stroke="#d97706" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="72" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$0.23</text>
+  <rect x="141" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="162" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.54</text>
+  <rect x="231" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="252" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$11.2</text>
+  <rect x="321" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="342" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.8</text>
+  <rect x="411" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="432" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$22.1</text>
+  <rect x="501" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="522" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$44.1</text>
+  <path d="M72,668.0 C117.0,668.0 117.0,668.0 162,668.0 C207.0,668.0 207.0,668.0 252,668.0 C297.0,668.0 297.0,668.0 342,668.0 C387.0,668.0 387.0,668.0 432,668.0 C477.0,668.0 477.0,668.0 522,668.0" fill="none" stroke="#d97706" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="72" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.8</text>
+  <rect x="141" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="162" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$29.0</text>
+  <rect x="231" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="252" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$36.2</text>
+  <rect x="321" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="342" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$43.3</text>
+  <rect x="411" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="432" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$57.6</text>
+  <rect x="501" y="660.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="522" y="671.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$100.4</text>
+  <path d="M72,554.0 C117.0,554.0 117.0,440.0 162,440.0 C207.0,440.0 207.0,440.0 252,440.0 C297.0,440.0 297.0,440.0 342,440.0 C387.0,440.0 387.0,440.0 432,440.0 C477.0,440.0 477.0,402.0 522,402.0" fill="none" stroke="#d97706" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="72" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.26</text>
+  <rect x="141" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="162" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$11.3</text>
+  <rect x="231" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="252" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.3</text>
+  <rect x="321" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="342" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$17.3</text>
+  <rect x="411" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="432" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$23.4</text>
+  <rect x="501" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="522" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$41.5</text>
+  <path d="M72,326.0 C117.0,326.0 117.0,250.0 162,250.0 C207.0,250.0 207.0,250.0 252,250.0 C297.0,250.0 297.0,212.0 342,212.0 C387.0,212.0 387.0,212.0 432,212.0 C477.0,212.0 477.0,212.0 522,212.0" fill="none" stroke="#d97706" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="72" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$1.61</text>
+  <rect x="141" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="162" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$4.46</text>
+  <rect x="231" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="252" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.89</text>
+  <rect x="321" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="342" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.32</text>
+  <rect x="411" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="432" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$10.2</text>
+  <rect x="501" y="204.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#d97706" stroke-width="1.4" />
+  <text x="522" y="215.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$18.7</text>
+  <path d="M72,440.0 C117.0,440.0 117.0,478.0 162,478.0 C207.0,478.0 207.0,516.0 252,516.0 C297.0,516.0 297.0,554.0 342,554.0 C387.0,554.0 387.0,554.0 432,554.0 C477.0,554.0 477.0,554.0 522,554.0" fill="none" stroke="#0d9488" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="432.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="72" y="443.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$3.75</text>
+  <rect x="141" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="162" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.7</text>
+  <rect x="231" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="252" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$20.2</text>
+  <rect x="321" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="342" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$25.7</text>
+  <rect x="411" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="432" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$36.7</text>
+  <rect x="501" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="522" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$69.7</text>
+  <path d="M72,478.0 C117.0,478.0 117.0,554.0 162,554.0 C207.0,554.0 207.0,592.0 252,592.0 C297.0,592.0 297.0,592.0 342,592.0 C387.0,592.0 387.0,592.0 432,592.0 C477.0,592.0 477.0,592.0 522,592.0" fill="none" stroke="#0d9488" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="72" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$4.61</text>
+  <rect x="141" y="546.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="162" y="557.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$16.7</text>
+  <rect x="231" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="252" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$22.8</text>
+  <rect x="321" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="342" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$28.9</text>
+  <rect x="411" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="432" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$41.0</text>
+  <rect x="501" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#0d9488" stroke-width="1.4" />
+  <text x="522" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$77.3</text>
+  <path d="M72,402.0 C117.0,402.0 117.0,364.0 162,364.0 C207.0,364.0 207.0,364.0 252,364.0 C297.0,364.0 297.0,364.0 342,364.0 C387.0,364.0 387.0,326.0 432,326.0 C477.0,326.0 477.0,326.0 522,326.0" fill="none" stroke="#245bd6" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="394.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="72" y="405.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$3.69</text>
+  <rect x="141" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="162" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.50</text>
+  <rect x="231" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="252" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$9.40</text>
+  <rect x="321" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="342" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$11.3</text>
+  <rect x="411" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="432" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$15.1</text>
+  <rect x="501" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="522" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$26.5</text>
+  <path d="M72,288.0 C117.0,288.0 117.0,174.0 162,174.0 C207.0,174.0 207.0,174.0 252,174.0 C297.0,174.0 297.0,174.0 342,174.0 C387.0,174.0 387.0,174.0 432,174.0 C477.0,174.0 477.0,174.0 522,174.0" fill="none" stroke="#245bd6" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="72" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$1.45</text>
+  <rect x="141" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="162" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$3.60</text>
+  <rect x="231" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="252" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$4.68</text>
+  <rect x="321" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="342" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.76</text>
+  <rect x="411" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="432" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.91</text>
+  <rect x="501" y="166.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="522" y="177.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.4</text>
+  <path d="M72,592.0 C117.0,592.0 117.0,516.0 162,516.0 C207.0,516.0 207.0,478.0 252,478.0 C297.0,478.0 297.0,478.0 342,478.0 C387.0,478.0 387.0,516.0 432,516.0 C477.0,516.0 477.0,516.0 522,516.0" fill="none" stroke="#245bd6" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="72" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$10.1</text>
+  <rect x="141" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="162" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$16.4</text>
+  <rect x="231" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="252" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$19.6</text>
+  <rect x="321" y="470.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="342" y="481.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$22.8</text>
+  <rect x="411" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="432" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$29.2</text>
+  <rect x="501" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="522" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$48.3</text>
+  <path d="M72,364.0 C117.0,364.0 117.0,288.0 162,288.0 C207.0,288.0 207.0,288.0 252,288.0 C297.0,288.0 297.0,288.0 342,288.0 C387.0,288.0 387.0,288.0 432,288.0 C477.0,288.0 477.0,288.0 522,288.0" fill="none" stroke="#245bd6" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="72" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$2.09</text>
+  <rect x="141" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="162" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.78</text>
+  <rect x="231" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="252" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$7.63</text>
+  <rect x="321" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="342" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$9.48</text>
+  <rect x="411" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="432" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$13.2</text>
+  <rect x="501" y="280.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="522" y="291.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$24.3</text>
+  <path d="M72,250.0 C117.0,250.0 117.0,326.0 162,326.0 C207.0,326.0 207.0,326.0 252,326.0 C297.0,326.0 297.0,326.0 342,326.0 C387.0,326.0 387.0,364.0 432,364.0 C477.0,364.0 477.0,364.0 522,364.0" fill="none" stroke="#245bd6" stroke-width="2.6" opacity="0.92" />
+  <rect x="51" y="242.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="72" y="253.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$1.41</text>
+  <rect x="141" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="162" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$5.99</text>
+  <rect x="231" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="252" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$8.28</text>
+  <rect x="321" y="318.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="342" y="329.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$10.6</text>
+  <rect x="411" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="432" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$15.2</text>
+  <rect x="501" y="356.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#245bd6" stroke-width="1.4" />
+  <text x="522" y="367.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$28.9</text>
+  <path d="M72,516.0 C117.0,516.0 117.0,592.0 162,592.0 C207.0,592.0 207.0,630.0 252,630.0 C297.0,630.0 297.0,630.0 342,630.0 C387.0,630.0 387.0,630.0 432,630.0 C477.0,630.0 477.0,630.0 522,630.0" fill="none" stroke="#7c3aed" stroke-width="1.6" opacity="0.5" />
+  <rect x="51" y="508.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="72" y="519.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$4.79</text>
+  <rect x="141" y="584.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="162" y="595.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$17.0</text>
+  <rect x="231" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="252" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$23.1</text>
+  <rect x="321" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="342" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$29.1</text>
+  <rect x="411" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="432" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$41.3</text>
+  <rect x="501" y="622.5" width="42" height="15" rx="3.5" fill="#ffffff" stroke="#7c3aed" stroke-width="1.4" />
+  <text x="522" y="633.0" text-anchor="middle" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$77.8</text>
+  <rect x="640" y="114" width="456" height="600" rx="10" class="panel" />
+  <text x="654" y="136" class="axis-title">k = 1 ($60/h) Total Effective Cost Breakdown (Top-14 Models)</text>
+  <text x="654" y="150" class="model-sub">Ordered by k=1 total cost · Waiting time is 79% to 99.6% of total cost</text>
+  <line x1="795.0" y1="158" x2="795.0" y2="690" class="grid" />
+  <text x="795.0" y="704" text-anchor="middle" class="axis-tick">$0</text>
+  <line x1="836.7" y1="158" x2="836.7" y2="690" class="grid" />
+  <text x="836.7" y="704" text-anchor="middle" class="axis-tick">$25</text>
+  <line x1="878.3" y1="158" x2="878.3" y2="690" class="grid" />
+  <text x="878.3" y="704" text-anchor="middle" class="axis-tick">$50</text>
+  <line x1="920.0" y1="158" x2="920.0" y2="690" class="grid" />
+  <text x="920.0" y="704" text-anchor="middle" class="axis-tick">$75</text>
+  <line x1="961.7" y1="158" x2="961.7" y2="690" class="grid" />
+  <text x="961.7" y="704" text-anchor="middle" class="axis-tick">$100</text>
+  <text x="652" y="177.0" class="model-lbl" style="font-size:9.3px"># 1 gpt-5.6-terra <tspan fill="#64748b" style="font-weight:400">(86.2)</tspan></text>
+  <rect x="795.0" y="167.0" width="2.4" height="14" rx="2" fill="#d97706" />
+  <rect x="797.4" y="167.0" width="21.5" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="824.0" y="177.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$14.37 <tspan fill="#64748b" style="font-weight:400">($1.45+$12.9w)</tspan></text>
+  <text x="652" y="215.0" class="model-lbl" style="font-size:9.3px"># 2 claude-sonnet-5.5 <tspan fill="#64748b" style="font-weight:400">(88.8)</tspan></text>
+  <rect x="795.0" y="205.0" width="2.7" height="14" rx="2" fill="#d97706" />
+  <rect x="797.7" y="205.0" width="28.5" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="831.2" y="215.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$18.73 <tspan fill="#64748b" style="font-weight:400">($1.61+$17.1w)</tspan></text>
+  <text x="652" y="253.0" class="model-lbl" style="font-size:9.3px"># 3 auto <tspan fill="#64748b" style="font-weight:400">(87.4)</tspan></text>
+  <rect x="795.0" y="243.0" width="1.5" height="14" rx="2" fill="#d97706" />
+  <rect x="795.2" y="243.0" width="38.7" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="838.8" y="253.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$23.28 <tspan fill="#64748b" style="font-weight:400">($0.09+$23.2w)</tspan></text>
+  <text x="652" y="291.0" class="model-lbl" style="font-size:9.3px"># 4 gpt-6-sol <tspan fill="#64748b" style="font-weight:400">(89.8)</tspan></text>
+  <rect x="795.0" y="281.0" width="3.5" height="14" rx="2" fill="#d97706" />
+  <rect x="798.5" y="281.0" width="36.9" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="840.4" y="291.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$24.25 <tspan fill="#64748b" style="font-weight:400">($2.09+$22.2w)</tspan></text>
+  <text x="652" y="329.0" class="model-lbl" style="font-size:9.3px"># 5 gpt-5.6-sol <tspan fill="#64748b" style="font-weight:400">(89.6)</tspan></text>
+  <rect x="795.0" y="319.0" width="6.2" height="14" rx="2" fill="#d97706" />
+  <rect x="801.2" y="319.0" width="38.1" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="844.2" y="329.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$26.52 <tspan fill="#64748b" style="font-weight:400">($3.69+$22.8w)</tspan></text>
+  <text x="652" y="367.0" class="model-lbl" style="font-size:9.3px"># 6 gpt-6.1-sol <tspan fill="#64748b" style="font-weight:400">(89.4)</tspan></text>
+  <rect x="795.0" y="357.0" width="2.3" height="14" rx="2" fill="#d97706" />
+  <rect x="797.3" y="357.0" width="45.9" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="848.2" y="367.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$28.92 <tspan fill="#64748b" style="font-weight:400">($1.41+$27.5w)</tspan></text>
+  <text x="652" y="405.0" class="model-lbl" style="font-size:9.3px"># 7 claude-opus-5.5 <tspan fill="#64748b" style="font-weight:400">(90.4)</tspan></text>
+  <rect x="795.0" y="395.0" width="8.8" height="14" rx="2" fill="#d97706" />
+  <rect x="803.8" y="395.0" width="60.5" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="869.2" y="405.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$41.53 <tspan fill="#64748b" style="font-weight:400">($5.26+$36.3w)</tspan></text>
+  <text x="652" y="443.0" class="model-lbl" style="font-size:9.3px"># 8 claude-haiku-5.5 <tspan fill="#64748b" style="font-weight:400">(87.1)</tspan></text>
+  <rect x="795.0" y="433.0" width="1.5" height="14" rx="2" fill="#d97706" />
+  <rect x="795.4" y="433.0" width="73.1" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="873.4" y="443.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$44.07 <tspan fill="#64748b" style="font-weight:400">($0.23+$43.8w)</tspan></text>
+  <text x="652" y="481.0" class="model-lbl" style="font-size:9.3px"># 9 claude-fable-5 <tspan fill="#64748b" style="font-weight:400">(88.1)</tspan></text>
+  <rect x="795.0" y="471.0" width="20.2" height="14" rx="2" fill="#d97706" />
+  <rect x="815.2" y="471.0" width="55.4" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="875.6" y="481.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$45.38 <tspan fill="#64748b" style="font-weight:400">($12.12+$33.3w)</tspan></text>
+  <text x="652" y="519.0" class="model-lbl" style="font-size:9.3px">#10 gpt-6-astra <tspan fill="#64748b" style="font-weight:400">(90.3)</tspan></text>
+  <rect x="795.0" y="509.0" width="16.8" height="14" rx="2" fill="#d97706" />
+  <rect x="811.8" y="509.0" width="63.8" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="880.5" y="519.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$48.33 <tspan fill="#64748b" style="font-weight:400">($10.06+$38.3w)</tspan></text>
+  <text x="652" y="557.0" class="model-lbl" style="font-size:9.3px">#11 gemini-3.8-flash <tspan fill="#64748b" style="font-weight:400">(86.5)</tspan></text>
+  <rect x="795.0" y="547.0" width="6.3" height="14" rx="2" fill="#d97706" />
+  <rect x="801.3" y="547.0" width="110.0" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="916.2" y="557.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$69.73 <tspan fill="#64748b" style="font-weight:400">($3.75+$66.0w)</tspan></text>
+  <text x="652" y="595.0" class="model-lbl" style="font-size:9.3px">#12 gemini-4-argon <tspan fill="#64748b" style="font-weight:400">(89.3)</tspan></text>
+  <rect x="795.0" y="585.0" width="7.7" height="14" rx="2" fill="#d97706" />
+  <rect x="802.7" y="585.0" width="121.2" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="928.9" y="595.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$77.35 <tspan fill="#64748b" style="font-weight:400">($4.61+$72.7w)</tspan></text>
+  <text x="652" y="633.0" class="model-lbl" style="font-size:9.3px">#13 grok-4.6 <tspan fill="#64748b" style="font-weight:400">(88.3)</tspan></text>
+  <rect x="795.0" y="623.0" width="8.0" height="14" rx="2" fill="#d97706" />
+  <rect x="803.0" y="623.0" width="121.8" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="929.7" y="633.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$77.84 <tspan fill="#64748b" style="font-weight:400">($4.79+$73.1w)</tspan></text>
+  <text x="652" y="671.0" class="model-lbl" style="font-size:9.3px">#14 claude-opus-5 <tspan fill="#64748b" style="font-weight:400">(89.3)</tspan></text>
+  <rect x="795.0" y="661.0" width="24.6" height="14" rx="2" fill="#d97706" />
+  <rect x="819.6" y="661.0" width="142.7" height="14" rx="2" fill="#245bd6" opacity="0.82" />
+  <text x="967.3" y="671.5" class="axis-tick" style="font-size:8.4px;font-weight:700;fill:#182332">$100.39 <tspan fill="#64748b" style="font-weight:400">($14.75+$85.6w)</tspan></text>
+  <text x="28" y="758" class="footnote">Note: Among Q ≥ 88.5 models, claude-sonnet-5.5 ($18.73 at k=1, $7.32 at k=3) and gpt-6-sol ($24.25 at k=1, Q=89.8) dominate. At k ≥ 4, auto ($0.09 credits) overtakes claude-sonnet-5.5.</text>
+</svg>

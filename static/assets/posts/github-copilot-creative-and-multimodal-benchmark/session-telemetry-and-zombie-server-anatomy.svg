@@ -1,0 +1,361 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 890" width="1120" height="890" role="img" aria-label="Three-panel session telemetry decomposition of LLM API time, local tool time, +600s zombie server penalty, reasoning token share, and prompt cache hit rate">
+  <style>
+    .bg { fill: #f7f8fa; }
+    .panel { fill: #ffffff; stroke: #dce2ea; stroke-width: 1; }
+    .panel-tint { fill: #edf1f6; stroke: #dce2ea; stroke-width: 1; }
+    .kicker { font: 700 11px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #245bd6; letter-spacing: 0.12em; text-transform: uppercase; }
+    .title { font: 700 21px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.03em; }
+    .subtitle { font: 400 12.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #526074; }
+    .axis-title { font: 600 11.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #182332; letter-spacing: -0.01em; }
+    .axis-tick { font: 500 10px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .grid { stroke: #e6ebf2; stroke-width: 1; }
+    .model-lbl { font: 600 9.8px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #182332; }
+    .model-sub { font: 500 8.8px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; fill: #627084; }
+    .badge { font: 600 9px 'Monaspace Neon', ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .footnote { font: 400 10.5px 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #627084; }
+  </style>
+  <rect width="1120" height="890" rx="16" class="bg" />
+  <text x="28" y="34" class="kicker">Deep Session Telemetry · API Time vs. Local Shell/Render vs. +600s Zombie Server Wait &amp; Reasoning Share</text>
+  <text x="28" y="58" class="title">Inside the Session Logs: The +600s Zombie Server Penalty, Reasoning Bloat &amp; Prompt Caching</text>
+  <text x="28" y="78" class="subtitle">Models ordered by recorded wall time (gpt-5-mini 9.7m to grok-4.7 143.7m). Red blocks in Panel A show 10–20m lost to unstopped background http.server tasks.</text>
+  <rect x="28" y="92" width="13" height="11" rx="2" fill="#245bd6" opacity="0.85" />
+  <text x="46" y="101.5" class="subtitle" style="font-size:11px;font-weight:600;fill:#1e3a8a">LLM API Wait (api_ms)</text>
+  <rect x="200" y="92" width="13" height="11" rx="2" fill="#0d9488" opacity="0.78" />
+  <text x="218" y="101.5" class="subtitle" style="font-size:11px;font-weight:600;fill:#0f766e">Local Render / Tool Exec (Playwright, ffmpeg, soffice)</text>
+  <rect x="545" y="92" width="13" height="11" rx="2" fill="#e11d48" />
+  <text x="563" y="101.5" class="subtitle" style="font-size:11px;font-weight:600;fill:#be123c">+600s Zombie http.server Hang (No stop_bash)</text>
+  <circle cx="858" cy="97.5" r="4.5" fill="#7c3aed" />
+  <text x="868" y="101.5" class="subtitle" style="font-size:11px;font-weight:600;fill:#5b21b6">Reasoning % of Output Tokens</text>
+  <rect x="22" y="114" width="1076" height="740" rx="10" class="panel" />
+  <text x="30" y="134" class="axis-title">Speed Rank / Model</text>
+  <text x="210" y="134" class="axis-title">A. 8-Task Wall Time: API + Tool + Zombie Wait (min)</text>
+  <text x="590" y="134" class="axis-title">B. Reasoning % of Out Tokens &amp; View() Calls</text>
+  <text x="860" y="134" class="axis-title">C. Prompt Cache Hit %</text>
+  <line x1="210.0" y1="142" x2="210.0" y2="834" class="grid" />
+  <text x="210.0" y="848" text-anchor="middle" class="axis-tick">0m</text>
+  <line x1="270.0" y1="142" x2="270.0" y2="834" class="grid" />
+  <text x="270.0" y="848" text-anchor="middle" class="axis-tick">30m</text>
+  <line x1="330.0" y1="142" x2="330.0" y2="834" class="grid" />
+  <text x="330.0" y="848" text-anchor="middle" class="axis-tick">60m</text>
+  <line x1="390.0" y1="142" x2="390.0" y2="834" class="grid" />
+  <text x="390.0" y="848" text-anchor="middle" class="axis-tick">90m</text>
+  <line x1="450.0" y1="142" x2="450.0" y2="834" class="grid" />
+  <text x="450.0" y="848" text-anchor="middle" class="axis-tick">120m</text>
+  <line x1="500.0" y1="142" x2="500.0" y2="834" class="grid" />
+  <text x="500.0" y="848" text-anchor="middle" class="axis-tick">145m</text>
+  <line x1="590.0" y1="142" x2="590.0" y2="834" class="grid" />
+  <text x="590.0" y="848" text-anchor="middle" class="axis-tick">0%</text>
+  <line x1="650.0" y1="142" x2="650.0" y2="834" class="grid" />
+  <text x="650.0" y="848" text-anchor="middle" class="axis-tick">25%</text>
+  <line x1="710.0" y1="142" x2="710.0" y2="834" class="grid" />
+  <text x="710.0" y="848" text-anchor="middle" class="axis-tick">50%</text>
+  <line x1="770.0" y1="142" x2="770.0" y2="834" class="grid" />
+  <text x="770.0" y="848" text-anchor="middle" class="axis-tick">75%</text>
+  <line x1="860.0" y1="142" x2="860.0" y2="834" class="grid" />
+  <text x="860.0" y="848" text-anchor="middle" class="axis-tick">50%</text>
+  <line x1="947.5" y1="142" x2="947.5" y2="834" class="grid" />
+  <text x="947.5" y="848" text-anchor="middle" class="axis-tick">75%</text>
+  <line x1="1000.0" y1="142" x2="1000.0" y2="834" class="grid" />
+  <text x="1000.0" y="848" text-anchor="middle" class="axis-tick">90%</text>
+  <line x1="1035.0" y1="142" x2="1035.0" y2="834" class="grid" />
+  <text x="1035.0" y="848" text-anchor="middle" class="axis-tick">100%</text>
+  <circle cx="34" cy="157.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="161.0" class="model-lbl" style="font-weight:600"> 1. gpt-5-mini</text>
+  <rect x="210" y="151.5" width="14.4" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="224.4" y="151.5" width="5.0" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="234.4" y="161.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">9.7m (7.2m API + 2.5m sh)</text>
+  <line x1="590" y1="157.5" x2="642.5" y2="157.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="642.5" cy="157.5" r="3.6" fill="#7c3aed" />
+  <text x="647.5" y="161.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">21.9% <tspan fill="#64748b">(2v)</tspan></text>
+  <rect x="860" y="151.5" width="43.0" height="12" rx="2" fill="#f59e0b" opacity="0.75" />
+  <text x="908.0" y="161.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">62.3%</text>
+  <rect x="24" y="170.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="182.0" r="3.8" fill="#245bd6" />
+  <text x="44" y="185.5" class="model-lbl" style="font-weight:700"> 2. gpt-5.6-terra</text>
+  <rect x="210" y="176.0" width="17.3" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="227.3" y="176.0" width="8.6" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="240.9" y="185.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:700">12.9m (8.6m API + 4.3m sh)</text>
+  <line x1="590" y1="182.0" x2="616.4" y2="182.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="616.4" cy="182.0" r="3.6" fill="#7c3aed" />
+  <text x="621.4" y="185.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">11.0% <tspan fill="#64748b">(11v)</tspan></text>
+  <rect x="860" y="176.0" width="153.6" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1018.6" y="185.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.9%</text>
+  <circle cx="34" cy="206.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="210.0" class="model-lbl" style="font-weight:600"> 3. gpt-5.3-codex</text>
+  <rect x="210" y="200.5" width="16.7" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="226.7" y="200.5" width="13.5" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="245.1" y="210.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">15.1m (8.3m API + 6.7m sh)</text>
+  <line x1="590" y1="206.5" x2="626.8" y2="206.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="626.8" cy="206.5" r="3.6" fill="#7c3aed" />
+  <text x="631.8" y="210.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">15.3% <tspan fill="#64748b">(0v)</tspan></text>
+  <rect x="860" y="200.5" width="134.3" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="999.3" y="210.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">88.4%</text>
+  <rect x="24" y="219.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="231.0" r="3.8" fill="#d97706" />
+  <text x="44" y="234.5" class="model-lbl" style="font-weight:700"> 4. claude-sonnet-5.5</text>
+  <rect x="210" y="225.0" width="21.1" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="231.1" y="225.0" width="13.1" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="249.2" y="234.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:700">17.1m (10.5m API + 6.6m sh)</text>
+  <line x1="590" y1="231.0" x2="621.2" y2="231.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="621.2" cy="231.0" r="3.6" fill="#7c3aed" />
+  <text x="626.2" y="234.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">13.0% <tspan fill="#64748b">(26v)</tspan></text>
+  <rect x="860" y="225.0" width="149.1" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1014.1" y="234.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">92.6%</text>
+  <circle cx="34" cy="255.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="259.0" class="model-lbl" style="font-weight:600"> 5. gpt-6-luna</text>
+  <rect x="210" y="249.5" width="28.0" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="238.0" y="249.5" width="10.5" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="253.5" y="259.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">19.3m (14.0m API + 5.2m sh)</text>
+  <line x1="590" y1="255.5" x2="653.5" y2="255.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="653.5" cy="255.5" r="3.6" fill="#7c3aed" />
+  <text x="658.5" y="259.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">26.5% <tspan fill="#64748b">(18v)</tspan></text>
+  <rect x="860" y="249.5" width="148.5" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1013.5" y="259.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">92.4%</text>
+  <rect x="24" y="268.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="280.0" r="3.8" fill="#245bd6" />
+  <text x="44" y="283.5" class="model-lbl" style="font-weight:600"> 6. gpt-6-sol</text>
+  <rect x="210" y="274.0" width="29.6" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="239.6" y="274.0" width="14.7" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="259.3" y="283.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">22.2m (14.8m API + 7.3m sh)</text>
+  <line x1="590" y1="280.0" x2="641.7" y2="280.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="641.7" cy="280.0" r="3.6" fill="#7c3aed" />
+  <text x="646.7" y="283.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">21.5% <tspan fill="#64748b">(18v)</tspan></text>
+  <rect x="860" y="274.0" width="154.7" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1019.7" y="283.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">94.2%</text>
+  <circle cx="34" cy="304.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="308.0" class="model-lbl" style="font-weight:600"> 7. gpt-5.6-sol</text>
+  <rect x="210" y="298.5" width="29.0" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="239.0" y="298.5" width="16.6" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="260.7" y="308.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">22.8m (14.5m API + 8.3m sh)</text>
+  <line x1="590" y1="304.5" x2="616.2" y2="304.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="616.2" cy="304.5" r="3.6" fill="#7c3aed" />
+  <text x="621.2" y="308.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">10.9% <tspan fill="#64748b">(14v)</tspan></text>
+  <rect x="860" y="298.5" width="121.9" height="12" rx="2" fill="#f59e0b" opacity="0.75" />
+  <text x="986.9" y="308.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">84.8%</text>
+  <rect x="24" y="317.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="329.0" r="3.8" fill="#475569" />
+  <text x="44" y="332.5" class="model-lbl" style="font-weight:600"> 8. auto</text>
+  <rect x="210" y="323.0" width="29.6" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="239.6" y="323.0" width="16.8" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="261.4" y="332.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">23.2m (14.8m API + 8.4m sh)</text>
+  <line x1="590" y1="329.0" x2="657.5" y2="329.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="657.5" cy="329.0" r="3.6" fill="#7c3aed" />
+  <text x="662.5" y="332.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">28.1% <tspan fill="#64748b">(18v)</tspan></text>
+  <rect x="860" y="323.0" width="151.3" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1016.3" y="332.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.2%</text>
+  <circle cx="34" cy="353.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="357.0" class="model-lbl" style="font-weight:600"> 9. gpt-5.5</text>
+  <rect x="210" y="347.5" width="28.0" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="238.0" y="347.5" width="19.4" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="262.4" y="357.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">23.7m (14.0m API + 9.7m sh)</text>
+  <line x1="590" y1="353.5" x2="627.5" y2="353.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="627.5" cy="353.5" r="3.6" fill="#7c3aed" />
+  <text x="632.5" y="357.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">15.6% <tspan fill="#64748b">(13v)</tspan></text>
+  <rect x="860" y="347.5" width="130.8" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="995.8" y="357.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">87.4%</text>
+  <rect x="24" y="366.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="378.0" r="3.8" fill="#245bd6" />
+  <text x="44" y="381.5" class="model-lbl" style="font-weight:700">10. gpt-5.6-luna</text>
+  <rect x="210" y="372.0" width="17.6" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="227.6" y="372.0" width="10.6" height="12" fill="#0d9488" opacity="0.78" />
+  <rect x="238.2" y="372.0" width="20.0" height="12" fill="#e11d48" />
+  <text x="263.2" y="381.5" class="axis-tick" style="font-size:8.6px;fill:#be123c;font-weight:700">24.1m (True: 14.1m + 10m hang!)</text>
+  <line x1="590" y1="378.0" x2="613.5" y2="378.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="613.5" cy="378.0" r="3.6" fill="#7c3aed" />
+  <text x="618.5" y="381.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">9.8% <tspan fill="#64748b">(13v)</tspan></text>
+  <rect x="860" y="372.0" width="152.6" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1017.6" y="381.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.6%</text>
+  <circle cx="34" cy="402.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="406.0" class="model-lbl" style="font-weight:600">11. gpt-6.1-sol</text>
+  <rect x="210" y="396.5" width="47.8" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="257.8" y="396.5" width="7.2" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="270.0" y="406.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">27.5m (23.9m API + 3.6m sh)</text>
+  <line x1="590" y1="402.5" x2="614.6" y2="402.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="614.6" cy="402.5" r="3.6" fill="#7c3aed" />
+  <text x="619.6" y="406.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">10.3% <tspan fill="#64748b">(14v)</tspan></text>
+  <rect x="860" y="396.5" width="147.6" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1012.6" y="406.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">92.2%</text>
+  <rect x="24" y="415.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="427.0" r="3.8" fill="#d97706" />
+  <text x="44" y="430.5" class="model-lbl" style="font-weight:600">12. claude-haiku-4.5</text>
+  <rect x="210" y="421.0" width="46.5" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="256.5" y="421.0" width="12.9" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="274.5" y="430.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">29.7m (23.3m API + 6.5m sh)</text>
+  <line x1="590" y1="427.0" x2="594.9" y2="427.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="594.9" cy="427.0" r="3.6" fill="#7c3aed" />
+  <text x="599.9" y="430.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">2.0% <tspan fill="#64748b">(21v)</tspan></text>
+  <rect x="860" y="421.0" width="159.0" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1024.0" y="430.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">95.4%</text>
+  <circle cx="34" cy="451.5" r="3.8" fill="#d97706" />
+  <text x="44" y="455.0" class="model-lbl" style="font-weight:600">13. claude-fable-5</text>
+  <rect x="210" y="445.5" width="46.3" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="256.3" y="445.5" width="20.2" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="281.5" y="455.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">33.3m (23.2m API + 10.1m sh)</text>
+  <line x1="590" y1="451.5" x2="625.6" y2="451.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="625.6" cy="451.5" r="3.6" fill="#7c3aed" />
+  <text x="630.6" y="455.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">14.8% <tspan fill="#64748b">(31v)</tspan></text>
+  <rect x="860" y="445.5" width="153.2" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1018.2" y="455.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.8%</text>
+  <rect x="24" y="464.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="476.0" r="3.8" fill="#245bd6" />
+  <text x="44" y="479.5" class="model-lbl" style="font-weight:700">14. gpt-5.4-mini</text>
+  <rect x="210" y="470.0" width="32.0" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="242.0" y="470.0" width="18.9" height="12" fill="#0d9488" opacity="0.78" />
+  <rect x="260.9" y="470.0" width="20.0" height="12" fill="#e11d48" />
+  <text x="285.9" y="479.5" class="axis-tick" style="font-size:8.6px;fill:#be123c;font-weight:700">35.5m (True: 25.5m + 10m hang!)</text>
+  <line x1="590" y1="476.0" x2="678.8" y2="476.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="678.8" cy="476.0" r="3.6" fill="#7c3aed" />
+  <text x="683.8" y="479.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">37.0% <tspan fill="#64748b">(28v)</tspan></text>
+  <rect x="860" y="470.0" width="142.2" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="1007.2" y="479.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">90.6%</text>
+  <circle cx="34" cy="500.5" r="3.8" fill="#d97706" />
+  <text x="44" y="504.0" class="model-lbl" style="font-weight:700">15. claude-opus-5.5</text>
+  <rect x="210" y="494.5" width="48.4" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="258.4" y="494.5" width="24.2" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="287.5" y="504.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:700">36.3m (24.2m API + 12.1m sh)</text>
+  <line x1="590" y1="500.5" x2="614.2" y2="500.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="614.2" cy="500.5" r="3.6" fill="#7c3aed" />
+  <text x="619.2" y="504.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">10.1% <tspan fill="#64748b">(34v)</tspan></text>
+  <rect x="860" y="494.5" width="152.9" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1017.9" y="504.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.7%</text>
+  <rect x="24" y="513.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="525.0" r="3.8" fill="#d97706" />
+  <text x="44" y="528.5" class="model-lbl" style="font-weight:600">16. claude-opus-4.8</text>
+  <rect x="210" y="519.0" width="55.7" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="265.7" y="519.0" width="18.6" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="289.3" y="528.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">37.2m (27.9m API + 9.3m sh)</text>
+  <line x1="590" y1="525.0" x2="638.7" y2="525.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="638.7" cy="525.0" r="3.6" fill="#7c3aed" />
+  <text x="643.7" y="528.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">20.3% <tspan fill="#64748b">(29v)</tspan></text>
+  <rect x="860" y="519.0" width="158.6" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1023.6" y="528.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">95.3%</text>
+  <circle cx="34" cy="549.5" r="3.8" fill="#245bd6" />
+  <text x="44" y="553.0" class="model-lbl" style="font-weight:600">17. gpt-6-astra</text>
+  <rect x="210" y="543.5" width="62.8" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="272.8" y="543.5" width="13.7" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="291.5" y="553.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">38.3m (31.4m API + 6.8m sh)</text>
+  <line x1="590" y1="549.5" x2="620.7" y2="549.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="620.7" cy="549.5" r="3.6" fill="#7c3aed" />
+  <text x="625.7" y="553.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">12.8% <tspan fill="#64748b">(26v)</tspan></text>
+  <rect x="860" y="543.5" width="152.6" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1017.6" y="553.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">93.6%</text>
+  <rect x="24" y="562.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="574.0" r="3.8" fill="#245bd6" />
+  <text x="44" y="577.5" class="model-lbl" style="font-weight:600">18. gpt-5.4</text>
+  <rect x="210" y="568.0" width="47.8" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="257.8" y="568.0" width="30.9" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="293.7" y="577.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">39.4m (23.9m API + 15.4m sh)</text>
+  <line x1="590" y1="574.0" x2="642.4" y2="574.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="642.4" cy="574.0" r="3.6" fill="#7c3aed" />
+  <text x="647.4" y="577.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">21.8% <tspan fill="#64748b">(15v)</tspan></text>
+  <rect x="860" y="568.0" width="146.7" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="1011.7" y="577.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">91.9%</text>
+  <circle cx="34" cy="598.5" r="3.8" fill="#d97706" />
+  <text x="44" y="602.0" class="model-lbl" style="font-weight:600">19. claude-haiku-5.5</text>
+  <rect x="210" y="592.5" width="40.9" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="250.9" y="592.5" width="46.8" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="302.7" y="602.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">43.8m (20.4m API + 23.4m sh)</text>
+  <line x1="590" y1="598.5" x2="714.6" y2="598.5" stroke="#e11d48" stroke-width="2.2" />
+  <circle cx="714.6" cy="598.5" r="3.6" fill="#e11d48" />
+  <text x="719.6" y="602.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">51.9% <tspan fill="#64748b">(17v)</tspan></text>
+  <rect x="860" y="592.5" width="155.8" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1020.8" y="602.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">94.5%</text>
+  <rect x="24" y="611.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="623.0" r="3.8" fill="#059669" />
+  <text x="44" y="626.5" class="model-lbl" style="font-weight:700">20. mai-code-1.1-flash</text>
+  <rect x="210" y="617.0" width="28.8" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="238.8" y="617.0" width="19.6" height="12" fill="#0d9488" opacity="0.78" />
+  <rect x="258.4" y="617.0" width="40.0" height="12" fill="#e11d48" />
+  <text x="303.4" y="626.5" class="axis-tick" style="font-size:8.6px;fill:#be123c;font-weight:700">44.2m (True: 24.2m + 20m hang!)</text>
+  <line x1="590" y1="623.0" x2="665.8" y2="623.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="665.8" cy="623.0" r="3.6" fill="#7c3aed" />
+  <text x="670.8" y="626.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">31.6% <tspan fill="#64748b">(13v)</tspan></text>
+  <rect x="860" y="617.0" width="139.4" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="1004.4" y="626.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">89.8%</text>
+  <circle cx="34" cy="647.5" r="3.8" fill="#d97706" />
+  <text x="44" y="651.0" class="model-lbl" style="font-weight:600">21. claude-sonnet-5</text>
+  <rect x="210" y="641.5" width="62.2" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="272.2" y="641.5" width="27.1" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="304.3" y="651.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">44.6m (31.1m API + 13.5m sh)</text>
+  <line x1="590" y1="647.5" x2="648.0" y2="647.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="648.0" cy="647.5" r="3.6" fill="#7c3aed" />
+  <text x="653.0" y="651.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">24.2% <tspan fill="#64748b">(44v)</tspan></text>
+  <rect x="860" y="641.5" width="162.5" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1027.5" y="651.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">96.4%</text>
+  <rect x="24" y="660.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="672.0" r="3.8" fill="#7c3aed" />
+  <text x="44" y="675.5" class="model-lbl" style="font-weight:600">22. grok-4.5</text>
+  <rect x="210" y="666.0" width="78.3" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="288.3" y="666.0" width="20.7" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="314.0" y="675.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">49.5m (39.1m API + 10.4m sh)</text>
+  <line x1="590" y1="672.0" x2="605.5" y2="672.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="605.5" cy="672.0" r="3.6" fill="#7c3aed" />
+  <text x="610.5" y="675.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">6.4% <tspan fill="#64748b">(35v)</tspan></text>
+  <rect x="860" y="666.0" width="138.7" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="1003.7" y="675.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">89.6%</text>
+  <circle cx="34" cy="696.5" r="3.8" fill="#0d9488" />
+  <text x="44" y="700.0" class="model-lbl" style="font-weight:600">23. gemini-3.7-flash</text>
+  <rect x="210" y="690.5" width="94.2" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="304.2" y="690.5" width="23.1" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="332.3" y="700.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">58.6m (47.1m API + 11.6m sh)</text>
+  <line x1="590" y1="696.5" x2="646.3" y2="696.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="646.3" cy="696.5" r="3.6" fill="#7c3aed" />
+  <text x="651.3" y="700.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">23.5% <tspan fill="#64748b">(61v)</tspan></text>
+  <rect x="860" y="690.5" width="128.9" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="993.9" y="700.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">86.8%</text>
+  <rect x="24" y="709.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="721.0" r="3.8" fill="#0d9488" />
+  <text x="44" y="724.5" class="model-lbl" style="font-weight:600">24. gemini-3.8-flash</text>
+  <rect x="210" y="715.0" width="108.5" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="318.5" y="715.0" width="23.5" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="347.0" y="724.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">66.0m (54.2m API + 11.8m sh)</text>
+  <line x1="590" y1="721.0" x2="697.4" y2="721.0" stroke="#e11d48" stroke-width="2.2" />
+  <circle cx="697.4" cy="721.0" r="3.6" fill="#e11d48" />
+  <text x="702.4" y="724.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">44.7% <tspan fill="#64748b">(84v)</tspan></text>
+  <rect x="860" y="715.0" width="149.2" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1014.2" y="724.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">92.6%</text>
+  <circle cx="34" cy="745.5" r="3.8" fill="#0d9488" />
+  <text x="44" y="749.0" class="model-lbl" style="font-weight:600">25. gemini-4-argon</text>
+  <rect x="210" y="739.5" width="130.0" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="340.0" y="739.5" width="15.4" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="360.5" y="749.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">72.7m (65.0m API + 7.7m sh)</text>
+  <line x1="590" y1="745.5" x2="610.9" y2="745.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="610.9" cy="745.5" r="3.6" fill="#7c3aed" />
+  <text x="615.9" y="749.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">8.7% <tspan fill="#64748b">(55v)</tspan></text>
+  <rect x="860" y="739.5" width="133.6" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="998.6" y="749.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">88.2%</text>
+  <rect x="24" y="758.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="770.0" r="3.8" fill="#7c3aed" />
+  <text x="44" y="773.5" class="model-lbl" style="font-weight:700">26. grok-4.6</text>
+  <rect x="210" y="764.0" width="93.6" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="303.6" y="764.0" width="32.5" height="12" fill="#0d9488" opacity="0.78" />
+  <rect x="336.1" y="764.0" width="20.0" height="12" fill="#e11d48" />
+  <text x="361.1" y="773.5" class="axis-tick" style="font-size:8.6px;fill:#be123c;font-weight:700">73.1m (True: 63.1m + 10m hang!)</text>
+  <line x1="590" y1="770.0" x2="682.7" y2="770.0" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="682.7" cy="770.0" r="3.6" fill="#7c3aed" />
+  <text x="687.7" y="773.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">38.6% <tspan fill="#64748b">(57v)</tspan></text>
+  <rect x="860" y="764.0" width="130.2" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="995.2" y="773.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">87.2%</text>
+  <circle cx="34" cy="794.5" r="3.8" fill="#d97706" />
+  <text x="44" y="798.0" class="model-lbl" style="font-weight:600">27. claude-opus-5</text>
+  <rect x="210" y="788.5" width="118.1" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="328.1" y="788.5" width="53.2" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="386.3" y="798.0" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:600">85.6m (59.1m API + 26.6m sh)</text>
+  <line x1="590" y1="794.5" x2="655.7" y2="794.5" stroke="#7c3aed" stroke-width="2.2" />
+  <circle cx="655.7" cy="794.5" r="3.6" fill="#7c3aed" />
+  <text x="660.7" y="798.0" class="axis-tick" style="font-size:8.6px;fill:#1e293b">27.4% <tspan fill="#64748b">(28v)</tspan></text>
+  <rect x="860" y="788.5" width="160.1" height="12" rx="2" fill="#10b981" opacity="0.75" />
+  <text x="1025.1" y="798.0" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">95.7%</text>
+  <rect x="24" y="807.5" width="1072" height="24.5" fill="#f1f5f9" opacity="0.55" />
+  <circle cx="34" cy="819.0" r="3.8" fill="#7c3aed" />
+  <text x="44" y="822.5" class="model-lbl" style="font-weight:700">28. grok-4.7</text>
+  <rect x="210" y="813.0" width="247.6" height="12" fill="#245bd6" opacity="0.85" />
+  <rect x="457.6" y="813.0" width="39.7" height="12" fill="#0d9488" opacity="0.78" />
+  <text x="502.4" y="822.5" class="axis-tick" style="font-size:8.6px;fill:#334155;font-weight:700">143.7m (123.8m API + 19.9m sh)</text>
+  <line x1="590" y1="819.0" x2="762.6" y2="819.0" stroke="#e11d48" stroke-width="2.2" />
+  <circle cx="762.6" cy="819.0" r="3.6" fill="#e11d48" />
+  <text x="767.6" y="822.5" class="axis-tick" style="font-size:8.6px;fill:#1e293b">71.9% <tspan fill="#64748b">(78v)</tspan></text>
+  <rect x="860" y="813.0" width="144.6" height="12" rx="2" fill="#0ea5e9" opacity="0.75" />
+  <text x="1009.6" y="822.5" class="axis-tick" style="font-size:8.6px;fill:#182332;font-weight:600">91.3%</text>
+  <text x="28" y="874" class="footnote">Note: Removing the single +600s zombie http.server wait moves gpt-5.6-luna from 24.1m (#11) to 14.1m (#2 fastest overall) and cuts mai-code-1.1-flash from 44.2m to 24.2m.</text>
+</svg>
