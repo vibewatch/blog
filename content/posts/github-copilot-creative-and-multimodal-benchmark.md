@@ -433,19 +433,58 @@ Comparing model rankings between [Part 1 (Algorithmic Coding)](/the-real-cost-of
 
 ---
 
-## 7. Caveats & Practical Model Selection Guide
+## 7. Final Conclusions, Model Recommendations & Agent Engineering Playbook
+
+> **Core Conclusion:** You do not need to pay `$10–$15` per suite (`claude-opus-5`, `claude-fable-5`, `gpt-6-astra`) to get frontier creative and multimodal output. For **daily interactive work (`k = 1–3` tasks)**, **`claude-sonnet-5.5` (`Q = 88.8`, `100%` auto pass, `17.1m`, `$1.61` credits)** and **`gpt-6-sol` (`Q = 89.8`, `100%` auto pass, `22.2m`, `$2.09` credits)** deliver the best balance of quality, speed, and zero-defect reliability. Reserve **`claude-opus-5.5` (`Q = 90.4`)** for flagship UI/game/architecture polish, **`gemini-4-argon` (`Q = 89.3`)** for background 3D/SVG/video rendering, and **`auto` (`$0.09`) / `claude-haiku-5.5` (`$0.23`)** for high-volume batch runs (`k ≥ 4`).
+
+Synthesizing all 224 runs, 2,895 billing records, and 446 judge evaluations yields three actionable sets of recommendations: **which model tier to pick**, **which model wins each specific media format**, and **how to configure multimodal coding agents in production**.
+
+### 7.1 Model Recommendations by Tier: Who to Pick & Who to Avoid
+
+1. **Tier 1 — The Default Daily Drivers (`claude-sonnet-5.5`, `gpt-6-sol`, `gpt-6.1-sol`):**
+   - **`claude-sonnet-5.5` (`Q = 88.8`, `100%` auto checks, `17.1 min`, `$1.61` credits, `$18.73` total at `$60/h`):** Our **#1 recommended default model** for interactive frontend, creative, and multimodal work (`k = 1–3`). It finishes in the fewest turns of any top-20 model (`61` turns across 8 tasks), enjoys the `95%` cache-read discount (`10 cr/1M`), passes `100%` of automated checks, and never drops below `86.5` on any task (`SD = 1.3`).
+   - **`gpt-6-sol` (`Q = 89.8`, `100%` auto checks, `22.2 min`, `$2.09` credits, `Min = 88.7`):** Our **#1 zero-defect all-rounder** when you want near-90 quality across all 8 tasks without a single weak spot (`88.7–92.2` across every format) and lower total effective cost than `gpt-6.1-sol` for any human concurrency `k = 1..7`.
+   - **`gpt-6.1-sol` (`Q = 89.4`, `99.1%` auto checks, `27.5 min`, `$1.41` credits, `Min = 86.7`):** The **cheapest model in the `Q ≥ 89` tier** on pure credits thanks to its `95%` cache-read discount (`10 cr/1M`) and lean `1,776`-line code footprint.
+
+2. **Tier 2 — The Flagship Specialists (`claude-opus-5.5` & `gemini-4-argon`):**
+   - **`claude-opus-5.5` (`Q = 90.4`, `99.1%` auto, `36.3 min`, `$5.26` credits):** Pick when **maximum visual and structural polish** matters more than 15 extra minutes of wait time — specifically customer-facing SaaS landing pages (`#1` on `ui_landing` at `91.0`), interactive HTML5 canvas/games (`#1` on `game` at `92.5`, `#1` on interactive code mechanics at `83.1`), and senior systems architecture docs (`#1` on `design_doc` at `92.2`). It completely obsoletes `claude-opus-5` (`$14.75`, `85.6m`).
+   - **`gemini-4-argon` (`Q = 89.3`, `98.0%` auto, `72.7 min`, `$4.61` credits):** Pick **strictly in background/async mode (`k ≥ 3`)** for **spatial geometry and procedural video**: it won **#1 on `three_d` (`89.8`), #1 on `diagram` (`92.5`), and #1 on `video` (`93.3`)**, and is the most balanced model between visual aesthetics (`83.2`) and content (`83.8`).
+
+3. **Tier 3 — The Speed & Budget Champions (`gpt-5.6-terra`, `claude-haiku-5.5`, `auto`):**
+   - **`gpt-5.6-terra` (`Q = 86.2`, `12.9 min`, `$1.45` credits, `$14.37` total at `k = 1`):** The **fastest frontier model** in the benchmark (`2.2s` TTFT, `988` lines of lean code), ideal for rapid interactive prototyping (`#3` on `design_doc` at `91.6` in `67.6s`; `58.4s` on `video` at `91.7`).
+   - **`claude-haiku-5.5` (`Q = 87.1`, `$0.23` credits for all 8 tasks):** A **frontend and dashboard steal** — it beat every heavyweight model to win **#1 overall on `dataviz` (`92.5` for `$0.02`)** and tied for **#2 on `ui_landing` (`90.4` for `$0.03`)**. Just avoid running it unattended on heavy 3D WebGL scenes (`19.6 min` on `three_d`).
+   - **`auto` (`Q = 87.4`, `23.2 min`, `$0.09` credits for all 8 tasks):** Routed `100%` of calls to `gpt-6-luna` with an extra `-10%` router discount (`~$0.01` per deliverable). Unbeatable for **batch generation (`k ≥ 4`)** or tight credit quotas.
+
+4. **Tier 4 — Models to Avoid or Replace on Creative Tasks:**
+   - **Legacy high-cost models (`claude-opus-5` at `$14.75`, `claude-fable-5` at `$12.12`, `claude-opus-4.8` at `$7.43`, `gpt-5.5` at `$5.29`):** Strictly dominated in both quality, speed, and cache-read pricing (`90%` vs. `95%` discount) by `claude-opus-5.5`, `claude-sonnet-5.5`, and `gpt-6-sol`.
+   - **Unbounded loopers (`gemini-3.8-flash` at `334` turns, `gemini-3.7-flash` at `202` turns, `grok-4.7` at `reasoningEffort: "high"`):** Capable of high visual peaks (`grok-4.7` won #1 on `presentation` and `video`), but prone to 20-minute timeouts and `10M–21M` token blowups unless turn-capped.
+   - **Blind code-only & ultra-small models (`gpt-5.3-codex`, `gpt-5-mini`, `claude-haiku-4.5`):** `gpt-5.3-codex` never called `view()` (`0` views, `#24`), while `gpt-5-mini` (`#28`, `65.2`) and `claude-haiku-4.5` (`#27`, `71.3`) failed basic spatial layout and DOM interaction gates.
+
+### 7.2 Task-by-Task Winner Cheat Sheet (All 8 Creative Formats)
+
+| Creative Task | 🏆 #1 Quality Winner | ⚡ Best Interactive Pick (`k = 1–3`) | 💰 Best Budget Pick (`<$0.05`) |
+| :--- | :--- | :--- | :--- |
+| **1. `three_d` (WebGL Scene)** | **`gemini-4-argon`** (`89.8`, `96.3 cr`, `19.2m`) | **`gpt-5.6-sol`** (`88.6`, `1.8m`) or **`gpt-6.1-sol`** (`89.2`, `3.7m`, `18.9 cr`) | **`auto`** (`83.2`, `$0.01`, `4.2m`) |
+| **2. `diagram` (Architecture SVG)** | **`gemini-4-argon`** (`92.5`, `35.9 cr`, `5.1m`) | **`gpt-6-sol`** (`89.5`, `1.8m`, `19.6 cr`) or **`claude-opus-5.5`** (`91.0`, `2.4m`) | **`auto`** (`85.0`, `$0.01`, `5.1m`) |
+| **3. `presentation` (16:9 PPTX)** | **`grok-4.7`** (`92.5`, `242.8 cr`, `20.3m`) | **`claude-sonnet-5.5`** (`86.5`, `1.3m`, `15.3 cr`) or **`claude-opus-5.5`** (`89.5`, `3.1m`) | **`auto`** (`88.0`, `$0.01`, `3.2m`) |
+| **4. `design_doc` (System Design)** | **`claude-opus-5.5`** & **`gpt-6-sol`** (`92.2`) | **`gpt-5.6-terra`** (`91.6`, `1.1m`, `9.9 cr`) or **`gpt-6-sol`** (`92.2`, `1.9m`, `15.6 cr`) | **`auto`** (`91.0`, `<$0.01`, `1.8m`) |
+| **5. `dataviz` (KPI Dashboard)** | **`claude-haiku-5.5`** (`92.5`, `2.1 cr`, `2.2m`) | **`claude-haiku-5.5`** (`92.5`, `2.2m`, `$0.02`) or **`claude-sonnet-5.5`** (`88.7`, `1.1m`) | **`claude-haiku-5.5`** (`92.5`, `$0.02`) |
+| **6. `ui_landing` (SaaS Landing)** | **`claude-opus-5.5`** (`91.0`, `163.4 cr`, `9.3m`) | **`gpt-6-sol`** (`90.4`, `2.8m`, `36.0 cr`) or **`gpt-5.6-terra`** (`87.4`, `1.8m`, `21.1 cr`) | **`claude-haiku-5.5`** (`90.4`, `$0.03`) |
+| **7. `game` (HTML5 Breakout)** | **`claude-opus-5.5`** (`92.5`, `60.5 cr`, `4.0m`) | **`claude-sonnet-5.5`** (`90.3`, `1.2m`, `15.3 cr`) or **`claude-opus-5.5`** (`92.5`, `4.0m`) | **`auto`** (`90.3`, `$0.01`, `3.5m`) |
+| **8. `video` (720p30 MP4 + Audio)** | **`gemini-4-argon`** & **`grok-4.7`** (`93.3`) | **`claude-sonnet-5.5`** (`90.3`, `57.9s`, `10.3 cr`) or **`gpt-5.6-terra`** (`91.7`, `58.4s`) | **`auto`** (`88.7`, `<$0.01`, `2.1m`) |
+
+### 7.3 Five Engineering Best Practices for Running Multimodal Agents
+
+Beyond model choice, our session forensics show that **how you configure the agent harness and prompt** can save 50%+ in runtime and eliminate the most common failure modes:
+
+1. **Enforce a "Render → `view()` → Fix Once → Stop" Discipline (`1–3` Visual Passes):** Instruct agents to always rasterize their deliverable (via headless Playwright, LibreOffice, or `ffmpeg`) and inspect it with `view()` at least once (preventing `gpt-5.3-codex`'s blind-coding failures), while capping cosmetic self-edits at **2–3 iterations** so context doesn't snowball into the `10M–21M` token `O(N²)` trap.
+2. **Set `COPILOT_TASK_WAIT_TIMEOUT_SECONDS=10` and Stop Background Servers:** In automated pipelines or CI, always set `COPILOT_TASK_WAIT_TIMEOUT_SECONDS=10` (down from the `600s` default) and prompt agents to call `stop_bash` on any background `http.server` before finishing — immediately eliminating the 10-minute zombie-process hang that hit 5 cells in our run.
+3. **Bind Ephemeral Ports (`http.server 0`) and Use Wall-Clock Delta Time (`clock.getDelta()`):** When running multiple agents in parallel on one machine, never hardcode port `8000`. And for WebGL/Canvas animations tested in headless browsers (where CPU SwiftShader runs at `~2.6 FPS`), always drive animations by elapsed wall-clock seconds (`THREE.Clock` / `performance.now()`) rather than fixed per-frame increments.
+4. **Keep `reasoningEffort` at `"medium"` for Visual & Frontend Work:** Internal chain-of-thought tokens (`grok-4.7` burned `399.6k` reasoning tokens at `"high"`) cannot see clipped SVG labels or broken CSS grids. Keep reasoning at `"medium"` and spend those tokens on external visual verification (`view()`).
+5. **Use Cross-Vendor Dual Judges + Headless Gate Checks for Any Visual Eval:** Never trust a single LLM judge on visual tasks: pair deterministic headless checks (`40%`) with at least one Anthropic judge and one OpenAI judge (`60%`) to cancel out the `14.7`-point severity gap and the `4.1`-point self-family preference.
 
 ### Four Methodological Caveats to Keep in Mind
 1. **Single-run variance (`N = 1` per cell):** Each of the 224 cells was run once, which introduces **`±2–3` points of stochastic noise** on any model's 8-task mean (proven directly by `auto` scoring `87.4` while routing 100% of its calls to `gpt-6-luna`, which scored `84.7` standalone). Treat the top 14 models (`86.2–90.4`) as a tight frontier tier rather than over-reading `0.5`-point gaps.
 2. **Shared-VM contention & zombie servers:** Up to 4 cells ran concurrently on a 2-vCPU VM, so raw wall-clock durations include CPU contention during headless Chromium/LibreOffice/`ffmpeg` renders plus the `+600s` background server wait on the 5 cells documented in Section 6.1.
 3. **Provider instability on `grok-4.7`:** Two `grok-4.7` cells that timed out after upstream server errors were retried once (archived in `runs/2026-10-17/_retries/`). Its `game` retry succeeded (`91.7`), while `diagram` timed out again (`0.0`), pulling its 8-task mean from `87.7` (across its 7 finished tasks) down to `76.8`.
 4. **Evaluation compute cost:** Grading multimodal outputs with two frontier judges (`claude-opus-5.5` + `gpt-5.5`) is itself a substantial workload — `10,970` credits (`$109.70`) for the 224 agent runs plus `3,579` credits (`$35.79`, or `24.6%` of total spend) for dual-judge evaluation.
-
-### Bottom Line: Which Model Should You Pick for Creative & Multimodal Work?
-
-| Your Workflow Scenario | Best Model Choice | Why It Wins (Backed by the Data) |
-| :--- | :--- | :--- |
-| **Highest visual & structural polish (flagship UI, games, docs, decks)** | **`claude-opus-5.5`** (`90.4`) or **`gpt-6-sol`** (`89.8`) | `claude-opus-5.5` ranks #1 overall (`84.6` judge average, #1 on `design_doc`, `ui_landing`, `game`) at **64% lower credit cost** and **58% less time** than `claude-opus-5`. `gpt-6-sol` passes `100%` of automated checks in just `22.2 min` (`$2.09` credits). |
-| **Daily interactive creative work (`k = 1–3` tasks)** | **`claude-sonnet-5.5`** (`88.8`) or **`gpt-5.6-terra`** (`86.2`) | `claude-sonnet-5.5` passes `100%` of automated checks in `17.1 min` (`$1.61` credits, **`$18.73` total at `$60/h`**), beating every other `Q ≥ 88` model. `gpt-5.6-terra` is the fastest frontier model (`12.9 min`, **`$14.37` at `$60/h`**). |
-| **3D WebGL, SVG architecture diagrams & MP4 explainer videos** | **`gemini-4-argon`** (`89.3`) or **`gpt-6.1-sol`** (`89.4`) | `gemini-4-argon` ranks **#1 on `three_d` (`89.8`), #1 on `diagram` (`92.5`), and #1 on `video` (`93.3`)** — best run in background mode (`k ≥ 3`) due to its `72.7m` runtime. For fast, low-cost 3D, `gpt-6.1-sol` scores `89.2` for just `18.9 cr`. |
-| **Data dashboards (`dataviz`) & high-volume batch runs (`k ≥ 4`)** | **`claude-haiku-5.5`** (`87.1`) or **`auto`** (`87.4`) | `claude-haiku-5.5` ranked **#1 overall on `dataviz` (`92.5`)** and **#2 on `ui_landing` (`90.4`)** for just `$0.02–$0.03` in credits (`$0.23` for all 8 tasks). `auto` (routing to `gpt-6-luna`) delivers all 8 tasks for **`$0.09` total** (`9.1 credits`). |
